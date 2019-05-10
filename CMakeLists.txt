@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.3)
 
 if (APPLE)
-	set(CMAKE_OSX_ARCHITECTURES x86_64;i386)
+	set(CMAKE_OSX_ARCHITECTURES x86_64)
 endif()
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -14,7 +14,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -lc++abi")
 
 set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY "libc++")
-# set(CMAKE_OSX_DEPLOYMENT_TARGET "10.7" CACHE STRING "Minimum OS X deployment version")
+set(CMAKE_OSX_DEPLOYMENT_TARGET "10.7" CACHE STRING "Minimum OS X deployment version")
 set(CMAKE_XCODE_GENERATE_SCHEME ON)
 
 # set_property(GLOBAL PROPERTY USE_FOLDERS ON)
@@ -91,3 +91,9 @@ foreach (project_dir ${PROJECT_DIRS})
 		add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/clients/${project_dir})
 	endif ()
 endforeach ()
+
+add_custom_target (
+	MAKE_MAX_REF ALL
+	COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/script/MakeMaxRef.py
+	COMMENT "Generating Max XML ref"
+)
