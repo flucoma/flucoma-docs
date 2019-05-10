@@ -136,13 +136,14 @@ public:
   template<typename P,typename All>
   static json::object_t::value_type jsonify(P& param, All& allParams)
   {
+    
       return jsonify_param(std::get<0>(param), param, allParams);
   }
   
   template<typename P,typename Tuple, typename All>
   static json::object_t::value_type jsonify_param(P& p, Tuple& tuple, All& allParams)
   {
-    bool fixed = std::is_same<Fixed<true>,std::tuple_element<2, Tuple>>::value;
+    constexpr bool fixed = std::tuple_element<2,Tuple>::type::value;
     json j;
     j["displayName"] = p.displayName;
     j["default"] = p.defaultValue;
@@ -168,6 +169,7 @@ public:
     json j;
     j["displayName"] = p.displayName;
     j["default"] = p.defaultValue;
+    j["fixed"] = false; 
     std::vector<std::string> strings(p.numOptions);
     std::copy(p.strings, p.strings + p.numOptions,strings.begin());
     j["values"] = strings;
@@ -181,6 +183,7 @@ public:
     json j;
     j["displayName"] = p.displayName;
     j["default"] = p.defaultValue;
+    j["fixed"] = false;
 //    std::cout << j.dump(2) << '\n';
     return {p.name,j};
   }
