@@ -8,6 +8,6 @@ So, simple build steps should be along the lines of
 ```bash
 mkdir build
 cd build
-cmake ..
+cmake -DFLUID_PATH=/your/path/to/your/fluid/decompostion/repo ..
 make
 ```
