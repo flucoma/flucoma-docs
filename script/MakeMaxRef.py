@@ -24,8 +24,9 @@ def process_client(env, jsonfile):
             args.update({d.lower():v})
         else:
             attrs.update({d.lower():v})
-    with open('../maxref/fluid.{}~.maxref.xml'.format(jsonfile.stem.lower()),'w') as f:
-        f.write(template.render(arguments=args,attributes=attrs))
+    client  = 'fluid.{}~'.format(jsonfile.stem.lower())
+    with open('../maxref/{}.maxref.xml'.format(client),'w') as f:
+        f.write(template.render(arguments=args,attributes=attrs,client_name=client))
 
 
 def main():
