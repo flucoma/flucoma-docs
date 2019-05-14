@@ -69,6 +69,15 @@ target_sources(
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/FluidParameterDump.hpp"
 )
 
+add_custom_target (
+	MAKE_MAX_REF ALL
+	COMMAND which python
+	COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/script/MakeMaxRef.py
+	COMMENT "Generating Max XML ref"
+	VERBATIM
+	USES_TERMINAL
+)
+
 # Make sure to build targets from fluid_decomposition
 # add_subdirectory(${FLUID_ABS_PATH} ${FLUID_ABS_PATH}/build)
 MACRO(SUBDIRLIST result curdir)
@@ -91,12 +100,3 @@ foreach (project_dir ${PROJECT_DIRS})
 		add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/clients/${project_dir})
 	endif ()
 endforeach ()
-
-add_custom_target (
-	MAKE_MAX_REF ALL
-	COMMAND which python
-	COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/script/MakeMaxRef.py
-	COMMENT "Generating Max XML ref"
-	VERBATIM
-	USES_TERMINAL 
-)

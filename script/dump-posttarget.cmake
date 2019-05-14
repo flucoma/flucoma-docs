@@ -2,16 +2,19 @@
 # Usage of this file and its contents is governed by the MIT License
 
 
+add_dependencies(
+	MAKE_MAX_REF ${PROJECT_NAME}
+)
+
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
-add_dependencies (${PROJECT_NAME} FLUID_DECOMPOSITION)
+# add_dependencies (${PROJECT_NAME} FLUID_DECOMPOSITION)
 target_link_libraries(${PROJECT_NAME}
-PUBLIC FLUID_DECOMPOSITION  FLUID_DUMP
-PRIVATE FFTLIB
+PRIVATE FFTLIB FLUID_DECOMPOSITION FLUID_DUMP
 )
 
 target_include_directories (
 	${PROJECT_NAME}
-	SYSTEM PRIVATE
+	PRIVATE
 	"${CMAKE_CURRENT_SOURCE_DIR}/../../../include"
 	"${CMAKE_CURRENT_SOURCE_DIR}/../../../thirdparty"
 )
