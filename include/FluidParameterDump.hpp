@@ -72,6 +72,14 @@ struct Constraint<impl::FrameSizeUpperLimitImpl<I>>
   static json::object_t::value_type dump(const impl::FrameSizeUpperLimitImpl<I>&,Tuple&) { return {"upper","fftFrame"};}
 };
 
+template<int I>
+struct Constraint<impl::MaxFrameSizeUpperLimitImpl<I>>
+{
+  template<typename Tuple>
+  static json::object_t::value_type dump(const impl::MaxFrameSizeUpperLimitImpl<I>&,Tuple&) { return {"upper","maxFFTFrame"};}
+};
+
+
 template<>
 struct Constraint<Odd>
 {

@@ -94,6 +94,9 @@ endforeach ()
 
 add_custom_target (
 	MAKE_MAX_REF ALL
+	COMMAND which python
 	COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/script/MakeMaxRef.py
 	COMMENT "Generating Max XML ref"
+	VERBATIM
+	USES_TERMINAL 
 )
