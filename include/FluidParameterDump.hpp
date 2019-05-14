@@ -19,14 +19,14 @@ template<>
 struct Constraint<EnumT::EnumConstraint>
 {
   template<typename Tuple>
-  static json::object_t::value_type dump(const EnumT::EnumConstraint& c, Tuple&) { return {"Enum",true}; }
+  static json::object_t::value_type dump(const EnumT::EnumConstraint&, Tuple&) { return {"Enum",true}; }
 };
 
 template<int MaxFFT>
 struct Constraint<FFTParams::FFTSettingsConstraint<MaxFFT>>
 {
   template<typename Tuple>
-  static json::object_t::value_type dump(const FFTParams::FFTSettingsConstraint<MaxFFT>& c, Tuple&) { return {"MaxFFT", MaxFFT > -1 }; }
+  static json::object_t::value_type dump(const FFTParams::FFTSettingsConstraint<MaxFFT>&, Tuple&) { return {"MaxFFT", MaxFFT > -1 }; }
 };
 
 
@@ -144,10 +144,10 @@ public:
   template<typename P,typename All>
   static json::object_t::value_type jsonify(P& param, All& allParams)
   {
-    
+
       return jsonify_param(std::get<0>(param), param, allParams);
   }
-  
+
   template<typename P,typename Tuple, typename All>
   static json::object_t::value_type jsonify_param(P& p, Tuple& tuple, All& allParams)
   {
@@ -169,15 +169,15 @@ public:
 //    std::cout << j.dump(2) << '\n';
     return {p.name,j};
   }
-  
-  
+
+
   template<typename Tuple, typename All>
-  static json::object_t::value_type jsonify_param(const EnumT& p, Tuple& tuple, All& allParams)
+  static json::object_t::value_type jsonify_param(const EnumT& p, Tuple&, All&)
   {
     json j;
     j["displayName"] = p.displayName;
     j["default"] = p.defaultValue;
-    j["fixed"] = false; 
+    j["fixed"] = false;
     std::vector<std::string> strings(p.numOptions);
     std::copy(p.strings, p.strings + p.numOptions,strings.begin());
     j["values"] = strings;
@@ -186,7 +186,7 @@ public:
   }
 
   template<typename Tuple, typename All>
-  static json::object_t::value_type jsonify_param(const FFTParamsT& p, Tuple& tuple, All& allParams)
+  static json::object_t::value_type jsonify_param(const FFTParamsT& p, Tuple&, All&)
   {
     json j;
     j["displayName"] = p.displayName;
@@ -198,7 +198,3 @@ public:
 };
 }
 }
-
-
-
-
