@@ -1,0 +1,353 @@
+digest: Buffer-Based Non-Negative Matrix Factorisation on Spectral Frames
+sc-categories: Libraries>FluidDecomposition, UGens>Buffer
+sc-related: Guides/FluCoMa, Guides/FluidDecomposition, Classes/FluidNMFMatch, Classes/FluidNMFFilter
+descritpion: |
+  The FluidBufNMF object decomposes the spectrum of a sound into a number of components using Non-Negative Matrix Factorisation (NMF) footnote:: Lee, Daniel D., and H. Sebastian Seung. 1999. ‘Learning the Parts of Objects by Non-Negative Matrix Factorization’. Nature 401 (6755): 788–91. https://doi.org/10.1038/44565.
+  ::. NMF has been a popular technique in signal processing research for things like source separation and transcription footnote:: Smaragdis and Brown, Non-Negative Matrix Factorization for Polyphonic Music Transcription.::, although its creative potential is so far relatively  unexplored.
+
+  The algorithm takes a buffer in and divides it into a number of components, determined by the rank argument. It works iteratively, by trying to find a combination of spectral templates ('bases') and envelopes ('activations') that yield the original magnitude spectrogram when added together. By and large, there is no unique answer to this question (i.e. there are different ways of accounting for an evolving spectrum in terms of some set of templates and envelopes). In its basic form, NMF is a form of unsupervised learning: it starts with some random data and then converges towards something that minimizes the distance between its generated data and the original:it tends to converge very quickly at first and then level out. Fewer iterations mean less processing, but also less predictable results.
+
+  The object can return either or all of the following:
+  	* a spectral contour of each component in the form of a magnitude spectrogram (called a basis in NMF lingo);
+  	* an amplitude envelope of each component in the form of gains for each consecutive frame of the underlying spectrogram (called an activation in NMF lingo);
+  	* an audio reconstruction of each components in the time domain.
+
+  The bases and activations can be used to make a kind of vocoder based on what NMF has 'learned' from the original data. Alternatively, taking the matrix product of a basis and an activation will yield a synthetic magnitude spectrogram of a component (which could be reconsructed, given some phase informaiton from somewhere).
+
+  Some additional options and flexibility can be found through combinations of the basesMode and actMode arguments. If these flags are set to 1, the object expects to be supplied with pre-formed spectra (or envelopes) that will be used as seeds for the decomposition, providing more guided results. When set to 2, the supplied buffers won't be updated, so become templates to match against instead. Note that having both bases and activations set to 2 doesn't make sense, so the object will complain.
+
+  If supplying pre-formed data, it's up to the user to make sure that the supplied buffers are the right size:
+    * bases must be `(fft size / 2) + 1` frames and `(rank * input channels)` channels
+    * activations  must be `(input frames / hopSize) + 1` frames and `(rank * input channels)` channels
+
+  In this implementation, the components are reconstructed by masking the original spectrum, such that they will sum to yield the original sound.
+
+  The whole process can be related to a channel vocoder where, instead of fixed bandpass filters, we get more complex filter shapes that are learned from the data, and the activations correspond to channel envelopes.
+
+  More information on possible musicianly uses of NMF are availabe in LINK::Guides/FluCoMa:: overview file.
+
+  FluidBufNMF is part of the Fluid Decomposition Toolkit of the FluCoMa project. footnote::
+  This was made possible thanks to the FluCoMa project ( http://www.flucoma.org/ ) funded by the European Research Council ( https://erc.europa.eu/ ) under the European Union’s Horizon 2020 research and innovation programme (grant agreement No 725899).
+
+process:  This is the method that calls for the factorisation to be calculated on a given source buffer.
+parameters:
+   server:
+     description: |
+         The server on which the buffers to be processed are allocated.
+   source:
+     description: |
+         The index of the buffer to use as the source material to be decomposed through the NMF process. The different channels of multichannel buffers will be processing sequentially.
+   startFrame:
+      description: |
+         Where in the srcBuf should the NMF process start, in sample.
+   numFrames:
+      description: |
+         How many frames should be processed.
+   startChan:
+      description: |
+         For multichannel srcBuf, which channel should be processed first.
+   numChans:
+      description: |
+         For multichannel srcBuf, how many channel should be processed.
+   destination:
+      description: |
+         The index of the buffer where the different reconstructed ranks will be reconstructed. The buffer will be resized to `rank * numChannelsProcessed` channels and `sourceDuration` lenght. If `nil` is provided, the reconstruction will not happen.
+   bases:
+      description: |
+         The index of the buffer where the different bases will be written to and/or read from: the behaviour is set in the following argument. If `nil` is provided, no bases will be returned.
+   basesMode:
+    description: |
+         This flag decides of how the basis buffer passed as the previous argument is treated.
+    enum:
+      0: The bases are seeded randomly, and the resulting ones will be written after the process in the passed buffer. The buffer is resized to `rank * numChannelsProcessed` channels and `(fftSize / 2 + 1)` lenght.
+      1: The passed buffer is considered as seed for the bases. Its dimensions should match the values above. The resulting bases will replace the seed ones.
+      2: The passed buffer is considered as a template for the bases, and will therefore not change. Its bases should match the values above.
+   activations:
+      description: |
+         The index of the buffer where the different activations will be written to and/or read from: the behaviour is set in the following argument. If `nil` is provided, no activation will be returned.
+   actMode:
+      description: |
+        This flag decides of how the activation buffer passed as the previous argument is treated.
+      enum:
+        0: The activations are seeded randomly, and the resulting ones will be written after the process in the passed buffer. The buffer is resized to `rank * numChannelsProcessed` channels and `(sourceDuration / hopsize + 1)` lenght.
+        1: The passed buffer is considered as seed for the activations. Its dimensions should match the values above. The resulting activations will replace the seed ones.
+        2: The passed buffer is considered as a template for the activations, and will therefore not change. Its dimensions should match the values above.
+   rank:
+      description: |
+         The number of elements the NMF algorithm will try to divide the spectrogram of the source in.
+   numIter:
+      description: |
+         The NMF process is iterative, trying to converge to the smallest error in its factorisation. The number of iterations will decide how many times it tries to adjust its estimates. Higher numbers here will be more CPU expensive, lower numbers will be more unpredictable in quality.
+   winSize:
+      description: |
+         The window size. As NMF relies on spectral frames, we need to decide what precision we give it spectrally and temporally, in line with Gabor Uncertainty principles. http://www.subsurfwiki.org/wiki/Gabor_uncertainty
+   hopSize:
+      description: |
+         The window hop size. As NMF relies on spectral frames, we need to move the window forward. It can be any size but low overlap will create audible artefacts.
+   fftSize:
+      description: |
+         The inner FFT/IFFT size. It should be at least 4 samples long, at least the size of the window, and a power of 2. Making it larger allows an oversampling of the spectral precision.
+   winType:
+      description: |
+         The inner FFT/IFFT windowing type (not implemented yet)
+   randSeed:
+      description: |
+         The NMF process needs to seed its starting point. If specified, the same values will be used. The default of -1 will randomly assign them. (not implemented yet)
+   action:
+      description: |
+         A Function to be evaluated once the offline process has finished and all Buffer's instance variables have been updated on the client side. The function will be passed [destination, bases, activations] as an argument.
+
+output: Nothing, as the various destination buffers are declared in the function call.
+
+sc-code: |
+  `A didactic example`
+  CODE::
+  (
+  // create buffers
+  b = Buffer.alloc(s,44100);
+  c = Buffer.alloc(s, 44100);
+  d = Buffer.new(s);
+  e = Buffer.new(s);
+  f = Buffer.new(s);
+  g = Buffer.new(s);
+  )
+
+  (
+  // fill them with 2 clearly segregated sine waves and composite a buffer where they are consecutive
+  Routine {
+  	b.sine2([500],[1], false, false);
+  	c.sine2([5000],[1],false, false);
+  	s.sync;
+  	FluidBufCompose.process(s,b, destination:d);
+  	FluidBufCompose.process(s,c, destStartFrame:44100, destination:d, destGain:1);
+  	s.sync;
+  	d.query;
+  }.play;
+  )
+
+  // check
+  d.plot
+  d.play //////(beware !!!! loud!!!)
+
+  (
+  // separate them in 2 ranks
+  Routine {
+  	FluidBufNMF.process(s, d, destination:e, bases: f, activations:g, rank:2);
+  	e.query;
+  	f.query;
+  	g.query;
+  }.play
+  )
+
+  // look at the resynthesised separated signal
+  e.plot;
+
+  // look at the bases signal for 2 spikes
+  f.plot;
+
+  // look at the activations
+  g.plot;
+
+  //trying running the same process on superimposed sinewaves instead of consecutive in the source and see how it fails.
+  ::
+
+  `Basic musical examples`
+
+  code::
+  // set some buffers and parameters
+  (
+  b = Buffer.read(s,File.realpath(FluidBufNMF.class.filenameSymbol).dirname.withTrailingSlash ++ "../AudioFiles/Tremblay-AaS-SynthTwoVoices-M.wav");
+  c = Buffer.new(s);
+  x = Buffer.new(s);
+  y = Buffer.new(s);
+  ~fft_size = 1024;
+  ~frame_size = 512;
+  ~hop_size = 256;
+  ~which_rank = 3;
+  )
+
+  // matrix factorisation, requesting everything - wait for the computation time to appear.
+  (
+  Routine{
+  	t = Main.elapsedTime;
+  	FluidBufNMF.process(s,b, 0,-1,0,-1,c,x,0,y,0,5,100,~frame_size,~hop_size,~fft_size);
+  	(Main.elapsedTime - t).postln;
+  }.play
+  )
+
+  //look at the resynthesised ranks, the bases and the activations
+  c.plot; x.plot; y.plot;
+  //null test of the sum of sources
+  {(PlayBuf.ar(5,c,doneAction:2).sum)+(-1*PlayBuf.ar(1,b,doneAction:2))}.play
+
+  // play the ranks spread in the stereo field
+  {Splay.ar(PlayBuf.ar(5,c,doneAction:2))}.play
+
+  //play a single source
+  {PlayBuf.ar(5,c,doneAction:2)[~which_rank].dup}.play
+
+  //play noise using one of the bases as filter.
+  (
+  {
+  	var chain;
+  	chain = FFT(LocalBuf(~fft_size), WhiteNoise.ar());
+
+  	chain = chain.pvcollect(~fft_size, {|mag, phase, index|
+  		[mag * BufRd.kr(5,x,DC.kr(index),0,1)[~which_rank]];
+  	});
+
+  	IFFT(chain);
+  }.play
+  )
+
+  //play noise using one of the activations as envelope.
+  {WhiteNoise.ar(BufRd.kr(5,y,Phasor.ar(1,1/~hop_size,0,(b.numFrames / ~hop_size + 1)),0,1)[~which_rank])*0.5}.play
+
+  //play noise through both matching activation and filter
+  (
+  {
+  	var chain;
+  	chain = FFT(LocalBuf(~fft_size), WhiteNoise.ar(BufRd.kr(5,y,Phasor.ar(1,1/~hop_size,0,(b.numFrames / ~hop_size + 1)),0,1)[~which_rank]*12),0.5,1);
+
+  	chain = chain.pvcollect(~fft_size, {|mag, phase, index|
+  		[mag * BufRd.kr(5,x,DC.kr(index),0,1)[~which_rank]];
+  	});
+
+  	[0,IFFT(chain)];
+  }.play
+  )
+
+  ::
+  `Fixed Bases: The process can be trained, and the learnt bases or activations can be used as templates.`
+
+  CODE::
+
+  //set some buffers
+  (
+  b = Buffer.read(s,File.realpath(FluidBufNMF.class.filenameSymbol).dirname.withTrailingSlash ++ "../AudioFiles/Tremblay-AaS-AcousticStrums-M.wav");
+  c = Buffer.new(s);
+  x = Buffer.new(s);
+  e = Buffer.new(s);
+  y = Buffer.new(s);
+  )
+
+  // train only 2 seconds
+  (
+  Routine {
+  	FluidBufNMF.process(s,b,0,88200,0,1, c, x, rank:10);
+  	c.query;
+  }.play;
+  )
+
+  // find the rank that has the picking sound by changing which channel to listen to
+  (
+  	~element = 4;
+  	{PlayBuf.ar(10,c)[~element]}.play
+  )
+
+  // copy all the other ranks on itself and the picking basis as the sole component of the 1st channel
+  (
+  Routine{
+  	z = (0..9);
+  	FluidBufCompose.process(s, x, startChan: z.removeAt(~element), numChans: 1, destination: e);
+  	z.do({|chan| FluidBufCompose.process(s, x, startChan:chan, numChans: 1, destStartChan: 1, destination: e, destGain:1)});
+      e.query;
+  }.play;
+  )
+
+  //process the whole file, splitting it with the 2 trained bases
+  (
+  Routine{
+  	FluidBufNMF.process(s, b, destination: c, bases: e, basesMode: 2, activations: y, rank:2);
+  	c.query;
+  }.play;
+  )
+
+  // play the result: pick on the left, rest on the right.
+  c.play
+
+  // it even null-sums
+  {(PlayBuf.ar(2,c,doneAction:2).sum)-(PlayBuf.ar(1,b,doneAction:2))}.play
+  ::
+
+  `Updating Bases: The process can update bases provided as seed.`
+
+  CODE::
+  (
+  // create buffers
+  b = Buffer.alloc(s,44100);
+  c = Buffer.alloc(s, 44100);
+  d = Buffer.new(s);
+  e = Buffer.alloc(s,513,3);
+  f = Buffer.new(s);
+  g = Buffer.new(s);
+  )
+
+  (
+  // fill them with 2 clearly segregated sine waves and composite a buffer where they are consecutive
+  Routine {
+  	b.sine2([500],[1], false, false);
+  	c.sine2([5000],[1],false, false);
+  	s.sync;
+  	FluidBufCompose.process(s,b, destination:d);
+  	FluidBufCompose.process(s,c, destStartFrame:44100, destination:d, destGain:1);
+  	s.sync;
+  	d.query;
+  }.play;
+  )
+
+  // check
+  d.plot
+  d.play //////(beware !!!! loud!!!)
+
+  (
+  //make a seeding basis of 3 ranks:
+  var highpass, lowpass, direct;
+  highpass = Array.fill(513,{|i| (i < 50).asInteger});
+  lowpass = 1 - highpass;
+  direct = Array.fill(513,0.1);
+  e.setn(0,[highpass, lowpass, direct].flop.flat);
+  )
+
+  //check the basis: a steep lowpass, a steep highpass, and a small DC
+  e.plot
+  e.query
+
+  (
+  // use the seeding basis, without updating
+  Routine {
+  	FluidBufNMF.process(s, d, destination:f, bases: e, basesMode: 2, activations:g, rank:3);
+  	e.query;
+  	f.query;
+  	g.query;
+  }.play
+  )
+
+  // look at the resynthesised separated signal
+  f.plot;
+
+  // look at the bases that have not changed
+  e.plot;
+
+  // look at the activations
+  g.plot;
+
+  (
+  // use the seeding bases, with updating this time
+  Routine {
+  	FluidBufNMF.process(s, d, destination:f, bases: e, basesMode: 1, activations:g, rank:3);
+  	e.query;
+  	f.query;
+  	g.query;
+  }.play
+  )
+
+  // look at the resynthesised separated signal
+  f.plot;
+
+  // look at the bases that have now updated in place (with the 3rd channel being more focused
+  e.plot;
+
+  // look at the activations (sharper 3rd rank at transitions)
+  g.plot;
+  ::

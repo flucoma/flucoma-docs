@@ -1,0 +1,60 @@
+digest: Sinusoidal Modelling and Resynthesis
+sc-categories: Libraries>FluidDecomposition
+sc-related: Guides/FluCoMa, Guides/FluidDecomposition
+description: |
+  This class applies a Sinusoidal Modelling process on its audio input. It implements a mix and match algorithms taken from classic papers. It is part of the Fluid Decomposition Toolkit of the FluCoMa project. footnote:: This  was made possible thanks to the FluCoMa project ( http://www.flucoma.org/ ) funded by the European Research Council ( https://erc.europa.eu/ ) under the European Union’s Horizon 2020 research and innovation programme (grant agreement No 725899).::
+
+  	The algorithm will take an audio in, and will divide it in two parts:
+  	   * a reconstruction of what it detects as sinusoidal;
+  	   * a residual derived from the previous signal to allow null-summing
+
+  	The whole process is based on the assumption that signal is made of pitched steady components that have a long-enough duration and are periodic enough to be perceived as such, that can be tracked, resynthesised and removed from the original, leaving behind what is considered as non-pitched, noisy, and/or transient. It first tracks the peaks, then checks if they are the continuation of a peak in previous spectral frames, by assigning them a track. More information on this model, and on how it links to musicianly thinking, are availabe in LINK::Guides/FluCoMa:: overview file.
+process: The audio rate version of the object.
+parameters:
+  in:
+    description: |
+      The input to be processed
+  bandwidth:
+    description: |
+      The width in bins of the fragment of the fft window that is considered a normal deviation for a potential continuous sinusoidal track. It has an effect on CPU cost: the widest is more accurate but more computationally expensive.
+  threshold:
+    description: |
+      The normalised threshold, between 0 an 1, to consider a peak as a sinusoidal component from the normalized cross-correlation.
+  minTrackLen:
+    description: |
+      The minimum duration, in spectral frames, for a sinusoidal track to be accepted as a partial. It allows to remove space-monkeys, but is more CPU intensive and might reject quick pitch material.
+  magWeight:
+    description: |
+      The weight of the magnitude proximity of a peak when trying to associate it to an existing track (relative to freqWeight - suggested between 0 to 1)
+  freqWeight:
+    description: |
+      The weight of the frequency proximity of a peak when trying to associate it to an existing track (relative to magWeight - suggested between 0 to 1)
+  winSize:
+    description: |
+      The window size. As sinusoidal estimation relies on spectral frames, we need to decide what precision we give it spectrally and temporally, in line with Gabor Uncertainty principles. http://www.subsurfwiki.org/wiki/Gabor_uncertainty
+  hopSize:
+    description: |
+      The window hop size. As sinusoidal estimation relies on spectral frames, we need to move the window forward. It can be any size but low overlap will create audible artefacts. The -1 default value will default to half of winSize (overlap of 2).
+  fftSize:
+    description: |
+      The inner FFT/IFFT size. It should be at least 4 samples long, at least the size of the window, and a power of 2. Making it larger allows an oversampling of the spectral precision. The -1 default value will default to windowSize.
+  maxFFTSize:
+    description: |
+      How large can the FFT be, by allocating memory at instantiation time. This cannot be modulated.
+output: |
+  An array of two audio streams: [0] is the harmonic part extracted, [1] is the rest. The latency between the input and the output is (( hopSize * minTrackLen) + winSize) samples.
+sc-code: |
+
+  CODE::
+  // load some audio to play
+  b = Buffer.read(s,File.realpath(FluidSines.class.filenameSymbol).dirname.withTrailingSlash ++ "../AudioFiles/Tremblay-AaS-SynthTwoVoices-M.wav");
+
+  // run with large parameters - left is sinusoidal model, right is residual
+  {FluidSines.ar(PlayBuf.ar(1,b,loop:1),threshold: 0.2, minTrackLen: 2, winSize: 2048, fftSize: 8192)}.play
+
+  // interactive parameters with a narrower bandwidth
+  {FluidSines.ar(PlayBuf.ar(1,b,loop:1),30,MouseX.kr(), 5, winSize: 1000, hopSize: 200, fftSize: 4096)}.play
+
+  // null test (the process add a latency of (( hopSize * minTrackLen) + winSize) samples
+  {var sig = PlayBuf.ar(1,b,loop:1); [FluidSines.ar(sig).sum - DelayN.ar(sig, 1, ((( 512 * 15) + 1024)/ s.sampleRate))]}.play
+  ::
