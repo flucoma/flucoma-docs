@@ -20,14 +20,14 @@ def max_type(value):
     # return "atype"
 
 def process_client(env, jsonfile):
-    print(jsonfile.stem.lower())
+    # print(jsonfile.stem.lower())
     template = env.get_template('maxref.xml')
     data = json.load(open(jsonfile.resolve()))
     human_data = {}
     human_data_path = Path('../doc/'+jsonfile.stem+'.yaml')
     if(human_data_path.exists()):
         human_data = yaml.load(open(human_data_path.resolve()))
-        print(human_data['digest'])
+        # print(human_data['digest'])
 
     args={}
     attrs={}
@@ -42,9 +42,8 @@ def process_client(env, jsonfile):
         param.update({d.lower():v})
 
         if 'parameters' in human_data and d in human_data['parameters']:
-            param[d.lower()].update({'description': human_data['parameters'][d]})
-
-        # print(param)
+            if 'description' in human_data['parameters'][d]:
+                param[d.lower()].update({'description': human_data['parameters'][d]['description']})
 
         if 'fixed' in v:
             fixed = v['fixed']
