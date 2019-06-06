@@ -148,6 +148,11 @@ public:
       return jsonify_param(std::get<0>(param), param, allParams);
   }
 
+  static std::string getParamType(const BufferT&) { return "buffer"; }
+  static std::string getParamType(const FloatT&) { return "float"; }
+  static std::string getParamType(const LongT&) { return "long"; }
+  static std::string getParamType(const FloatPairsArrayT&) { return "float";}
+
   template<typename P,typename Tuple, typename All>
   static json::object_t::value_type jsonify_param(P& p, Tuple& tuple, All& allParams)
   {
@@ -156,6 +161,8 @@ public:
     j["displayName"] = p.displayName;
     j["default"] = p.defaultValue;
     j["fixed"] = fixed;
+    j["type"] = getParamType(p);
+    j["size"] = p.fixedSize;
 
     auto& constraintsTuple = std::get<1>(tuple);
     using constraintsTupleType = std::decay_t<decltype(constraintsTuple)>;
@@ -192,6 +199,8 @@ public:
     j["displayName"] = p.displayName;
     j["default"] = p.defaultValue;
     j["fixed"] = false;
+    j["size"] = 3;
+    j["type"] = "long";
 //    std::cout << j.dump(2) << '\n';
     return {p.name,j};
   }
