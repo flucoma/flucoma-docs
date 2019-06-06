@@ -57,7 +57,7 @@ parameters:
      description: |
          How large can the buffer be for time-critical conditions, by allocating memory at instantiation time. This cannot be modulated.
   outputType:
-  description: |
+    description: |
          (describe argument here)
 output:
    An audio stream with square envelopes around the slices. The latency between the input and the output is **max(minLengthAbove + lookBack, max(minLengthBelow,lookAhead))**.
