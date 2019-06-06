@@ -44,6 +44,9 @@ def process_client(env, jsonfile):
         if 'parameters' in human_data and d in human_data['parameters']:
             if 'description' in human_data['parameters'][d]:
                 param[d.lower()].update({'description': human_data['parameters'][d]['description']})
+            if 'enum' in human_data['parameters'][d] and 'values' in v:
+                param[d.lower()]['enum'] = dict(zip(v['values'],human_data['parameters'][d]['enum'].values()))
+
 
         if 'fixed' in v:
             fixed = v['fixed']

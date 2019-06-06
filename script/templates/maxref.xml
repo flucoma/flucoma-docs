@@ -53,6 +53,26 @@
         <description>
           {{ bits['description']|e }}
         </description>
+        {% if 'default' in bits or 'enum' in bits  %}
+        <attributelist>
+          {% if 'default' in bits %}
+          <attribute name="default" get="1" set="1" type="int" size='{{ bits['size'] }}' value='{{ bits['default'] }}' />
+          {% endif %}
+          {% if 'enum' in bits %}
+          <attribute name="enumvals" get="1" set="1" type="atom" size='{{ bits['enum'] | length }}'>
+            <enumlist>
+            {% for enumname,desc in bits['enum'].items() %}
+              <enum name='{{ enumname }}'>
+                <description>
+                  {{ desc|e }}
+                </description>
+              </enum>
+            {% endfor %}
+            </enumlist>
+          </attribute>
+          {% endif %}
+        </attributelist>
+        {% endif %}
       </attribute>
     {% endfor %}
 	</attributelist>
