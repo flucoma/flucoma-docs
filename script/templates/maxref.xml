@@ -6,8 +6,8 @@
 
 <c74object name='{{ client_name }}' category='fluid decomposition'>
 
-	<digest>Decompose fluidly</digest>
-	<description>All in good time</description>
+	<digest>{{ digest }}</digest>
+	<description>{{ description }}</description>
 
 
 	<!--METADATA-->
@@ -44,29 +44,17 @@
 
 
 	<!--ATTRIBUTES-->
-
 	<attributelist>
-
     {% for name,bits in attributes.items()  %}
-      <attribute name='{{ name|e }}' get='1' set='1' type='number'>
+      <attribute name='{{ name|e }}' get='1' set='1' type='{{ bits['type']|maxtype }}' size='{{ bits['size'] }}'>
+        <digest>
+          {{ bits['displayName']|e }}
+        </digest>
+        <description>
+          {{ bits['description']|e }}
+        </description>
       </attribute>
     {% endfor %}
-
-		<!-- <attribute name='output_range' get='1' set='1' type='float64' size='1' >
-			<digest>Expected numeric range for the output</digest>
-			<description>Expected numeric range for the output. </description>
-		</attribute>
-
-		<attribute name='input_range' get='1' set='1' type='float64' size='1' >
-			<digest>Expected numeric range for the input</digest>
-			<description>Expected numeric range for the input. </description>
-		</attribute>
-
-		<attribute name='function' get='1' set='1' type='long' size='1' >
-			<digest>Easing function to be applied or generated</digest>
-			<description>Easing function to be applied or generated. </description>
-		</attribute> -->
-
 	</attributelist>
 
 
