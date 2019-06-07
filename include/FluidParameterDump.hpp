@@ -103,7 +103,7 @@ struct Constraint<FrequencyAmpPairConstraint>
 
 void to_json(json& j, const FFTParams& p)
 {
-    j = json{{"winSize", p.winSize()}, {"hopSize", p.hopRaw()}, {"fftSize", p.fftRaw()}};
+    j = json::array({{"winSize", p.winSize()}, {"hopSize", p.hopRaw()}, {"fftSize", p.fftRaw()}});
 }
 
 void to_json(json& j, const FloatPairsArrayT::FloatPairsArrayType& p)
@@ -128,8 +128,7 @@ public:
   static json dumpImpl(std::index_sequence<Is...>)
   {
     Params& p = T<double>::getParameterDescriptors();
-    json j = json::object();
-    (void)std::initializer_list<int>{(j+=jsonify(std::get<Is>(p.descriptors()), p.descriptors()) ,0)...};
+    json j = json::array({jsonify(std::get<Is>(p.descriptors()), p.descriptors())...});
     return j;
   }
 
