@@ -32,10 +32,12 @@ def process_client(env, jsonfile):
     args={}
     attrs={}
 
+    data = dict(data) #data is in json array to preserve order,
+
     for d,v in data.items():
         # print(d)
         fixed = False;
-        description = ''
+        # description = ''
 
         param = {}
 
@@ -47,6 +49,17 @@ def process_client(env, jsonfile):
             if 'enum' in human_data['parameters'][d] and 'values' in v:
                 param[d.lower()]['enum'] = dict(zip(v['values'],human_data['parameters'][d]['enum'].values()))
 
+        if d == 'fftSettings':
+            fftdesc ='FFT settings consist of three numbers representing the window size, hop size and FFT size:<ul>'
+            if 'windowSize' in  human_data['parameters']:
+                fftdesc += '<li>' + human_data['parameters']['windowSize']['description'] + '</li>';
+            if 'hopSize' in human_data['parameters']:
+                fftdesc += '<li>' + human_data['parameters']['hopSize']['description'] + '</li>';
+            if 'fftSize' in human_data['parameters']:
+                fftdesc += '<li>' + human_data['parameters']['fftSize']['description'] + '</li>';
+            fftdesc += '</ul>'
+            param[d.lower()].update({'description': fftdesc})
+
 
         if 'fixed' in v:
             fixed = v['fixed']
@@ -55,7 +68,7 @@ def process_client(env, jsonfile):
         else:
             attrs.update(param)
 
-    # print(attrs)
+    # print(args)
     digest  = human_data['digest'] if 'digest' in human_data else 'A Fluid Decomposition Object'
     description = human_data['description'] if 'description' in human_data else ''
     client  = 'fluid.{}~'.format(jsonfile.stem.lower())
@@ -82,7 +95,7 @@ def main():
     out.mkdir(exist_ok=True)
     for c in clients:
         process_client(env, c)
-    # process_client(env, Path('../json/BufCompose.json'))
+    # process_client(env, Path('../json/NMFFilter.json'))
 
 if __name__== "__main__":
   main()
