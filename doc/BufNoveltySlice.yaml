@@ -38,7 +38,7 @@ parameters:
   filterSize:
     description: |
         The size of a smoothing filter that is applied on the novelty curve. A larger filter filter size allows for cleaner cuts on very sharp changes.
-  winSize:
+  windowSize:
     description: |
         The window size. As novelty estimation relies on spectral frames, we need to decide what precision we give it spectrally and temporally, in line with Gabor Uncertainty principles. http://www.subsurfwiki.org/wiki/Gabor_uncertainty
   hopSize:

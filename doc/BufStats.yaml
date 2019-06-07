@@ -33,13 +33,13 @@ parameters:
       The number of derivatives of the original time series for the statistic to be computed on. By default, none are computed. This will influence the number of frames the stats buffer will have.
   low:
     description: |
-      The rank requested for the first percentile value. By default, it is percentile 0.0, which is the minimum of the given channel of the source buffer.
+      The components requested for the first percentile value. By default, it is percentile 0.0, which is the minimum of the given channel of the source buffer.
   middle:
     description: |
-      The rank requested for the second percentile value. By default, it is percentile 50.0, which is the median of the given channel of the source buffer.
+      The components requested for the second percentile value. By default, it is percentile 50.0, which is the median of the given channel of the source buffer.
   high:
     description: |
-      The rank requested for the third percentile value. By default, it is percentile 100.0, which is the maximum of the given channel of the source buffer.
+      The components requested for the third percentile value. By default, it is percentile 100.0, which is the maximum of the given channel of the source buffer.
   action:
     description: |
       A Function to be evaluated once the offline process has finished and indices instance variables have been updated on the client side. The function will be passed stats as an argument.

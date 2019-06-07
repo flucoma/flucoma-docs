@@ -28,7 +28,7 @@ parameters:
   threshBack:
     description: |
       The threshold of the offset of the smoothed error function. As it proceeds backwards in time, it allows tight ending of the identification of the anomaly.
-  winSize:
+  windowSize:
     description: |
       The averaging window of the error detection function. It needs smoothing as it is very jittery. The longer the window, the less precise, but the less false positives.
   debounce:

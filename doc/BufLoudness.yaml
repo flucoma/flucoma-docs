@@ -35,7 +35,7 @@ parameters:
   truePeak:
        description: |
          A flag to switch the computation of TruePeak. On by default, removing it makes the algorithm more CPU efficient by reverting to a simple absolute peak of the frame.
-  winSize:
+  windowSize:
        description: |
          The size of the window on which the computation is done. By default 1024 to be similar with all other FluCoMa objects, the EBU specifies other values as per the examples below.
   hopSize:
@@ -96,7 +96,7 @@ sc-code: |
   (
   Routine{
       t = Main.elapsedTime;
-      FluidBufLoudness.process(s, b, features: c, winSize: 17640, hopSize:4410);
+      FluidBufLoudness.process(s, b, features: c, windowSize: 17640, hopSize:4410);
       (Main.elapsedTime - t).postln;
   }.play
   )

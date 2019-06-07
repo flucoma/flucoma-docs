@@ -41,7 +41,7 @@ parameters:
   features:
     description: |
       The destination buffer for the 7 spectral features describing the spectral shape.
-  winSize:
+  windowSize:
     description: |
       The window size. As sinusoidal estimation relies on spectral frames, we need to decide what precision we give it spectrally and temporally, in line with Gabor Uncertainty principles. http://www.subsurfwiki.org/wiki/Gabor_uncertainty
   hopSize:
