@@ -25,6 +25,17 @@
 
     {% for name,bits in arguments.items()  %}
       <objarg name='{{ name|e }}' optional='1' type='number'>
+        <digest>
+          {{ bits['displayName']|e }}
+        </digest>
+        <description>
+          {{ bits['description']|e }}
+        </description>
+        {% if 'default' in bits  %}
+        <attributelist>
+          <attribute name="default" get="1" set="1" type="int" size='{{ bits['size'] }}' value='{{ bits['default'] }}' />
+        </attributelist>
+        {% endif %}
       </objarg>
     {% endfor %}
 		<!-- <objarg name='function' optional='1' type='number'>
