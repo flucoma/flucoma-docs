@@ -1,4 +1,5 @@
 #include <clients/rt/AmpSlice.hpp>
+#include <clients/nrt/FluidNRTClientWrapper.hpp>
 #include <FluidParameterDump.hpp>
 int main(int argc, char *argv[]) {
   using namespace fluid::client;
