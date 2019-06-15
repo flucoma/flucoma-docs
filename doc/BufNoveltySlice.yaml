@@ -2,9 +2,9 @@ digest: Buffer-Based Novelty-Based Slicer
 sc-categories: Libraries>FluidDecomposition, UGens>Buffer
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition
 description: |
-    This class implements a non-real-time slicer using an algorithm assessing novelty in the signal to estimate the slicing points. A novelty curve is being derived from running a kernel across the diagonal of the similarity matrix, and looking for peak of changes. It implements the seminal results published in  'Automatic Audio Segmentation Using a Measure of Audio Novelty' by J Foote.  It is part of the Fluid Decomposition Toolkit of the FluCoMa project. footnote::This  was made possible thanks to the FluCoMa project ( http://www.flucoma.org/ ) funded by the European Research Council ( https://erc.europa.eu/ ) under the European Union’s Horizon 2020 research and innovation programme (grant agreement No 725899).::
+    "This class implements a non-real-time slicer using an algorithm assessing novelty in the signal to estimate the slicing points. A novelty curve is being derived from running a kernel across the diagonal of the similarity matrix, and looking for peak of changes. It implements the seminal results published in  'Automatic Audio Segmentation Using a Measure of Audio Novelty' by J Foote.  It is part of the Fluid Decomposition Toolkit of the FluCoMa project. footnote::This  was made possible thanks to the FluCoMa project ( http://www.flucoma.org/ ) funded by the European Research Council ( https://erc.europa.eu/ ) under the European Union’s Horizon 2020 research and innovation programme (grant agreement No 725899).::"
 
-    The process will return a buffer which contains indices (in sample) of estimated starting points of different slices.
+    "The process will return a buffer which contains indices (in sample) of estimated starting points of different slices."
 process:
   This is the method that calls for the slicing to be calculated on a given source buffer.
 parameters:
@@ -29,6 +29,18 @@ parameters:
   indices:
     description: |
         The index of the buffer where the indices (in sample) of the estimated starting points of slices will be written. The first and last points are always the boundary points of the analysis.
+  feature:
+    description: |
+      The feature on which novelty is computed.
+    enum:
+      0: |
+        Spectrum: The magnitude of the full spectrum.
+      1: |
+        MFCC: 13 Mel-Frequency Cepstrum Coefficients.
+      2: |
+        Pitch: The pitch and its confidence.
+      3: |
+        Loudness || The TruePeak and Loudness.
   kernelSize:
     description: |
         The granularity of the window in which the algorithm looks for change, in samples. A small number will be sensitive to short term changes, and a large number should look for long term changes.

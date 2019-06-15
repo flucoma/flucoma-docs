@@ -1,13 +1,33 @@
-digest: Amplitude-based Slicer
+digest: Amplitude-based Slicer for Buffers
 sc-categories: Libraries>FluidDecomposition
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition
 description: |
-  "This class implements an amplitude-based slicer, with various customisable options and conditions to detect absolute and relative amplitude changes as onsets and offsets. It is part of the Fluid Decomposition Toolkit of the FluCoMa project.footnote::This was made possible thanks to the FluCoMa project (http://www.flucoma.org/) funded by the European Research Council (https://erc.europa.eu/) under the European Union’s Horizon 2020 research and innovation programme (grant agreement No 725899)."
+  "This class implements an amplitude-based slicer, with various customisable options and conditions to detect absolute and relative amplitude changes as onsets and offsets. It is part of the Fluid Decomposition Toolkit of the FluCoMa project.footnote::This was made possible thanks to the FluCoMa project ( http://www.flucoma.org/ ) funded by the European Research Council ( https://erc.europa.eu/ ) under the European Union’s Horizon 2020 research and innovation programme (grant agreement No 725899).::"
 
   "FluidAmpSlice is based on two envelop followers on a highpassed version of the signal: one absolute, and one relative. Each have features that will interact, including independent Schmidt triggers and state-aware time contraints. The example code below is unfolding the various possibilites in order of complexity."
 
-  "The process will return an audio steam with square envelopes around detected slices the different slices, where 1s means in slice and 0s mean in silence."
+  "The process will return a two-channel buffer with the addresses of the onset on the first channel, and the address of the offset on the second channel."
 parameters:
+  server:
+    The server on which the buffers to be processed are allocated.
+  source:
+    description: |
+      The index of the buffer to use as the source material to be sliced through novelty identification. The different channels of multichannel buffers will be summed.
+  startFrame:
+    description: |
+      Where in the srcBuf should the slicing process start, in sample.
+  numFrames:
+    description: |
+      How many frames should be processed.
+  startChan:
+    description: |
+      For multichannel sources, which channel should be processed.
+  numChans:
+    description: |
+      For multichannel sources, how many channel should be summed.
+  indices:
+    description: |
+      The index of the buffer where the indices (in sample) of the estimated starting points of slices will be written. The first and last points are always the boundary points of the analysis.
   absRampUp:
      description: |
          The number of samples the absolute envelope follower will take to reach the next value when raising
