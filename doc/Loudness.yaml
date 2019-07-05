@@ -1,10 +1,11 @@
 digest: A Loudness and True-Peak Descriptor in Real-Time
 sc-categories: Libraries>FluidDecomposition
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition
-description: |
-  This class implements two loudness descriptors, computing the true peak of the signal as well as applying the filters proposed by broadcasting standards to emulate the perception of amplitude. It is part of the Fluid Decomposition Toolkit of the FluCoMa project.FOOTNOTE::This was made possible thanks to the FluCoMa project ( http://www.flucoma.org/ ) funded by the European Research Council ( https://erc.europa.eu/ ) under the European Union’s Horizon 2020 research and innovation programme (grant agreement No 725899).::
+description: Two loudness descriptors, with a ITU BS 1770 mode
+discussion: |
+  Computes the true peak of the signal as well as applying the filters proposed by broadcasting standards to emulate the perception of amplitude.
 
-  The process will return a multichannel control steam with [loudness, truepeak] values, both in dBfs, which will be repeated if no change happens within the algorithm, i.e. when the hopSize is larger than the server's kr period. More information on broadcasting standardisation of loudness measurement is available at the reference page FOOTNOTE::https://tech.ebu.ch/docs/tech/tech3341.pdf:: and in more musician-friendly explantions here FOOTNOTE::http://designingsound.org/2013/02/06/loudness-and-metering-part-1/::.
+  The process will return a multichannel control steam with [loudness, truepeak] values, both in dBfs, which will be repeated if no change happens within the algorithm, i.e. when the hopSize is larger than the server's kr period. More information on broadcasting standardisation of loudness measurement is available at the reference page (https://tech.ebu.ch/docs/tech/tech3341.pdf) and in more musician-friendly explantions here (http://designingsound.org/2013/02/06/loudness-and-metering-part-1/).
 process: The audio rate in, control rate out version of the object.
 parameters:
   in:

@@ -1,9 +1,9 @@
 digest: Buffer-Based Non-Negative Matrix Factorisation on Spectral Frames
 sc-categories: Libraries>FluidDecomposition, UGens>Buffer
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition, Classes/FluidNMFMatch, Classes/FluidNMFFilter
-description: |
-  The FluidBufNMF object decomposes the spectrum of a sound into a number of components using Non-Negative Matrix Factorisation (NMF) footnote:: Lee, Daniel D., and H. Sebastian Seung. 1999. ‘Learning the Parts of Objects by Non-Negative Matrix Factorization’. Nature 401 (6755): 788–91. https://doi.org/10.1038/44565.
-  ::. NMF has been a popular technique in signal processing research for things like source separation and transcription footnote:: Smaragdis and Brown, Non-Negative Matrix Factorization for Polyphonic Music Transcription.::, although its creative potential is so far relatively  unexplored.
+description: Decomposes the spectrum of a sound into a number of components using Non-Negative Matrix Factorisation (NMF)
+discussion: |
+  NMF has been a popular technique in signal processing research for things like source separation and transcription (see Smaragdis and Brown, Non-Negative Matrix Factorization for Polyphonic Music Transcription.), although its creative potential is so far relatively  unexplored.
 
   The algorithm takes a buffer in and divides it into a number of components, determined by the components argument. It works iteratively, by trying to find a combination of spectral templates ('bases') and envelopes ('activations') that yield the original magnitude spectrogram when added together. By and large, there is no unique answer to this question (i.e. there are different ways of accounting for an evolving spectrum in terms of some set of templates and envelopes). In its basic form, NMF is a form of unsupervised learning: it starts with some random data and then converges towards something that minimizes the distance between its generated data and the original:it tends to converge very quickly at first and then level out. Fewer iterations mean less processing, but also less predictable results.
 
@@ -23,12 +23,6 @@ description: |
   In this implementation, the components are reconstructed by masking the original spectrum, such that they will sum to yield the original sound.
 
   The whole process can be related to a channel vocoder where, instead of fixed bandpass filters, we get more complex filter shapes that are learned from the data, and the activations correspond to channel envelopes.
-
-  More information on possible musicianly uses of NMF are availabe in LINK::Guides/FluCoMa:: overview file.
-
-  FluidBufNMF is part of the Fluid Decomposition Toolkit of the FluCoMa project. footnote::
-  This was made possible thanks to the FluCoMa project ( http://www.flucoma.org/ ) funded by the European Research Council ( https://erc.europa.eu/ ) under the European Union’s Horizon 2020 research and innovation programme (grant agreement No 725899).
-
 process:  This is the method that calls for the factorisation to be calculated on a given source buffer.
 parameters:
    server:
@@ -100,254 +94,282 @@ parameters:
 output: Nothing, as the various destination buffers are declared in the function call.
 
 sc-code: |
-  `A didactic example`
-  CODE::
-  (
-  // create buffers
-  b = Buffer.alloc(s,44100);
-  c = Buffer.alloc(s, 44100);
-  d = Buffer.new(s);
-  e = Buffer.new(s);
-  f = Buffer.new(s);
-  g = Buffer.new(s);
-  )
+    STRONG::A didactic example::
+    CODE::
+    (
+    // create buffers
+    b = Buffer.alloc(s,44100);
+    c = Buffer.alloc(s, 44100);
+    d = Buffer.new(s);
+    e = Buffer.new(s);
+    f = Buffer.new(s);
+    g = Buffer.new(s);
+    )
 
-  (
-  // fill them with 2 clearly segregated sine waves and composite a buffer where they are consecutive
-  Routine {
-  	b.sine2([500],[1], false, false);
-  	c.sine2([5000],[1],false, false);
-  	s.sync;
-  	FluidBufCompose.process(s,b, destination:d);
-  	FluidBufCompose.process(s,c, destStartFrame:44100, destination:d, destGain:1);
-  	s.sync;
-  	d.query;
-  }.play;
-  )
+    (
+    // fill them with 2 clearly segregated sine waves and composite a buffer where they are consecutive
+    Routine {
+    	b.sine2([500],[1], false, false);
+    	c.sine2([5000],[1],false, false);
+    	s.sync;
+    	FluidBufCompose.process(s,b, destination:d);
+    	FluidBufCompose.process(s,c, destStartFrame:44100, destination:d, destGain:1);
+    	s.sync;
+    	d.query;
+    }.play;
+    )
 
-  // check
-  d.plot
-  d.play //////(beware !!!! loud!!!)
+    // check
+    d.plot
+    d.play //////(beware !!!! loud!!!)
 
-  (
-  // separate them in 2 components
-  Routine {
-  	FluidBufNMF.process(s, d, destination:e, bases: f, activations:g, components:2);
-  	e.query;
-  	f.query;
-  	g.query;
-  }.play
-  )
+    (
+    // separate them in 2 components
+    Routine {
+    	FluidBufNMF.process(s, d, destination:e, bases: f, activations:g, components:2);
+    	e.query;
+    	f.query;
+    	g.query;
+    }.play
+    )
 
-  // look at the resynthesised separated signal
-  e.plot;
+    // look at the resynthesised separated components as audio
+    e.plot;
 
-  // look at the bases signal for 2 spikes
-  f.plot;
+    // look at the bases signal for 2 spikes
+    f.plot;
 
-  // look at the activations
-  g.plot;
+    // look at the activations
+    g.plot;
 
-  //trying running the same process on superimposed sinewaves instead of consecutive in the source and see how it fails.
-  ::
+    //trying running the same process on superimposed sinewaves instead of consecutive in the source and see how it fails.
+    ::
 
-  `Basic musical examples`
+    STRONG::Basic musical examples::
 
-  code::
-  // set some buffers and parameters
-  (
-  b = Buffer.read(s,File.realpath(FluidBufNMF.class.filenameSymbol).dirname.withTrailingSlash ++ "../AudioFiles/Tremblay-AaS-SynthTwoVoices-M.wav");
-  c = Buffer.new(s);
-  x = Buffer.new(s);
-  y = Buffer.new(s);
-  ~fft_size = 1024;
-  ~frame_size = 512;
-  ~hop_size = 256;
-  ~which_components = 3;
-  )
+    code::
+    // set some buffers and parameters
+    (
+    b = Buffer.read(s,File.realpath(FluidBufNMF.class.filenameSymbol).dirname.withTrailingSlash ++ "../AudioFiles/Tremblay-AaS-SynthTwoVoices-M.wav");
+    c = Buffer.new(s);
+    x = Buffer.new(s);
+    y = Buffer.new(s);
+    ~fft_size = 1024;
+    ~frame_size = 512;
+    ~hop_size = 256;
+    ~which_component = 3;
+    )
 
-  // matrix factorisation, requesting everything - wait for the computation time to appear.
-  (
-  Routine{
-  	t = Main.elapsedTime;
-  	FluidBufNMF.process(s,b, 0,-1,0,-1,c,x,0,y,0,5,100,~frame_size,~hop_size,~fft_size);
-  	(Main.elapsedTime - t).postln;
-  }.play
-  )
+    // matrix factorisation, requesting everything - wait for the computation time to appear.
+    (
+    Routine{
+    	t = Main.elapsedTime;
+    	FluidBufNMF.process(s,b, 0,-1,0,-1,c,x,0,y,0,5,100,~frame_size,~hop_size,~fft_size);
+    	(Main.elapsedTime - t).postln;
+    }.play
+    )
 
-  //look at the resynthesised components, the bases and the activations
-  c.plot; x.plot; y.plot;
-  //null test of the sum of sources
-  {(PlayBuf.ar(5,c,doneAction:2).sum)+(-1*PlayBuf.ar(1,b,doneAction:2))}.play
+    //look at the resynthesised components, the bases and the activations
+    c.plot; x.plot; y.plot;
+    //null test of the sum of sources
+    {(PlayBuf.ar(5,c,doneAction:2).sum)+(-1*PlayBuf.ar(1,b,doneAction:2))}.play
 
-  // play the components spread in the stereo field
-  {Splay.ar(PlayBuf.ar(5,c,doneAction:2))}.play
+    // play the components spread in the stereo field
+    {Splay.ar(PlayBuf.ar(5,c,doneAction:2))}.play
 
-  //play a single source
-  {PlayBuf.ar(5,c,doneAction:2)[~which_components].dup}.play
+    //play a single source
+    {PlayBuf.ar(5,c,doneAction:2)[~which_component].dup}.play
 
-  //play noise using one of the bases as filter.
-  (
-  {
-  	var chain;
-  	chain = FFT(LocalBuf(~fft_size), WhiteNoise.ar());
+    //play noise using one of the bases as filter.
+    (
+    {
+    	var chain;
+    	chain = FFT(LocalBuf(~fft_size), WhiteNoise.ar());
 
-  	chain = chain.pvcollect(~fft_size, {|mag, phase, index|
-  		[mag * BufRd.kr(5,x,DC.kr(index),0,1)[~which_components]];
-  	});
+    	chain = chain.pvcollect(~fft_size, {|mag, phase, index|
+    		[mag * BufRd.kr(5,x,DC.kr(index),0,1)[~which_component]];
+    	});
 
-  	IFFT(chain);
-  }.play
-  )
+    	IFFT(chain);
+    }.play
+    )
 
-  //play noise using one of the activations as envelope.
-  {WhiteNoise.ar(BufRd.kr(5,y,Phasor.ar(1,1/~hop_size,0,(b.numFrames / ~hop_size + 1)),0,1)[~which_components])*0.5}.play
+    //play noise using one of the activations as envelope.
+    {WhiteNoise.ar(BufRd.kr(5,y,Phasor.ar(1,1/~hop_size,0,(b.numFrames / ~hop_size + 1)),0,1)[~which_component])*0.5}.play
 
-  //play noise through both matching activation and filter
-  (
-  {
-  	var chain;
-  	chain = FFT(LocalBuf(~fft_size), WhiteNoise.ar(BufRd.kr(5,y,Phasor.ar(1,1/~hop_size,0,(b.numFrames / ~hop_size + 1)),0,1)[~which_components]*12),0.5,1);
+    //play noise through both matching activation and filter
+    (
+    {
+    	var chain;
+    	chain = FFT(LocalBuf(~fft_size), WhiteNoise.ar(BufRd.kr(5,y,Phasor.ar(1,1/~hop_size,0,(b.numFrames / ~hop_size + 1)),0,1)[~which_component]*12),0.5,1);
 
-  	chain = chain.pvcollect(~fft_size, {|mag, phase, index|
-  		[mag * BufRd.kr(5,x,DC.kr(index),0,1)[~which_components]];
-  	});
+    	chain = chain.pvcollect(~fft_size, {|mag, phase, index|
+    		[mag * BufRd.kr(5,x,DC.kr(index),0,1)[~which_component]];
+    	});
 
-  	[0,IFFT(chain)];
-  }.play
-  )
+    	[0,IFFT(chain)];
+    }.play
+    )
 
-  ::
-  `Fixed Bases: The process can be trained, and the learnt bases or activations can be used as templates.`
+    ::
+    STRONG::Fixed Bases: The process can be trained, and the learnt bases or activations can be used as templates.::
 
-  CODE::
+    CODE::
 
-  //set some buffers
-  (
-  b = Buffer.read(s,File.realpath(FluidBufNMF.class.filenameSymbol).dirname.withTrailingSlash ++ "../AudioFiles/Tremblay-AaS-AcousticStrums-M.wav");
-  c = Buffer.new(s);
-  x = Buffer.new(s);
-  e = Buffer.new(s);
-  y = Buffer.new(s);
-  )
+    //set some buffers
+    (
+    b = Buffer.read(s,File.realpath(FluidBufNMF.class.filenameSymbol).dirname.withTrailingSlash ++ "../AudioFiles/Tremblay-AaS-AcousticStrums-M.wav");
 
-  // train only 2 seconds
-  (
-  Routine {
-  	FluidBufNMF.process(s,b,0,88200,0,1, c, x, components:10);
-  	c.query;
-  }.play;
-  )
+    ~originalNMF = Buffer.new(s);
+    ~bases = Buffer.new(s);
+    ~trainedBases = Buffer.new(s);
+    ~activations = Buffer.new(s);
+    ~final = Buffer.new(s);
+    ~spectralshapes  = Buffer.new(s);
+    ~stats  = Buffer.new(s);
+    ~sortedNMF = Buffer.new(s);
+    )
 
-  // find the components that has the picking sound by changing which channel to listen to
-  (
-  	~element = 4;
-  	{PlayBuf.ar(10,c)[~element]}.play
-  )
+    b.play
 
-  // copy all the other components on itself and the picking basis as the sole component of the 1st channel
-  (
-  Routine{
-  	z = (0..9);
-  	FluidBufCompose.process(s, x, startChan: z.removeAt(~element), numChans: 1, destination: e);
-  	z.do({|chan| FluidBufCompose.process(s, x, startChan:chan, numChans: 1, destStartChan: 1, destination: e, destGain:1)});
-      e.query;
-  }.play;
-  )
+    // train using the first 2 seconds of the sound file
+    (
+    Routine {
+    	FluidBufNMF.process(s,b,0,44100*5,0,1, ~originalNMF, ~bases, components:10);
+    	~originalNMF.query;
+    }.play;
+    )
 
-  //process the whole file, splitting it with the 2 trained bases
-  (
-  Routine{
-  	FluidBufNMF.process(s, b, destination: c, bases: e, basesMode: 2, activations: y, components:2);
-  	c.query;
-  }.play;
-  )
+    // listen to the 10 components across the stereo image
+    {Splay.ar(PlayBuf.ar(10, ~originalNMF))}.play
 
-  // play the result: pick on the left, rest on the right.
-  c.play
+    // plot the bases
+    ~bases.plot
 
-  // it even null-sums
-  {(PlayBuf.ar(2,c,doneAction:2).sum)-(PlayBuf.ar(1,b,doneAction:2))}.play
-  ::
+    // find the component that has the picking sound checking the median spectral centroid
+    (
+    FluidBufSpectralShape.process(s, ~originalNMF, features: ~spectralshapes, action:{
+    	|shapes|FluidBufStats.process(s,shapes,stats:~stats, action:{
+    		|stats|stats.getn(0, (stats.numChannels * stats.numFrames) ,{
+    			|x| ~centroids = x.select({
+    				|item, index| (index.mod(7) == 0) && (index.div(70) == 5);
+    			})
+    		})
+    	})
+    });
+    )
 
-  `Updating Bases: The process can update bases provided as seed.`
+    //what is happening there? We run the spectralshapes on the buffer of 10 components from the nmf. See the structure of that buffer:
+    ~originalNMF.query
+    //10 channel are therefore giving 70 channels: the 7 shapes of component0, then 7 shapes of compoenent1, etc
+    ~spectralshapes.query
+    // we then run the bufstats on them. Each channel, which had a time series (an envelop) of each descriptor, is reduced to 7 frames
+    ~stats.query
+    // we then need to retrieve the values that are where we want: the first of every 7 for the centroid, and the 6th frame of them as we want the median. Because we retrieve the values in an interleave format, the select function gets a bit tricky but we get the following values:
+    ~centroids.postln
 
-  CODE::
-  (
-  // create buffers
-  b = Buffer.alloc(s,44100);
-  c = Buffer.alloc(s, 44100);
-  d = Buffer.new(s);
-  e = Buffer.alloc(s,513,3);
-  f = Buffer.new(s);
-  g = Buffer.new(s);
-  )
+    // we then copy the basis with the highest median centroid to a channel, and all the other bases to the other channel, of a 2-channel bases for decomposition
+    (
+    z = (0..9);
+    [z.removeAt(~centroids.maxIndex)].do{|chan|FluidBufCompose.process(s, ~bases, startChan: chan, numChans: 1, destination: ~trainedBases, destGain:1)};
+    z.postln;
+    z.do({|chan| FluidBufCompose.process(s, ~bases, startChan:chan, numChans: 1, destStartChan: 1, destination: ~trainedBases, destGain:1)});
+    )
+    ~trainedBases.plot
 
-  (
-  // fill them with 2 clearly segregated sine waves and composite a buffer where they are consecutive
-  Routine {
-  	b.sine2([500],[1], false, false);
-  	c.sine2([5000],[1],false, false);
-  	s.sync;
-  	FluidBufCompose.process(s,b, destination:d);
-  	FluidBufCompose.process(s,c, destStartFrame:44100, destination:d, destGain:1);
-  	s.sync;
-  	d.query;
-  }.play;
-  )
+    //process the whole file, splitting it with the 2 trained bases
+    (
+    Routine{
+    	FluidBufNMF.process(s, b, destination: ~sortedNMF, bases: ~trainedBases, basesMode: 2, components:2);
+    	~originalNMF.query;
+    }.play;
+    )
 
-  // check
-  d.plot
-  d.play //////(beware !!!! loud!!!)
+    // play the result: pick on the left, sustain on the right!
+    {PlayBuf.ar(2,~sortedNMF)}.play
 
-  (
-  //make a seeding basis of 3 components:
-  var highpass, lowpass, direct;
-  highpass = Array.fill(513,{|i| (i < 50).asInteger});
-  lowpass = 1 - highpass;
-  direct = Array.fill(513,0.1);
-  e.setn(0,[highpass, lowpass, direct].flop.flat);
-  )
+    // it even null-sums
+    {(PlayBuf.ar(2,~sortedNMF,doneAction:2).sum)-(PlayBuf.ar(1,b,doneAction:2))}.play
+    ::
 
-  //check the basis: a steep lowpass, a steep highpass, and a small DC
-  e.plot
-  e.query
+    STRONG::Updating Bases: The process can update bases provided as seed.::
 
-  (
-  // use the seeding basis, without updating
-  Routine {
-  	FluidBufNMF.process(s, d, destination:f, bases: e, basesMode: 2, activations:g, components:3);
-  	e.query;
-  	f.query;
-  	g.query;
-  }.play
-  )
+    CODE::
+    (
+    // create buffers
+    b = Buffer.alloc(s,44100);
+    c = Buffer.alloc(s, 44100);
+    d = Buffer.new(s);
+    e = Buffer.alloc(s,513,3);
+    f = Buffer.new(s);
+    g = Buffer.new(s);
+    )
 
-  // look at the resynthesised separated signal
-  f.plot;
+    (
+    // fill them with 2 clearly segregated sine waves and composite a buffer where they are consecutive
+    Routine {
+    	b.sine2([500],[1], false, false);
+    	c.sine2([5000],[1],false, false);
+    	s.sync;
+    	FluidBufCompose.process(s,b, destination:d);
+    	FluidBufCompose.process(s,c, destStartFrame:44100, destination:d, destGain:1);
+    	s.sync;
+    	d.query;
+    }.play;
+    )
 
-  // look at the bases that have not changed
-  e.plot;
+    // check
+    d.plot
+    d.play //////(beware !!!! loud!!!)
 
-  // look at the activations
-  g.plot;
+    (
+    //make a seeding basis of 3 components:
+    var highpass, lowpass, direct;
+    highpass = Array.fill(513,{|i| (i < 50).asInteger});
+    lowpass = 1 - highpass;
+    direct = Array.fill(513,0.1);
+    e.setn(0,[highpass, lowpass, direct].flop.flat);
+    )
 
-  (
-  // use the seeding bases, with updating this time
-  Routine {
-  	FluidBufNMF.process(s, d, destination:f, bases: e, basesMode: 1, activations:g, components:3);
-  	e.query;
-  	f.query;
-  	g.query;
-  }.play
-  )
+    //check the basis: a steep lowpass, a steep highpass, and a small DC
+    e.plot
+    e.query
 
-  // look at the resynthesised separated signal
-  f.plot;
+    (
+    // use the seeding basis, without updating
+    Routine {
+    	FluidBufNMF.process(s, d, destination:f, bases: e, basesMode: 2, activations:g, components:3);
+    	e.query;
+    	f.query;
+    	g.query;
+    }.play
+    )
 
-  // look at the bases that have now updated in place (with the 3rd channel being more focused
-  e.plot;
+    // look at the resynthesised separated signal
+    f.plot;
 
-  // look at the activations (sharper 3rd components at transitions)
-  g.plot;
-  ::
+    // look at the bases that have not changed
+    e.plot;
+
+    // look at the activations
+    g.plot;
+
+    (
+    // use the seeding bases, with updating this time
+    Routine {
+    	FluidBufNMF.process(s, d, destination:f, bases: e, basesMode: 1, activations:g, components:3);
+    	e.query;
+    	f.query;
+    	g.query;
+    }.play
+    )
+
+    // look at the resynthesised separated signal
+    f.plot;
+
+    // look at the bases that have now updated in place (with the 3rd channel being more focused
+    e.plot;
+
+    // look at the activations (sharper 3rd component at transitions)
+    g.plot;
+    ::

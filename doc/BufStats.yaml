@@ -2,9 +2,11 @@ digest: Computing Statistics on Buffers as Series.
 sc-categories: Libraries>FluidDecomposition, UGens>Buffer
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition
 description: |
-  This class implements non-real-time statistical analysis on buffer channels. Typically, a buffer would hold various time series (i.e. descriptors over time), and link::Classes/FluidBufStats:: allows this series to be described statistically. It is part of the Fluid Decomposition Toolkit of the FluCoMa project. footnote::This  was made possible thanks to the FluCoMa project ( http://www.flucoma.org/ ) funded by the European Research Council ( https://erc.europa.eu/ ) under the European Union’s Horizon 2020 research and innovation programme (grant agreement No 725899).::
+  Statistical analysis on buffer channels.
+discussion: |
+  Typically, a buffer would hold various time series (i.e. descriptors over time), and BufStats allows this series to be described statistically.
 
-  The process returns a buffer where each channel of the STRONG::source:: buffer has been reduced to 7 statistics: mean, standard deviation, skewness, kurtosis, followed by 3 percentiles, by default the minimum value, the median, and the maximum value. Moreover, it is possible to request the same 7 stats to be applied to derivative of the input. These are useful to describe statistically the rate of change of the time series. The STRONG::stats:: buffer will grow accordingly, yielding the seven same statistical description of the n requested derivatives. Therefore, the STRONG::stats:: buffer will have as many channel as the input buffer, and as many frames as 7 times the requested STRONG::numDerivs::.
+  The process returns a buffer where each channel of the source buffer has been reduced to 7 statistics: mean, standard deviation, skewness, kurtosis, followed by 3 percentiles, by default the minimum value, the median, and the maximum value. Moreover, it is possible to request the same 7 stats to be applied to derivative of the input. These are useful to describe statistically the rate of change of the time series. The stats buffer will grow accordingly, yielding the seven same statistical description of the n requested derivatives. Therefore, the stats buffer will have as many channel as the input buffer, and as many frames as 7 times the requested numDerivs (stats of derivatives).
 process: This is the method that calls for the slicing to be calculated on a given source buffer.
 parameters:
   server:

@@ -2,7 +2,9 @@ digest: Spectral Difference-Based Audio Buffer Slicer
 sc-categories: Libraries>FluidDecomposition
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition
 description: |
-  This class implements many spectral-based onset detection functions, most of them taken from the literature. (http://www.dafx.ca/proceedings/papers/p_133.pdf) Some are already available in SuperCollider's LINK::Classes/Onsets:: object yet not as offline processes. It is part of the Fluid Decomposition Toolkit of the FluCoMa project.footnote::This was made possible thanks to the FluCoMa project ( http://www.flucoma.org/ ) funded by the European Research Council ( https://erc.europa.eu/ ) under the European Union’s Horizon 2020 research and innovation programme (grant agreement No 725899).::
+  Implements many spectral-based onset detection metrics, most of them taken from the literature.
+discussion: |
+  For an overview of onset detection metrics see (http://www.dafx.ca/proceedings/papers/p_133.pdf). Some are already available in SuperCollider's Onsets object, yet not as offline processes.
 
   The process will return a buffer which contains indices (in sample) of estimated starting points of different slices.
 process:
@@ -28,8 +30,9 @@ parameters:
   indices:
     description: |
       The index of the buffer where the indices (in sample) of the estimated starting points of slices will be written. The first and last points are always the boundary points of the analysis.
-  function:
+  metric:
     description: |
+      The metric used to derive a difference curve between spectral frames. It can be any of the following:
     enum:
       0: Energy || thresholds on (sum of squares of magnitudes / nBins) (like Onsets \power)
       1: HFC || thresholds on (sum of (squared magnitudes * binNum) / nBins)
@@ -43,7 +46,7 @@ parameters:
       9: RComplexDev || same as above, but rectified (like Onsets \rcomplex)
   threshold:
     description: |
-      The thresholding of a new slice. Value ranges are different for each function, from 0 upwards.
+      The thresholding of a new slice. Value ranges are different for each metric, from 0 upwards.
   debounce:
     description: |
       The minimum duration of a slice in number of hopSize.
@@ -52,7 +55,7 @@ parameters:
       The size of a smoothing filter that is applied on the novelty curve. A larger filter filter size allows for cleaner cuts on very sharp changes.
   frameDelta:
     description: |
-      For certain functions (HFC, SpectralFlux, MKL, Cosine), the distance does not have to be computed between consecutive frames. By default (0) it is, otherwise this sets the distane between the comparison window in samples.
+      For certain metrics (HFC, SpectralFlux, MKL, Cosine), the distance does not have to be computed between consecutive frames. By default (0) it is, otherwise this sets the distane between the comparison window in samples.
   windowSize:
     description: |
       The window size. As spectral differencing relies on spectral frames, we need to decide what precision we give it spectrally and temporally, in line with Gabor Uncertainty principles. http://www.subsurfwiki.org/wiki/Gabor_uncertainty

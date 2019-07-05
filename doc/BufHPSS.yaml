@@ -2,19 +2,16 @@ digest : Buffer-Based Harmonic-Percussive Source Separation Using Median Filteri
 sc-categories : Libraries>FluidDecomposition, UGens>Buffer
 sc-related : Guides/FluCoMa, Guides/FluidDecomposition
 description : |
-  A FluidBufHPSS object performs Harmonic-Percussive Source Separation (HPSS) on the contents of a Buffer. The class performs HPSS as described in its original form [^Fitzgerald]( Fitzgerald, Derry. 2010. ‘Harmonic/Percussive Separation Using Median Filtering’. In Proceedings DaFx 10. https://arrow.dit.ie/argcon/67.) as well as a variation on the extension propsoed by Driedger et al. [^driedger](
+  FluidBufHPSS performs Harmonic-Percussive Source Separation (HPSS) on the contents of a Buffer.
+discussion: |
+  The class performs HPSS as described in its original form [^Fitzgerald]( Fitzgerald, Derry. 2010. ‘Harmonic/Percussive Separation Using Median Filtering’. In Proceedings DaFx 10. https://arrow.dit.ie/argcon/67.) as well as a variation on the extension propsoed by Driedger et al. [^driedger](
   Driedger, Jonathan, Meinard Uller, and Sascha Disch. 2014. ‘Extending Harmonic-Percussive Separation of Audio Signals’. In Proc. ISMIR. http://www.terasoft.com.tw/conf/ismir2014/proceedings/T110_127_Paper.pdf.)
 
   The algorithm takes a buffer in, and divides it into two or three outputs, depending on the mode:
 
      * an harmonic component;
      * a percussive component;
-     * a residual of the previous two if the flag is set to inter-dependant thresholds. See the maskingMode below.
-
-  It is part of the Fluid Decomposition Toolkit of the FluCoMa project [^erc](
-  This  was made possible thanks to the FluCoMa project ( http://www.flucoma.org/ ) funded by the European Research Council ( https://erc.europa.eu/ ) under the European Union’s Horizon 2020 research and innovation programme (grant agreement No 725899).)
-
-  More information on median filtering, and on HPSS for musicianly usage, are availabe in LINK::Guides/FluCoMa:: overview file.
+     * a residual of the previous two if the flag is set to inter-dependant thresholds. See the mode parameter below.
 
 process : This is the method that calls for the HPSS to be calculated on a given source buffer.
 parameters :
