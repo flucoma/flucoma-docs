@@ -71,6 +71,7 @@ def process_client(env, jsonfile):
     # print(args)
     digest  = human_data['digest'] if 'digest' in human_data else 'A Fluid Decomposition Object'
     description = human_data['description'] if 'description' in human_data else ''
+    discussion = human_data['discussion'] if 'discussion' in human_data else ''
     client  = 'fluid.{}~'.format(jsonfile.stem.lower())
 
     with open('../maxref/{}.maxref.xml'.format(client),'w') as f:
@@ -79,7 +80,8 @@ def process_client(env, jsonfile):
             attributes=attrs,
             client_name=client,
             digest=digest,
-            description=description
+            description=description,
+            discussion=discussion
             ))
 
 
