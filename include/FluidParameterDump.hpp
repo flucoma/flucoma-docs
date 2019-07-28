@@ -187,6 +187,7 @@ public:
     std::vector<std::string> strings(p.numOptions);
     std::copy(p.strings, p.strings + p.numOptions,strings.begin());
     j["values"] = strings;
+    j["type"] = "enum"; 
 //    std::cout << j.dump(2) << '\n';
     return {p.name,j};
   }
