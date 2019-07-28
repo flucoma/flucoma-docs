@@ -1,5 +1,6 @@
+from docutils.core import publish_parts
 from jinja2 import Template
-from jinja2 import Environment, PackageLoader, select_autoescape
+from jinja2 import Environment, PackageLoader, select_autoescape, Markup
 from pathlib import Path
 import json
 import yaml
@@ -7,6 +8,12 @@ from pathlib import Path
 import os
 # template = Template('Hello {{ name }}!')
 # template.render(name='John Doe')
+
+# All hail SO: https://stackoverflow.com/questions/11309885/jinja2-restructured-markup
+def rst_filter(s):
+    if len(s) == 0:
+         return ''
+    return Markup(publish_parts(source=s, writer_name='html')['body'])
 
 def max_type(value):
     type_map = {
@@ -20,7 +27,7 @@ def max_type(value):
     # return "atype"
 
 def process_client(env, jsonfile):
-    # print(jsonfile.stem.lower())
+    print(jsonfile.stem.lower())
     template = env.get_template('maxref.xml')
     data = json.load(open(jsonfile.resolve()))
     human_data = {}
@@ -50,14 +57,14 @@ def process_client(env, jsonfile):
                 param[d.lower()]['enum'] = dict(zip(v['values'],human_data['parameters'][d]['enum'].values()))
 
         if d == 'fftSettings':
-            fftdesc ='FFT settings consist of three numbers representing the window size, hop size and FFT size:<ul>'
+            fftdesc ='FFT settings consist of three numbers representing the window size, hop size and FFT size:\n'
             if 'windowSize' in  human_data['parameters']:
-                fftdesc += '<li>' + human_data['parameters']['windowSize']['description'] + '</li>';
+                fftdesc += '   \n* ' + human_data['parameters']['windowSize']['description'];
             if 'hopSize' in human_data['parameters']:
-                fftdesc += '<li>' + human_data['parameters']['hopSize']['description'] + '</li>';
+                fftdesc += '   \n* ' + human_data['parameters']['hopSize']['description'];
             if 'fftSize' in human_data['parameters']:
-                fftdesc += '<li>' + human_data['parameters']['fftSize']['description'] + '</li>';
-            fftdesc += '</ul>'
+                fftdesc += '   \n* ' + human_data['parameters']['fftSize']['description'];
+            fftdesc += '\n'
             param[d.lower()].update({'description': fftdesc})
 
 
@@ -91,6 +98,7 @@ def main():
         autoescape=select_autoescape(['html', 'xml'])
     )
     env.filters['maxtype'] = max_type
+    env.filters['rst'] = rst_filter
     p = Path('../json')
     clients = list(p.glob('**/*.json'))
     out = Path('../maxref')
