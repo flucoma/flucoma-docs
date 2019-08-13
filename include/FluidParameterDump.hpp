@@ -148,6 +148,7 @@ public:
   }
 
   static std::string getParamType(const BufferT&) { return "buffer"; }
+  static std::string getParamType(const InputBufferT&) { return "buffer"; }
   static std::string getParamType(const FloatT&) { return "float"; }
   static std::string getParamType(const LongT&) { return "long"; }
   static std::string getParamType(const FloatPairsArrayT&) { return "float";}
