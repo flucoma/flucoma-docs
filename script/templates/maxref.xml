@@ -20,7 +20,7 @@
           {{ bits['displayName']|e }}
         </digest>
         <description>
-          {{ bits['description']| safe }}
+          {{ bits['description']| rst }}
         </description>
         {% if 'default' in bits  %}
         <attributelist>

@@ -91,6 +91,17 @@ def process_client(env, jsonfile):
             discussion=discussion
             ))
 
+    #Also return a dictionary summarizing the object for obj-qlookup.json
+    objLookupEntry = {
+        'digest': digest,
+        'module':'fluid decomposition',
+        'keywords':[],
+        'category': [],
+        'seealso': []
+    }
+
+    return objLookupEntry; 
+
 
 def main():
     env = Environment(

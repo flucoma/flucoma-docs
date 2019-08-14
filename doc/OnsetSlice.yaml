@@ -18,8 +18,7 @@ parameters:
         0: Energy || thresholds on (sum of squares of magnitudes / nBins) (like Onsets \power)
         1: HFC || thresholds on (sum of (squared magnitudes * binNum) / nBins)
         2: SpectralFlux || thresholds on (diffence in magnitude between consecutive frames, half rectified)
-        3: |
-          MKL || thresholds on (sum of log of magnitude ratio per bin) (or equivalent: sum of difference of the log magnitude per bin) (like Onsets \mkl)
+        3: MKL || thresholds on (sum of log of magnitude ratio per bin) (or equivalently, sum of difference of the log magnitude per bin) (like Onsets \mkl)
         4: IS || (WILL PROBABLY BE REMOVED) Itakura - Saito divergence (see literature)
         5: Cosine || thresholds on (cosine distance between comparison frames)
         6: PhaseDev || takes the past 2 frames, projects to the current, as anticipated if it was a steady state, then compute the sum of the differences, on which it thresholds (like Onsets \phase)
