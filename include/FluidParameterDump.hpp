@@ -185,10 +185,11 @@ public:
     j["displayName"] = p.displayName;
     j["default"] = p.defaultValue;
     j["fixed"] = false;
+    j["size"] = 1; 
     std::vector<std::string> strings(p.numOptions);
     std::copy(p.strings, p.strings + p.numOptions,strings.begin());
     j["values"] = strings;
-    j["type"] = "enum"; 
+    j["type"] = "enum";
 //    std::cout << j.dump(2) << '\n';
     return {p.name,j};
   }
