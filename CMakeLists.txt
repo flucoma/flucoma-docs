@@ -55,6 +55,8 @@ target_link_libraries(
   FFTLIB PRIVATE ${FFT_LINK}
 )
 
+
+
 # target_compile_options(
 #   FFTLIB PRIVATE "$<$<NOT:$<CONFIG:DEBUG>>: -mavx -msse -msse2 -msse3 -msse4>"
 # )
@@ -76,6 +78,15 @@ add_custom_target (
 	COMMENT "Generating Max XML ref"
 	VERBATIM
 	USES_TERMINAL
+)
+
+add_custom_target (
+  GENERATE_HTML ALL
+  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+  COMMAND ./generate_html.sh
+  COMMENT "Transforming XML to HTML for PD and CLI"
+  VERBATIM
+  USES_TERMINAL
 )
 
 # Make sure to build targets from fluid_decomposition
