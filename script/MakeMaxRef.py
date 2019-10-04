@@ -5,6 +5,7 @@ from pathlib import Path
 import json
 import yaml
 from pathlib import Path
+from collections import OrderedDict
 import os
 # template = Template('Hello {{ name }}!')
 # template.render(name='John Doe')
@@ -41,6 +42,47 @@ def process_client(env, jsonfile):
 
     data = dict(data) #data is in json array to preserve order,
 
+    data['warnings'] = {
+        "displayName" : "Warnings",
+        "constraints": {
+            "min": 0,
+            "max": 1
+        } ,
+        "default": 0,
+        "type": "long",
+        "size": 1,
+        "fixed": False,
+        "description" : "Enable warnings to be issued whenever a parameter value is contrained (e.g. clipped)"
+    }
+
+    if jsonfile.stem.lower().startswith('buf'):
+        data['blocking'] = {
+            "displayName" : "Blocking Mode",
+            "default": 1,
+            "fixed": False,
+            "size": 1,
+            "type": "enum",
+            "values": [
+                "Non-Blocking",
+                "Blocking (Low Priority)",
+                "Blocking (High Priority)"
+            ],
+            "enum": {
+                "Non-Blocking": "Processing runs in a worker thread",
+                "Blocking (Low Priority)" : "Processing runs in the main application thread",
+                "Blocking (High Priority)" : "(Max only) Processing runs in the scheduler thread"
+            },
+            "description" : "Set the threading mode for the object"
+        }
+        data['queue'] = {
+            "displayName" : "Non-Blocking Queue Flag",
+            "default": 0,
+            "fixed": False,
+            "size": 1,
+            "type": "long",
+            "description" : "In non-blocking mode enable jobs to be queued up if successive bangs are sent whilst the object is busy. With the queue disabled, successive bangs will produce a warning. When enabled, the object will processing successively, against the state of its parameters when each bang was sent"
+        }
+
     for d,v in data.items():
         # print(d)
         fixed = False;
@@ -55,6 +97,7 @@ def process_client(env, jsonfile):
                 param[d.lower()].update({'description': human_data['parameters'][d]['description']})
             if 'enum' in human_data['parameters'][d] and 'values' in v:
                 param[d.lower()]['enum'] = dict(zip(v['values'],human_data['parameters'][d]['enum'].values()))
+
 
         if d == 'fftSettings':
             fftdesc ='FFT settings consist of three numbers representing the window size, hop size and FFT size:\n'
@@ -75,12 +118,13 @@ def process_client(env, jsonfile):
         else:
             attrs.update(param)
 
+
     # print(args)
     digest  = human_data['digest'] if 'digest' in human_data else 'A Fluid Decomposition Object'
     description = human_data['description'] if 'description' in human_data else ''
     discussion = human_data['discussion'] if 'discussion' in human_data else ''
     client  = 'fluid.{}~'.format(jsonfile.stem.lower())
-
+    attrs = OrderedDict(sorted(attrs.items(), key=lambda t: t[0]))
     with open('../maxref/{}.maxref.xml'.format(client),'w') as f:
         f.write(template.render(
             arguments=args,
@@ -100,7 +144,7 @@ def process_client(env, jsonfile):
         'seealso': []
     }
 
-    return objLookupEntry; 
+    return objLookupEntry;
 
 
 def main():

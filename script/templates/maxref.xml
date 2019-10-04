@@ -36,6 +36,26 @@
 	</objarglist>
 	<!--MESSAGES-->
 	<methodlist>
+    <method name="reset">
+      <arglist />
+      <digest>
+        Return the object to its original state
+      </digest>
+      <description>
+        Calling <m>reset</m> will change parameter values back to those the object was <i>created</i> with, i.e. any attribute values set in the box will be retained
+      </description>
+    </method>
+ {% if client_name.startswith('fluid.buf')  %}
+   <method name="bang">
+     <arglist />
+     <digest>
+       Trigger processing
+     </digest>
+     <description>
+       A bang will commence processing on object given its current settings, unless it is already busy. In that case, the behaviour depends on the value of the <m>queue</m> attribute.
+     </description>
+   </method>
+  {% endif %}
 	</methodlist>
 	<!--ATTRIBUTES-->
 	<attributelist>
