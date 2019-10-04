@@ -35,7 +35,7 @@
 		</objarg>-->
 	</objarglist>
 	<!--MESSAGES-->
-
+  <methodlist>
  {% if client_name.startswith('fluid.buf')  %}
    <method name="bang">
      <arglist />
@@ -56,7 +56,7 @@
      </description>
    </method>
   {% endif %}
-  <methodlist>
+
     <method name="reset">
       <arglist />
       <digest>

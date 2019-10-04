@@ -82,6 +82,7 @@ add_custom_target (
 
 add_custom_target (
   GENERATE_HTML ALL
+  DEPENDS MAKE_MAX_REF
   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
   COMMAND ./generate_html.sh
   COMMENT "Transforming XML to HTML for PD and CLI"
