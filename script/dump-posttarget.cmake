@@ -7,9 +7,15 @@ add_dependencies(
 )
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
-# add_dependencies (${PROJECT_NAME} FLUID_DECOMPOSITION)
-target_link_libraries(${PROJECT_NAME}
-PRIVATE FFTLIB FLUID_DECOMPOSITION FLUID_DUMP
+
+set_target_properties(${PROJECT_NAME} PROPERTIES
+  CXX_STANDARD_REQUIRED ON
+  CMAKE_CXX_STANDARD 14
+  CMAKE_CXX_EXTENSIONS OFF
+)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    FLUID_DECOMPOSITION FLUID_DUMP
 )
 
 target_include_directories (
@@ -20,7 +26,7 @@ target_include_directories (
 )
 
 if(MSVC)
-  target_compile_options(${PROJECT_NAME}PRIVATE /W4 /WX)
+  target_compile_options(${PROJECT_NAME}PRIVATE /W3)
 else()
   target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Wreturn-type -Wconversion)
 endif()

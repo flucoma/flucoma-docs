@@ -1,94 +1,90 @@
-cmake_minimum_required(VERSION 3.3)
+cmake_minimum_required(VERSION 3.11)
 
-if (APPLE)
-	set(CMAKE_OSX_ARCHITECTURES x86_64)
-endif()
-
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_EXTENSIONS OFF)
-
-# We shouldn't have to do this, bah:
-#TODO find way of guranteeing libc++ on OS X CLI (hence >=C++11) without brute forcing CMake like this
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -lc++abi")
-
-set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY "libc++")
-set(CMAKE_OSX_DEPLOYMENT_TARGET "10.7" CACHE STRING "Minimum OS X deployment version")
-set(CMAKE_XCODE_GENERATE_SCHEME ON)
-
-# set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-
-# Fetch the correct verion of the max-api
-#message(STATUS "Updating Git Submodules")
-#execute_process(
-#	COMMAND				git submodule update --init --recursive
-#	WORKING_DIRECTORY	"${CMAKE_CURRENT_SOURCE_DIR}"
-#)
 project (fluid_parameter_dump LANGUAGES CXX)
 
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -Wno-gnu-zero-variadic-macro-arguments")
+set(FLUID_PATH "" CACHE PATH "The top level of the fluid_decomposition repo. Will clone from repo if blank")
+set(FLUID_M_PATH "" CACHE PATH "Top level of fluid fluid_manipulation. Will clone from repo if blank" )
 
-set(FLUID_PATH ~/fluid_decomposition CACHE PATH "The top level of the fluid_decomposition repo")
+  include(FetchContent)
 
-get_filename_component(FLUID_ABS_PATH ${FLUID_PATH} ABSOLUTE)
-message(${FLUID_ABS_PATH})
-# if (NOT DEFINED ${FLUID_DECOMP_PATH})
-# 	message(FATAL_ERROR "Please set the path to the fluid_decomposition sources with -DFLUID_DECOMP_PATH=<path>")
-# endif()
+  set(FETCHCONTENT_QUIET FALSE)
 
-if (NOT (EXISTS "${FLUID_ABS_PATH}/build/fluid_decomposition-exports.cmake"))
-	message(FATAL_ERROR "Can't find the fluid_decomposition CMake targets file at ${FLUID_ABS_PATH}/build/fluid_decomposition-expors.cmake. Please go to ${FLUID_ABS_PATH}/build and run CMake")
-endif()
+  if(FLUID_PATH)
+    get_filename_component(FLUID_PATH ${FLUID_PATH} ABSOLUTE)
+    message(${FLUID_PATH})
+    FetchContent_Declare(
+      fluid_decomposition
+      DOWNLOAD_COMMAND ""
+      SOURCE_DIR "${FLUID_PATH}/"
+    )
+  else()
+    FetchContent_Declare(
+      fluid_decomposition
+      GIT_REPOSITORY https://bitbucket.org/flucoma/fluid_decomposition.git
+      GIT_PROGRESS TRUE
+    )
+  endif()
+
+  # if(DEFINED FLUID_M_PATH)
+  # get_filename_component(FLUID_M_PATH ${FLUID_M_PATH} ABSOLUTE)
+  # FetchContent_Declare(
+  #   fluid_manipulation
+  #   # URL ${FLUID_M_PATH}
+  #   DOWNLOAD_COMMAND ""
+  #   SOURCE_DIR "${FLUID_M_PATH}/"
+  # )
+  # else()
+  # FetchContent_Declare(
+  #   fluid_manipulation
+  #   GIT_REPOSITORY https://bitbucket.org/flucoma/fluid_manipulation.git
+  #   GIT_PROGRESS TRUE
+  # )
+  # endif()
+
+
+  FetchContent_GetProperties(fluid_decomposition)
+  if(NOT fluid_decomposition_POPULATED)
+    FetchContent_Populate(fluid_decomposition)
+    add_subdirectory(${fluid_decomposition_SOURCE_DIR} ${fluid_decomposition_BINARY_DIR})
+  endif()
+
+  # FetchContent_GetProperties(fluid_manipulation)
+  # if(NOT fluid_manipulation_POPULATED)
+  #   FetchContent_Populate(fluid_manipulation)
+  #   add_subdirectory(${fluid_manipulation_SOURCE_DIR} ${fluid_manipulation_BINARY_DIR})
+  # endif()
+
 
 if (NOT (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/json/))
 	file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/json/)
 endif()
 
-include("${FLUID_ABS_PATH}/build/fluid_decomposition-exports.cmake")
-
-get_property(FFT_SOURCES TARGET HISSTools_FFT  PROPERTY INTERFACE_SOURCES)
-get_property(FFT_LINK TARGET HISSTools_FFT  PROPERTY INTERFACE_LINK_LIBRARIES)
-
-add_library(FFTLIB STATIC ${FFT_SOURCES})
-target_link_libraries(
-  FFTLIB PRIVATE ${FFT_LINK}
-)
-
-
-
-# target_compile_options(
-#   FFTLIB PRIVATE "$<$<NOT:$<CONFIG:DEBUG>>: -mavx -msse -msse2 -msse3 -msse4>"
-# )
-
-# set_property(TARGET FFTLIB PROPERTY OSX_ARCHITECTURES x86_64;i386)
-
-# target_compile_options(FFTLIB PRIVATE -Wall -Wextra -Wpedantic -Wreturn-type -Wconversion)
-
-add_library( FLUID_DUMP INTERFACE )
-target_sources(
-	FLUID_DUMP INTERFACE
+add_library(FLUID_DUMP INTERFACE )
+target_sources(FLUID_DUMP INTERFACE
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/FluidParameterDump.hpp"
 )
+source_group("Fluid Dump Wrapper" FILES "${CMAKE_CURRENT_SOURCE_DIR}/include/FluidParameterDump.hpp")
 
-add_custom_target (
-	MAKE_MAX_REF ALL
-	COMMAND which python
-	COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/script/MakeMaxRef.py
-	COMMENT "Generating Max XML ref"
-	VERBATIM
-	USES_TERMINAL
-)
+find_program(PYTHON_3 python3)
+message(STATUS ${PYTHON_3})
+if(NOT PYTHON_3)
+  message(FATAL_ERROR "Python 3 not found, won't be doing attempting to generate docs")
+endif()
+  add_custom_target(MAKE_MAX_REF ALL
+  	COMMAND ${PYTHON_3} "${CMAKE_CURRENT_SOURCE_DIR}/script/MakeMaxRef.py"
+  	COMMENT "Generating Max XML ref"
+  	VERBATIM
+  	USES_TERMINAL
+  )
 
-add_custom_target (
-  GENERATE_HTML ALL
-  DEPENDS MAKE_MAX_REF
-  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-  COMMAND ./generate_html.sh
-  COMMENT "Transforming XML to HTML for PD and CLI"
-  VERBATIM
-  USES_TERMINAL
-)
+  add_custom_target (GENERATE_HTML ALL
+    DEPENDS MAKE_MAX_REF
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+    COMMAND ./generate_html.sh
+    COMMENT "Transforming XML to HTML for PD and CLI"
+    VERBATIM
+    USES_TERMINAL
+  )
 
 # Make sure to build targets from fluid_decomposition
 # add_subdirectory(${FLUID_ABS_PATH} ${FLUID_ABS_PATH}/build)
@@ -102,7 +98,6 @@ MACRO(SUBDIRLIST result curdir)
   ENDFOREACH()
   SET(${result} ${dirlist})
 ENDMACRO()
-
 
 # Generate a project for every folder in the "src/clients" folder
 SUBDIRLIST(PROJECT_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/src/clients)
