@@ -14,7 +14,7 @@
 	</metadatalist>
 	<!--ARGUMENTS-->
 	<objarglist>
-    {% for name,bits in arguments.items()  %}
+    {%- for name,bits in arguments.items()  -%}
       <objarg name='{{ name|e }}' optional='1' type='number'>
         <digest>
           {{ bits['displayName']|e }}
@@ -22,13 +22,13 @@
         <description>
           {{ bits['description']| rst }}
         </description>
-        {% if 'default' in bits  %}
+        {%- if 'default' in bits  -%}
         <attributelist>
           <attribute name="default" get="1" set="1" type="int" size='{{ bits['size'] }}' value='{{ bits['default'] }}' />
         </attributelist>
-        {% endif %}
+        {%- endif -%}
       </objarg>
-    {% endfor %}
+    {%- endfor -%}
 		<!-- <objarg name='function' optional='1' type='number'>
 			<digest>Initial easing function to use</digest>
 			<description>Initial easing function to use. </description>
@@ -36,7 +36,7 @@
 	</objarglist>
 	<!--MESSAGES-->
   <methodlist>
- {% if client_name.startswith('fluid.buf')  %}
+ {%- if client_name.startswith('fluid.buf')  -%}
    <method name="bang">
      <arglist />
      <digest>
@@ -55,8 +55,7 @@
        When processing in non-blocking mode, this will cancel the job underway, without updating destination buffers.
      </description>
    </method>
-  {% endif %}
-
+  {%- endif -%}
     <method name="reset">
       <arglist />
       <digest>
@@ -69,7 +68,7 @@
 	</methodlist>
 	<!--ATTRIBUTES-->
 	<attributelist>
-    {% for name,bits in attributes.items()  %}
+    {%- for name,bits in attributes.items()  -%}
       <attribute name='{{ name|e }}' get='1' set='1' type='{{ bits['type']|maxtype }}' size='{{ bits['size'] }}'>
         <digest>
           {{ bits['displayName']|e }}
@@ -77,28 +76,28 @@
         <description>
           {{ bits['description']|rst }}
         </description>
-        {% if 'default' in bits or 'enum' in bits  %}
+        {%- if 'default' in bits or 'enum' in bits  -%}
         <attributelist>
-          {% if 'default' in bits %}
+          {%- if 'default' in bits -%}
           <attribute name="default" get="1" set="1" type="int" size='{{ bits['size'] }}' value='{{ bits['default'] }}' />
-          {% endif %}
-          {% if 'enum' in bits %}
+          {%- endif -%}
+          {%- if 'enum' in bits -%}
           <attribute name="enumvals" get="1" set="1" type="atom" size='{{ bits['enum'] | length }}'>
             <enumlist>
-            {% for enumname,desc in bits['enum'].items() %}
+            {%- for enumname,desc in bits['enum'].items() -%}
               <enum name='{{ enumname }}'>
                 <description>
                   {{ desc|rst }}
                 </description>
               </enum>
-            {% endfor %}
+            {%- endfor -%}
             </enumlist>
           </attribute>
-          {% endif %}
+          {%- endif -%}
         </attributelist>
-        {% endif %}
+        {%- endif -%}
       </attribute>
-    {% endfor %}
+    {%- endfor -%}
 	</attributelist>
 	<!--RELATED-->
 	<seealsolist>
