@@ -24,7 +24,7 @@
         </description>
         {%- if 'default' in bits  -%}
         <attributelist>
-          <attribute name="default" get="1" set="1" type="int" size='{{ bits['size'] }}' value='{{ bits['default'] }}' />
+          <attribute name="default" get="1" set='{{ bits['fixed'] | truefalse }}' type="int" size='{{ bits['size'] }}' value='{{ bits['default'] }}' />
         </attributelist>
         {%- endif -%}
       </objarg>
