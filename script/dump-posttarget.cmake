@@ -17,6 +17,7 @@ target_include_directories (
 	PRIVATE
 	"${CMAKE_CURRENT_SOURCE_DIR}/../../../include"
 	"${CMAKE_CURRENT_SOURCE_DIR}/../../../thirdparty"
+  "${FLUID_M_PATH}/include"
 )
 
 if(MSVC)
@@ -42,17 +43,3 @@ add_custom_command(
 	COMMAND $<TARGET_FILE:${PROJECT_NAME}> ARGS "${CMAKE_SOURCE_DIR}/json/"
 	COMMENT "Generating JSON for ${PROJECT_NAME}"
 )
-
-
-### Output ###
-
-
-### Post Build ###
-#if (WIN32)
-#	add_custom_command(
-#		TARGET ${PROJECT_NAME}
-#		POST_BUILD
-#		COMMAND rm "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${EXTERN_OUTPUT_NAME}.ilk"
-#		COMMENT "ilk file cleanup"
-#	)
-#endif ()

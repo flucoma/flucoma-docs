@@ -31,6 +31,8 @@ project (fluid_parameter_dump LANGUAGES CXX)
 
 set(FLUID_PATH ~/fluid_decomposition CACHE PATH "The top level of the fluid_decomposition repo")
 
+set(FLUID_M_PATH ~/fluid_manipulation CACHE PATH "The top level of the fluid_manipulation repo")
+
 get_filename_component(FLUID_ABS_PATH ${FLUID_PATH} ABSOLUTE)
 message(${FLUID_ABS_PATH})
 # if (NOT DEFINED ${FLUID_DECOMP_PATH})
