@@ -106,7 +106,7 @@ def process_client(env, jsonfile):
                 param[d.lower()]['enum'] = dict(zip(v['values'],human_data['parameters'][d]['enum'].values()))
 
 
-        if d == 'fftSettings':
+        if 'parameters' in human_data and d == 'fftSettings':
             fftdesc ='FFT settings consist of three numbers representing the window size, hop size and FFT size:\n'
             if 'windowSize' in  human_data['parameters']:
                 fftdesc += '   \n* ' + human_data['parameters']['windowSize']['description'];
