@@ -21,11 +21,16 @@ def max_type(value):
         'float':'float64',
         'long': 'int',
         'buffer':'symbol',
-        'enum':'int'
+        'enum':'int',
+        'symbol':'symbol'
     }
     # print(value)
     return type_map[value] if value in type_map else 'UNKOWN'
     # return "atype"
+
+def truefalse(value):
+    if value is True: return "1"
+    if value is False: return "0" 
 
 def process_client(env, jsonfile):
     print(jsonfile.stem.lower())
@@ -154,6 +159,7 @@ def main():
     )
     env.filters['maxtype'] = max_type
     env.filters['rst'] = rst_filter
+    env.filters['truefalse'] = truefalse
     p = Path('../json')
     clients = list(p.glob('**/*.json'))
     out = Path('../maxref')
