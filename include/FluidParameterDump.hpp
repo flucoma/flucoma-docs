@@ -9,6 +9,12 @@
 #include <string>
 #include <utility>
 
+/// This will produce JSON output of the params and messages for a Fluid Client object
+/// Because we need to preserve the declared ordering of params (which turn into arguments in some hosts),
+/// the output is JSON arrays: each array element is a 2 item sub-array with the name and a JSON object
+/// that has the meta-data. This then turned back into an associative structure in pyton (i.e. dict(...))
+/// This way we are gurranteed to preserve ordering
+
 
 // for convenience
 using json = nlohmann::json;
@@ -168,7 +174,7 @@ void to_json(json& o, const ParamBundle<Param,Tuple,AllParams>& pb)
       auto c = constraints(constraintsTuple,pb.allParams,constraintsIndex);
       j["constraints"] = c;
     }
-    o[pb.p.name] = j;
+    o = {p.name, j};
 }
 
 template<typename Tuple, typename AllParams>
@@ -184,7 +190,7 @@ void to_json(json& o, const ParamBundle<EnumT,Tuple,AllParams>& pb)
   std::copy(p.strings, p.strings + p.numOptions,strings.begin());
   j["values"] = strings;
   j["type"] = "enum";
-  o[p.name] = j;
+  o = {p.name, j};
 }
 
 template<typename Tuple, typename AllParams>
@@ -197,7 +203,7 @@ void to_json(json& o, const ParamBundle<FFTParamsT,Tuple,AllParams>& pb)
   j["fixed"] = false;
   j["size"] = 3;
   j["type"] = "long";
-  o[p.name] = j;
+  o = {p.name, j};
 }
 
 
