@@ -12,6 +12,7 @@ import os
 
 # All hail SO: https://stackoverflow.com/questions/11309885/jinja2-restructured-markup
 def rst_filter(s):
+    if not s: return ''
     if len(s) == 0:
          return ''
     return Markup(publish_parts(source=s, writer_name='html')['body'])
@@ -45,11 +46,14 @@ def process_client(env, jsonfile):
     args={}
     attrs={}
 
-    data = dict(data) #data is in json array to preserve order,
-
+    # data = dict(data) #data is in json array to preserve order,
+    
     if not data: return 
-
-    data['warnings'] = {
+    print(data)
+    params = dict(data['params'])
+    
+    print(params)
+    params['warnings'] = {
         "displayName" : "Warnings",
         "constraints": {
             "min": 0,
@@ -63,7 +67,7 @@ def process_client(env, jsonfile):
     }
 
     if jsonfile.stem.lower().startswith('buf'):
-        data['blocking'] = {
+        params['blocking'] = {
             "displayName" : "Blocking Mode",
             "default": 1,
             "fixed": False,
@@ -81,7 +85,7 @@ def process_client(env, jsonfile):
             },
             "description" : "Set the threading mode for the object"
         }
-        data['queue'] = {
+        params['queue'] = {
             "displayName" : "Non-Blocking Queue Flag",
             "default": 0,
             "fixed": False,
@@ -90,7 +94,7 @@ def process_client(env, jsonfile):
             "description" : "In non-blocking mode enable jobs to be queued up if successive bangs are sent whilst the object is busy. With the queue disabled, successive bangs will produce a warning. When enabled, the object will processing successively, against the state of its parameters when each bang was sent"
         }
 
-    for d,v in data.items():
+    for d,v in params.items():
         # print(d)
         fixed = False;
         # description = ''
@@ -98,15 +102,18 @@ def process_client(env, jsonfile):
         param = {}
 
         param.update({d.lower():v})
+        
+        # if(d): print(d)
+        # if(human_data and human_data['parameters']): print("I haz yaml")
 
-        if 'parameters' in human_data and d in human_data['parameters']:
+        if human_data and human_data['parameters'] and d in human_data['parameters']:
             if 'description' in human_data['parameters'][d]:
                 param[d.lower()].update({'description': human_data['parameters'][d]['description']})
             if 'enum' in human_data['parameters'][d] and 'values' in v:
                 param[d.lower()]['enum'] = dict(zip(v['values'],human_data['parameters'][d]['enum'].values()))
 
 
-        if 'parameters' in human_data and d == 'fftSettings':
+        if human_data and human_data['parameters'] and d == 'fftSettings':
             fftdesc ='FFT settings consist of three numbers representing the window size, hop size and FFT size:\n'
             if 'windowSize' in  human_data['parameters']:
                 fftdesc += '   \n* ' + human_data['parameters']['windowSize']['description'];
