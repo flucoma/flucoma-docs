@@ -33,6 +33,10 @@ def truefalse(value):
     if value is True: return "1"
     if value is False: return "0" 
 
+
+
+
+
 def process_client(env, jsonfile):
     print(jsonfile.stem.lower())
     template = env.get_template('maxref.xml')
@@ -49,10 +53,10 @@ def process_client(env, jsonfile):
     # data = dict(data) #data is in json array to preserve order,
     
     if not data: return 
-    print(data)
+    # print(data)
     params = dict(data['params'])
     
-    print(params)
+    # print(params)
     params['warnings'] = {
         "displayName" : "Warnings",
         "constraints": {
@@ -131,7 +135,13 @@ def process_client(env, jsonfile):
             args.update(param)
         else:
             attrs.update(param)
+    
+    messages = dict(data['messages'])
 
+    for d,v in messages.items():
+        if human_data and human_data['messages'] and d in human_data['messages']:
+            if 'description' in human_data['messages'][d]:
+                messages[d.lower()].update({'description': human_data['messages'][d]['description']})
 
     # print(args)
     digest  = human_data['digest'] if 'digest' in human_data else 'A Fluid Decomposition Object'
@@ -143,6 +153,7 @@ def process_client(env, jsonfile):
         f.write(template.render(
             arguments=args,
             attributes=attrs,
+            messages=messages,
             client_name=client,
             digest=digest,
             description=description,
