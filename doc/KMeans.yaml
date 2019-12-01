@@ -4,7 +4,7 @@ sc-related:
 description: Learns clusters from a Dataset, using the K Means algorithm 
 discussion: 
 messages: 
-  train: 
+  fit: 
     description: cluster a dataset, with optional seed data 
     args: 
       dataset: 
@@ -21,7 +21,7 @@ messages:
         description: Reference to a host buffer that contains data points with which to seed the clustering alorgihtm 
         type: buffer
         optional: true 
-  cluster: 
+  getClusters: 
     description: cluster a dataset, with optional seed points,  and populate a labelset with the assigned clusters
     args: 
       dataset: 
@@ -42,6 +42,26 @@ messages:
         type: buffer
         optional: true
   predict: 
+      description: cluster a dataset, with optional seed points,  and populate a labelset with the assigned clusters
+      args: 
+        dataset: 
+          description: Name of a dataset object
+          type: dataset
+        labelset: 
+          description: Name of a labelset object
+          type: labelset
+        k: 
+          description: Number of clusters to organise the data into 
+          type: int 
+        iterations: 
+          description: Number of iterations to run algorithm 
+          type: int 
+          default: 100
+        initialpoints: 
+          description: Reference to a host buffer that contains data points with which to seed the clustering alorgihtm 
+          type: buffer
+          optional: true
+  predictPoint: 
     description: classify a datapoint, based on learned clustering 
     args: 
       data: 
