@@ -73,10 +73,14 @@ target_sources(
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/FluidParameterDump.hpp"
 )
 
+find_program(PYTHON_3 python3)
+message(STATUS ${PYTHON_3})
+if(NOT PYTHON_3)
+  message(FATAL_ERROR "Python 3 not found, won't be doing attempting to generate docs")
+endif()
 add_custom_target (
 	MAKE_MAX_REF ALL
-	COMMAND which python
-	COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/script/MakeMaxRef.py
+	COMMAND ${PYTHON_3} ${CMAKE_CURRENT_SOURCE_DIR}/script/MakeMaxRef.py
 	COMMENT "Generating Max XML ref"
 	VERBATIM
 	USES_TERMINAL

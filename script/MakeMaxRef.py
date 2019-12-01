@@ -39,7 +39,7 @@ def process_client(env, jsonfile):
     human_data = {}
     human_data_path = Path('../doc/'+jsonfile.stem+'.yaml')
     if(human_data_path.exists()):
-        human_data = yaml.load(open(human_data_path.resolve()))
+        human_data = yaml.load(open(human_data_path.resolve(),encoding='utf8'))
         # print(human_data['digest'])
 
     args={}
@@ -130,7 +130,7 @@ def process_client(env, jsonfile):
     discussion = human_data['discussion'] if 'discussion' in human_data else ''
     client  = 'fluid.{}~'.format(jsonfile.stem.lower())
     attrs = OrderedDict(sorted(attrs.items(), key=lambda t: t[0]))
-    with open('../maxref/{}.maxref.xml'.format(client),'w') as f:
+    with open('../maxref/{}.maxref.xml'.format(client),'w',encoding='utf8') as f:
         f.write(template.render(
             arguments=args,
             attributes=attrs,
