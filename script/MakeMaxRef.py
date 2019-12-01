@@ -47,6 +47,8 @@ def process_client(env, jsonfile):
 
     data = dict(data) #data is in json array to preserve order,
 
+    if not data: return 
+
     data['warnings'] = {
         "displayName" : "Warnings",
         "constraints": {
