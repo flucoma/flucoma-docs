@@ -7,8 +7,6 @@ import yaml
 from pathlib import Path
 from collections import OrderedDict
 import os
-# template = Template('Hello {{ name }}!')
-# template.render(name='John Doe')
 
 # All hail SO: https://stackoverflow.com/questions/11309885/jinja2-restructured-markup
 def rst_filter(s):
@@ -141,7 +139,7 @@ def process_client(env, jsonfile):
     for d,v in messages.items():
         if human_data and human_data['messages'] and d in human_data['messages']:
             if 'description' in human_data['messages'][d]:
-                messages[d.lower()].update({'description': human_data['messages'][d]['description']})
+                messages[d].update({'description': human_data['messages'][d]['description']})
 
     # print(args)
     digest  = human_data['digest'] if 'digest' in human_data else 'A Fluid Decomposition Object'
