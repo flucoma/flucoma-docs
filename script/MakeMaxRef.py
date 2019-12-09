@@ -1,12 +1,13 @@
 from docutils.core import publish_parts
 from jinja2 import Template
-from jinja2 import Environment, PackageLoader, select_autoescape, Markup
+from jinja2 import Environment, PackageLoader, FileSystemLoader, select_autoescape, Markup
 from pathlib import Path
 import json
 import yaml
 from pathlib import Path
 from collections import OrderedDict
 import os
+import sys 
 # template = Template('Hello {{ name }}!')
 # template.render(name='John Doe')
 
@@ -27,12 +28,12 @@ def max_type(value):
     return type_map[value] if value in type_map else 'UNKOWN'
     # return "atype"
 
-def process_client(env, jsonfile):
+def process_client(env, jsonfile, yamldir,outputdir):
     print(jsonfile.stem.lower())
     template = env.get_template('maxref.xml')
     data = json.load(open(jsonfile.resolve()))
     human_data = {}
-    human_data_path = Path('../doc/'+jsonfile.stem+'.yaml')
+    human_data_path = yamldir / (jsonfile.stem+'.yaml')    
     if(human_data_path.exists()):
         human_data = yaml.load(open(human_data_path.resolve()))
         # print(human_data['digest'])
@@ -125,7 +126,7 @@ def process_client(env, jsonfile):
     discussion = human_data['discussion'] if 'discussion' in human_data else ''
     client  = 'fluid.{}~'.format(jsonfile.stem.lower())
     attrs = OrderedDict(sorted(attrs.items(), key=lambda t: t[0]))
-    with open('../maxref/{}.maxref.xml'.format(client),'w') as f:
+    with open(outputdir / '{}.maxref.xml'.format(client),'w') as f:
         f.write(template.render(
             arguments=args,
             attributes=attrs,
@@ -148,18 +149,27 @@ def process_client(env, jsonfile):
 
 
 def main():
+    # Args: json dir, yaml dir, output dir, template dir
+    print(sys.argv)
+    if(len(sys.argv) != 5):
+        print("Args: json dir, yaml dir, output dir, template dir")
+        sys.exit(2)        
+    # print(os.getcwd())
     env = Environment(
-        loader=PackageLoader('MakeMaxRef', 'templates'),
+        loader=FileSystemLoader(sys.argv[4]),
         autoescape=select_autoescape(['html', 'xml'])
     )
     env.filters['maxtype'] = max_type
     env.filters['rst'] = rst_filter
-    p = Path('../json')
+    p = Path(sys.argv[1])
+    print(p)
     clients = list(p.glob('**/*.json'))
-    out = Path('../maxref')
+    print(clients)
+    out = Path('{}'.format(sys.argv[3]))
     out.mkdir(exist_ok=True)
+    docpath = Path(sys.argv[2])
     for c in clients:
-        process_client(env, c)
+        process_client(env, c, docpath ,out)
     # process_client(env, Path('../json/NMFFilter.json'))
 
 if __name__== "__main__":
