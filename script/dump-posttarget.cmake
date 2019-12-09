@@ -31,9 +31,8 @@ else()
   target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Wreturn-type -Wconversion)
 endif()
 
-
 get_property(HEADERS TARGET FLUID_DECOMPOSITION PROPERTY INTERFACE_SOURCES)
-source_group(TREE "${FLUID_PATH}/include" FILES ${HEADERS})
+source_group(TREE "${fluid_decomposition_SOURCE_DIR}/include" FILES ${HEADERS})
 
 if ("${PROJECT_NAME}" MATCHES ".*_tilde")
 	string(REGEX REPLACE "_tilde" "~" EXTERN_OUTPUT_NAME "${PROJECT_NAME}")
