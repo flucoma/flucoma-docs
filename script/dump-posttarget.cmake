@@ -28,7 +28,7 @@ target_include_directories (
 if(MSVC)
   target_compile_options(${PROJECT_NAME}PRIVATE /W3)
 else()
-  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Wreturn-type -Wconversion)
+  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Wno-return-type -Wno-conversion -Wno-c++11-narrowing -Wno-sign-compare -Wno-sign-conversion -Wno-unused-parameter -Wno-inconsistent-missing-override -Wno-float-conversion)
 endif()
 
 get_property(HEADERS TARGET FLUID_DECOMPOSITION PROPERTY INTERFACE_SOURCES)
