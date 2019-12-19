@@ -25,10 +25,19 @@ target_include_directories (
 	"${CMAKE_CURRENT_SOURCE_DIR}/../../../thirdparty"
 )
 
+if(APPLE)
+  set_target_properties(${PROJECT_NAME} PROPERTIES
+    XCODE_GENERATE_SCHEME ON
+  )
+  #If we target 10.7 (actually < 10.9), we have to manually include this:
+  target_compile_options(${PROJECT_NAME} PRIVATE -stdlib=libc++)
+endif()
+
+
 if(MSVC)
   target_compile_options(${PROJECT_NAME}PRIVATE /W3)
 else()
-  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Wno-return-type -Wno-conversion -Wno-c++11-narrowing -Wno-sign-compare -Wno-sign-conversion -Wno-unused-parameter -Wno-inconsistent-missing-override -Wno-float-conversion)
+  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Wno-return-type -Wno-c++11-narrowing)
 endif()
 
 get_property(HEADERS TARGET FLUID_DECOMPOSITION PROPERTY INTERFACE_SOURCES)
