@@ -1,6 +1,7 @@
 digest: Amplitude-based Slicer
 sc-categories: Libraries>FluidDecomposition
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition
+see-also: BufAmpSlice, OnsetSlice, NoveltySlice, TransientSlice
 description: |
   This class implements an amplitude-based slicer, with various customisable options and conditions to detect absolute and relative amplitude changes as onsets and offsets.
 discussion: |

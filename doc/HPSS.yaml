@@ -1,6 +1,7 @@
 digest: Harmonic-Percussive Source Separation Using Median Filtering
 sc-categories: Libraries>FluidDecomposition
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition
+see-also: BufHPSS, Sines, Transients
 description: Harmonic-Percussive Source Separation (HPSS) on the an audio input.
 discussion: |
   The class performs HPSS as described in

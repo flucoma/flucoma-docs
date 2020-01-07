@@ -1,6 +1,7 @@
 digest: Real-Time Novelty-Based Slicer
 sc-categories: Libraries>FluidDecomposition
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition
+see-also: BufNoveltySlice, OnsetSlice, AmpSlice, TransientSlice
 description: A real-time slicer using an algorithm assessing novelty in the signal to estimate the slicing points.
 discussion: |
   A novelty curve is derived from running a kernel across the diagonal of the similarity matrix, and looking for peak of changes. It implements the algorithm published in 'Automatic Audio Segmentation Using a Measure of Audio Novelty' by J Foote.

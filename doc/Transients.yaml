@@ -1,6 +1,7 @@
 digest: Real-Time Transient Modeller and Extractor
 sc-categories: Libraries>FluidDecomposition
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition
+see-also: BufTransients,Sines,HPSS
 description: A real-time transient modeller on its input.
 discussion: |
   It implements declicking algorithm from chapter 5 of "Digital Audio Restoration" by Godsill, Simon J., Rayner, Peter J.W. with some bespoke improvements on the detection function tracking.

@@ -1,6 +1,7 @@
 digest: Buffer-Based Transient Extractor
 sc-categories: Libraries>FluidDecomposition, UGens>Buffer
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition
+see-also: Transients, BufHPSS, BufSines
 description: A transient extractor on buffers
 discussion: |
   It implements declicking algorithm from chapter 5 of 'Digital Audio Restoration' by Godsill, Simon J., Rayner, Peter J.W. with some bespoke improvements on the detection function tracking.

@@ -1,6 +1,7 @@
 digest: A Loudness and True-Peak Descriptor on a Buffer
 sc-categories: Libraries>FluidDecomposition
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition
+see-also: Loudness, BufPitch, BufMelBands, BufMFCC, BufSpectralShape, BufStats
 description: |
   Two loudness descriptors, computing the true peak of the signal as well as applying the filters proposed by broadcasting standards to emulate the perception of amplitude.
 discussion: |

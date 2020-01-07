@@ -1,6 +1,7 @@
 digest: Computing Statistics on Buffers as Series.
 sc-categories: Libraries>FluidDecomposition, UGens>Buffer
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition
+see-also: BufLoudness, BufPitch, BufMelBands, BufMFCC, BufSpectralShape
 description: |
   Statistical analysis on buffer channels.
 discussion: |

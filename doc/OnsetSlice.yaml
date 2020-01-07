@@ -1,6 +1,7 @@
 digest: Spectral Difference-Based Real-Time Audio Slicer
 sc-categories: Libraries>FluidDecomposition
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition
+see-also: BufOnsetSlice, AmpSlice, NoveltySlice, TransientSlice
 description: Real-time onset detection against a choice of metrics
 discussion: |
    See http://www.dafx.ca/proceedings/papers/p_133.pdf for an overview of onset detection metrics. Some are already available in SuperCollider's Onsets object.

@@ -1,6 +1,7 @@
 digest: Spectral Difference-Based Audio Buffer Slicer
 sc-categories: Libraries>FluidDecomposition
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition
+see-also: OnsetSlice, BufAmpSlice, BufNoveltySlice, BufTransientSlice
 description: |
   Implements many spectral-based onset detection metrics, most of them taken from the literature.
 discussion: |
