@@ -123,6 +123,9 @@ def process_client(env, jsonfile, yamldir,outputdir):
     # print(args)
     digest  = human_data['digest'] if 'digest' in human_data else 'A Fluid Decomposition Object'
     description = human_data['description'] if 'description' in human_data else ''
+    seealso = ['fluid.{}~'.format(s.strip().lower()) for s in human_data['see-also'].split(',')] if 'see-also' in human_data and human_data['see-also'] else []
+    
+    print(seealso)
     discussion = human_data['discussion'] if 'discussion' in human_data else ''
     client  = 'fluid.{}~'.format(jsonfile.stem.lower())
     attrs = OrderedDict(sorted(attrs.items(), key=lambda t: t[0]))
@@ -133,7 +136,8 @@ def process_client(env, jsonfile, yamldir,outputdir):
             client_name=client,
             digest=digest,
             description=description,
-            discussion=discussion
+            discussion=discussion, 
+            seealso = seealso 
             ))
 
     #Also return a dictionary summarizing the object for obj-qlookup.json
@@ -142,7 +146,7 @@ def process_client(env, jsonfile, yamldir,outputdir):
         'module':'fluid decomposition',
         'keywords':[],
         'category': [],
-        'seealso': []
+        'seealso': seealso
     }
 
     return objLookupEntry;
@@ -162,9 +166,9 @@ def main():
     env.filters['maxtype'] = max_type
     env.filters['rst'] = rst_filter
     p = Path(sys.argv[1])
-    print(p)
+    # print(p)
     clients = list(p.glob('**/*.json'))
-    print(clients)
+    # print(clients)
     out = Path('{}'.format(sys.argv[3]))
     out.mkdir(exist_ok=True)
     docpath = Path(sys.argv[2])
