@@ -64,7 +64,7 @@ if(NOT PYTHON_3)
 endif()
 
 add_custom_target(MAKE_MAX_REF ALL
-	COMMAND ${PYTHON_3} "${CMAKE_CURRENT_SOURCE_DIR}/script/MakeMaxRef.py" "max" "${CMAKE_BINARY_DIR}/json" "${CMAKE_CURRENT_SOURCE_DIR}/doc" "${CMAKE_BINARY_DIR}/maxref" "${CMAKE_CURRENT_SOURCE_DIR}/script/templates"
+	COMMAND ${PYTHON_3} "${CMAKE_CURRENT_SOURCE_DIR}/script/MakeRef.py" "max" "${CMAKE_BINARY_DIR}/json" "${CMAKE_CURRENT_SOURCE_DIR}/doc" "${CMAKE_BINARY_DIR}/maxref" "${CMAKE_CURRENT_SOURCE_DIR}/script/templates"
 	COMMENT "Generating Max XML ref"
 	VERBATIM
 )
