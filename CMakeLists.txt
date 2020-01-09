@@ -40,6 +40,10 @@ if (NOT (EXISTS "${CMAKE_BINARY_DIR}/maxref/"))
 	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/maxref/")
 endif()
 
+if (NOT (EXISTS "${CMAKE_BINARY_DIR}/pd_html/"))
+	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/pd_html/")
+endif()
+
 add_library(FLUID_DUMP INTERFACE)
 
 target_include_directories(FLUID_DUMP INTERFACE 
@@ -60,18 +64,18 @@ if(NOT PYTHON_3)
 endif()
 
 add_custom_target(MAKE_MAX_REF ALL
-	COMMAND ${PYTHON_3} "${CMAKE_CURRENT_SOURCE_DIR}/script/MakeMaxRef.py" "${CMAKE_BINARY_DIR}/json" "${CMAKE_CURRENT_SOURCE_DIR}/doc" "${CMAKE_BINARY_DIR}/maxref" "${CMAKE_CURRENT_SOURCE_DIR}/script/templates"
+	COMMAND ${PYTHON_3} "${CMAKE_CURRENT_SOURCE_DIR}/script/MakeMaxRef.py" "max" "${CMAKE_BINARY_DIR}/json" "${CMAKE_CURRENT_SOURCE_DIR}/doc" "${CMAKE_BINARY_DIR}/maxref" "${CMAKE_CURRENT_SOURCE_DIR}/script/templates"
 	COMMENT "Generating Max XML ref"
 	VERBATIM
 )
 
-add_custom_target (GENERATE_HTML ALL
-  DEPENDS MAKE_MAX_REF
-  WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
-  COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/generate_html.sh "${CMAKE_CURRENT_SOURCE_DIR}"
-  COMMENT "Transforming XML to HTML for PD and CLI"
-  VERBATIM
-)
+# add_custom_target (GENERATE_HTML ALL
+#   DEPENDS MAKE_MAX_REF
+#   WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+#   COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/generate_html.sh "${CMAKE_CURRENT_SOURCE_DIR}"
+#   COMMENT "Transforming XML to HTML for PD and CLI"
+#   VERBATIM
+# )
 
 # Make sure to build targets from fluid_decomposition
 # add_subdirectory(${FLUID_ABS_PATH} ${FLUID_ABS_PATH}/build)

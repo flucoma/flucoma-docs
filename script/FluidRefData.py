@@ -1,13 +1,8 @@
 from docutils.core import publish_parts
-from jinja2 import Template
-from jinja2 import Environment, PackageLoader, FileSystemLoader, select_autoescape, Markup
-from pathlib import Path
+from jinja2 import Template, Environment, PackageLoader, FileSystemLoader, select_autoescape, Markup
 import json
 import yaml
-from pathlib import Path
 from collections import OrderedDict
-import os
-import sys 
 
 def rst_filter(s):
     if len(s) == 0:
@@ -43,7 +38,6 @@ def pd_type(value):
 def sc_name(value):
     return 'Fluid{}'.format(value)
 
-
 def cli_type(value):
     type_map = {
         'float':'number',
@@ -55,7 +49,6 @@ def cli_type(value):
         
 def cli_name(value): 
     return 'fluid-'.format(value.lower())    
-
 
 def process_client_data(jsonfile, yamldir):
     print('Processing reference data for {}'.format(jsonfile.stem))
@@ -173,9 +166,18 @@ def process_client_data(jsonfile, yamldir):
         'category': []
     }
 
-def process_template(env,template,extension,outputdir,client_data,namer):
-    ofile = outputdir / '{}.{}'.format(namer(client_data['client']),extension)
-    template = env.get_template(template)
+def process_template(template_path,outputdir,client_data,host):
+    ofile = outputdir / '{}.{}'.format(host['namer'](client_data['client']),host['extension'])
+    
+    env = Environment(
+        loader=FileSystemLoader([template_path]),
+        autoescape=select_autoescape(['html', 'xml'])
+    )
+    env.filters['rst'] = rst_filter 
+    env.filters['as_host_object_name'] = host['namer']
+    env.filters['typename'] = host['types']
+    
+    template = env.get_template(host['template'])
     with open(ofile,'w') as f:
         f.write(template.render(
             arguments=client_data['arguments'],
@@ -186,6 +188,25 @@ def process_template(env,template,extension,outputdir,client_data,namer):
             discussion=client_data['discussion'], 
             seealso = client_data['seealso'] 
             ))
+
+
+host_vars = {
+        'max': {
+            'namer':max_name, 
+            'template': 'maxref.xml',
+            'extension': 'maxref.xml',
+            'types': max_type,
+            'glob': '**/*.json'
+        },
+        'pd':{
+            'namer':pd_name, 
+            'template': 'pd_htmlref.html',
+            'extension': 'html', 
+            'types': pd_type,
+            'glob': '**/*.json'
+        }
+    }
+
 
     # #Also return a dictionary summarizing the object for obj-qlookup.json
     # objLookupEntry = {
