@@ -106,8 +106,8 @@ def cli_type(value):
     }
     return type_map[value] if value in type_map else 'UNKNOWN'
         
-def cli_name(value): 
-    return 'fluid-'.format(value.lower())    
+def cli_name(value):     
+    return 'fluid-{}'.format(value.lower().split('buf')[1])    
 
 def process_client_data(jsonfile, yamldir):
     print('Processing reference data for {}'.format(jsonfile.stem))
@@ -250,7 +250,7 @@ host_vars = {
             'template': 'cli_htmlref.html',
             'extension': 'html', 
             'types': cli_type,
-            'glob': '**/Buf*.json', 
+            'glob': '**/Buf[!Compose]*.json', 
             'parameter_link': plain_parameter_link, 
             'code_block': '<code>{}</code>'
         }
@@ -258,7 +258,7 @@ host_vars = {
 
 def process_template(template_path,outputdir,client_data,host):
     ofile = outputdir / '{}.{}'.format(host['namer'](client_data['client']),host['extension'])
-    
+    print(host['namer'](client_data['client']))
     env = Environment(
         loader=FileSystemLoader([template_path]),
         autoescape=select_autoescape(['html', 'xml'])
@@ -267,6 +267,7 @@ def process_template(template_path,outputdir,client_data,host):
     env.filters['as_host_object_name'] = host['namer']
     env.filters['typename'] = host['types']
     env.filters['constraints'] = partial(constraints,host=host)
+    env.tests['incli'] = lambda s: s.lower().startswith('buf')
     template = env.get_template(host['template'])
     with open(ofile,'w') as f:
         f.write(template.render(

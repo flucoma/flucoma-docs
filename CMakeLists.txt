@@ -78,6 +78,12 @@ add_custom_target(MAKE_PD_REF
 	VERBATIM
 )
 
+add_custom_target(MAKE_CLI_REF
+	COMMAND ${PYTHON_3} "${CMAKE_CURRENT_SOURCE_DIR}/script/MakeRef.py" "cli" ${FLUID_JSON_DOC} ${FLUID_YAML_DOC} "${CMAKE_BINARY_DIR}/clihtml" ${FLIUD_JINJA_TEMPLATES}
+	COMMENT "Generating CLI HTML ref"
+	VERBATIM
+)
+
 # add_custom_target (GENERATE_HTML
 #   DEPENDS MAKE_MAX_REF
 #   WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
