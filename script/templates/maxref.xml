@@ -75,6 +75,7 @@
         </digest>
         <description>
           {{ bits['description']|rst }}
+          {{ bits | constraints(attributes,arguments) }}
         </description>
         {%- if 'default' in bits or 'enum' in bits  -%}
         <attributelist>

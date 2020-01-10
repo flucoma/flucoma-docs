@@ -4,7 +4,6 @@ if(APPLE)
   set(CMAKE_OSX_DEPLOYMENT_TARGET 10.7)
 endif()
 
-
 project (fluid_parameter_dump LANGUAGES CXX)
 
 set(FLUID_PATH "" CACHE PATH "The top level of the fluid_decomposition repo. Will clone from repo if blank")
@@ -63,13 +62,23 @@ if(NOT PYTHON_3)
   message(FATAL_ERROR "Python 3 not found, won't be doing attempting to generate docs")
 endif()
 
+set(FLUID_JSON_DOC "${CMAKE_BINARY_DIR}/json")
+set(FLUID_YAML_DOC "${CMAKE_CURRENT_SOURCE_DIR}/doc")
+set(FLIUD_JINJA_TEMPLATES "${CMAKE_CURRENT_SOURCE_DIR}/script/templates")
+
 add_custom_target(MAKE_MAX_REF ALL
-	COMMAND ${PYTHON_3} "${CMAKE_CURRENT_SOURCE_DIR}/script/MakeRef.py" "max" "${CMAKE_BINARY_DIR}/json" "${CMAKE_CURRENT_SOURCE_DIR}/doc" "${CMAKE_BINARY_DIR}/maxref" "${CMAKE_CURRENT_SOURCE_DIR}/script/templates"
+	COMMAND ${PYTHON_3} "${CMAKE_CURRENT_SOURCE_DIR}/script/MakeRef.py" "max" ${FLUID_JSON_DOC} ${FLUID_YAML_DOC} "${CMAKE_BINARY_DIR}/maxref" ${FLIUD_JINJA_TEMPLATES}
 	COMMENT "Generating Max XML ref"
 	VERBATIM
 )
 
-# add_custom_target (GENERATE_HTML ALL
+add_custom_target(MAKE_PD_REF
+	COMMAND ${PYTHON_3} "${CMAKE_CURRENT_SOURCE_DIR}/script/MakeRef.py" "pd" ${FLUID_JSON_DOC} ${FLUID_YAML_DOC} "${CMAKE_BINARY_DIR}/pdhtml" ${FLIUD_JINJA_TEMPLATES}
+	COMMENT "Generating PD HTML ref"
+	VERBATIM
+)
+
+# add_custom_target (GENERATE_HTML
 #   DEPENDS MAKE_MAX_REF
 #   WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
 #   COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/generate_html.sh "${CMAKE_CURRENT_SOURCE_DIR}"

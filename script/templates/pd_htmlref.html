@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="./_c74_common.css">
+<title>{{ client_name | as_host_object_name }} Reference</title>
+<style>
+  .type , .defaultval
+  { 
+    font-weight: normal; 
+  }
+</style> 
+</head>
+<body>
+  <h1 class="ref_title">{{ client_name | as_host_object_name }}</h1>
+  <p class="digest">{{ digest }}</p>
+  <section class="object_description">
+    <h2>Description</h2> 
+    <p>{{ description|rst }}</p>    
+  </section> 
+  <section class="object_discussion"> 
+    <h2>Discussion</h2> 
+    <p>{{ discussion|rst }}
+  </section>
+  <section class="argument_section">
+    <h2>Arguments</h2>
+    {%- for name,bits in arguments.items()  -%}
+      <h3 class="argument_name">{{ bits['displayName']|e }}<span class="type"> [number]</span></h3> 
+      <div class="optional">Optional</div> 
+      {%- if 'default' in bits  -%}
+      <span class="defaultval"> (default: {{ bits['default'] }})</span>
+      {%- endif -%}
+      <p class="description">{{ bits['description']| rst }}</p>
+    {%- endfor -%}
+  </section> 
+  <section class="attribute_section">
+    <h2>Attributes</h2>
+    {%- for name,bits in attributes.items()  -%}
+    <div class="attribute_group">
+      <h3 class="attribute_name">{{ name | e}}
+        <span class="type"> [{{ bits['type']| typename }}]</span>
+        <span class="defaultval"> (default: {{ bits['default'] }})</span>
+      </h3>
+      <p class="description">{{ bits['description']|rst }}</p>       
+    </div>
+    {%- endfor -%}
+  </section> 
+  <section class"method_section"> 
+    <h2>Messages</h2>
+    {%- if client_name.startswith('Buf')  -%}
+    <div class="method_group">
+      <h3 class="method_name" name="bang">bang</h3>
+      <div class="description"> A bang will commence processing on object given its current settings, unless it is already busy. In that case, the behaviour depends on the value of the <span class="messagename" data-message="queue"> queue </span>
+        attribute. </div>
+    </div>
+    <div class="method_group">
+      <h3 class="method_name" name="cancel">cancel</h3>
+      <div class="description"> When processing in non-blocking mode, this will cancel the job underway, without updating destination buffers. </div>
+    </div>    
+    {%- endif -%}
+    <div class="method_group">
+      <h3 class="method_name" name="reset">reset</h3>
+      <div class="description"> Calling <span class="messagename" data-message="reset"> reset </span> will change parameter values back to those the object was <em> created </em> with, i.e. any attribute values set in the box will be retained </div>
+    </div>
+  </section> 
+  <section class="seealso"> 
+    <h2>See Also</h2> 
+    {%-for s in seealso -%}
+    <h3 class="seealso_name"><a href="{{ s | as_host_object_name }}.html">{{ s }}</a></h3>    
+    {%- endfor -%}
+  </section> 
+</body>
+</html>

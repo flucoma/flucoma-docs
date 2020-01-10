@@ -1,8 +1,11 @@
 from docutils.core import publish_parts
 from jinja2 import Template, Environment, PackageLoader, FileSystemLoader, select_autoescape, Markup
+from functools import partial
 import json
 import yaml
+import re
 from collections import OrderedDict
+import pprint
 
 def rst_filter(s):
     if len(s) == 0:
@@ -18,6 +21,62 @@ def max_type(value):
     }
     return type_map[value] if value in type_map else 'UNKNOWN'
 
+def max_parameter_link(name,bits):
+    return "<at>{}</at>".format(name.lower()) if bits['fixed'] == True else "<at>{}</at>".format(name.lower())
+
+def plain_parameter_link(name,bits): 
+    return "<code>{}</code>".format(name.lower())
+
+def constraints(thisAttr,allAttrs,allArgs,host):
+    upper = []
+    lower = []
+    snaps = {
+        'powerTwo':'powers of two', 
+        'odd': 'odd numbers'
+    }
+    allParams = {}
+    allParams.update(allAttrs)
+    allParams.update(allArgs)
+    if 'constraints' in thisAttr:
+        cons = thisAttr['constraints']
+        if 'upper' in cons:
+            if isinstance(cons['upper'],list):
+                for p in cons['upper']:
+                    # pprint.pprint(allParams)
+                    upper.append(max_parameter_link(p,allParams[p.lower()]))
+            else: 
+                if cons['upper'] == 'fftFrame':
+                    upper.append(host['code_block'].format('(fftSize/2) + 1') + '(see {})'.format(host['parameter_link']('fftSettings',allParams['fftSettings'.lower()])))
+                if cons['upper'] == 'maxFFTFrame':
+                    upper.append(host['code_block'].format('(maxFFTsize/2) + 1') + '(see {})'.format(host['parameter_link']('maxFFTSize',allParams['maxFFTSize'.lower()])))
+        if 'lower' in cons: 
+            if isinstance(cons['lower'],list):
+                for p in cons['lower']:
+                    lower.append(host['parameter_link'](p,allParams[p.lower()]))    
+        if 'max' in cons: upper.append(cons['max'])
+        if 'min' in cons: lower.append(cons['min'])           
+        res = '<h4>Constraints</h4><ul>'
+        
+        if len(lower) > 1: 
+            res += '<li>Minimum: MAX({})</li>'.format(','.join(map(str,lower)))
+        elif len(lower) == 1: 
+            res += '<li>Minimum: {}</li>'.format(lower[0])
+    
+        if len(upper) > 1: 
+            res += '<li>Maximum: MIN({})</li>'.format(','.join(map(str,upper)))
+        elif len(upper) == 1: 
+            res += '<li>Maximum: {}</li>'.format(upper[0])
+            
+        if 'snap' in cons:
+            res += '<li>Snaps to {}</li>'.format(snaps[cons['snap']])
+        if 'FreqAmpPair' in cons:
+            res += '<li>Two linear amplitude + normlaised frequency pairs. Amplitudes unbounded, frequencies in range 0-1</li>'    
+        res += '</ul>'
+        # print(Markup(res))    
+        return Markup(res)
+    else:
+        return ''
+    
 def max_name(value): 
     return 'fluid.{}~'.format(value.lower())
     
@@ -152,7 +211,7 @@ def process_client_data(jsonfile, yamldir):
     # client  = 'fluid.{}~'.format(jsonfile.stem.lower())
     client = jsonfile.stem
     attrs = OrderedDict(sorted(attrs.items(), key=lambda t: t[0]))
-    
+
     return {
         'arguments': args, 
         'attributes': attrs, 
@@ -166,6 +225,37 @@ def process_client_data(jsonfile, yamldir):
         'category': []
     }
 
+
+host_vars = {
+        'max': {
+            'namer':max_name, 
+            'template': 'maxref.xml',
+            'extension': 'maxref.xml',
+            'types': max_type,
+            'glob': '**/*.json', 
+            'parameter_link': max_parameter_link, 
+            'code_block': '<m>{}</m>'
+        },
+        'pd':{
+            'namer':pd_name, 
+            'template': 'pd_htmlref.html',
+            'extension': 'html', 
+            'types': pd_type,
+            'glob': '**/*.json', 
+            'parameter_link': plain_parameter_link, 
+            'code_block': '<code>{}</code>'
+        }, 
+        'cli':{
+            'namer':cli_name, 
+            'template': 'cli_htmlref.html',
+            'extension': 'html', 
+            'types': cli_type,
+            'glob': '**/Buf*.json', 
+            'parameter_link': plain_parameter_link, 
+            'code_block': '<code>{}</code>'
+        }
+    }
+
 def process_template(template_path,outputdir,client_data,host):
     ofile = outputdir / '{}.{}'.format(host['namer'](client_data['client']),host['extension'])
     
@@ -176,7 +266,7 @@ def process_template(template_path,outputdir,client_data,host):
     env.filters['rst'] = rst_filter 
     env.filters['as_host_object_name'] = host['namer']
     env.filters['typename'] = host['types']
-    
+    env.filters['constraints'] = partial(constraints,host=host)
     template = env.get_template(host['template'])
     with open(ofile,'w') as f:
         f.write(template.render(
@@ -190,22 +280,7 @@ def process_template(template_path,outputdir,client_data,host):
             ))
 
 
-host_vars = {
-        'max': {
-            'namer':max_name, 
-            'template': 'maxref.xml',
-            'extension': 'maxref.xml',
-            'types': max_type,
-            'glob': '**/*.json'
-        },
-        'pd':{
-            'namer':pd_name, 
-            'template': 'pd_htmlref.html',
-            'extension': 'html', 
-            'types': pd_type,
-            'glob': '**/*.json'
-        }
-    }
+
 
 
     # #Also return a dictionary summarizing the object for obj-qlookup.json
