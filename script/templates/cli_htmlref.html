@@ -46,7 +46,8 @@
         <span class="type"> [{{ bits['type']| typename }}]</span>
         <span class="defaultval"> (default: {{ bits['default'] }})</span>
       </h3>
-      <p class="description">{{ bits['description']|rst }}</p>       
+      <p class="description">{{ bits['description']|rst }}</p> 
+      {{ bits | constraints(attributes,arguments) }}  
     </div>
     {%- endfor -%}
   </section>  
@@ -54,7 +55,7 @@
     <h2>See Also</h2> 
     {%-for s in seealso -%}
     {%- if s is incli -%}
-    <h3 class="seealso_name"><a href="{{ s | as_host_object_name }}.html">{{ s }}</a></h3>    
+    <h3 class="seealso_name"><a href="{{ s | as_host_object_name }}.html">{{ s | as_host_object_name }}</a></h3>    
     {%- endif -%}
     {%- endfor -%}
   </section> 
