@@ -31,6 +31,7 @@
       <span class="defaultval"> (default: {{ bits['default'] }})</span>
       {%- endif -%}
       <p class="description">{{ bits['description']| rst }}</p>
+      {{ bits | constraints(attributes,arguments) }}
     {%- endfor -%}
   </section> 
   <section class="attribute_section">
@@ -42,6 +43,7 @@
         <span class="defaultval"> (default: {{ bits['default'] }})</span>
       </h3>
       <p class="description">{{ bits['description']|rst }}</p>       
+      {{ bits | constraints(attributes,arguments) }}
     </div>
     {%- endfor -%}
   </section> 
