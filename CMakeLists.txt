@@ -39,8 +39,12 @@ if (NOT (EXISTS "${CMAKE_BINARY_DIR}/maxref/"))
 	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/maxref/")
 endif()
 
-if (NOT (EXISTS "${CMAKE_BINARY_DIR}/pd_html/"))
-	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/pd_html/")
+if (NOT (EXISTS "${CMAKE_BINARY_DIR}/pdhtml/"))
+	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/pdhtml/")
+endif()
+
+if (NOT (EXISTS "${CMAKE_BINARY_DIR}/clihtml/"))
+	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/clihtml/")
 endif()
 
 add_library(FLUID_DUMP INTERFACE)
