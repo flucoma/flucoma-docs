@@ -70,44 +70,35 @@ set(FLUID_JSON_DOC "${CMAKE_BINARY_DIR}/json")
 set(FLUID_YAML_DOC "${CMAKE_CURRENT_SOURCE_DIR}/doc")
 set(FLIUD_JINJA_TEMPLATES "${CMAKE_CURRENT_SOURCE_DIR}/script/templates")
 
-add_custom_target(MAKE_MAX_REF
-	COMMAND ${PYTHON_3} "${CMAKE_CURRENT_SOURCE_DIR}/script/MakeRef.py" "max" ${FLUID_JSON_DOC} ${FLUID_YAML_DOC} "${CMAKE_BINARY_DIR}/maxref" ${FLIUD_JINJA_TEMPLATES}
-	COMMENT "Generating Max XML ref"
-	VERBATIM
-)
+macro(add_ref_target platform comment)
+  string(TOUPPER ${platform} platform_uc)
+  string(TOLOWER ${platform} platform_lc)
+  set(FLUID_${platform_uc}_REF_TARGET MAKE_${platform_uc}_REF)
+  set(FLUID_${platform_uc}_REF_PATH "${CMAKE_BINARY_DIR}/${platform_lc}_ref")
+  add_custom_target(MAKE_${platform_uc}_REF
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${FLUID_${platform_uc}_REF_PATH}
+  	COMMAND ${PYTHON_3} "${CMAKE_CURRENT_SOURCE_DIR}/script/MakeRef.py" "${platform_lc}" ${FLUID_JSON_DOC} ${FLUID_YAML_DOC} ${FLUID_${platform_uc}_REF_PATH} ${FLIUD_JINJA_TEMPLATES}
+  	COMMENT ${comment}
+  	VERBATIM
+  )
+endmacro()
 
-add_custom_target(MAKE_PD_REF
-	COMMAND ${PYTHON_3} "${CMAKE_CURRENT_SOURCE_DIR}/script/MakeRef.py" "pd" ${FLUID_JSON_DOC} ${FLUID_YAML_DOC} "${CMAKE_BINARY_DIR}/pdhtml" ${FLIUD_JINJA_TEMPLATES}
-	COMMENT "Generating PD HTML ref"
-	VERBATIM
-)
-
-add_custom_target(MAKE_CLI_REF
-	COMMAND ${PYTHON_3} "${CMAKE_CURRENT_SOURCE_DIR}/script/MakeRef.py" "cli" ${FLUID_JSON_DOC} ${FLUID_YAML_DOC} "${CMAKE_BINARY_DIR}/clihtml" ${FLIUD_JINJA_TEMPLATES}
-	COMMENT "Generating CLI HTML ref"
-	VERBATIM
-)
-
-# add_custom_target (GENERATE_HTML
-#   DEPENDS MAKE_MAX_REF
-#   WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
-#   COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/generate_html.sh "${CMAKE_CURRENT_SOURCE_DIR}"
-#   COMMENT "Transforming XML to HTML for PD and CLI"
-#   VERBATIM
-# )
+add_ref_target(max "Making Max ref")
+add_ref_target(pd "Making PD ref")
+add_ref_target(cli "Making CLI ref")
 
 # Make sure to build targets from fluid_decomposition
 # add_subdirectory(${FLUID_ABS_PATH} ${FLUID_ABS_PATH}/build)
-MACRO(SUBDIRLIST result curdir)
-  FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
-  SET(dirlist "")
-  FOREACH(child ${children})
-    IF(IS_DIRECTORY ${curdir}/${child})
-        LIST(APPEND dirlist ${child})
-    ENDIF()
-  ENDFOREACH()
-  SET(${result} ${dirlist})
-ENDMACRO()
+macro(SUBDIRLIST result curdir)
+  file(GLOB children RELATIVE ${curdir} ${curdir}/*)
+  set(dirlist "")
+  foreach(child ${children})
+    if(IS_DIRECTORY ${curdir}/${child})
+        list(APPEND dirlist ${child})
+    endif()
+  endforeach()
+  set(${result} ${dirlist})
+endmacro()
 
 # Generate a project for every folder in the "src/clients" folder
 SUBDIRLIST(PROJECT_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/src/clients)
