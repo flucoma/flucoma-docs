@@ -35,18 +35,6 @@ if (NOT (EXISTS "${CMAKE_BINARY_DIR}/json/"))
 	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/json/")
 endif()
 
-if (NOT (EXISTS "${CMAKE_BINARY_DIR}/maxref/"))
-	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/maxref/")
-endif()
-
-if (NOT (EXISTS "${CMAKE_BINARY_DIR}/pdhtml/"))
-	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/pdhtml/")
-endif()
-
-if (NOT (EXISTS "${CMAKE_BINARY_DIR}/clihtml/"))
-	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/clihtml/")
-endif()
-
 add_library(FLUID_DUMP INTERFACE)
 
 target_include_directories(FLUID_DUMP INTERFACE 
@@ -89,7 +77,7 @@ add_ref_target(cli "Making CLI ref")
 
 # Make sure to build targets from fluid_decomposition
 # add_subdirectory(${FLUID_ABS_PATH} ${FLUID_ABS_PATH}/build)
-macro(SUBDIRLIST result curdir)
+macro(subdirlist result curdir)
   file(GLOB children RELATIVE ${curdir} ${curdir}/*)
   set(dirlist "")
   foreach(child ${children})
@@ -101,7 +89,7 @@ macro(SUBDIRLIST result curdir)
 endmacro()
 
 # Generate a project for every folder in the "src/clients" folder
-SUBDIRLIST(PROJECT_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/src/clients)
+subdirlist(PROJECT_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/src/clients)
 foreach (project_dir ${PROJECT_DIRS})
 	if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/clients/${project_dir}/CMakeLists.txt")
 		message("Generating: ${project_dir}")
