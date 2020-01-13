@@ -116,7 +116,7 @@ def process_client_data(jsonfile, yamldir):
     human_data = {}
     human_data_path = yamldir / (jsonfile.stem+'.yaml')    
     if(human_data_path.exists()):
-        human_data = yaml.load(open(human_data_path.resolve()))
+        human_data = yaml.load(open(human_data_path.resolve()), Loader=yaml.FullLoader)
         # print(human_data['digest'])
 
     args={}
