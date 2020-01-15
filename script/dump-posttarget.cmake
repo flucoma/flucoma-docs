@@ -1,6 +1,10 @@
-# Bits of this Copyright (c) 2016, Cycling '74
-# Usage of this file and its contents is governed by the MIT License
-
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
 
 add_dependencies(
 	MAKE_MAX_REF ${PROJECT_NAME}
@@ -56,17 +60,3 @@ add_custom_command(
 	COMMAND $<TARGET_FILE:${PROJECT_NAME}> ARGS "${CMAKE_BINARY_DIR}/json/"
 	COMMENT "Generating JSON for ${PROJECT_NAME}"
 )
-
-
-### Output ###
-
-
-### Post Build ###
-#if (WIN32)
-#	add_custom_command(
-#		TARGET ${PROJECT_NAME}
-#		POST_BUILD
-#		COMMAND rm "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${EXTERN_OUTPUT_NAME}.ilk"
-#		COMMENT "ilk file cleanup"
-#	)
-#endif ()
