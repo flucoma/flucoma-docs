@@ -11,6 +11,7 @@ under the European Union’s Horizon 2020 research and innovation programme
 #pragma once
 #include <clients/common/FluidBaseClient.hpp>
 #include <nlohmann/json.hpp> ~
+#include <nlohmann/json.hpp>
 #include <array>
 #include <fstream>
 #include <string>
