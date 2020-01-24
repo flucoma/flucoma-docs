@@ -35,3 +35,8 @@ args.output_path.mkdir(exist_ok=True)
 for c in clients:
     d = process_client_data(c, args.yaml_path)
     process_template(args.template_path, args.output_path, d, host_vars[args.host])
+
+topics = list(Path('/Users/owen/flucoma_paramdump/topics').glob('*.yaml'))
+for t in topics: 
+    process_topic(t,args.template_path,args.output_path,host_vars[args.host])
+# print(topics)

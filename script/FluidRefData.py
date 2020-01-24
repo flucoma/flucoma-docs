@@ -7,18 +7,102 @@
 # (grant agreement No 725899).
 
 from docutils.core import publish_parts
+from docutils.parsers.rst import roles 
+from docutils.writers import html4css1
+from docutils import nodes, utils
 from jinja2 import Template, Environment, PackageLoader, FileSystemLoader, select_autoescape, Markup
 from functools import partial
+from pathlib import Path
 import json
 import yaml
 import re
 from collections import OrderedDict
 import pprint
 
-def rst_filter(s):
+import inspect
+def fluid_object_role(role, rawtext, text, lineno, inliner,
+                       options={}, content=[]):
+    """Create a link to a FluCoMa object
+    """
+    options['flucoma'] = 1
+    roles.set_classes(options)
+    node = nodes.reference(rawtext,utils.unescape(text), **options)
+    return [node], []
+
+class MaxHTMLTranslator(html4css1.HTMLTranslator):
+    """docutils translator for Max ref    
+    """    
+    def visit_reference(self,node):
+        if('flucoma' in node):
+           node[:] = [nodes.raw('',max_name(node.astext()),format='html')]
+           self.body.append(self.starttag(node, 'o', ''))
+        else:
+            super().visit_reference(node)
+    
+    def depart_reference(self,node):
+        if('flucoma' in node):
+            self.body.append('</o>')
+        else: 
+            super().depart_reference(node)
+
+class PDHTMLTranslator(html4css1.HTMLTranslator):
+    """docutils translator for PD ref    
+    """    
+    def visit_reference(self,node):    
+        atts = {'class' : 'fluid_object'}    
+        if('flucoma' in node):
+            pdname = pd_name(node.astext())  
+            node[:] = [nodes.raw('',pdname,format='html')]
+            atts['href'] = pdname + '.html'
+            self.body.append(self.starttag(node, 'a', '',**atts))
+            # print(inspect.getmembers(node))
+        else:
+            super().visit_reference(node)
+    
+class CLIHTMLTranslator(html4css1.HTMLTranslator):
+    """docutils translator for PD ref    
+    """    
+    
+    _skip_one = False; 
+    
+    def visit_reference(self,node):    
+        atts = {'class' : 'fluid_object'}    
+        if('flucoma' in node):
+            #if it's not a Buf* star object, don't link to it (or mention it)
+            if not node.astext().startswith('Buf'):
+                node.remove(node.astext())                
+                self._skip_one = True                
+                return 
+            self._skip_one = False
+            cli = cli_name(node.astext())  
+            node[:] = [nodes.raw('',cli,format='html')]
+            atts['href'] = cli + '.html'            
+            self.body.append(self.starttag(node, 'a', '',**atts))
+            print(inspect.getmembers(node))
+        else:
+            super().visit_reference(node)
+            
+    def depart_reference(self,node):
+        if('flucoma' in node and not self._skip_one):
+            super().depart_reference(node)             
+                        
+
+
+class FluidHTMLWriter(html4css1.Writer):
+    """docutils writer for Max ref
+    """    
+    def __init__(self,Writer=None):
+        html4css1.Writer.__init__(self)
+        self.translator_class = Writer
+
+
+def rst_filter(s,translator,**kwargs):    
     if len(s) == 0:
          return ''
-    return Markup(publish_parts(source=s, writer_name='html')['body'])
+    settings = {}
+    if(kwargs):
+        settings = kwargs['settings']         
+    return Markup(publish_parts(source=s, writer=FluidHTMLWriter(translator),settings_overrides=settings)['html_body'])
 
 def max_type(value):
     type_map = {
@@ -242,7 +326,11 @@ host_vars = {
             'types': max_type,
             'glob': '**/*.json', 
             'parameter_link': max_parameter_link, 
-            'code_block': '<m>{}</m>'
+            'code_block': '<m>{}</m>', 
+            'translator': MaxHTMLTranslator, 
+            'topic_extension': 'maxvig.xml', 
+            'topic_subdir': 'vignettes',
+            'topic_template':'maxvig.xml'
         },
         'pd':{
             'namer':pd_name, 
@@ -251,7 +339,11 @@ host_vars = {
             'types': pd_type,
             'glob': '**/*.json', 
             'parameter_link': plain_parameter_link, 
-            'code_block': '<code>{}</code>'
+            'code_block': '<code>{}</code>', 
+            'translator': PDHTMLTranslator,
+            'topic_extension': 'html', 
+            'topic_subdir': '',
+            'topic_template':'pd_htmltopic.html'
         }, 
         'cli':{
             'namer':cli_name, 
@@ -260,18 +352,23 @@ host_vars = {
             'types': cli_type,
             'glob': '**/Buf[!Compose]*.json', 
             'parameter_link': plain_parameter_link, 
-            'code_block': '<code>{}</code>'
+            'code_block': '<code>{}</code>', 
+            'translator': CLIHTMLTranslator,
+            'topic_extension': 'html', 
+            'topic_subdir': '',
+            'topic_template':'cli_htmltopic.html'
         }
     }
 
 def process_template(template_path,outputdir,client_data,host):
     ofile = outputdir / '{}.{}'.format(host['namer'](client_data['client']),host['extension'])
     print(host['namer'](client_data['client']))
+    roles.register_local_role('fluid_object', fluid_object_role)
     env = Environment(
         loader=FileSystemLoader([template_path]),
         autoescape=select_autoescape(['html', 'xml'])
     )
-    env.filters['rst'] = rst_filter 
+    env.filters['rst'] = partial(rst_filter,translator=host['translator'])
     env.filters['as_host_object_name'] = host['namer']
     env.filters['typename'] = host['types']
     env.filters['constraints'] = partial(constraints,host=host)
@@ -288,10 +385,39 @@ def process_template(template_path,outputdir,client_data,host):
             seealso = client_data['seealso'] 
             ))
 
-
-
-
-
+def process_topic(topic_file,template_path,outputdir,host):
+    ofile = outputdir / '{}.{}'.format(Path(host['topic_subdir']) / Path(topic_file.stem),host['topic_extension'])    
+    
+    (outputdir / Path(host['topic_subdir'])).mkdir(exist_ok=True)
+    
+    
+    
+    print(ofile)
+    roles.register_local_role('fluid_object', fluid_object_role)
+    env = Environment(
+        loader=FileSystemLoader([template_path]),
+        autoescape=select_autoescape(['html', 'xml'])
+    )
+    env.filters['rst'] = partial(rst_filter,translator=host['translator'],settings={'initial_header_level':2})
+    env.filters['as_host_object_name'] = host['namer']
+    env.filters['typename'] = host['types']
+    # env.filters['constraints'] = partial(constraints,host=host)
+    env.tests['incli'] = lambda s: s.lower().startswith('buf')
+    template = env.get_template(host['topic_template'])
+    
+    topic_data = {}          
+    if(topic_file.exists()):
+        topic_data = yaml.load(open(topic_file.resolve()), Loader=yaml.FullLoader)
+    else: 
+        raise NameError('{} not found'.format(topic_file))
+    
+    with open(ofile,'w') as f:
+        f.write(template.render(
+            title=topic_data['title'],
+            digest=topic_data['digest'],
+            description=topic_data['description'],
+            ))
+    
     # #Also return a dictionary summarizing the object for obj-qlookup.json
     # objLookupEntry = {
     #     'digest': digest,
