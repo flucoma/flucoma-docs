@@ -271,16 +271,23 @@ def process_client_data(jsonfile, yamldir):
             if 'enum' in human_data['parameters'][d] and 'values' in v:
                 param[d.lower()]['enum'] = dict(zip(v['values'],human_data['parameters'][d]['enum'].values()))
 
-
         if d == 'fftSettings':
-            fftdesc ='FFT settings consist of three numbers representing the window size, hop size and FFT size:\n'
+            fftdesc ='FFT settings consist of three numbers representing the window size, hop size and FFT size in samples:\n'
             if 'windowSize' in  human_data['parameters']:
-                fftdesc += '   \n* ' + human_data['parameters']['windowSize']['description'];
+                fftdesc += '   \n* ' + human_data['parameters']['windowSize']['description'] 
+                #+ ' . Window size can be any integer (in samples), but is clipped at its upper range by the FFT size (when this is not -1)'
             if 'hopSize' in human_data['parameters']:
-                fftdesc += '   \n* ' + human_data['parameters']['hopSize']['description'];
+                fftdesc += '   \n* ' + human_data['parameters']['hopSize']['description']
+                # + '. The default of -1 sets the hop size to window size / 2. However it can be *any* size (although some small integer fraction of the window size is conventional).'
             if 'fftSize' in human_data['parameters']:
-                fftdesc += '   \n* ' + human_data['parameters']['fftSize']['description'];
-            fftdesc += '\n'
+                fftdesc += '   \n* ' + human_data['parameters']['fftSize']['description'] 
+                #+ '. The default of -1 sets the FFT size to the nearest power of 2 equal to or above the window size. When set manually, it will always snap internally to the next power of two, and can not be smaller than the window size. When greater than the window size, the input frame is zero-padded.'
+            fftdesc += '\n\n'
+            
+            fftDefault = 'The hop size and fft size can both be set to -1 (and are by default), with slightly different meanings:\n   \n* For the hop size, -1 = ``windowSize/2``\n* For the FFT size, -1 = ``windowSize`` snapped to the nearest equal / greater power of 2 (e.g. ``windowSize 1024`` => ``fftSize 1024``, but ``windowsSize 1000`` also => ``fftSize 1024``)\n'
+            
+            fftdesc += fftDefault
+            
             param[d.lower()].update({'description': fftdesc})
 
 
