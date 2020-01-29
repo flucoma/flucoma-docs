@@ -78,14 +78,13 @@ class CLIHTMLTranslator(html4css1.HTMLTranslator):
             node[:] = [nodes.raw('',cli,format='html')]
             atts['href'] = cli + '.html'            
             self.body.append(self.starttag(node, 'a', '',**atts))
-            print(inspect.getmembers(node))
+            # print(inspect.getmembers(node))
         else:
             super().visit_reference(node)
             
     def depart_reference(self,node):
-        if('flucoma' in node and not self._skip_one):
-            super().depart_reference(node)             
-                        
+        if(not 'flucoma' in node) or ('flucoma' in node and not self._skip_one):
+            super().depart_reference(node) 
 
 
 class FluidHTMLWriter(html4css1.Writer):
