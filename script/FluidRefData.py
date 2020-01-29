@@ -361,7 +361,7 @@ host_vars = {
 
 def process_template(template_path,outputdir,client_data,host):
     ofile = outputdir / '{}.{}'.format(host['namer'](client_data['client']),host['extension'])
-    print(host['namer'](client_data['client']))
+    # print(host['namer'](client_data['client']))
     roles.register_local_role('fluid_object', fluid_object_role)
     env = Environment(
         loader=FileSystemLoader([template_path]),
@@ -391,7 +391,7 @@ def process_topic(topic_file,template_path,outputdir,host):
     
     
     
-    print(ofile)
+    # print(ofile)
     roles.register_local_role('fluid_object', fluid_object_role)
     env = Environment(
         loader=FileSystemLoader([template_path]),
