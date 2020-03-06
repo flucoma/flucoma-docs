@@ -9,6 +9,15 @@
 import argparse
 from pathlib import Path
 from FluidRefData import *
+import locale 
+
+"""
+So, when running this script from Xcode the locale is set to 'C', which *hilariously* breaks python's ability to read files and process strings in UTF-8 :manic sobbing emoji:
+
+Presumably it doesn't matter a great deal what this is set to here (??)
+Or maybe it will break on machines that don't have a en_GB locale? I DON'T KNOW
+"""
+locale.setlocale(locale.LC_ALL,'en_GB')
 
 parser = argparse.ArgumentParser(
     description='Generate FluCoMa documentation for a given host, using input JSON and YAML data and a jinja template')
