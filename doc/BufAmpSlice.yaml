@@ -11,11 +11,11 @@ sc-categories: Libraries>FluidDecomposition
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition
 see-also: AmpSlice, BufAmpGate, BufOnsetSlice, BufNoveltySlice, BufTransientSlice
 description: |
-  This class implements an amplitude-based slicer, with various customisable options and conditions to detect absolute and relative amplitude changes as onsets and offsets.
+  This class implements an amplitude-based slicer,with various customisable options and conditions to detect relative amplitude changes as onsets.
 discussion: |
-    FluidAmpSlice is based on two envelop followers on a highpassed version of the signal: one absolute, and one relative. Each have features that will interact, including independent Schmidt triggers and state-aware time contraints. The example code below is unfolding the various possibilites in order of complexity.
+  FluidBufAmpSlice is based on two envelop followers on a highpassed version of the signal: one slow that gives the trend, and one fast. Each have features that will interact. The example code below is unfolding the various possibilites in order of complexity.
 
-    The process will return a two-channel buffer with the addresses of the onset on the first channel, and the address of the offset on the second channel.
+  The process will return a buffer which contains indices (in sample) of estimated starting points of different slices.
 parameters:
   server:
     description: |
@@ -38,51 +38,33 @@ parameters:
   indices:
     description: |
       The index of the buffer where the indices (in sample) of the estimated starting points of slices will be written. The first and last points are always the boundary points of the analysis.
-  absRampUp:
+  fastRampUp:
+    description: |
+      The number of samples the relative envelope follower will take to reach the next value when raising. Typically, this will be faster than slowRampUp.
+  fastRampDown:
+    description: |
+      The number of samples the relative envelope follower will take to reach the next value when falling. Typically, this will be faster than slowRampDown.
+  slowRampUp:
     description: |
       The number of samples the absolute envelope follower will take to reach the next value when raising.
-  absRampDown:
+  slowRampDown:
     description: |
       The number of samples the absolute envelope follower will take to reach the next value when falling.
-  absThreshOn:
-    description: |
-      The threshold in dB of the absolute envelope follower to trigger an onset, aka to go ON when in OFF state.
-  absThreshOff:
-    description: |
-      The threshold in dB of the absolute envelope follower to trigger an offset, , aka to go ON when in OFF state.
-  minSliceLength:
-    description: |
-      The length in samples that the Slice will stay ON. Changes of states during that period will be ignored.
-  minSilenceLength:
-    description: |
-      The length in samples that the Slice will stay OFF. Changes of states during that period will be ignored.
-  minLengthAbove:
-    description: |
-      The length in samples that the absolute envelope have to be above the threshold to consider it a valid transition to ON. The Slice will start at the first sample when the condition is met. Therefore, this affects the latency.
-  minLengthBelow:
-    description: |
-      The length in samples that the absolute envelope have to be below the threshold to consider it a valid transition to OFF. The Slice will end at the first sample when the condition is met. Therefore, this affects the latency.
-  lookBack:
-    description: |
-      The length of the buffer kept before an onset to allow the algorithm, once a new Slice is detected, to go back in time (up to that many samples) to find the minimum amplitude as the Slice onset point. This affects the latency of the algorithm.
-  lookAhead:
-    description: |
-      The length of the buffer kept after an offset to allow the algorithm, once the Slice is considered finished, to wait further in time (up to that many samples) to find a minimum amplitude as the Slice offset point. This affects the latency of the algorithm.
-  relRampUp:
-    description: |
-      The number of samples the relative envelope follower will take to reach the next value when raising. Typically, this will be faster than absRampUp.
-  relRampDown:
-    description: |
-      The number of samples the relative envelope follower will take to reach the next value when falling. Typically, this will be faster than absRampDown.
-  relThreshOn:
+  onThreshold:
     description: |
       The threshold in dB of the relative envelope follower to trigger an onset, aka to go ON when in OFF state. It is computed on the difference between the two envelope followers.
-  relThreshOff:
+  offThreshold:
     description: |
       The threshold in dB of the relative envelope follower to reset, aka to allow the differential envelop to trigger again.
+  floor:
+    description: |
+      	The level in dB the slowRamp needs to be above to consider a detected difference valid, allowing to ignore the slices in the noise floor.
   highPassFreq:
     description: |
       The frequency of the fourth-order Linkwitz–Riley high-pass filter (https://en.wikipedia.org/wiki/Linkwitz%E2%80%93Riley_filter). This is done first on the signal to minimise low frequency intermodulation with very fast ramp lengths.
+  minSliceLength:
+    description: |
+      The length in samples that the Slice will stay ON. Changes of states during that period will be ignored.
   action:
     description: |
       A Function to be evaluated once the offline process has finished and indices instance variables have been updated on the client side. The metric will be passed indices as an argument.
