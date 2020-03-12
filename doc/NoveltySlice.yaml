@@ -55,7 +55,7 @@ parameters:
     description: |
       This cannot be modulated.
 
-output: An audio stream with impulses at detected transients. The latency between the input and the output is (windowSize + ((((kernelSize - 1) / 2) + (filterSize - 1)) * hopSize) at maximum.
+output: An audio stream with impulses at detected transients. The latency between the input and the output is windowSize + (hopSize * (((kernelSize+1)/2) + (filterSize / 2)) samples at maximum.
 
 sc-code: |
   //load some sounds
