@@ -17,7 +17,7 @@ under the European Union’s Horizon 2020 research and innovation programme
       <h4><openfilelink filename="fluid_decomposition.overview.maxpat" id='open_help'>Open the Overview Patch</openfilelink></h4>
     {{ discussion | rst }}
 		
-		{{ client_name | as_host_object_name }} is part of the Fluid Decomposition Toolkit of the FluCoMa project. For more explanations, learning material, and discussions on its musicianly uses, visit <a href=http://www.flucoma.org/>flucoma.org</a>.
+		{{ client_name | as_host_object_name }} is part of the Fluid Decomposition Toolkit of the FluCoMa project. For more explanations, learning material, and discussions on its musicianly uses, visit <a href="http://www.flucoma.org/">flucoma.org</a>.
 		
   </discussion>
 	<!--METADATA-->
