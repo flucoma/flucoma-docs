@@ -55,8 +55,15 @@ target_sources(FLUID_DUMP INTERFACE
 source_group("Fluid Paramdump Wrapper" FILES 
   "${CMAKE_CURRENT_SOURCE_DIR}/include/FluidParameterDump.hpp"
 )
-
-find_program(PYTHON_3 python3)
+if(${CMAKE_VERSION} VERSION_LESS "3.12.0")
+  find_program(PYTHON_3 python3)
+else()
+  find_package (Python COMPONENTS Interpreter)
+  if(Python_FOUND)
+    set(PYTHON_3 ${Python_EXECUTABLE} CACHE PATH "")
+  endif()
+endif()
+    
 message(STATUS ${PYTHON_3})
 if(NOT PYTHON_3)
   message(FATAL_ERROR "Python 3 not found, won't be doing attempting to generate docs")
