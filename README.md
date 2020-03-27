@@ -12,7 +12,9 @@ cmake -DFLUID_PATH=/your/path/to/your/fluid/decompostion/repo ..
 make
 ```
 
-This requires python 3 with the docutils and jinja2 packages. If you have multiple python 3s on your system, using variables like CMAKE_FIND_FRAMEWORK might help CMake find the right one. 
+This requires python 3 with the docutils, jinja2, and pyYAML (>=5.1)  packages. 
+
+If you have multiple python 3s on your system, using variables like CMAKE_FIND_FRAMEWORK might help CMake find the right one. 
 
 
 > This project has received funding from the European Research Council (ERC) under the European Union’s Horizon 2020 research and innovation programme (grant agreement No 725899).
