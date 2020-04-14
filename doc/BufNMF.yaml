@@ -78,7 +78,7 @@ parameters:
    components:
       description: |
          The number of elements the NMF algorithm will try to divide the spectrogram of the source in.
-   numIter:
+   iterations:
       description: |
          The NMF process is iterative, trying to converge to the smallest error in its factorisation. The number of iterations will decide how many times it tries to adjust its estimates. Higher numbers here will be more CPU expensive, lower numbers will be more unpredictable in quality.
    windowSize:

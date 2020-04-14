@@ -56,7 +56,7 @@ parameters:
   threshold:
     description: |
       The thresholding of a new slice. Value ranges are different for each metric, from 0 upwards.
-  debounce:
+  minSliceLength:
     description: |
       The minimum duration of a slice in number of hopSize.
   filterSize:
@@ -74,6 +74,9 @@ parameters:
   fftSize:
     description: |
       The inner FFT/IFFT size. It should be at least 4 samples long, at least the size of the window, and a power of 2. Making it larger allows an oversampling of the spectral precision. The -1 default value will default to windowSize.
+  maxFFTSize:
+    description: |
+      How large can the FFT be, by allocating memory at instantiation time. This cannot be modulated.
   action:
     description: |
       A Function to be evaluated once the offline process has finished and indices instance variables have been updated on the client side. The function will be passed indices as an argument.

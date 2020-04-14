@@ -71,6 +71,9 @@ parameters:
   highPassFreq:
     description: |
       The frequency of the fourth-order Linkwitz–Riley high-pass filter (https://en.wikipedia.org/wiki/Linkwitz%E2%80%93Riley_filter). This is done first on the signal to minimise low frequency intermodulation with very fast ramp lengths.
+  maxSize:
+     description: |
+         How large can the buffer be for time-critical conditions, by allocating memory at instantiation time. This cannot be modulated.
   action:
     description: |
       A Function to be evaluated once the offline process has finished and indices instance variables have been updated on the client side. The metric will be passed indices as an argument.

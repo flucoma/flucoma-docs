@@ -48,6 +48,9 @@ parameters:
   maxFreq:
        description: |
          The highest boundary of the highest band of the model, in Hz.
+  maxNumBands:
+    description: |
+      The maximum number of Mel bands that can be modelled. This sets the number of channels of the output, and therefore cannot be modulated.
   normalize:
        description: |
          This flag enables the scaling of the output to preserve the energy of the window. It is on (1) by default.
@@ -60,6 +63,9 @@ parameters:
   fftSize:
        description: |
          The inner FFT/IFFT size. It should be at least 4 samples long, at least the size of the window, and a power of 2. Making it larger allows an oversampling of the spectral precision.
+  maxFFTSize:
+    description: |
+      How large can the FFT be, by allocating memory at instantiation time. This cannot be modulated.
   action:
        description: |
          A Function to be evaluated once the offline process has finished and all Buffer's instance variables have been updated on the client side. The function will be passed [features] as an argument.

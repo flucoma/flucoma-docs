@@ -31,7 +31,7 @@ parameters:
       The server index of the buffer containing the different bases that the input signal will be matched against. Bases must be (fft size / 2) + 1 frames. If the buffer has more than maxComponents channels, the excess will be ignored.
   maxComponents:
     description: The maximum number of elements the NMF algorithm will try to divide the spectrogram of the source in. This dictates the number of output channelsfor the ugen. This cannot be modulated.
-  numIter:
+  iterations:
     description: |
       The NMF process is iterative, trying to converge to the smallest error in its factorisation. The number of iterations will decide how many times it tries to adjust its estimates. Higher numbers here will be more CPU intensive, lower numbers will be more unpredictable in quality.
   windowSize:

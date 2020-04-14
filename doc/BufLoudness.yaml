@@ -54,6 +54,9 @@ parameters:
   hopSize:
        description: |
          How much the buffered window moves forward, in samples. By default 512 to be similar with all other FluCoMa objects, the EBU specifies other values as per the examples below.
+  maxWindowSize:
+    description: |
+      How large can the windowSize be, by allocating memory at instantiation time. This cannot be modulated.
   action:
        description: |
          A Function to be evaluated once the offline process has finished and all Buffer's instance variables have been updated on the client side. The function will be passed [features] as an argument.

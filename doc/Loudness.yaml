@@ -32,7 +32,7 @@ parameters:
   hopSize:
     description: |
       How much the buffered window moves forward, in samples. By default 512 to be similar with all other FluCoMa objects, the EBU specifies other values as per the examples below.
-  maxwindowSize:
+  maxWindowSize:
     description: |
       How large can the windowSize be, by allocating memory at instantiation time. This cannot be modulated.
 output: A 2-channel KR signal with the [pitch, confidence] descriptors. The latency is windowSize.

@@ -161,7 +161,7 @@ def constraints(thisAttr,allAttrs,allArgs,host):
         if 'snap' in cons:
             res += '<li>Snaps to {}</li>'.format(snaps[cons['snap']])
         if 'FreqAmpPair' in cons:
-            res += '<li>Two linear amplitude + normlaised frequency pairs. Amplitudes unbounded, frequencies in range 0-1</li>'    
+            res += '<li>Two amplitude + frequency pairs. Amplitudes are unbounded, frequencies in range 0-1</li>'    
         res += '</ul>'
         # print(Markup(res))    
         return Markup(res)

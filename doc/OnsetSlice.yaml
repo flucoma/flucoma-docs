@@ -37,7 +37,7 @@ parameters:
   threshold:
     description: |
       The thresholding of a new slice. Value ranges are different for each metric, from 0 upwards.
-  debounce:
+  minSliceLength:
     description: |
       The minimum duration of a slice in number of hopSize.
   filterSize:

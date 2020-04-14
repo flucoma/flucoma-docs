@@ -20,7 +20,7 @@ parameters:
   in:
     description: |
       The audio to be processed.
-  numCoefs:
+  numCoeffs:
     description: |
       The number of cepstral coefficients to be outputed. It is limited by the maxNumCoefs parameter. When the number is smaller than the maximum, the output is zero-padded.
   numBands:
@@ -32,7 +32,7 @@ parameters:
   maxFreq:
     description: |
       The highest boundary of the highest band of the model, in Hz.
-  maxNumCoefs:
+  maxNumCoeffs:
     description: |
       The maximum number of cepstral coefficients that can be computed. This sets the number of channels of the output, and therefore cannot be modulated.
   windowSize:
