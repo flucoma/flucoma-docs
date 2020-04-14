@@ -215,6 +215,13 @@ def process_client_data(jsonfile, yamldir):
 
     data = dict(data) #data is in json array to preserve order,
 
+    for k,v in data.items():
+        if k != 'fftSettings' and  not k in human_data['parameters']:
+            print("WARNING CAN'T FIND {} in {}".format(k,jsonfile.stem))
+    
+    data = {k.lower():v for k,v in data.items()}
+    human_data['parameters'] = {k.lower():v for k,v in human_data['parameters'].items()}
+
     data['warnings'] = {
         "displayName" : "Warnings",
         "constraints": {
@@ -266,9 +273,9 @@ def process_client_data(jsonfile, yamldir):
         param.update({d.lower():v})
 
         if 'parameters' in human_data and d in human_data['parameters']:
-            if 'description' in human_data['parameters'][d]:
+            if 'description' in human_data['parameters'][d.lower()]:
                 param[d.lower()].update({'description': human_data['parameters'][d]['description']})
-            if 'enum' in human_data['parameters'][d] and 'values' in v:
+            if 'enum' in human_data['parameters'][d.lower()] and 'values' in v:
                 param[d.lower()]['enum'] = dict(zip(v['values'],human_data['parameters'][d]['enum'].values()))
 
         if d == 'fftSettings':
