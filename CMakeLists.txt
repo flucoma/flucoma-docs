@@ -9,7 +9,7 @@
 cmake_minimum_required(VERSION 3.11)
 
 if(APPLE)
-  set(CMAKE_OSX_DEPLOYMENT_TARGET 10.7)
+  set(CMAKE_OSX_DEPLOYMENT_TARGET 10.8)
 endif()
 
 project (fluid_parameter_dump LANGUAGES CXX)
