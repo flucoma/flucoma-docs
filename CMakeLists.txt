@@ -73,15 +73,19 @@ set(FLUID_JSON_DOC "${CMAKE_BINARY_DIR}/json")
 set(FLUID_YAML_DOC "${CMAKE_CURRENT_SOURCE_DIR}/doc")
 set(FLIUD_JINJA_TEMPLATES "${CMAKE_CURRENT_SOURCE_DIR}/script/templates")
 
-macro(add_ref_target platform comment)
+macro(add_ref_target platform comment)  
   string(TOUPPER ${platform} platform_uc)
   string(TOLOWER ${platform} platform_lc)
-  set(FLUID_${platform_uc}_REF_TARGET MAKE_${platform_uc}_REF PARENT_SCOPE)
-  set(FLUID_${platform_uc}_REF_PATH "${CMAKE_BINARY_DIR}/${platform_lc}_ref" PARENT_SCOPE)
+  get_directory_property(hasParent PARENT_DIRECTORY)
+  if(hasParent)
+    set(FLUID_${platform_uc}_REF_TARGET MAKE_${platform_uc}_REF PARENT_SCOPE)
+    set(FLUID_${platform_uc}_REF_PATH "${CMAKE_BINARY_DIR}/${platform_lc}_ref" PARENT_SCOPE)
+  endif()
   add_custom_target(MAKE_${platform_uc}_REF
     COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/${platform_lc}_ref"
   	COMMAND ${PYTHON_3} "${CMAKE_CURRENT_SOURCE_DIR}/script/MakeRef.py" "${platform_lc}" ${FLUID_JSON_DOC} ${FLUID_YAML_DOC} "${CMAKE_BINARY_DIR}/${platform_lc}_ref" ${FLIUD_JINJA_TEMPLATES}
   	COMMENT ${comment}
+    
   	VERBATIM
   )
 endmacro()
