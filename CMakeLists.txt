@@ -12,7 +12,7 @@ if(APPLE)
   set(CMAKE_OSX_DEPLOYMENT_TARGET 10.8)
 endif()
 
-project (fluid_parameter_dump LANGUAGES CXX)
+project (flucoma-docs LANGUAGES CXX)
 
 set(FLUID_PATH "" CACHE PATH "The top level of the fluid_decomposition repo. Will clone from repo if blank")
 # set(FLUID_M_PATH "" CACHE PATH "Top level of fluid fluid_manipulation. Will clone from repo if blank" )
