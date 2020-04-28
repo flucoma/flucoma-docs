@@ -14,29 +14,28 @@ endif()
 
 project (flucoma-docs LANGUAGES CXX)
 
-set(FLUID_PATH "" CACHE PATH "The top level of the fluid_decomposition repo. Will clone from repo if blank")
-# set(FLUID_M_PATH "" CACHE PATH "Top level of fluid fluid_manipulation. Will clone from repo if blank" )
+set(FLUID_PATH "" CACHE PATH "The top level of the flucoma-core repo. Will clone from repo if blank")
 
 include(FetchContent)
 
 set(FETCHCONTENT_QUIET FALSE)
 
 FetchContent_Declare(
-  fluid_decomposition
-  GIT_REPOSITORY https://bitbucket.org/flucoma/fluid_decomposition.git
+  flucoma-core
+  GIT_REPOSITORY https://github.com/flucoma/flucoma-core.git
   GIT_PROGRESS TRUE
 )
 
 if(FLUID_PATH)
 get_filename_component(
-  FETCHCONTENT_SOURCE_DIR_FLUID_DECOMPOSITION ${FLUID_PATH} ABSOLUTE
+  FETCHCONTENT_SOURCE_DIR_FLUCOMA-CORE ${FLUID_PATH} ABSOLUTE
 )
 endif()
 
-FetchContent_GetProperties(fluid_decomposition)
-if(NOT fluid_decomposition_POPULATED)
-FetchContent_Populate(fluid_decomposition)
-add_subdirectory(${fluid_decomposition_SOURCE_DIR} ${fluid_decomposition_BINARY_DIR})
+FetchContent_GetProperties(flucoma-core)
+if(NOT flucoma-core_POPULATED)
+FetchContent_Populate(flucoma-core)
+add_subdirectory(${flucoma-core_SOURCE_DIR} ${flucoma-core_BINARY_DIR})
 endif()
 
 if (NOT (EXISTS "${CMAKE_BINARY_DIR}/json/"))
@@ -85,7 +84,6 @@ macro(add_ref_target platform comment)
     COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/${platform_lc}_ref"
   	COMMAND ${PYTHON_3} "${CMAKE_CURRENT_SOURCE_DIR}/script/MakeRef.py" "${platform_lc}" ${FLUID_JSON_DOC} ${FLUID_YAML_DOC} "${CMAKE_BINARY_DIR}/${platform_lc}_ref" ${FLIUD_JINJA_TEMPLATES}
   	COMMENT ${comment}
-    
   	VERBATIM
   )
 endmacro()
@@ -94,8 +92,7 @@ add_ref_target(max "Making Max ref")
 add_ref_target(pd "Making PD ref")
 add_ref_target(cli "Making CLI ref")
 
-# Make sure to build targets from fluid_decomposition
-# add_subdirectory(${FLUID_ABS_PATH} ${FLUID_ABS_PATH}/build)
+# Make sure to build targets from flucoma-core
 macro(subdirlist result curdir)
   file(GLOB children RELATIVE ${curdir} ${curdir}/*)
   set(dirlist "")
@@ -115,6 +112,3 @@ foreach (project_dir ${PROJECT_DIRS})
 		add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/clients/${project_dir})
 	endif ()
 endforeach ()
-
-# add_custom_target(ALLJSON)
-# add_dependencies(ALLJSON ${PROJECT_DIRS})
