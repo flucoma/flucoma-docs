@@ -1,6 +1,15 @@
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
+---
 digest: Buffer-Based Transient Extractor
 sc-categories: Libraries>FluidDecomposition, UGens>Buffer
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition
+see-also: Transients, BufHPSS, BufSines
 description: A transient extractor on buffers
 discussion: |
   It implements declicking algorithm from chapter 5 of 'Digital Audio Restoration' by Godsill, Simon J., Rayner, Peter J.W. with some bespoke improvements on the detection function tracking.
@@ -57,7 +66,7 @@ parameters:
   windowSize:
     description: |
       The averaging window of the error detection function. It needs smoothing as it is very jittery. The longer the window, the less precise, but the less false positive.
-  debounce:
+  clumpLength:
     description: |
       The window size in sample within which positive detections will be clumped together to avoid overdetecting in time.
   action:

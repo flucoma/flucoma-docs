@@ -1,6 +1,15 @@
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
+---
 digest: A Perceptually Spread Spectral Contour Descriptor in Real-Time
 sc-categories: Libraries>FluidDecomposition
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition, Classes/FluidMFCC
+see-also: BufMelBands, Pitch, Loudness, MFCC, SpectralShape
 description: Amplitude for a number of equally spread perceptual bands.
 discussion: |
   The spread is based on the Mel scale (https://en.wikipedia.org/wiki/Mel_scale) which was one of the first attempts to mimic pitch perception scientifically. This implementation allows to select the range and number of bands dynamically.
@@ -23,6 +32,9 @@ parameters:
   maxNumBands:
     description: |
       The maximum number of Mel bands that can be modelled. This sets the number of channels of the output, and therefore cannot be modulated.
+  normalize:
+       description: |
+         This flag enables the scaling of the output to preserve the energy of the window. It is on (1) by default.
   windowSize:
     description: |
       The window size. As sinusoidal estimation relies on spectral frames, we need to decide what precision we give it spectrally and temporally, in line with Gabor Uncertainty principles. http://www.subsurfwiki.org/wiki/Gabor_uncertainty

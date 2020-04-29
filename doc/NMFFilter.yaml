@@ -1,6 +1,15 @@
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
+---
 digest: Real-Time Non-Negative Matrix Factorisation with Fixed Bases
 sc-categories: Libraries>FluidDecomposition
-sc-related: Guides/FluCoMa, Guides/FluidDecomposition, Classes/FluidBufNMF, Classes/FluidNMFMatch
+sc-related: Guides/FluCoMa, Guides/FluidDecomposition
+see-also: NMFMatch, BufNMF
 description: Decomposes and resynthesises a signal against a set of spectral templates
 discussion: |
   This uses an slimmed-down version of Nonnegative Matrix Factorisation (NMF, see Lee, Daniel D., and H. Sebastian Seung. 1999. ‘Learning the Parts of Objects by Non-Negative Matrix Factorization’. Nature 401 (6755): 788–91. https://doi.org/10.1038/44565)

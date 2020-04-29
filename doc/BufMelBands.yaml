@@ -1,6 +1,15 @@
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
+---
 digest: A Perceptually Spread Spectral Contour Descriptor on a Buffer
 sc-categories: Libraries>FluidDecomposition
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition, Classes/FluidBufMFCC
+see-also: MelBands, BufPitch, BufLoudness, BufMFCC, BufSpectralShape, BufStats
 descritpion: |
   A spectral shape descriptor where the amplitude is given for a number of equally spread perceptual bands. 
 discussion: |
@@ -39,6 +48,12 @@ parameters:
   maxFreq:
        description: |
          The highest boundary of the highest band of the model, in Hz.
+  maxNumBands:
+    description: |
+      The maximum number of Mel bands that can be modelled. This sets the number of channels of the output, and therefore cannot be modulated.
+  normalize:
+       description: |
+         This flag enables the scaling of the output to preserve the energy of the window. It is on (1) by default.
   windowSize:
        description: |
          The window size. As spectral description relies on spectral frames, we need to decide what precision we give it spectrally and temporally, in line with Gabor Uncertainty principles. http://www.subsurfwiki.org/wiki/Gabor_uncertainty
@@ -48,6 +63,9 @@ parameters:
   fftSize:
        description: |
          The inner FFT/IFFT size. It should be at least 4 samples long, at least the size of the window, and a power of 2. Making it larger allows an oversampling of the spectral precision.
+  maxFFTSize:
+    description: |
+      How large can the FFT be, by allocating memory at instantiation time. This cannot be modulated.
   action:
        description: |
          A Function to be evaluated once the offline process has finished and all Buffer's instance variables have been updated on the client side. The function will be passed [features] as an argument.

@@ -1,117 +1,111 @@
-cmake_minimum_required(VERSION 3.3)
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
 
-if (APPLE)
-	set(CMAKE_OSX_ARCHITECTURES x86_64)
+cmake_minimum_required(VERSION 3.11)
+
+if(APPLE)
+  set(CMAKE_OSX_DEPLOYMENT_TARGET 10.8)
 endif()
 
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_EXTENSIONS OFF)
+project (flucoma-docs LANGUAGES CXX)
 
-# We shouldn't have to do this, bah:
-#TODO find way of guranteeing libc++ on OS X CLI (hence >=C++11) without brute forcing CMake like this
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -lc++abi")
-
-set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY "libc++")
-set(CMAKE_OSX_DEPLOYMENT_TARGET "10.7" CACHE STRING "Minimum OS X deployment version")
-set(CMAKE_XCODE_GENERATE_SCHEME ON)
-
-# set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-
-# Fetch the correct verion of the max-api
-#message(STATUS "Updating Git Submodules")
-#execute_process(
-#	COMMAND				git submodule update --init --recursive
-#	WORKING_DIRECTORY	"${CMAKE_CURRENT_SOURCE_DIR}"
-#)
-project (fluid_parameter_dump LANGUAGES CXX)
-
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -Wno-gnu-zero-variadic-macro-arguments")
-
-set(FLUID_PATH ~/fluid_decomposition CACHE PATH "The top level of the fluid_decomposition repo")
-
+set(FLUID_PATH "" CACHE PATH "The top level of the flucoma-core repo. Will clone from repo if blank")
 set(FLUID_M_PATH ~/fluid_manipulation CACHE PATH "The top level of the fluid_manipulation repo")
+include(FetchContent)
 
-get_filename_component(FLUID_ABS_PATH ${FLUID_PATH} ABSOLUTE)
-message(${FLUID_ABS_PATH})
-# if (NOT DEFINED ${FLUID_DECOMP_PATH})
-# 	message(FATAL_ERROR "Please set the path to the fluid_decomposition sources with -DFLUID_DECOMP_PATH=<path>")
-# endif()
+set(FETCHCONTENT_QUIET FALSE)
 
-if (NOT (EXISTS "${FLUID_ABS_PATH}/build/fluid_decomposition-exports.cmake"))
-	message(FATAL_ERROR "Can't find the fluid_decomposition CMake targets file at ${FLUID_ABS_PATH}/build/fluid_decomposition-expors.cmake. Please go to ${FLUID_ABS_PATH}/build and run CMake")
-endif()
-
-if (NOT (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/json/))
-	file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/json/)
-endif()
-
-include("${FLUID_ABS_PATH}/build/fluid_decomposition-exports.cmake")
-
-get_property(FFT_SOURCES TARGET HISSTools_FFT  PROPERTY INTERFACE_SOURCES)
-get_property(FFT_LINK TARGET HISSTools_FFT  PROPERTY INTERFACE_LINK_LIBRARIES)
-
-add_library(FFTLIB STATIC ${FFT_SOURCES})
-target_link_libraries(
-  FFTLIB PRIVATE ${FFT_LINK}
+FetchContent_Declare(
+  flucoma-core
+  GIT_REPOSITORY https://bitbucket.org/flucoma/fluid_decomposition.git
+  GIT_PROGRESS TRUE
 )
 
+if(FLUID_PATH)
+get_filename_component(
+  FETCHCONTENT_SOURCE_DIR_FLUCOMA-CORE ${FLUID_PATH} ABSOLUTE
+)
+endif()
 
+FetchContent_GetProperties(flucoma-core)
+if(NOT flucoma-core_POPULATED)
+FetchContent_Populate(flucoma-core)
+add_subdirectory(${flucoma-core_SOURCE_DIR} ${flucoma-core_BINARY_DIR})
+endif()
 
-# target_compile_options(
-#   FFTLIB PRIVATE "$<$<NOT:$<CONFIG:DEBUG>>: -mavx -msse -msse2 -msse3 -msse4>"
-# )
+if (NOT (EXISTS "${CMAKE_BINARY_DIR}/json/"))
+	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/json/")
+endif()
 
-# set_property(TARGET FFTLIB PROPERTY OSX_ARCHITECTURES x86_64;i386)
+add_library(FLUID_DUMP INTERFACE)
 
-# target_compile_options(FFTLIB PRIVATE -Wall -Wextra -Wpedantic -Wreturn-type -Wconversion)
+target_include_directories(FLUID_DUMP INTERFACE 
+"${CMAKE_CURRENT_SOURCE_DIR}/include/"
+)
 
-add_library( FLUID_DUMP INTERFACE )
-target_sources(
-	FLUID_DUMP INTERFACE
+target_sources(FLUID_DUMP INTERFACE
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/FluidParameterDump.hpp"
 )
-
-find_program(PYTHON_3 python3)
+source_group("Fluid Paramdump Wrapper" FILES 
+  "${CMAKE_CURRENT_SOURCE_DIR}/include/FluidParameterDump.hpp"
+)
+if(${CMAKE_VERSION} VERSION_LESS "3.12.0")
+  find_program(PYTHON_3 python3)
+else()
+  find_package (Python COMPONENTS Interpreter)
+  if(Python_FOUND)
+    set(PYTHON_3 ${Python_EXECUTABLE} CACHE PATH "")
+  endif()
+endif()
+    
 message(STATUS ${PYTHON_3})
 if(NOT PYTHON_3)
   message(FATAL_ERROR "Python 3 not found, won't be doing attempting to generate docs")
 endif()
-add_custom_target (
-	MAKE_MAX_REF ALL
-	COMMAND ${PYTHON_3} ${CMAKE_CURRENT_SOURCE_DIR}/script/MakeMaxRef.py
-	COMMENT "Generating Max XML ref"
-	VERBATIM
-	USES_TERMINAL
-)
 
-add_custom_target (
-  GENERATE_HTML ALL
-  DEPENDS MAKE_MAX_REF
-  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-  COMMAND ./generate_html.sh
-  COMMENT "Transforming XML to HTML for PD and CLI"
-  VERBATIM
-  USES_TERMINAL
-)
+set(FLUID_JSON_DOC "${CMAKE_BINARY_DIR}/json")
+set(FLUID_YAML_DOC "${CMAKE_CURRENT_SOURCE_DIR}/doc")
+set(FLIUD_JINJA_TEMPLATES "${CMAKE_CURRENT_SOURCE_DIR}/script/templates")
 
-# Make sure to build targets from fluid_decomposition
-# add_subdirectory(${FLUID_ABS_PATH} ${FLUID_ABS_PATH}/build)
-MACRO(SUBDIRLIST result curdir)
-  FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
-  SET(dirlist "")
-  FOREACH(child ${children})
-    IF(IS_DIRECTORY ${curdir}/${child})
-        LIST(APPEND dirlist ${child})
-    ENDIF()
-  ENDFOREACH()
-  SET(${result} ${dirlist})
-ENDMACRO()
+macro(add_ref_target platform comment)  
+  string(TOUPPER ${platform} platform_uc)
+  string(TOLOWER ${platform} platform_lc)
+  get_directory_property(hasParent PARENT_DIRECTORY)
+  if(hasParent)
+    set(FLUID_${platform_uc}_REF_TARGET MAKE_${platform_uc}_REF PARENT_SCOPE)
+    set(FLUID_${platform_uc}_REF_PATH "${CMAKE_BINARY_DIR}/${platform_lc}_ref" PARENT_SCOPE)
+  endif()
+  add_custom_target(MAKE_${platform_uc}_REF
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/${platform_lc}_ref"
+  	COMMAND ${PYTHON_3} "${CMAKE_CURRENT_SOURCE_DIR}/script/MakeRef.py" "${platform_lc}" ${FLUID_JSON_DOC} ${FLUID_YAML_DOC} "${CMAKE_BINARY_DIR}/${platform_lc}_ref" ${FLIUD_JINJA_TEMPLATES}
+  	COMMENT ${comment}
+  	VERBATIM
+  )
+endmacro()
 
+add_ref_target(max "Making Max ref")
+add_ref_target(pd "Making PD ref")
+add_ref_target(cli "Making CLI ref")
+
+# Make sure to build targets from flucoma-core
+macro(subdirlist result curdir)
+  file(GLOB children RELATIVE ${curdir} ${curdir}/*)
+  set(dirlist "")
+  foreach(child ${children})
+    if(IS_DIRECTORY ${curdir}/${child})
+        list(APPEND dirlist ${child})
+    endif()
+  endforeach()
+  set(${result} ${dirlist})
+endmacro()
 
 # Generate a project for every folder in the "src/clients" folder
-SUBDIRLIST(PROJECT_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/src/clients)
+subdirlist(PROJECT_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/src/clients)
 foreach (project_dir ${PROJECT_DIRS})
 	if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/clients/${project_dir}/CMakeLists.txt")
 		message("Generating: ${project_dir}")

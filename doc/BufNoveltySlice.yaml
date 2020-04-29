@@ -1,6 +1,15 @@
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
+---
 digest: Buffer-Based Novelty-Based Slicer
 sc-categories: Libraries>FluidDecomposition, UGens>Buffer
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition
+see-also: NoveltySlice, BufAmpSlice, BufOnsetSlice, BufTransientSlice
 description: |
     A non-real-time slicer using an algorithm assessing novelty in the signal to estimate the slicing points.
 discussion: |
@@ -47,6 +56,9 @@ parameters:
   filterSize:
     description: |
         The size of a smoothing filter that is applied on the novelty curve. A larger filter filter size allows for cleaner cuts on very sharp changes.
+  minSliceLength:
+    description: |
+      The minimum duration of a slice in number of hopSize.
   windowSize:
     description: |
         The window size. As novelty estimation relies on spectral frames, we need to decide what precision we give it spectrally and temporally, in line with Gabor Uncertainty principles. http://www.subsurfwiki.org/wiki/Gabor_uncertainty
@@ -56,6 +68,15 @@ parameters:
   fftSize:
     description: |
         The inner FFT/IFFT size. It should be at least 4 samples long, at least the size of the window, and a power of 2. Making it larger allows an oversampling of the spectral precision.
+  maxFFTSize:
+    description: |
+      How large can the FFT be, by allocating memory at instantiation time. This cannot be modulated.
+  maxKernelSize:
+    description: |
+      This cannot be modulated.
+  maxFilterSize:
+    description: |
+      This cannot be modulated.
   action:
     description: |
         A Function to be evaluated once the offline process has finished and indices instance variables have been updated on the client side. The function will be passed indices as an argument.

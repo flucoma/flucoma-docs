@@ -1,6 +1,15 @@
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
+---
 digest: A Loudness and True-Peak Descriptor in Real-Time
 sc-categories: Libraries>FluidDecomposition
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition
+see-also: BufLoudness, Pitch, MelBands, MFCC, SpectralShape
 description: Two loudness descriptors, with a ITU BS 1770 mode
 discussion: |
   Computes the true peak of the signal as well as applying the filters proposed by broadcasting standards to emulate the perception of amplitude.
@@ -23,7 +32,7 @@ parameters:
   hopSize:
     description: |
       How much the buffered window moves forward, in samples. By default 512 to be similar with all other FluCoMa objects, the EBU specifies other values as per the examples below.
-  maxwindowSize:
+  maxWindowSize:
     description: |
       How large can the windowSize be, by allocating memory at instantiation time. This cannot be modulated.
 output: A 2-channel KR signal with the [pitch, confidence] descriptors. The latency is windowSize.

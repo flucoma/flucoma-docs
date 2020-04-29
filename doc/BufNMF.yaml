@@ -1,6 +1,15 @@
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
+---
 digest: Buffer-Based Non-Negative Matrix Factorisation on Spectral Frames
 sc-categories: Libraries>FluidDecomposition, UGens>Buffer
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition, Classes/FluidNMFMatch, Classes/FluidNMFFilter
+see-also: NMFMatch, NMFFilter
 description: Decomposes the spectrum of a sound into a number of components using Non-Negative Matrix Factorisation (NMF)
 discussion: |
   NMF has been a popular technique in signal processing research for things like source separation and transcription (see Smaragdis and Brown, Non-Negative Matrix Factorization for Polyphonic Music Transcription.), although its creative potential is so far relatively  unexplored.
@@ -43,7 +52,7 @@ parameters:
    numChans:
       description: |
          For multichannel srcBuf, how many channel should be processed.
-   destination:
+   resynth:
       description: |
          The index of the buffer where the different reconstructed components will be reconstructed. The buffer will be resized to `components * numChannelsProcessed` channels and `sourceDuration` lenght. If `nil` is provided, the reconstruction will not happen.
    bases:
@@ -69,7 +78,7 @@ parameters:
    components:
       description: |
          The number of elements the NMF algorithm will try to divide the spectrogram of the source in.
-   numIter:
+   iterations:
       description: |
          The NMF process is iterative, trying to converge to the smallest error in its factorisation. The number of iterations will decide how many times it tries to adjust its estimates. Higher numbers here will be more CPU expensive, lower numbers will be more unpredictable in quality.
    windowSize:
@@ -89,7 +98,7 @@ parameters:
          The NMF process needs to seed its starting point. If specified, the same values will be used. The default of -1 will randomly assign them. (not implemented yet)
    action:
       description: |
-         A Function to be evaluated once the offline process has finished and all Buffer's instance variables have been updated on the client side. The function will be passed [destination, bases, activations] as an argument.
+         A Function to be evaluated once the offline process has finished and all Buffer's instance variables have been updated on the client side. The function will be passed [resynth, bases, activations] as an argument.
 
 output: Nothing, as the various destination buffers are declared in the function call.
 
@@ -112,8 +121,8 @@ sc-code: |
     	b.sine2([500],[1], false, false);
     	c.sine2([5000],[1],false, false);
     	s.sync;
-    	FluidBufCompose.process(s,b, destination:d);
-    	FluidBufCompose.process(s,c, destStartFrame:44100, destination:d, destGain:1);
+    	FluidBufCompose.process(s,b, resynth:d);
+    	FluidBufCompose.process(s,c, destStartFrame:44100, resynth:d, destGain:1);
     	s.sync;
     	d.query;
     }.play;
@@ -126,7 +135,7 @@ sc-code: |
     (
     // separate them in 2 components
     Routine {
-    	FluidBufNMF.process(s, d, destination:e, bases: f, activations:g, components:2);
+    	FluidBufNMF.process(s, d, resynth:e, bases: f, activations:g, components:2);
     	e.query;
     	f.query;
     	g.query;
@@ -271,16 +280,16 @@ sc-code: |
     // we then copy the basis with the highest median centroid to a channel, and all the other bases to the other channel, of a 2-channel bases for decomposition
     (
     z = (0..9);
-    [z.removeAt(~centroids.maxIndex)].do{|chan|FluidBufCompose.process(s, ~bases, startChan: chan, numChans: 1, destination: ~trainedBases, destGain:1)};
+    [z.removeAt(~centroids.maxIndex)].do{|chan|FluidBufCompose.process(s, ~bases, startChan: chan, numChans: 1, resynth: ~trainedBases, destGain:1)};
     z.postln;
-    z.do({|chan| FluidBufCompose.process(s, ~bases, startChan:chan, numChans: 1, destStartChan: 1, destination: ~trainedBases, destGain:1)});
+    z.do({|chan| FluidBufCompose.process(s, ~bases, startChan:chan, numChans: 1, destStartChan: 1, resynth: ~trainedBases, destGain:1)});
     )
     ~trainedBases.plot
 
     //process the whole file, splitting it with the 2 trained bases
     (
     Routine{
-    	FluidBufNMF.process(s, b, destination: ~sortedNMF, bases: ~trainedBases, basesMode: 2, components:2);
+    	FluidBufNMF.process(s, b, resynth: ~sortedNMF, bases: ~trainedBases, basesMode: 2, components:2);
     	~originalNMF.query;
     }.play;
     )
@@ -311,8 +320,8 @@ sc-code: |
     	b.sine2([500],[1], false, false);
     	c.sine2([5000],[1],false, false);
     	s.sync;
-    	FluidBufCompose.process(s,b, destination:d);
-    	FluidBufCompose.process(s,c, destStartFrame:44100, destination:d, destGain:1);
+    	FluidBufCompose.process(s,b, resynth:d);
+    	FluidBufCompose.process(s,c, destStartFrame:44100, resynth:d, destGain:1);
     	s.sync;
     	d.query;
     }.play;
@@ -338,7 +347,7 @@ sc-code: |
     (
     // use the seeding basis, without updating
     Routine {
-    	FluidBufNMF.process(s, d, destination:f, bases: e, basesMode: 2, activations:g, components:3);
+    	FluidBufNMF.process(s, d, resynth:f, bases: e, basesMode: 2, activations:g, components:3);
     	e.query;
     	f.query;
     	g.query;
@@ -357,7 +366,7 @@ sc-code: |
     (
     // use the seeding bases, with updating this time
     Routine {
-    	FluidBufNMF.process(s, d, destination:f, bases: e, basesMode: 1, activations:g, components:3);
+    	FluidBufNMF.process(s, d, resynth:f, bases: e, basesMode: 1, activations:g, components:3);
     	e.query;
     	f.query;
     	g.query;

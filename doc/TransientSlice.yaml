@@ -1,6 +1,15 @@
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
+---
 digest: Transient-Based Real-Time Audio Slicer
 sc-categories: Libraries>FluidDecomposition
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition
+see-also: BufTransientSlice, AmpSlice, NoveltySlice, OnsetSlice
 description: A real-time transient-based slice extractor
 discussion: |
   This uses same algorithm as BufTransients using clicks/transients/derivation/anomaly in the signal to estimate the slicing points.
@@ -32,10 +41,10 @@ parameters:
   windowSize:
     description: |
       The averaging window of the error detection function. It needs smoothing as it is very jittery. The longer the window, the less precise, but the less false positives.
-  debounce:
+  clumpLength:
     description: |
       The window size in sample within with positive detections will be clumped together to avoid overdetecting in time.
-  minSlice:
+  minSliceLength:
     description: |
       The minimum duration of a slice in samples.
 output: An audio stream with impulses at detected transients. The latency between the input and the output is (blockSize + padSize - order) samples.

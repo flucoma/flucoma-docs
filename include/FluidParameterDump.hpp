@@ -1,3 +1,13 @@
+/*
+Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+Copyright 2017-2019 University of Huddersfield.
+Licensed under the BSD-3 License.
+See license.md file in the project root for full license information.
+This project has received funding from the European Research Council (ERC)
+under the European Union’s Horizon 2020 research and innovation programme
+(grant agreement No 725899).
+*/
+
 #pragma once
 #include <clients/common/FluidBaseClient.hpp>
 
@@ -24,17 +34,37 @@ using json = nlohmann::json;
 namespace fluid {
 namespace client {
 
-template<size_t...Offsets, typename...Ts>
-std::index_sequence<Offsets...> parameterIndexOffsets(ParameterDescriptorSet<std::index_sequence<Offsets...>,std::tuple<Ts...>>)
-{
-  return {};
-}
+template <typename>
+struct ParamOffsets;
 
-template<typename C, typename AllParams>
-struct Constraint
+template <typename Offsets, typename P>
+struct ParamOffsets<const ParameterDescriptorSet<Offsets, P>>
 {
-  C constraint;
-  AllParams allParams;
+  using OffsetList = Offsets;
+};
+
+template <typename C>
+struct Constraint;
+
+template <>
+struct Constraint<EnumT::EnumConstraint>
+{
+  template <size_t Offset, typename Tuple>
+  static json::object_t::value_type dump(const EnumT::EnumConstraint&, Tuple&)
+  {
+    return {"Enum", true};
+  }
+};
+
+template <int MaxFFT>
+struct Constraint<FFTParams::FFTSettingsConstraint<MaxFFT>>
+{
+  template <size_t Offset, typename Tuple>
+  static json::object_t::value_type
+  dump(const FFTParams::FFTSettingsConstraint<MaxFFT>&, Tuple&)
+  {
+    return {"MaxFFT", MaxFFT > -1};
+  }
 };
 
 template<typename C, typename AllParams>
@@ -43,164 +73,177 @@ Constraint<C,AllParams> makeConstraint(C c, AllParams& p)
   return {c,p};
 }
 
-template<typename T>
-void to_json(json& o,const Constraint<EnumT::EnumConstraint,T>&)
+template <typename T>
+struct Constraint<impl::MinImpl<T>>
 {
-  o["enum"] = true;
-}
-
-template<typename T, int MaxFFT>
-void to_json(json& o,const Constraint<FFTParams::FFTSettingsConstraint<MaxFFT>,T>&)
-{
-  o["MaxFFT"] =  MaxFFT > -1;
-}
-
-template<typename T, typename AllParams>
-void to_json(json& o, const Constraint<impl::MinImpl<T>,AllParams>& c)
-{
-  o["min"] = c.constraint.value;
+  template <size_t Offset, typename Tuple>
+  static json::object_t::value_type dump(const impl::MinImpl<T>& c, Tuple&)
+  {
+    return {"min", c.value};
+  }
 };
 
-template<typename T, typename AllParams>
-void to_json(json& o, const Constraint<impl::MaxImpl<T>,AllParams>& c)
+template <typename T>
+struct Constraint<impl::MaxImpl<T>>
 {
-  o["max"] = c.constraint.value;
+  template <size_t Offset, typename Tuple>
+  static json::object_t::value_type dump(const impl::MaxImpl<T>& c, Tuple&)
+  {
+    return {"max", c.value};
+  }
 };
 
-template<int...Is, size_t...Offsets, typename Tuple>
-std::array<const char*,sizeof...(Is)> relations(Tuple& params,std::index_sequence<Offsets...>)
+template <int... Is, typename Tuple>
+std::array<const char*, sizeof...(Is)> relations(Tuple& params)
 {
   return {{std::get<0>(std::get<Is + std::get<Is>(std::make_tuple(Offsets...))>(params)).name...}};
 }
 
-template<typename AllParams, int...Is>
-void to_json(json& o, const Constraint<impl::UpperLimitImpl<Is...>,AllParams>& c)
+template <int... Is>
+struct Constraint<impl::UpperLimitImpl<Is...>>
 {
-  o["upper"] = relations<Is...>(c.allParams.descriptors(),parameterIndexOffsets(c.allParams));
+  template <size_t Offset, typename Tuple>
+  static json::object_t::value_type dump(const impl::UpperLimitImpl<Is...>&,
+                                         Tuple& params)
+  {
+    return {"upper", relations<Offset + Is...>(params)};
+  }
 };
 
-template<typename AllParams, int...Is>
-void to_json(json& o, const Constraint<impl::LowerLimitImpl<Is...>,AllParams>& c)
+template <int... Is>
+struct Constraint<impl::LowerLimitImpl<Is...>>
 {
-  o["lower"] = relations<Is...>(c.allParams.descriptors(),parameterIndexOffsets(c.allParams));
+  template <size_t Offset, typename Tuple>
+  static json::object_t::value_type dump(const impl::LowerLimitImpl<Is...>&,
+                                         Tuple& params)
+  {
+    return {"lower", relations<Offset + Is...>(params)};
+  }
 };
 
-template<typename AllParams,int I>
-void to_json(json& o, const Constraint<impl::FrameSizeUpperLimitImpl<I>,AllParams>&)
+template <int I>
+struct Constraint<impl::FrameSizeUpperLimitImpl<I>>
 {
-  o["upper"] = "fftFrame";
+  template <size_t Offset, typename Tuple>
+  static json::object_t::value_type
+  dump(const impl::FrameSizeUpperLimitImpl<I>&, Tuple&)
+  {
+    return {"upper", "fftFrame"};
+  }
 };
 
-template<typename AllParams,int I>
-void to_json(json& o, const Constraint<impl::MaxFrameSizeUpperLimitImpl<I>,AllParams>&)
+template <int I>
+struct Constraint<impl::MaxFrameSizeUpperLimitImpl<I>>
 {
-  o["upper"] = "maxFFTFrame";
+  template <size_t Offset, typename Tuple>
+  static json::object_t::value_type
+  dump(const impl::MaxFrameSizeUpperLimitImpl<I>&, Tuple&)
+  {
+    return {"upper", "maxFFTFrame"};
+  }
 };
 
-template<typename AllParams>
-void to_json(json& o, const Constraint<Odd,AllParams>&)
+
+template <>
+struct Constraint<Odd>
 {
-  o["snap"] = "odd";
+  template <size_t Offset, typename Tuple>
+  static json::object_t::value_type dump(const Odd&, Tuple&)
+  {
+    return {"snap", "odd"};
+  }
 };
 
-template<typename AllParams>
-void to_json(json& o, const Constraint<PowerOfTwo,AllParams>&)
+template <>
+struct Constraint<PowerOfTwo>
 {
-  o["snap"] = "powerTwo";
+  template <size_t Offset, typename Tuple>
+  static json::object_t::value_type dump(const PowerOfTwo&, Tuple&)
+  {
+    return {"snap", "powerTwo"};
+  }
 };
 
-template<typename AllParams>
-void to_json(json& o, const Constraint<FrequencyAmpPairConstraint,AllParams>&)
+template <>
+struct Constraint<FrequencyAmpPairConstraint>
 {
-  o["FreqAmpPair"] = true;
+  template <size_t Offset, typename Tuple>
+  static json::object_t::value_type dump(const FrequencyAmpPairConstraint&,
+                                         Tuple&)
+  {
+    return {"FreqAmpPair", "true"};
+  }
 };
 
 void to_json(json& j, const FFTParams& p)
 {
-    j = json::array({{"winSize", p.winSize()}, {"hopSize", p.hopRaw()}, {"fftSize", p.fftRaw()}});
+  j = json::array({{"winSize", p.winSize()},
+                   {"hopSize", p.hopRaw()},
+                   {"fftSize", p.fftRaw()}});
 }
 
 void to_json(json& j, const FloatPairsArrayT::FloatPairsArrayType& p)
 {
-    j = json{{"value", p.value}};
+  j = json{{"value", p.value}};
 }
 
-template<typename Param, typename Tuple, typename AllParams>
-struct ParamBundle
+template <class T>
+class ParameterDump
 {
-  Param p;
-  Tuple tuple;
-  AllParams allParams;
-};
+public:
+  using Params = typename T::ParamDescType;
+  using Offsets = typename ParamOffsets<Params>::OffsetList;
 
-template<typename Param, typename Tuple, typename AllParams>
-ParamBundle<Param,Tuple,AllParams> makeParamBundle(Param p, Tuple t,AllParams a)
-{
-  return {p,t,a};
-}
+  static void dump(std::string ofile, std::string prefix)
+  {
+    json j = dumpImpl(typename Params::IndexList(), Offsets{});
+    //    std::string cwd(getcwd(nullptr,0));
+    std::ofstream(prefix + ofile + ".json") << j.dump(2) << '\n';
+  }
 
-std::string getParamType(const BufferT&) { return "buffer"; }
-std::string getParamType(const InputBufferT&) { return "buffer"; }
-std::string getParamType(const FloatT&) { return "float"; }
-std::string getParamType(const LongT&) { return "long"; }
-std::string getParamType(const FloatPairsArrayT&) { return "float";}
-std::string getParamType(const StringT&) { return "symbol";}
+  template <size_t... Is, size_t... Offsets>
+  static json dumpImpl(std::index_sequence<Is...>,
+                       std::index_sequence<Offsets...>)
+  {
+    Params& p = T<double>::getParameterDescriptors();
 
-std::string getParamType(const std::string&) { return "symbol";}
+    json j = json::array({jsonify<std::get<Is>(std::make_tuple(Offsets...))>(
+        std::get<Is>(p.descriptors()), p.descriptors())...});
+    return j;
+  }
 
-std::string getParamType(const typename BufferT::type&) { return "buffer"; }
-std::string getParamType(const typename InputBufferT::type&) { return "buffer"; }
+  template <size_t Offset, size_t... Is, typename C, typename P>
+  static json constraints(const C& constraints, std::index_sequence<Is...>,
+                          P&       allParams)
+  {
+    json res = json::object();
+    (void) std::initializer_list<int>{(
+        res.push_back(
+            Constraint<typename std::tuple_element<Is, C>::type>::template dump<
+                Offset>(std::get<Is>(constraints), allParams)),
+        0)...};
+    return res;
+  }
 
-template<typename T>
-std::enable_if_t<std::is_integral<T>::value, std::string>
-getParamType(const T&) { return "long"; }
+  template <size_t Offset, typename P, typename All>
+  static json::object_t::value_type jsonify(P& param, All& allParams)
+  {
 
-template<typename T>
-std::enable_if_t<std::is_floating_point<T>::value, std::string>
-getParamType(const T&) { return "float"; }
+    return jsonify_param<Offset>(std::get<0>(param), param, allParams);
+  }
 
-std::string getParamType(const DataSetClientRef&) { return "dataset"; }
-std::string getParamType(const LabelSetClientRef&) { return "labelset"; }
+  static std::string getParamType(const BufferT&) { return "buffer"; }
+  static std::string getParamType(const InputBufferT&) { return "buffer"; }
+  static std::string getParamType(const FloatT&) { return "float"; }
+  static std::string getParamType(const LongT&) { return "long"; }
+  static std::string getParamType(const FloatPairsArrayT&) { return "float"; }
 
-template<typename T>
-std::string getParamType(const FluidTensor<T,1>&) { return "array " + getParamType(T{}); }
-
-
-template<typename...Ts,size_t...Is>
-auto getParamType(const std::tuple<Ts...>&, std::index_sequence<Is...>){
-  std::array<std::string, sizeof...(Ts)> res{{getParamType(std::add_const_t<std::tuple_element_t<Is,std::tuple<Ts...>>>{})...}};
-  return res;
-}
-
-template<typename...Ts>
-auto getParamType(const std::tuple<Ts...>& t)
-{
-  return getParamType(t,std::index_sequence_for<Ts...>());
-}
-
-template<typename T>
-std::string getParamType(const MessageResult<T>&)
-{
-  return getParamType(typename MessageResult<T>::type{});
-}
-
-std::string getParamType(const MessageResult<void>&)
-{
-  return "void";
-}
-
-template<typename ConstraintsTuple, typename ParamsTuple, size_t...Is>
-std::array<json, sizeof...(Is)> constraints(ConstraintsTuple cs, ParamsTuple ps, std::index_sequence<Is...>)
-{
-  return {{makeConstraint(std::get<Is>(cs),ps)...}};
-}
-
-template<typename Param, typename Tuple, typename AllParams>
-void to_json(json& o, const ParamBundle<Param,Tuple,AllParams>& pb)
-{
-    auto& p = pb.p;
-    constexpr bool fixed = std::tuple_element<2,Tuple>::type::value;
-    json j({});
+  template <size_t Offset, typename P, typename Tuple, typename All>
+  static json::object_t::value_type jsonify_param(P& p, Tuple& tuple,
+                                                  All& allParams)
+  {
+    constexpr bool fixed = std::tuple_element<2, Tuple>::type::value;
+    json           j;
     j["displayName"] = p.displayName;
     j["default"] = p.defaultValue;
     j["fixed"] = fixed;
@@ -211,53 +254,18 @@ void to_json(json& o, const ParamBundle<Param,Tuple,AllParams>& pb)
     //constraints
     auto& constraintsTuple = std::get<1>(pb.tuple);
     using constraintsTupleType = std::decay_t<decltype(constraintsTuple)>;
-    constexpr size_t numConstraints = std::tuple_size<constraintsTupleType>::value;
-    if(numConstraints > 0)
+    constexpr size_t numConstraints =
+        std::tuple_size<constraintsTupleType>::value;
+    if (numConstraints > 0)
     {
       auto constraintsIndex = std::make_index_sequence<numConstraints>();
-      auto c = constraints(constraintsTuple,pb.allParams,constraintsIndex);
-      j["constraints"] = c;
+      auto c =
+          constraints<Offset>(constraintsTuple, constraintsIndex, allParams);
+      if (c.type() != json::value_t::null) j["constraints"] = c;
     }
-    o = {p.name, j};
-}
-
-template<typename Tuple, typename AllParams>
-void to_json(json& o, const ParamBundle<EnumT,Tuple,AllParams>& pb)
-{
-  auto& p = pb.p;
-  json j;
-  j["displayName"] = p.displayName;
-  j["default"] = p.defaultValue;
-  j["fixed"] = false;
-  j["size"] = 1;
-  std::vector<std::string> strings(p.numOptions);
-  std::copy(p.strings, p.strings + p.numOptions,strings.begin());
-  j["values"] = strings;
-  j["type"] = "enum";
-  o = {p.name, j};
-}
-
-template<typename Tuple, typename AllParams>
-void to_json(json& o, const ParamBundle<FFTParamsT,Tuple,AllParams>& pb)
-{
-  auto& p = pb.p;
-  json j;
-  j["displayName"] = p.displayName;
-  j["default"] = p.defaultValue;
-  j["fixed"] = false;
-  j["size"] = 3;
-  j["type"] = "long";
-  o = {p.name, j};
-}
-
-template<typename L, typename Ret, typename T, typename...Args>
-void to_json(json& o, const Message<L,Ret,T,Args...>& m)
-{
-  json j;
-  j["return"] = getParamType(Ret{});
-  j["args"] = getParamType(std::tuple<Args...>{});
-  o = {m.name,j};
-}
+    
+    return {p.name, j};
+  }
 
 template <class T>
 class ParameterDump
@@ -266,29 +274,33 @@ public:
   using  Params = typename ClientWrapper<T>::ParamDescType;
   using  Messages = typename T::MessageSetType;
 
-  static void dump(std::string ofile,std::string prefix)
+  template <size_t, typename Tuple, typename All>
+  static json::object_t::value_type jsonify_param(const EnumT& p, Tuple&, All&)
   {
     json j;
-    j["params"]= dumpParams(typename Params::IndexList());
-    j["messages"] = dumpMessages(typename Messages::IndexList());
-    std::ofstream(prefix + ofile + ".json") << j.dump(2) << '\n';
+    j["displayName"] = p.displayName;
+    j["default"] = p.defaultValue;
+    j["fixed"] = false;
+    j["size"] = 1;
+    std::vector<std::string> strings(p.numOptions);
+    std::copy(p.strings, p.strings + p.numOptions, strings.begin());
+    j["values"] = strings;
+    j["type"] = "enum";
+    return {p.name, j};
   }
 
-  template<size_t...Is>
-  static json dumpParams(std::index_sequence<Is...>)
+  template <size_t, typename Tuple, typename All>
+  static json::object_t::value_type jsonify_param(const FFTParamsT& p, Tuple&,
+                                                  All&)
   {
-    Params& p = ClientWrapper<T>::getParameterDescriptors();
-    auto d = p.descriptors();
-    return json::array_t{makeParamBundle(std::get<0>(std::get<Is>(d)),std::get<Is>(d),p)...};
-  }
-  
-  template<size_t...Is>
-  static json dumpMessages(std::index_sequence<Is...>)
-  {
-    const auto m = T::getMessageDescriptors();
-    return json::array_t{m.template get<Is>()...};
+    json j;
+    j["displayName"] = p.displayName;
+    j["default"] = p.defaultValue;
+    j["fixed"] = false;
+    j["size"] = 3;
+    j["type"] = "long";
+    return {p.name, j};
   }
 };
-
-}
-}
+} // namespace client
+} // namespace fluid

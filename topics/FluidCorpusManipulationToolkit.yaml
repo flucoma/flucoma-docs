@@ -1,0 +1,91 @@
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
+---
+title: Fluid Decomposition Toolbox
+digest: An overview of the FluCoMa toolbox for signal decomposition
+sc-category: Libraries>FluidDecomposition
+description: | 
+  The Fluid Decomposition toolbox provides an open-ended, loosely coupled set of objects to break up and analyse sound in terms of slices (segments in time), layers (superpositions in time and frequency) and objects (configurable or discoverable patterns in sound). Almost all objects have audio-rate and buffer-based versions. 
+  
+  This toolbox was made possible thanks to the FluCoMa project ( http://www.flucoma.org/ ) funded by the European Research Council ( https://erc.europa.eu/ ) under the European Union’s Horizon 2020 research and innovation programme (grant agreement No 725899).
+
+  Slices
+  ******
+  
+  Slice by amplitude envelope:
+  :fluid_object:`AmpSlice` :fluid_object:`BufAmpSlice` 
+
+
+  Slice by onsets in the spectral domain:
+  :fluid_object:`OnsetSlice` :fluid_object:`BufOnsetSlice` 
+
+
+  Slice by estimated novelty on a choice of features:
+  :fluid_object:`NoveltySlice` :fluid_object:`BufNoveltySlice` 
+
+
+  Slice by transient modelling:
+  :fluid_object:`TransientSlice` :fluid_object:`BufTransientSlice` 
+
+  
+  Layers
+  ******
+  
+  Decompose into sines + residual
+  :fluid_object:`Sines` :fluid_object:`BufSines` 
+
+  
+  Decompose into transients + residual
+  :fluid_object:`Transients` :fluid_object:`BufTransients` 
+
+  
+  Decompose into 'harmonic' and 'percussive' layers
+  :fluid_object:`HPSS` :fluid_object:`BufHPSS` 
+
+  
+  Objects
+  *******
+  
+  Use Nonnegative Matrix Factorisation to explore and decompose sounds
+  :fluid_object:`BufNMF` :fluid_object:`NMFFilter`  :fluid_object:`NMFMatch` 
+
+  
+  Descriptors
+  ***********
+  
+  Report amplitude and peak, or r128 loudness and true peak
+  :fluid_object:`Loudness` :fluid_object:`BufLoudness` 
+
+  A suite of pitch estimators
+  :fluid_object:`Pitch` :fluid_object:`BufPitch` 
+
+  
+  Energy across Mel bands
+  :fluid_object:`MelBands` :fluid_object:`BufMelBands` 
+
+  
+  Mel Frequency Ceptstral Coefficients
+  :fluid_object:`MFCC`  :fluid_object:`BufMFCC` 
+
+  
+  Summary measures of spectral shape
+  :fluid_object:`SpectralShape` :fluid_object:`BufSpectralShape` 
+
+
+  Statistics of buffers
+  :fluid_object:`BufStats` 
+
+
+  Utility
+  *******
+  
+  Copy, slice, stack, mix concatenate. All the things you've wanted to do with buffers...
+  :fluid_object:`BufCompose` 
+
+  A tutorial object to experiment with multithreading in FluidBuf* objects
+  :fluid_object:`BufThreadDemo` 

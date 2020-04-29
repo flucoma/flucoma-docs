@@ -4,3 +4,7 @@ maxref
 maxref.zip
 script/__pycache__
 html
+sphinxout
+doctrees
+schelp
+*.pyc

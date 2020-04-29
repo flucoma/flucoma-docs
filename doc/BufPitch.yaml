@@ -1,6 +1,15 @@
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
+---
 digest: A Selection of Pitch Descriptors on a Buffer
 sc-categories: Libraries>FluidDecomposition
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition, Classes/SpecCentroid, Classes/SpecFlatness, Classes/SpecCentroid, Classes/SpecPcile
+see-also: Pitch, BufLoudness, BufMelBands, BufMFCC, BufSpectralShape, BufStats
 description: |
   Implements three pitch descriptors, computed as frequency and the confidence in its value.
 discussion: |
@@ -53,6 +62,9 @@ parameters:
   fftSize:
     description: |
       The inner FFT/IFFT size. It should be at least 4 samples long, at least the size of the window, and a power of 2. Making it larger allows an oversampling of the spectral precision.
+  maxFFTSize:
+    description: |
+      How large can the FFT be, by allocating memory at instantiation time. This cannot be modulated.
   action:
     description: |
       A Function to be evaluated once the offline process has finished and all Buffer's instance variables have been updated on the client side. The function will be passed [features] as an argument.
