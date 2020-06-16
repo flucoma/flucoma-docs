@@ -68,7 +68,7 @@ struct Constraint<FFTParams::FFTSettingsConstraint<MaxFFT>>
 };
 
 template<typename C, typename AllParams>
-Constraint<C,AllParams> makeConstraint(C c, AllParams& p)
+Constraint<C> makeConstraint(C c, AllParams& p)
 {
   return {c,p};
 }
@@ -96,7 +96,9 @@ struct Constraint<impl::MaxImpl<T>>
 template <int... Is, typename Tuple>
 std::array<const char*, sizeof...(Is)> relations(Tuple& params)
 {
-  return {{std::get<0>(std::get<Is + std::get<Is>(std::make_tuple(Offsets...))>(params)).name...}};
+  return {{std::get<0>(std::get<Is>(params)).name...}};
+
+//  return {{std::get<0>(std::get<Is + std::get<Is>(std::make_tuple(Is...))>(params)).name...}};
 }
 
 template <int... Is>
@@ -131,6 +133,18 @@ struct Constraint<impl::FrameSizeUpperLimitImpl<I>>
     return {"upper", "fftFrame"};
   }
 };
+
+template <int I>
+struct Constraint<impl::FrameSizeLowerLimitImpl<I>>
+{
+  template <size_t Offset, typename Tuple>
+  static json::object_t::value_type
+  dump(const impl::FrameSizeLowerLimitImpl<I>&, Tuple&)
+  {
+    return {"lower", "fftFrame"};
+  }
+};
+
 
 template <int I>
 struct Constraint<impl::MaxFrameSizeUpperLimitImpl<I>>
@@ -187,17 +201,43 @@ void to_json(json& j, const FloatPairsArrayT::FloatPairsArrayType& p)
   j = json{{"value", p.value}};
 }
 
+
+template <typename A>
+std::enable_if_t<std::is_integral<A>::value, std::string>
+getArgType(A&) { return "integer"; }
+
+template <typename A>
+std::enable_if_t<std::is_floating_point<A>::value, std::string>
+getArgType(A&) { return "float"; }
+std::string getArgType(BufferT::type&) {return "buffer";}
+std::string getArgType(InputBufferT::type&) {return "buffer";}
+std::string getArgType(DataSetClientRef&) { return "DataSet"; }
+std::string getArgType(LabelSetClientRef&) { return "LabelSet"; }
+std::string getArgType(std::string&) { return "string"; }
+
+template <typename T,size_t N>
+std::string getArgType(FluidTensor<T,N>&)
+{
+  std::stringstream ss;
+  T t{};
+  ss << "list " << getArgType(t);
+  return ss.str();
+}
+
+
+template<typename> struct ReturnType;
+
 template <class T>
 class ParameterDump
 {
 public:
-  using Params = typename T::ParamDescType;
-  using Offsets = typename ParamOffsets<Params>::OffsetList;
+  using  Params = typename T::ParamDescType;
+  using  Messages = typename T::MessageSetType;
+  using  Offsets = typename ParamOffsets<Params>::OffsetList;
 
   static void dump(std::string ofile, std::string prefix)
   {
     json j = dumpImpl(typename Params::IndexList(), Offsets{});
-    //    std::string cwd(getcwd(nullptr,0));
     std::ofstream(prefix + ofile + ".json") << j.dump(2) << '\n';
   }
 
@@ -205,10 +245,12 @@ public:
   static json dumpImpl(std::index_sequence<Is...>,
                        std::index_sequence<Offsets...>)
   {
-    Params& p = T<double>::getParameterDescriptors();
+    Params& p = T::getParameterDescriptors();
 
-    json j = json::array({jsonify<std::get<Is>(std::make_tuple(Offsets...))>(
+    json j;
+    j["parameters"] = json::array({jsonify<std::get<Is>(std::make_tuple(Offsets...))>(
         std::get<Is>(p.descriptors()), p.descriptors())...});
+    j["messages"] = jsonify_messages();
     return j;
   }
 
@@ -226,9 +268,8 @@ public:
   }
 
   template <size_t Offset, typename P, typename All>
-  static json::object_t::value_type jsonify(P& param, All& allParams)
+  static json jsonify(P& param, All& allParams)
   {
-
     return jsonify_param<Offset>(std::get<0>(param), param, allParams);
   }
 
@@ -237,22 +278,31 @@ public:
   static std::string getParamType(const FloatT&) { return "float"; }
   static std::string getParamType(const LongT&) { return "long"; }
   static std::string getParamType(const FloatPairsArrayT&) { return "float"; }
+  static std::string getParamType(const StringT&) {return "string"; }
+  static std::string getParamType(const FFTParamsT&) {return "fft"; }
+  static std::string getParamType(const EnumT&) {return "enum"; }
+
+  template<typename U>
+  static std::string getReturn(U&&)
+  {
+    return ReturnType<U>::getReturn();
+  }
 
   template <size_t Offset, typename P, typename Tuple, typename All>
-  static json::object_t::value_type jsonify_param(P& p, Tuple& tuple,
+  static json jsonify_param(P& p, Tuple& tuple,
                                                   All& allParams)
   {
     constexpr bool fixed = std::tuple_element<2, Tuple>::type::value;
     json           j;
+    j["name"] = p.name;
     j["displayName"] = p.displayName;
     j["default"] = p.defaultValue;
     j["fixed"] = fixed;
     j["type"] = getParamType(p);
     j["size"] = p.fixedSize;
   
-  
     //constraints
-    auto& constraintsTuple = std::get<1>(pb.tuple);
+    auto& constraintsTuple = std::get<1>(tuple);
     using constraintsTupleType = std::decay_t<decltype(constraintsTuple)>;
     constexpr size_t numConstraints =
         std::tuple_size<constraintsTupleType>::value;
@@ -264,43 +314,94 @@ public:
       if (c.type() != json::value_t::null) j["constraints"] = c;
     }
     
-    return {p.name, j};
+    return j;
   }
 
-template <class T>
-class ParameterDump
-{
-public:
-  using  Params = typename ClientWrapper<T>::ParamDescType;
-  using  Messages = typename T::MessageSetType;
 
-  template <size_t, typename Tuple, typename All>
-  static json::object_t::value_type jsonify_param(const EnumT& p, Tuple&, All&)
+  template <size_t Offset, typename Tuple, typename All>
+  static json jsonify_param(const EnumT& p, Tuple&,All&)
   {
-    json j;
+//    constexpr bool fixed = std::tuple_element<2, Tuple>::type::value;
+    json           j;
+    j["name"] = p.name;
     j["displayName"] = p.displayName;
     j["default"] = p.defaultValue;
     j["fixed"] = false;
+    j["type"] = getParamType(p);
     j["size"] = 1;
     std::vector<std::string> strings(p.numOptions);
     std::copy(p.strings, p.strings + p.numOptions, strings.begin());
     j["values"] = strings;
     j["type"] = "enum";
-    return {p.name, j};
+  
+//    //constraints
+//    auto& constraintsTuple = std::get<1>(tuple);
+//    using constraintsTupleType = std::decay_t<decltype(constraintsTuple)>;
+//    constexpr size_t numConstraints =
+//        std::tuple_size<constraintsTupleType>::value;
+//    if (numConstraints > 0)
+//    {
+//      auto constraintsIndex = std::make_index_sequence<numConstraints>();
+//      auto c =
+//          constraints<Offset>(constraintsTuple, constraintsIndex, allParams);
+//      if (c.type() != json::value_t::null) j["constraints"] = c;
+//    }
+    
+    return j;
   }
 
-  template <size_t, typename Tuple, typename All>
-  static json::object_t::value_type jsonify_param(const FFTParamsT& p, Tuple&,
-                                                  All&)
+
+
+  template<typename Tuple, size_t...Is>
+  static std::array<std::string, sizeof...(Is)> doArgs(Tuple& args, std::index_sequence<Is...>)
   {
-    json j;
-    j["displayName"] = p.displayName;
-    j["default"] = p.defaultValue;
-    j["fixed"] = false;
-    j["size"] = 3;
-    j["type"] = "long";
-    return {p.name, j};
+    return {{{getArgType(std::get<Is>(args))}...}};
+  }
+
+  template <size_t N, typename M>
+  struct DoMessage
+  {
+    void operator()(const M& message, std::vector<json>& vec)
+    {
+      json messageData;
+      messageData["name"] = message.name;
+      
+      typename M::ArgumentTypes args;
+      
+      messageData["args"] = ParameterDump::doArgs(args,typename M::IndexList{});
+      auto ret = typename M::ReturnType{};
+      messageData["returns"] = ParameterDump::getReturn(ret);
+      vec.push_back(messageData);
+    }
+  };
+
+  static json::array_t jsonify_messages()
+  {
+    Messages m = T::getMessageDescriptors();
+    std::vector<json> ms;
+    m.template iterate<DoMessage>(ms);
+    return {ms};
   }
 };
+
+  
+  template <class MessageResult>
+  struct ReturnType{
+    static std::string getReturn()
+    {
+      auto x = typename std::remove_reference_t<MessageResult>::type{};
+      return getArgType(x);
+    }
+  };
+
+template <>
+struct ReturnType<MessageResult<void>&>{
+    static std::string getReturn()
+    {
+      return "void";
+    }
+  };
+
+
 } // namespace client
 } // namespace fluid
