@@ -39,7 +39,7 @@ under the European Union’s Horizon 2020 research and innovation programme
         </description>
         {%- if 'default' in bits  -%}
         <attributelist>
-          <attribute name="default" get="1" set='{{ bits['fixed'] | truefalse }}' type="int" size='{{ bits['size'] }}' value='{{ bits['default'] }}' />
+          <attribute name="default" get="1" set="1" type="int" size='{{ bits['size'] }}' value='{{ bits['default'] }}' />
         </attributelist>
         {%- endif -%}
       </objarg>
@@ -80,17 +80,6 @@ under the European Union’s Horizon 2020 research and innovation programme
         Calling <m>reset</m> will change parameter values back to those the object was <i>created</i> with, i.e. any attribute values set in the box will be retained
       </description>
     </method>
-  {% for name,bits in messages.items()  %}
-    <method name='{{ name|e }}'>
-      <arglist />
-      <digest>
-        {{ bits['digest']|rst }}
-      </digest>
-      <description>
-        {{ bits['description']|rst }}
-      </description>
-    </method>
-  {% endfor %}
 	</methodlist>
 	<!--ATTRIBUTES-->
 	<attributelist>
