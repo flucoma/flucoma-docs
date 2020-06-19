@@ -8,11 +8,17 @@
 
 cmake_minimum_required(VERSION 3.11)
 
-if(APPLE)
+if (APPLE)
+	set(CMAKE_OSX_ARCHITECTURES x86_64)
+  set(CMAKE_XCODE_GENERATE_SCHEME ON)
   set(CMAKE_OSX_DEPLOYMENT_TARGET 10.8)
 endif()
 
+
 project (flucoma-docs LANGUAGES CXX)
+
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+set(CMAKE_XCODE_GENERATE_TOP_LEVEL_PROJECT_ONLY ON)
 
 set(FLUID_PATH "" CACHE PATH "The top level of the flucoma-core repo. Will clone from repo if blank")
 set(FLUID_M_PATH ~/fluid_manipulation CACHE PATH "The top level of the fluid_manipulation repo")
@@ -72,26 +78,6 @@ set(FLUID_JSON_DOC "${CMAKE_BINARY_DIR}/json")
 set(FLUID_YAML_DOC "${CMAKE_CURRENT_SOURCE_DIR}/doc")
 set(FLIUD_JINJA_TEMPLATES "${CMAKE_CURRENT_SOURCE_DIR}/script/templates")
 
-macro(add_ref_target platform comment)  
-  string(TOUPPER ${platform} platform_uc)
-  string(TOLOWER ${platform} platform_lc)
-  get_directory_property(hasParent PARENT_DIRECTORY)
-  if(hasParent)
-    set(FLUID_${platform_uc}_REF_TARGET MAKE_${platform_uc}_REF PARENT_SCOPE)
-    set(FLUID_${platform_uc}_REF_PATH "${CMAKE_BINARY_DIR}/${platform_lc}_ref" PARENT_SCOPE)
-  endif()
-  add_custom_target(MAKE_${platform_uc}_REF
-    COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/${platform_lc}_ref"
-  	COMMAND ${PYTHON_3} "${CMAKE_CURRENT_SOURCE_DIR}/script/MakeRef.py" "${platform_lc}" ${FLUID_JSON_DOC} ${FLUID_YAML_DOC} "${CMAKE_BINARY_DIR}/${platform_lc}_ref" ${FLIUD_JINJA_TEMPLATES}
-  	COMMENT ${comment}
-  	VERBATIM
-  )
-endmacro()
-
-add_ref_target(max "Making Max ref")
-add_ref_target(pd "Making PD ref")
-add_ref_target(cli "Making CLI ref")
-
 # Make sure to build targets from flucoma-core
 macro(subdirlist result curdir)
   file(GLOB children RELATIVE ${curdir} ${curdir}/*)
@@ -109,6 +95,35 @@ subdirlist(PROJECT_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/src/clients)
 foreach (project_dir ${PROJECT_DIRS})
 	if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/clients/${project_dir}/CMakeLists.txt")
 		message("Generating: ${project_dir}")
-		add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/clients/${project_dir})
-	endif ()
+		add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/clients/${project_dir})    
+    list(APPEND json_files "${CMAKE_BINARY_DIR}/json/${project_dir}.json")
+    
+    add_custom_command(OUTPUT "${CMAKE_BINARY_DIR}/json/${project_dir}.json"
+    		COMMAND $<TARGET_FILE:${project_dir}> ARGS "${CMAKE_BINARY_DIR}/json/"
+    		COMMENT "Generating JSON for ${project_dir}"
+    )
+    
+	endif ()  
 endforeach ()
+
+
+macro(add_ref_target platform comment)  
+  string(TOUPPER ${platform} platform_uc)
+  string(TOLOWER ${platform} platform_lc)
+  get_directory_property(hasParent PARENT_DIRECTORY)
+  if(hasParent)
+    set(FLUID_${platform_uc}_REF_TARGET MAKE_${platform_uc}_REF PARENT_SCOPE)
+    set(FLUID_${platform_uc}_REF_PATH "${CMAKE_BINARY_DIR}/${platform_lc}_ref" PARENT_SCOPE)
+  endif()
+  add_custom_target(MAKE_${platform_uc}_REF
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/${platform_lc}_ref"
+  	COMMAND ${PYTHON_3} "${CMAKE_CURRENT_SOURCE_DIR}/script/MakeRef.py" "${platform_lc}" ${FLUID_JSON_DOC} ${FLUID_YAML_DOC} "${CMAKE_BINARY_DIR}/${platform_lc}_ref" ${FLIUD_JINJA_TEMPLATES}
+  	COMMENT ${comment}
+    DEPENDS ${json_files}
+  	VERBATIM
+  )
+endmacro()
+
+add_ref_target(max "Making Max ref")
+# add_ref_target(pd "Making PD ref")
+# add_ref_target(cli "Making CLI ref")

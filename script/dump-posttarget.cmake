@@ -6,9 +6,6 @@
 # under the European Union’s Horizon 2020 research and innovation programme
 # (grant agreement No 725899).
 
-add_dependencies(
-	MAKE_MAX_REF ${PROJECT_NAME}
-)
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
 
@@ -55,9 +52,15 @@ else ()
 endif ()
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${EXTERN_OUTPUT_NAME}")
 
-add_custom_command(
-	TARGET ${PROJECT_NAME}
-	POST_BUILD
-	COMMAND $<TARGET_FILE:${PROJECT_NAME}> ARGS "${CMAKE_BINARY_DIR}/json/"
-	COMMENT "Generating JSON for ${PROJECT_NAME}"
-)
+# add_custom_command(
+# 	TARGET ${PROJECT_NAME}
+# 	POST_BUILD
+# 	COMMAND $<TARGET_FILE:${PROJECT_NAME}> ARGS "${CMAKE_BINARY_DIR}/json/"
+# 	COMMENT "Generating JSON for ${PROJECT_NAME}"
+# )
+
+
+
+# add_dependencies(
+# 	MAKE_MAX_REF "${CMAKE_BINARY_DIR}/json/${PROJECT_NAME}.json"
+# )
