@@ -9,7 +9,7 @@ under the European Union’s Horizon 2020 research and innovation programme
 */
 
 #include <clients/rt/SpectralShapeClient.hpp>
-#include <clients/nrt/FluidNRTClientWrapper.hpp>
+#include <clients/common/FluidNRTClientWrapper.hpp>
 #include <FluidParameterDump.hpp>
 int main(int argc, char *argv[]) {
   using namespace fluid::client;
