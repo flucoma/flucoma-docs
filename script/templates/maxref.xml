@@ -39,7 +39,7 @@ under the European Union’s Horizon 2020 research and innovation programme
         </description>
         {%- if 'default' in bits  -%}
         <attributelist>
-          <attribute name="default" get="1" set="1" type="int" size='{{ bits['size'] }}' value='{{ bits['default'] }}' />
+          <attribute name="default" get="1" set="1" type="int" size='{{ bits['size'] }}' value='{{ bits['default'] }}'>
         </attributelist>
         {%- endif -%}
       </objarg>
@@ -81,6 +81,17 @@ under the European Union’s Horizon 2020 research and innovation programme
       </description>
     </method>
 	</methodlist>
+	{%- for name, bits in messages.items() -%}
+		<method name='{{ name|e }}'> 
+			<arglist /> 
+			<digest> 
+				Human documentation is yet to happen
+			</digest>			
+			<description> 
+				Human documentation is yet to happen
+			</description>
+		</method> 
+	{%- endfor -%}
 	<!--ATTRIBUTES-->
 	<attributelist>
     {%- for name,bits in attributes.items()  -%}

@@ -18,7 +18,7 @@ import yaml
 import re
 from collections import OrderedDict
 import pprint
-
+import warnings
 import inspect
 def fluid_object_role(role, rawtext, text, lineno, inliner,
                        options={}, content=[]):
@@ -96,7 +96,7 @@ class FluidHTMLWriter(html4css1.Writer):
 
 
 def rst_filter(s,translator,**kwargs):    
-    if len(s) == 0:
+    if s is None or len(s) == 0:
          return ''
     settings = {}
     if(kwargs):
@@ -203,24 +203,36 @@ def cli_name(value):
 def process_client_data(jsonfile, yamldir):
     print('Processing reference data for {}'.format(jsonfile.stem))
     # template = env.get_template('maxref.xml')
-    data = json.load(open(jsonfile.resolve()))
+    raw_data = json.load(open(jsonfile.resolve()))
     human_data = {}
     human_data_path = yamldir / (jsonfile.stem+'.yaml')    
     if(human_data_path.exists()):
         human_data = yaml.load(open(human_data_path.resolve()), Loader=yaml.FullLoader)
+    else:
+        print("WARNING NO HUMAN DOCUMENTATION YET FOR {}".format(jsonfile.stem))            
         # print(human_data['digest'])
-
+    # print(human_data)
     args={}
     attrs={}
-
-    data = dict(data) #data is in json array to preserve order,
-
-    for k,v in data.items():
-        if k != 'fftSettings' and  not k in human_data['parameters']:
-            print("WARNING CAN'T FIND {} in {}".format(k,jsonfile.stem))
+    messages={}    
+    # data = data['parameters'] #data is in json array to preserve order,
+    data = OrderedDict([(d['name'], d) for d in raw_data['parameters']]) 
+    if 'parameters' in human_data:
+        for k,v in data.items():
+            if k != 'fftSettings' and not k in human_data['parameters']:
+                print("WARNING CAN'T FIND {} in {}".format(k,jsonfile.stem))
+    else: 
+        print("WARNING NO HUMAN DOCUMENTATION YET FOR {}".format(jsonfile.stem))            
     
-    data = {k.lower():v for k,v in data.items()}
-    human_data['parameters'] = {k.lower():v for k,v in human_data['parameters'].items()}
+    data = {k.lower():v for k,v in data.items()}  
+    
+    #if there's an empty 'parameters' item in the yaml, just get rid of it 
+    # otherwise we have to check for both existence and not None-ness every time
+    if 'parameters' in human_data and not human_data['parameters']:
+        del human_data['parameters']
+        
+    if 'parameters' in human_data and human_data['parameters']:
+        human_data['parameters'] = {k.lower():v for k,v in human_data['parameters'].items()}
 
     data['warnings'] = {
         "displayName" : "Warnings",
@@ -272,7 +284,8 @@ def process_client_data(jsonfile, yamldir):
 
         param.update({d.lower():v})
 
-        if 'parameters' in human_data and d in human_data['parameters']:
+        if 'parameters' in human_data \
+        and d in human_data['parameters']:
             if 'description' in human_data['parameters'][d.lower()]:
                 param[d.lower()].update({'description': human_data['parameters'][d]['description']})
             if 'enum' in human_data['parameters'][d.lower()] and 'values' in v:
@@ -280,15 +293,16 @@ def process_client_data(jsonfile, yamldir):
 
         if d == 'fftSettings':
             fftdesc ='FFT settings consist of three numbers representing the window size, hop size and FFT size in samples:\n'
-            if 'windowSize' in  human_data['parameters']:
-                fftdesc += '   \n* ' + human_data['parameters']['windowSize']['description'] 
-                #+ ' . Window size can be any integer (in samples), but is clipped at its upper range by the FFT size (when this is not -1)'
-            if 'hopSize' in human_data['parameters']:
-                fftdesc += '   \n* ' + human_data['parameters']['hopSize']['description']
-                # + '. The default of -1 sets the hop size to window size / 2. However it can be *any* size (although some small integer fraction of the window size is conventional).'
-            if 'fftSize' in human_data['parameters']:
-                fftdesc += '   \n* ' + human_data['parameters']['fftSize']['description'] 
-                #+ '. The default of -1 sets the FFT size to the nearest power of 2 equal to or above the window size. When set manually, it will always snap internally to the next power of two, and can not be smaller than the window size. When greater than the window size, the input frame is zero-padded.'
+            if 'parameters' in human_data:
+                if 'windowSize' in  human_data['parameters']:
+                    fftdesc += '   \n* ' + human_data['parameters']['windowSize']['description'] 
+                    #+ ' . Window size can be any integer (in samples), but is clipped at its upper range by the FFT size (when this is not -1)'
+                if 'hopSize' in human_data['parameters']:
+                    fftdesc += '   \n* ' + human_data['parameters']['hopSize']['description']
+                    # + '. The default of -1 sets the hop size to window size / 2. However it can be *any* size (although some small integer fraction of the window size is conventional).'
+                if 'fftSize' in human_data['parameters']:
+                    fftdesc += '   \n* ' + human_data['parameters']['fftSize']['description'] 
+                    #+ '. The default of -1 sets the FFT size to the nearest power of 2 equal to or above the window size. When set manually, it will always snap internally to the next power of two, and can not be smaller than the window size. When greater than the window size, the input frame is zero-padded.'
             fftdesc += '\n\n'
             
             fftDefault = 'The hop size and fft size can both be set to -1 (and are by default), with slightly different meanings:\n   \n* For the hop size, -1 = ``windowSize/2``\n* For the FFT size, -1 = ``windowSize`` snapped to the nearest equal / greater power of 2 (e.g. ``windowSize 1024`` => ``fftSize 1024``, but ``windowsSize 1000`` also => ``fftSize 1024``)\n'
@@ -310,16 +324,23 @@ def process_client_data(jsonfile, yamldir):
     digest  = human_data['digest'] if 'digest' in human_data else 'A Fluid Decomposition Object'
     description = human_data['description'] if 'description' in human_data else ''
     seealso = [s.strip() for s in human_data['see-also'].split(',')] if 'see-also' in human_data and human_data['see-also'] else []
-    
-    # print(seealso)
+
     discussion = human_data['discussion'] if 'discussion' in human_data else ''
     # client  = 'fluid.{}~'.format(jsonfile.stem.lower())
     client = jsonfile.stem
     attrs = OrderedDict(sorted(attrs.items(), key=lambda t: t[0]))
 
+
+    message_data = OrderedDict([(d['name'], d) for d in raw_data['messages']]) 
+    
+    # some things will happen here
+    
+    messages = message_data
+
     return {
         'arguments': args, 
         'attributes': attrs, 
+        'messages':messages,
         'client': client, 
         'digest':digest, 
         'description': description, 
@@ -391,6 +412,7 @@ def process_template(template_path,outputdir,client_data,host):
         f.write(template.render(
             arguments=client_data['arguments'],
             attributes=client_data['attributes'],
+            messages=client_data['messages'],
             client_name=client_data['client'],
             digest=client_data['digest'],
             description=client_data['description'],
