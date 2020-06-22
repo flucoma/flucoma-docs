@@ -80,7 +80,7 @@ under the European Union’s Horizon 2020 research and innovation programme
         Calling <m>reset</m> will change parameter values back to those the object was <i>created</i> with, i.e. any attribute values set in the box will be retained
       </description>
     </method>
-	</methodlist>
+
 	{%- for name, bits in messages.items() -%}
 		<method name='{{ name|e }}'> 
 			<arglist /> 
@@ -92,6 +92,7 @@ under the European Union’s Horizon 2020 research and innovation programme
 			</description>
 		</method> 
 	{%- endfor -%}
+	</methodlist>
 	<!--ATTRIBUTES-->
 	<attributelist>
     {%- for name,bits in attributes.items()  -%}
