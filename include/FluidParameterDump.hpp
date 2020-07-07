@@ -281,6 +281,7 @@ public:
   static std::string getParamType(const StringT&) {return "string"; }
   static std::string getParamType(const FFTParamsT&) {return "fft"; }
   static std::string getParamType(const EnumT&) {return "enum"; }
+  static std::string getParamType(const LongArrayT&) { return "long"; }
 
   template<typename U>
   static std::string getReturn(U&&)
