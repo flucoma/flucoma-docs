@@ -19,11 +19,7 @@ parameters:
       An `Classes/Array` that gives the sizes of any hidden layers in the network (default is two hidden layers of three units each).
   activation:
     description: |
-<<<<<<< Updated upstream
-      Ativation function to use for the hidden layer units.
-=======
       Activation function to use for the hidden layer units.
->>>>>>> Stashed changes
   maxIter:
     description: |
       Maximum number of iterations to use in training.
