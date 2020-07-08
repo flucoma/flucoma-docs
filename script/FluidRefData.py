@@ -7,7 +7,8 @@
 # (grant agreement No 725899).
 
 from docutils.core import publish_parts
-from docutils.parsers.rst import roles 
+from docutils.parsers.rst import roles,directives
+from docutils.parsers.rst import Directive
 from docutils.writers import html4css1
 from docutils import nodes, utils
 from jinja2 import Template, Environment, PackageLoader, FileSystemLoader, select_autoescape, Markup
@@ -28,6 +29,22 @@ def fluid_object_role(role, rawtext, text, lineno, inliner,
     roles.set_classes(options)
     node = nodes.reference(rawtext,utils.unescape(text), **options)
     return [node], []
+
+
+class MaxBufferSubstitution(Directive):
+    
+    required_arguments = 0 
+    optional_arguments = 0 
+    
+    def run(self):
+        node = nodes.reference("buffer~","buffer~")
+        return [node]
+        # reference = directives.uri(self.arguments[0])
+        # self.options['uri'] = reference
+        # image_node = nodes.image(rawsource=self.block_text,
+        #                          **self.options)
+        # return [image_node]
+    
 
 class MaxHTMLTranslator(html4css1.HTMLTranslator):
     """docutils translator for Max ref    
@@ -98,6 +115,9 @@ class FluidHTMLWriter(html4css1.Writer):
 def rst_filter(s,translator,**kwargs):    
     if s is None or len(s) == 0:
          return ''
+    
+    s += "\n\n.. |buffer| replace:: buffer~\n"     
+         
     settings = {}
     if(kwargs):
         settings = kwargs['settings']         
@@ -221,8 +241,8 @@ def process_client_data(jsonfile, yamldir):
         for k,v in data.items():
             if k != 'fftSettings' and not k in human_data['parameters']:
                 print("WARNING CAN'T FIND {} in {}".format(k,jsonfile.stem))
-    else: 
-        print("WARNING NO HUMAN DOCUMENTATION YET FOR {}".format(jsonfile.stem))            
+    # else: 
+    #     print("WARNING NO HUMAN DOCUMENTATION YET FOR {}".format(jsonfile.stem))            
     
     data = {k.lower():v for k,v in data.items()}  
     
@@ -331,12 +351,44 @@ def process_client_data(jsonfile, yamldir):
     attrs = OrderedDict(sorted(attrs.items(), key=lambda t: t[0]))
 
 
-    message_data = OrderedDict([(d['name'], d) for d in raw_data['messages']]) 
+    message_data = OrderedDict([(d['name'].lower(), d) for d in raw_data['messages']]) 
+    
+    if 'messages' in human_data and human_data['messages']:
+        human_data['messages'] = {k.lower():v for k,v in human_data['messages'].items()}
     
     # some things will happen here
+    for d,v in message_data.items():
+        
+        v['args'] = {'arg{}'.format(i):t for i,t in enumerate(v['args'])}
+        
+        if 'messages' in human_data \
+        and d in human_data['messages']:
+            if 'description' in human_data['messages'][d.lower()]:
+                message_data[d.lower()].update({'description': human_data['messages'][d]['description']})
+            # print(v['args'])
+            if 'args' in human_data['messages'][d.lower()]:
+                margs = human_data['messages'][d.lower()]['args']
+                if margs:
+                    arg_names = [a['name'] for a in margs]
+                    arg_names.remove('action')
+                    # print(len(v['args']), len(arg_names),arg_names)
+                    arg_types = list(v['args'].values())
+                    if(len(v['args']) == len(arg_names)): 
+                        newargs = {}
+                        for i in range(len(arg_names)):
+                            newargs[arg_names[i]] = arg_types[i]
+                        message_data[d.lower()]['args'] = newargs
+                        
+                    else: 
+                        print("WARNING: Arg counts don't match")
+                else: 
+                    message_data[d.lower()]['args'] = {}
+            else: 
+                message_data[d.lower()]['args'] = {}
+                    # print(human_data['messages'][d.lower()]['args'])
     
     messages = message_data
-
+    # print(messages)
     return {
         'arguments': args, 
         'attributes': attrs, 
@@ -397,7 +449,8 @@ host_vars = {
 def process_template(template_path,outputdir,client_data,host):
     ofile = outputdir / '{}.{}'.format(host['namer'](client_data['client']),host['extension'])
     # print(host['namer'](client_data['client']))
-    roles.register_local_role('fluid_object', fluid_object_role)
+    roles.register_local_role('fluid-obj', fluid_object_role)
+    # directives.register_directive('buffer', MaxBufferSubstitution)
     env = Environment(
         loader=FileSystemLoader([template_path]),
         autoescape=select_autoescape(['html', 'xml'])
