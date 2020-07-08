@@ -7,116 +7,55 @@
 # (grant agreement No 725899).
 ---
 digest: Mel-Frequency Cepstral Coefficients as Spectral Descriptors on a Buffer
-sc-categories: Libraries>FluidDecomposition
-sc-related: Guides/FluCoMa, Guides/FluidDecomposition, Classes/FluidBufMelBands
-see-also: MFCC, BufPitch, BufMelBands, BufLoudness, BufSpectralShape, BufStats
+sc-categries: Libraries>FluidDecomposition
+sc-related: Guides/FluCoMa, Guides/FluidDecomposition, Guides/FluidBufMultiThreading, Classes/FluidBufMelBands
+see-also: 
 description: |
-    A classic spectral descriptor, the Mel-Frequency Cepstral Coefficients (https://en.wikipedia.org/wiki/Mel-frequency_cepstrum).
-discussion: |
-    The input is first decomposed into numBands perceptually spaced bands, as with the MelBands objects. It is then analysed in numCoefs number of cepstral coefficients. It has the avantage to be amplitude invarient, except for the first coefficient.
+  This class implements a classic spectral descriptor, the Mel-Frequency Cepstral Coefficients (https://en.wikipedia.org/wiki/Mel-frequency_cepstrum). The input is first filtered in to **numBands** perceptually-spaced bands, as in Classes/FluidMelBands. It is then analysed into **numCoeffs** number of cepstral coefficients. It has the advantage of being amplitude invariant, except for the first coefficient. It is part of the Guides/FluidDecomposition of Guides/FluCoMa. For more explanations, learning material, and discussions on its musicianly uses, visit http://www.flucoma.org/
 
-    The process will return a single multichannel buffer of numCoefs per input channel. Each frame represents a value, which is every hopSize.
-process:
-   This is the method that calls for the spectral shape descriptors to be calculated on a given source buffer.
+  The process will return a single multichannel buffer of **numCoeffs** per input channel. Each frame represents a value, which is every hopSize.
+
+  **Threading**
+
+  By default, this UGen spawns a new thread to avoid blocking the server command queue, so it is free to go about with its business. For a more detailed discussion of the available threading and monitoring options, including the two undocumented Class Methods below (.processBlocking and .kr) please read the guide Guides/FluidBufMultiThreading.
+
 parameters:
-    server:
-       description: |
-         The server on which the buffers to be processed are allocated.
-    source:
-       description: |
-         The index of the buffer to use as the source material to be described through the various descriptors. The different channels of multichannel buffers will be processing sequentially.
-    startFrame:
-       description: |
-         Where in the srcBuf should the process start, in sample.
-    numFrames:
-       description: |
-         How many frames should be processed.
-    startChan:
-       description: |
-         For multichannel srcBuf, which channel should be processed first.
-    numChans:
-       description: |
-         For multichannel srcBuf, how many channel should be processed.
-    features:
-       description: |
-         The destination buffer for the numCoefs coefficients describing the spectral shape.
-    numCoeffs:
-       description: |
-         The number of cepstral coefficients to be outputed. It will decide how many channels are produce per channel of the source.
-    numBands:
-      description: |
-         The number of bands that will be perceptually equally distributed between `minFreq` and `maxFreq`.
-    minFreq:
-       description: |
-         The lower boundary of the lowest band of the model, in Hz.
-    maxFreq:
-       description: |
-         The highest boundary of the highest band of the model, in Hz.
-    maxNumCoeffs:
-      description: |
-        The maximum number of cepstral coefficients that can be computed. This sets the number of channels of the output, and therefore cannot be modulated.
-    windowSize:
-       description: |
-         The window size. As MFCC computation relies on spectral frames, we need to decide what precision we give it spectrally and temporally, in line with Gabor Uncertainty principles. http://www.subsurfwiki.org/wiki/Gabor_uncertainty
-    hopSize:
-       description: |
-         The window hop size. As MFCC computation relies on spectral frames, we need to move the window forward. It can be any size but low overlap will create audible artefacts.
-    fftSize:
-       description: |
-         The inner FFT/IFFT size. It should be at least 4 samples long, at least the size of the window, and a power of 2. Making it larger allows an oversampling of the spectral precision.
-    maxFFTSize:
-      description: |
-        How large can the FFT be, by allocating memory at instantiation time. This cannot be modulated.
-    action:
-       description: |
-         A Function to be evaluated once the offline process has finished and all Buffer's instance variables have been updated on the client side. The function will be passed [features] as an argument.
-sc-code: |
-  code::
-  // create some buffers
-  (
-  b = Buffer.read(s,File.realpath(FluidBufMFCC.class.filenameSymbol).dirname.withTrailingSlash ++ "../AudioFiles/Nicol-LoopE-M.wav");
-  c = Buffer.new(s);
-  )
-
-  // run the process with basic parameters
-  (
-  Routine{
-     t = Main.elapsedTime;
-     FluidBufMFCC.process(s, b, features: c);
-     (Main.elapsedTime - t).postln;
-  }.play
-  )
-
-  // listen to the source and look at the buffer
-  b.play;
-  c.plot(separately:true)
-  ::
-
-  STRONG::A stereo buffer example.::
-  CODE::
-
-  // load two very different files
-  (
-  b = Buffer.read(s,File.realpath(FluidBufSpectralShape.class.filenameSymbol).dirname.withTrailingSlash ++ "../AudioFiles/Tremblay-SA-UprightPianoPedalWide.wav");
-  c = Buffer.read(s,File.realpath(FluidBufSpectralShape.class.filenameSymbol).dirname.withTrailingSlash ++ "../AudioFiles/Tremblay-AaS-AcousticStrums-M.wav");
-  )
-
-  // composite one on left one on right as test signals
-  FluidBufCompose.process(s, c, numFrames:b.numFrames, startFrame:555000,destStartChan:1, destination:b)
-  b.play
-
-  // create a buffer as destinations
-  c = Buffer.new(s);
-
-  //run the process on them
-  (
-  Routine{
-      t = Main.elapsedTime;
-      FluidBufMFCC.process(s, b, numCoefs:5, features: c);
-      (Main.elapsedTime - t).postln;
-  }.play
-  )
-
-  // look at the buffer: 5 coefs for left, then 5 coefs for right
-  c.plot(separately:true)
-  ::
+  source:
+    description: |
+       The index of the buffer to use as the source material to be described through the various descriptors. The different channels of multichannel buffers will be processing sequentially.
+  startFrame:
+    description: |
+       Where in the srcBuf should the process start, in sample.
+  numFrames:
+    description: |
+       How many frames should be processed.
+  startChan:
+    description: |
+       For multichannel srcBuf, which channel should be processed first.
+  numChans:
+    description: |
+       For multichannel srcBuf, how many channel should be processed.
+  features:
+    description: |
+       The destination buffer for the numCoeffs coefficients describing the spectral shape.
+  numCoeffs:
+    description: |
+       The number of cepstral coefficients to be outputed. It will decide how many channels are produce per channel of the source.
+  numBands:
+    description: |
+       The number of bands that will be perceptually equally distributed between **minFreq** and **maxFreq**.
+  minFreq:
+    description: |
+       The lower boundary of the lowest band of the model, in Hz.
+  maxFreq:
+    description: |
+       The highest boundary of the highest band of the model, in Hz.
+  windowSize:
+    description: |
+       The window size. As MFCC computation relies on spectral frames, we need to decide what precision we give it spectrally and temporally, in line with Gabor Uncertainty principles. http://www.subsurfwiki.org/wiki/Gabor_uncertainty
+  hopSize:
+    description: |
+       The window hop size. As MFCC computation relies on spectral frames, we need to move the window forward. It can be any size but low overlap will create audible artefacts. The -1 default value will default to half of windowSize (overlap of 2).
+  fftSize:
+    description: |
+       The inner FFT/IFFT size. It should be at least 4 samples long, at least the size of the window, and a power of 2. Making it larger allows an oversampling of the spectral precision. The -1 default value will use the next power of 2 equal or above the windowSize.
