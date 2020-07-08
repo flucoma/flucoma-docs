@@ -1,0 +1,80 @@
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
+---
+digest: Regression with a multi-layer perceptron
+sc-categries: Machine learning
+sc-related: Classes/FluidDataSet
+see-also: 
+description: |
+  Perform regression between :fluid-obj:`FluidDataSet`s using a Multilayer Perception neural network.
+
+parameters:
+  hidden:
+    description: |
+      An `Classes/Array` that gives the sizes of any hidden layers in the network (default is two hidden layers of three units each).
+  activation:
+    description: |
+      Ativation function to use for the hidden layer units.
+  maxIter:
+    description: |
+      Maximum number of iterations to use in training.
+  learnRate:
+    description: |
+      The learning rate of the network. Start small, increase slowly.
+  momentum:
+    description: |
+      Training momentum, default 0.9
+  batchSize:
+    description: |
+      Training batch size.
+messages: 
+  fit:
+   description: |
+      Train the network to map between a source and target :fluid-obj:`FluidDataSet`
+   args:
+    - name: sourceDataset
+      description: |
+        Source data
+    - name: targetDataset
+      description: |
+        Target data
+    - name: action
+      description: |
+        Function to run when training is complete
+  predict:
+   description: |
+      Apply the learned mapping to a dataset (given a trained network)
+   args:
+    - name: sourceDataset
+      description: |
+        Input data
+    - name: targetDataset
+      description: |
+        Output data
+    - name: layer
+      description: |
+        Layer whose output to return.
+    - name: action
+      description: |
+        Function to run when complete
+  predictPoint:
+   description: |
+      Apply the learned mapping to a single data point in a |buffer|
+   args:
+    - name: sourceBuffer
+      description: |
+        Input point
+    - name: targetBuffer
+      description: |
+        Output point
+    - name: layer
+      description: |
+        Layer whose output to return.
+    - name: action
+      description: |
+        A function to run when complete

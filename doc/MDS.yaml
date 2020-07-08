@@ -1,0 +1,37 @@
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
+---
+digest: Dimensionality Reduction with Multidimensional Scaling
+sc-categries: Dimensionality Reduction, Data Processing
+sc-related: Classes/FluidMDS, Classes/FluidDataSet
+see-also: 
+description: |
+  Multidimensional scaling of a :fluid-obj:`FluidDataSet`
+
+  https://scikit-learn.org/stable/modules/manifold.html#multi-dimensional-scaling-mds
+
+messages: 
+  fitTransform:
+   description: |
+      Fit the model to a :fluid-obj:`FluidDataSet` and write the new projected data to a destination FluidDataSet.
+   args:
+    - name: sourceDataset
+      description: |
+        Source data, or the dataset name
+    - name: destDataset
+      description: |
+        Destination data, or the dataset name
+    - name: k
+      description: |
+        The number of dimensions to reduce to
+    - name: dist
+      description: |
+        The distance metric to use (integer, 0-6, see flags above)
+    - name: action
+      description: |
+        Run when done

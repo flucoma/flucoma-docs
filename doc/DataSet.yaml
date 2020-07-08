@@ -1,0 +1,65 @@
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
+---
+digest: Container for labelled,  multidimensional data
+sc-categries: UGens>FluidManipulation
+sc-related: Classes/FluidLabelSet, Classes/FluidKDTree, Classes/FluidKNN, Classes/FluidKMeans
+see-also: 
+description: |
+  A server-side container associating labels with multi-dimensional data. FluidDataSet is identified by its name.
+
+parameters:
+  name:
+    description: |
+      A symbol with the name of the dataset. ​
+messages: 
+  addPoint:
+   description: |
+      Add a new point to the data set. The dimensionality of the dataset is governed by the size of the first point added. Will report an error if the label already exists, or if the size of the data does not match the dimensionality of the dataset.
+   args:
+    - name: label
+      description: |
+        A symbol or string with the label for the new point.
+    - name: buffer
+      description: |
+        A |buffer| with the new data point.
+    - name: action
+      description: |
+        A function to run when the point has been added. ​​
+  updatePoint:
+   description: |
+      Update an existing label's data. Will report an error if the label doesn't exist, or if the size of the data does not match the given dimensionality of the dataset.
+   args:
+  getPoint:
+   description: |
+      Retrieve a point from the data set into a |buffer|. Will report an error if the label or buffer doesn't exist​.
+   args:
+  deletePoint:
+   description: |
+      Remove a point from the data set. Will report an error if the label doesn't exist. ​​
+   args:
+  clear:
+   description: |
+      Empty the data set. ​
+   args:
+  free:
+   description: |
+      Destroy the object on the server.
+   args:
+  print:
+   description: |
+      Post an abbreviated content of the dataset in the window by default, but you can supply a custom action instead. ​​
+   args:
+  synth:
+   description: |
+      The internal synth the object uses to communicate with the server
+   args:
+  server:
+   description: |
+      The server instance the object uses ​
+   args:

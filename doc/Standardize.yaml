@@ -1,0 +1,67 @@
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
+---
+digest: Standardize a FluidDataSet
+sc-categries: FluidManipulation
+sc-related: Classes/FluidDataSet, Classes/FluidStandardize
+see-also: 
+description: |
+  Standardize a :fluid-obj:`FluidDataSet`, i.e. rescale using its mean(s) and standard deviation(s) in each dimension.
+
+  See http://www.faqs.org/faqs/ai-faq/neural-nets/part2/section-16.html
+
+messages: 
+  fit:
+   description: |
+      Fit model to a dataset without applying scaling
+   args:
+    - name: dataset
+      description: |
+        The :fluid-obj:`FluidDataSet` to standardize
+    - name: action
+      description: |
+        A function to run when processing is complete
+  transform:
+   description: |
+      Standardize a :fluid-obj:`FluidDataSet`, using the learned statistics from a previous call to :fluid-obj:`FluidStandardize#fit`
+   args:
+    - name: sourceDataset
+      description: |
+        The :fluid-obj:`FluidDataSet` to standardize
+    - name: destDataset
+      description: |
+        The :fluid-obj:`FluidDataSet` to populate with standardized data
+    - name: action
+      description: |
+        A function to run when processing is complete
+  fitTransform:
+   description: |
+      Standardize a :fluid-obj:`FluidDataSet` into another :fluid-obj:`FluidDataSet`
+   args:
+    - name: sourceDataset
+      description: |
+        The :fluid-obj:`FluidDataSet` to standardize
+    - name: destDataset
+      description: |
+        The :fluid-obj:`FluidDataSet` to populate with standardized data
+    - name: action
+      description: |
+        A function to run when processing is complete
+  transformPoint:
+   description: |
+      Standardize a new data point, using the learned statistics from a previous call to :fluid-obj:`FluidStandardize#fit`
+   args:
+    - name: sourceBuffer
+      description: |
+        A |buffer| with the new data point
+    - name: destBuffer
+      description: |
+        A |buffer| to contain the standardize value
+    - name: action
+      description: |
+        A function to run when processing is complete

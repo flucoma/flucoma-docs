@@ -1,0 +1,117 @@
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
+---
+digest: Query a FluidDataSet
+sc-categries: UGens>FluidManipulation
+sc-related: Classes/FluidDataSet
+see-also: 
+description: |
+  A selection of columns and a set of conditions that match rows of a FluidDataSet. Use to filter and search in a database of descriptors.
+
+messages: 
+  addColumn:
+   description: |
+      Add a column to the query
+   args:
+    - name: column
+      description: |
+        Column index
+    - name: action
+      description: |
+        Run when done
+  addRange:
+   description: |
+      Add a range of columns to the query
+   args:
+    - name: start
+      description: |
+        First index
+    - name: count
+      description: |
+        Number of columns
+    - name: action
+      description: |
+        Run when done
+  filter:
+   description: |
+      Filter rows according to some condition.
+   args:
+    - name: column
+      description: |
+        Column index
+    - name: condition
+      description: |
+        Condition string. Possible values: "==", "!=", "<", "<=", ">", ">="
+    - name: value
+      description: |
+        Condition value
+    - name: action
+      description: |
+        Run when done
+  and:
+   description: |
+      Add a condition to an existing filter with an "and" connector.
+   args:
+    - name: column
+      description: |
+        Column index
+    - name: condition
+      description: |
+        Condition string. Possible values: "==", "!=", "<", "<=", ">", ">="
+    - name: value
+      description: |
+        Condition value
+    - name: action
+      description: |
+        Run when done
+  or:
+   description: |
+      Add a condition to an existing filter with an "or" connector.
+   args:
+    - name: column
+      description: |
+        Column index
+    - name: condition
+      description: |
+        Condition string. Possible values: "==", "!=", "<", "<=", ">", ">="
+    - name: value
+      description: |
+        Condition value
+    - name: action
+      description: |
+        Run when done
+  limit:
+   description: |
+      Limit the number of resulting rows.
+   args:
+    - name: rows
+      description: |
+        Maximum number of rows
+    - name: action
+      description: |
+        Run when done
+  reset:
+   description: |
+      Clear the query, remove all columns, filters and limit.
+   args:
+    - name: action
+      description: |
+        Run when done
+  transform:
+   description: |
+      Apply the query to a source :fluid-obj:`FluidDataSet` and write to a destination. Can be the same.
+   args:
+    - name: sourceDataset
+      description: |
+        Source data, or the dataset name
+    - name: destDataset
+      description: |
+        Destination data, or the dataset name
+    - name: action
+      description: |
+        Run when done

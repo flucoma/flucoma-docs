@@ -1,88 +1,89 @@
-digest: Offline KMeans Clustering of a Dataset
-sc-categories: Libraries>FluidManipulation
-sc-related: 
-description: Learns clusters from a Dataset, using the K Means algorithm 
-discussion: 
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
+---
+digest: Cluster data points with K-Means
+sc-categries: FluidManipulation
+sc-related: Classes/FluidDataSet, Classes/FluidLabelSet, Classes/FluidKNNClassifier, Classes/FluidKNNRegressor
+see-also: 
+description: |
+  Uses the K-Means algorithm to learn clusters from a :fluid-obj:`FluidDataSet`
+
+  https://scikit-learn.org/stable/tutorial/statistical_inference/unsupervised_learning.html#clustering-grouping-observations-together
+
 messages: 
-  fit: 
-    description: cluster a dataset, with optional seed data 
-    args: 
-      dataset: 
-        description: Name of a dataset object
-        type: dataset
-      k: 
-        description: Number of clusters to organise the data into 
-        type: int 
-      iterations: 
-        description: Number of iterations to run algorithm 
-        type: int 
-        default: 100    
-      initialpoints: 
-        description: Reference to a host buffer that contains data points with which to seed the clustering alorgihtm 
-        type: buffer
-        optional: true 
-  getClusters: 
-    description: cluster a dataset, with optional seed points,  and populate a labelset with the assigned clusters
-    args: 
-      dataset: 
-        description: Name of a dataset object
-        type: dataset
-      labelset: 
-        description: Name of a labelset object
-        type: labelset
-      k: 
-        description: Number of clusters to organise the data into 
-        type: int 
-      iterations: 
-        description: Number of iterations to run algorithm 
-        type: int 
-        default: 100
-      initialpoints: 
-        description: Reference to a host buffer that contains data points with which to seed the clustering alorgihtm 
-        type: buffer
-        optional: true
-  predict: 
-      description: cluster a dataset, with optional seed points,  and populate a labelset with the assigned clusters
-      args: 
-        dataset: 
-          description: Name of a dataset object
-          type: dataset
-        labelset: 
-          description: Name of a labelset object
-          type: labelset
-        k: 
-          description: Number of clusters to organise the data into 
-          type: int 
-        iterations: 
-          description: Number of iterations to run algorithm 
-          type: int 
-          default: 100
-        initialpoints: 
-          description: Reference to a host buffer that contains data points with which to seed the clustering alorgihtm 
-          type: buffer
-          optional: true
-  predictPoint: 
-    description: classify a datapoint, based on learned clustering 
-    args: 
-      data: 
-        description: Reference to a host buffer containing the data point to classify 
-        type: buffer
-    returns: 
-      description: The cluster to which this point would be assigned 
-      type: int 
-  write: 
-    description: save the learned state of the clustering to a JSON file 
-    args: 
-      filename: Absolute path to save to 
-  read: 
-    description: read the learned state of the clustering from a JSON file 
-    args: 
-      filename: Absolute path to read from   
-  cols: 
-    description: return the dimensionality of the dataset the object has trained on
-    returns: 
-      description: the number of input dimensions 
-      type: int        
-process:
-parameters:
-output: 
+  fit:
+   description: |
+      Identify `k` clusters in a :fluid-obj:`FluidDataSet`
+   args:
+    - name: dataset
+      description: |
+        A :fluid-obj:`FluidDataSet` of data points.
+    - name: k
+      description: |
+        The number of clusters to identify in the data set.
+    - name: maxIter
+      description: |
+        Maximum number of iterations.
+    - name: action
+      description: |
+        A function to run when fitting is complete, taking as its argument an array with the number of data points for each cluster.
+  predict:
+   description: |
+      Given a trained object, return the cluster ID for each data point in a dataset to a label set.
+   args:
+    - name: dataset
+      description: |
+        a :fluid-obj:`FluidDataSet` containing the data to predict.
+    - name: labelset
+      description: |
+        a :fluid-obj:`FluidLabelSet` to retrieve the predicted clusters.
+    - name: action
+      description: |
+        A function to run when the server responds.
+  fitPredict:
+   description: |
+      Run :fluid-obj:`FluidKMeans#*fit` and :fluid-obj:`FluidKMeans#*predict` in a single pass: i.e. train the model on the incoming :fluid-obj:`FluidDataSet` and then return the learned clustering to the passed :fluid-obj:`FluidLabelSet`
+   args:
+    - name: dataset
+      description: |
+        a :fluid-obj:`FluidDataSet` containing the data to fit and predict.
+    - name: labelset
+      description: |
+        a :fluid-obj:`FluidLabelSet` to retrieve the predicted clusters.
+    - name: k
+      description: |
+        The number of clusters.
+    - name: maxIter
+      description: |
+        Maximum number of iterations.
+    - name: action
+      description: |
+        A function to run when the server responds
+  predictPoint:
+   description: |
+      Given a trained object, return the cluster ID for a data point in a |buffer|
+   args:
+    - name: buffer
+      description: |
+        a |buffer| containing a data point.
+    - name: action
+      description: |
+        A function to run when the server responds, taking the ID of the cluster as its argument.
+  predict:
+   description: |
+      Report cluster assignments for previously unseen data.
+   args:
+    - name: dataset
+      description: |
+        A :fluid-obj:`FluidDataSet` of data points.
+    - name: labelset
+      description: |
+        A :fluid-obj:`FluidLabelSet` to contain assignments.
+    - name: action
+      description: |
+        A function to run when complete, taking an array of the counts for each category as its argument.

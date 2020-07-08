@@ -1,0 +1,53 @@
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
+---
+digest: A set of labels associated with IDs
+sc-categries: FluidManipulation
+sc-related: Classes/FluidDataSet, Classes/FluidKMeans
+see-also: 
+description: |
+  FluidLabelSet is a server-side container of associations between labels (from a :fluid-obj:`FluidDataSet`) and IDs, for instance from some clustering or classification of the points in a data set.
+
+parameters:
+  name:
+    description: |
+      symbol with the label set's name.
+messages: 
+  addLabel:
+   description: |
+      Add a label to the label set.
+   args:
+    - name: id
+      description: |
+        symbol or string with the ID for this label.
+    - name: label
+      description: |
+        symbol or string with the label to add.
+    - name: action
+      description: |
+        function to run when the operation completes.
+  updateLabel:
+   description: |
+      Change a label in the label set.
+   args:
+  getLabel:
+   description: |
+      Retrieve the label associated with an ID. Will report an error if the ID isn't present in the set.
+   args:
+  deleteLabel:
+   description: |
+      Remove a id-label pair from the label set.
+   args:
+  clear:
+   description: |
+      Empty the label set.
+   args:
+  print:
+   description: |
+      Post an abbreviated content of the label set in the window by default, but you can supply a custom action instead.
+   args:

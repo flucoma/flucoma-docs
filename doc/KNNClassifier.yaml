@@ -1,0 +1,64 @@
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
+---
+digest: Classify data with K Nearest Neighbours
+sc-categries: Classification, KNN
+sc-related: Classes/FluidKNNRegressor, Classes/FluidDataSet, Classes/FluidLabelSet
+see-also: 
+description: |
+  A nearest-neighbor classifier using :fluid-obj:`FluidKDTree` . Each point is assigned the class that is most common among its nearest neighbors. https://scikit-learn.org/stable/modules/neighbors.html#classification
+
+messages: 
+  fit:
+   description: |
+      Fit the model to a source :fluid-obj:`FluidDataSet` and a target :fluid-obj:`FluidLabelSet`. These need to be the same size
+   args:
+    - name: dataset
+      description: |
+        Source data
+    - name: labelset
+      description: |
+        Labels for the source data
+    - name: action
+      description: |
+        Run when done
+  predict:
+   description: |
+      Given a fitted model, predict labels for a :fluid-obj:`FluidDataSet` and write these to a :fluid-obj:`FluidLabelSet`
+   args:
+    - name: dataset
+      description: |
+        data to predict labels for
+    - name: labelset
+      description: |
+        place to write labels
+    - name: k
+      description: |
+        the number of neighours to consider
+    - name: uniform
+      description: |
+        true / false: whether the neighbours should be weighted by distance
+    - name: action
+      description: |
+        Run when done
+  predictPoint:
+   description: |
+      Given a fitted model, predict labels for a data point in a |buffer| and return these to the caller
+   args:
+    - name: buffer
+      description: |
+        A data point
+    - name: k
+      description: |
+        Number of neighbours to consider
+    - name: uniform
+      description: |
+        true / false: whether the neighbours should be weighted by distance (default) or uniformly
+    - name: action
+      description: |
+        Run when done, passes predicted label as argument

@@ -1,0 +1,54 @@
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
+---
+digest: KD Tree on the server
+sc-categries: FluidManipulation
+sc-related: Classes/FluidDataSet
+see-also: 
+description: |
+  A server-side K-Dimensional tree for efficient neighbourhood searches of multi-dimensional data.
+
+  See https://scikit-learn.org/stable/modules/neighbors.html#nearest-neighbor-algorithms for more on KD Trees
+
+messages: 
+  fit:
+   description: |
+      Build the tree by scanning the points of a :fluid-obj:`FluidDataSet`
+   args:
+    - name: dataset
+      description: |
+        The :fluid-obj:`FluidDataSet` of interest. This can either be a data set object itself, or the name of one.
+    - name: action
+      description: |
+        A function to run when indexing is complete.
+  kNearest:
+   description: |
+      Returns the IDs of the `k` points nearest to the one passed.
+   args:
+    - name: buffer
+      description: |
+        A |buffer| containing a data point to match against. The number of frames in the buffer must match the dimensionality of the :fluid-obj:`FluidDataSet` the tree was fitted to.
+    - name: k
+      description: |
+        The number of neighbours to return.
+    - name: action
+      description: |
+        A function that will run when the query returns, whose argument is an array of point IDs from the tree's :fluid-obj:`FluidDataSet`
+  kNearestDist:
+   description: |
+      Get the distances of the K nearest neighbours to a point.
+   args:
+    - name: buffer
+      description: |
+        A |buffer| containing a data point to match against. The number of frames in the buffer must match the dimensionality of the :fluid-obj:`FluidDataSet` the tree was fitted to.
+    - name: k
+      description: |
+        The number of neighbours to search
+    - name: action
+      description: |
+        A function that will run when the query returns, whose argument is an array of distances.

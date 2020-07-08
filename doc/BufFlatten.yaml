@@ -1,0 +1,48 @@
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
+---
+digest: Flatten a multichannel buffer on the server
+sc-categries: FluidCorpusManipulation
+sc-related: Classes/Buffer
+see-also: 
+description: |
+  Flatten a multichannel |buffer| to a single channel. This can be useful for constructing n-dimensional data points for use with :fluid-obj:`FluidDataSet`
+
+  The `axis` determines how the flattening is arranged. The default value, 1, flattens channel-wise, such that (if we imagine channels are rows, time positions are columns):
+
+   ===  ===  ===
+   a 1  a 2  a 3
+   b 1  b 2  b 3
+   c 1  c 2  c 3
+   ===  ===  ===
+
+
+  becomes
+
+   ===  ===  ===  ===  ===  ===  ===  ===  ===
+   a 1  b 1  c 1  a 2  b 2  c 2  a 3  b 3  c 3
+   ===  ===  ===  ===  ===  ===  ===  ===  ===
+
+
+  whereas with `axis = 0` we get
+
+   ===  ===  ===  ===  ===  ===  ===  ===  ===
+   a 1  a 2  a 3  b 1  b 2  b 3  c 1  c 2  c 3
+   ===  ===  ===  ===  ===  ===  ===  ===  ===
+
+
+parameters:
+  source:
+    description: |
+      The |buffer| to flatten
+  destination:
+    description: |
+      The |buffer| to write the flattened data to
+  axis:
+    description: |
+      Whether to group points channel-wise or frame-wise
