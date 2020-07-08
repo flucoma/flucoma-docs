@@ -83,12 +83,17 @@ under the European Union’s Horizon 2020 research and innovation programme
 
 	{%- for name, bits in messages.items() -%}
 		<method name='{{ name|e }}'> 
-			<arglist /> 
+			<arglist>
+				{%- for argname,argtype in bits['args'].items() -%}
+				<arg name= '{{ argname | e }}' optional='0' type='{{ argtype | e}}' />
+				{%- endfor -%}
+			</arglist> 	 
 			<digest> 
-				Human documentation is yet to happen
+				<!-- Human documentation is yet to happen -->
+				{{ bits['description'] | rst }}
 			</digest>			
 			<description> 
-				Human documentation is yet to happen
+				<!-- Human documentation is yet to happen -->
 			</description>
 		</method> 
 	{%- endfor -%}
