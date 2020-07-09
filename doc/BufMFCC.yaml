@@ -59,3 +59,9 @@ parameters:
   fftSize:
     description: |
        The inner FFT/IFFT size. It should be at least 4 samples long, at least the size of the window, and a power of 2. Making it larger allows an oversampling of the spectral precision. The -1 default value will use the next power of 2 equal or above the windowSize.
+  maxNumCoeffs:
+      description: |
+        The maximum number of cepstral coefficients that can be computed. This sets the number of channels of the output, and therefore cannot be modulated.
+  maxFFTSize:
+      description: |
+        How large can the FFT be, by allocating memory at instantiation time. This cannot be modulated.
