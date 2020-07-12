@@ -230,6 +230,26 @@ template<typename> struct ReturnType;
 template <class T>
 class ParameterDump
 {
+
+  template <typename U>
+  using DefaultValue = decltype(std::declval<U>().defaultValue);
+  
+  template <typename Param>
+  static std::enable_if_t<isDetected<DefaultValue, Param>::value,
+                  decltype(std::declval<Param>().defaultValue)>
+  makeValue(Param& p)
+  {
+    return p.defaultValue;
+  }
+
+  template <typename Param>
+  static std::enable_if_t<!isDetected<DefaultValue, Param>::value,
+                   std::string>
+  makeValue(Param& p)
+  {
+    return "none";
+  }
+
 public:
   using  Params = typename T::ParamDescType;
   using  Messages = typename T::MessageSetType;
@@ -283,6 +303,8 @@ public:
   static std::string getParamType(const EnumT&) {return "enum"; }
   static std::string getParamType(const LongArrayT&) { return "long"; }
 
+  static std::string getParamType(const SharedClientRef<DataSetClient>::ParamType&) {return "dataset"; } 
+
   template<typename U>
   static std::string getReturn(U&&)
   {
@@ -297,7 +319,8 @@ public:
     json           j;
     j["name"] = p.name;
     j["displayName"] = p.displayName;
-    j["default"] = p.defaultValue;
+//    j["default"] = p.defaultValue;
+    j["default"] = makeValue(p);
     j["fixed"] = fixed;
     j["type"] = getParamType(p);
     j["size"] = p.fixedSize;
