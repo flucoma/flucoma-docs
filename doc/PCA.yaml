@@ -15,6 +15,10 @@ description: |
 
   https://scikit-learn.org/stable/modules/decomposition.html#principal-component-analysis-pca
 
+parameters:
+  numDimensions:
+    description: |
+      The number of dimensions to reduce to
 messages: 
   fit:
    description: |
@@ -23,9 +27,6 @@ messages:
     - name: dataset
       description: |
         A :fluid-obj:`FluidDataSet` to analyse
-    - name: k
-      description: |
-        The number of dimensions to reduce to
     - name: action
       description: |
         Run when done
@@ -52,9 +53,6 @@ messages:
     - name: destDataset
       description: |
         Destination data, or the dataset name
-    - name: k
-      description: |
-        The number of dimensions to reduce to
     - name: action
       description: |
         Run when done

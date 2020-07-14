@@ -15,6 +15,13 @@ description: |
 
   https://scikit-learn.org/stable/modules/neighbors.html#regression
 
+parameters:
+  numNeighbours:
+    description: |
+      number of neigbours to consider in mapping, min 1
+  weight:
+    description: |
+      Whether to weight neighbours by distance when producing new point
 messages: 
   fit:
    description: |
@@ -39,12 +46,6 @@ messages:
     - name: targetDataset
       description: |
         output data
-    - name: k
-      description: |
-        number of neigbours to consider in mapping, min 1
-    - name: uniform
-      description: |
-        Whether to weight neighbours by distance when producing new point
     - name: action
       description: |
         Run when done
@@ -54,13 +55,7 @@ messages:
    args:
     - name: buffer
       description: |
-        data point
-    - name: k
-      description: |
-        number of neigbours to consider in mapping, min 1
-    - name: uniform
-      description: |
-        Whether the neighbours should be weighted by distance (default) or uniformly
+        data point 
     - name: action
       description: |
         Run when done

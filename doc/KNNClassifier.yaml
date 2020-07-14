@@ -13,6 +13,13 @@ see-also:
 description: |
   A nearest-neighbor classifier using :fluid-obj:`FluidKDTree` . Each point is assigned the class that is most common among its nearest neighbors. https://scikit-learn.org/stable/modules/neighbors.html#classification
 
+parameters:
+  numNeighbours:
+    description: |
+      the number of neighours to consider
+  weight:
+    description: |
+      true / false: whether the neighbours should be weighted by distance
 messages: 
   fit:
    description: |
@@ -37,12 +44,6 @@ messages:
     - name: labelset
       description: |
         place to write labels
-    - name: k
-      description: |
-        the number of neighours to consider
-    - name: uniform
-      description: |
-        true / false: whether the neighbours should be weighted by distance
     - name: action
       description: |
         Run when done
@@ -53,12 +54,6 @@ messages:
     - name: buffer
       description: |
         A data point
-    - name: k
-      description: |
-        Number of neighbours to consider
-    - name: uniform
-      description: |
-        true / false: whether the neighbours should be weighted by distance (default) or uniformly
     - name: action
       description: |
         Run when done, passes predicted label as argument

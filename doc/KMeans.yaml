@@ -15,6 +15,13 @@ description: |
 
   https://scikit-learn.org/stable/tutorial/statistical_inference/unsupervised_learning.html#clustering-grouping-observations-together
 
+parameters:
+  numClusters:
+    description: |
+      The number of clusters to classify data into.
+  maxIter:
+    description: |
+      The maximum number of iterations the algorithm will use whilst fitting.
 messages: 
   fit:
    description: |
@@ -23,12 +30,6 @@ messages:
     - name: dataset
       description: |
         A :fluid-obj:`FluidDataSet` of data points.
-    - name: k
-      description: |
-        The number of clusters to identify in the data set.
-    - name: maxIter
-      description: |
-        Maximum number of iterations.
     - name: action
       description: |
         A function to run when fitting is complete, taking as its argument an array with the number of data points for each cluster.
@@ -55,12 +56,6 @@ messages:
     - name: labelset
       description: |
         a :fluid-obj:`FluidLabelSet` to retrieve the predicted clusters.
-    - name: k
-      description: |
-        The number of clusters.
-    - name: maxIter
-      description: |
-        Maximum number of iterations.
     - name: action
       description: |
         A function to run when the server responds

@@ -15,6 +15,13 @@ description: |
 
   See https://scikit-learn.org/stable/modules/neighbors.html#nearest-neighbor-algorithms for more on KD Trees
 
+parameters:
+  numNeighbours:
+    description: |
+      The number of neighbours to return.
+  lookupDataSet:
+    description: |
+      An optional :fluid-obj:`FluidDataSet` from which data points will be returned for realtime queries. This does not need to be the same DataSet that the tree was fitted against, but does need to have matching labels. Using this mechanism, we have a way to, e.g. associate labels with segments of playback buffers, without needing pass strings around the server.
 messages: 
   fit:
    description: |
@@ -33,9 +40,6 @@ messages:
     - name: buffer
       description: |
         A |buffer| containing a data point to match against. The number of frames in the buffer must match the dimensionality of the :fluid-obj:`FluidDataSet` the tree was fitted to.
-    - name: k
-      description: |
-        The number of neighbours to return.
     - name: action
       description: |
         A function that will run when the query returns, whose argument is an array of point IDs from the tree's :fluid-obj:`FluidDataSet`
@@ -46,9 +50,6 @@ messages:
     - name: buffer
       description: |
         A |buffer| containing a data point to match against. The number of frames in the buffer must match the dimensionality of the :fluid-obj:`FluidDataSet` the tree was fitted to.
-    - name: k
-      description: |
-        The number of neighbours to search
     - name: action
       description: |
         A function that will run when the query returns, whose argument is an array of distances.
