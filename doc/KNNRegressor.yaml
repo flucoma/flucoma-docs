@@ -11,7 +11,7 @@ sc-categries: Regression
 sc-related: Classes/FluidKNNClassifier, Classes/FluidDataSet
 see-also: 
 description: |
-  A nearest-neighbor regressor. A continuous value is predicted for each point as the (weighted) average value of its nearest neighbors.
+  A nearest-neighbour regressor. A continuous value is predicted for each point as the (weighted) average value of its nearest neighbours.
 
   https://scikit-learn.org/stable/modules/neighbors.html#regression
 

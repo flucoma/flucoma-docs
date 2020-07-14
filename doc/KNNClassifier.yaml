@@ -11,7 +11,7 @@ sc-categries: Classification, KNN
 sc-related: Classes/FluidKNNRegressor, Classes/FluidDataSet, Classes/FluidLabelSet
 see-also: 
 description: |
-  A nearest-neighbor classifier using :fluid-obj:`FluidKDTree` . Each point is assigned the class that is most common among its nearest neighbors. https://scikit-learn.org/stable/modules/neighbors.html#classification
+  A nearest-neighbour classifier using :fluid-obj:`FluidKDTree` . Each point is assigned the class that is most common among its nearest neighbours. https://scikit-learn.org/stable/modules/neighbors.html#classification
 
 parameters:
   numNeighbours:
