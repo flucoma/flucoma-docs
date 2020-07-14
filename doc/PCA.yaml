@@ -24,7 +24,7 @@ messages:
    description: |
       Train this model on a :fluid-obj:`FluidDataSet` but don't transform the data
    args:
-    - name: dataset
+    - name: dataSet
       description: |
         A :fluid-obj:`FluidDataSet` to analyse
     - name: action
@@ -34,12 +34,12 @@ messages:
    description: |
       Given a trained model, apply the reduction to a source :fluid-obj:`FluidDataSet` and write to a destination. Can be the same
    args:
-    - name: sourceDataset
+    - name: sourceDataSet
       description: |
-        Source data, or the dataset name
-    - name: destDataset
+        Source data, or the DataSet name
+    - name: destDataSet
       description: |
-        Destination data, or the dataset name
+        Destination data, or the DataSet name
     - name: action
       description: |
         Run when done
@@ -47,12 +47,12 @@ messages:
    description: |
       :fluid-obj:`FluidPCA#fit` and :fluid-obj:`FluidPCA#transform` in a single pass
    args:
-    - name: sourceDataset
+    - name: sourceDataSet
       description: |
-        Source data, or the dataset name
-    - name: destDataset
+        Source data, or the DataSet name
+    - name: destDataSet
       description: |
-        Destination data, or the dataset name
+        Destination data, or the DataSet name
     - name: action
       description: |
         Run when done

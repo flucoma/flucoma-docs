@@ -20,16 +20,16 @@ messages:
    description: |
       Fit the model to a :fluid-obj:`FluidDataSet` and write the new projected data to a destination FluidDataSet.
    args:
-    - name: sourceDataset
+    - name: sourceDataSet
       description: |
-        Source data, or the dataset name
-    - name: destDataset
+        Source data, or the DataSet name
+    - name: destDataSet
       description: |
-        Destination data, or the dataset name
-    - name: k
+        Destination data, or the DataSet name
+    - name: numDimensions
       description: |
         The number of dimensions to reduce to
-    - name: dist
+    - name: distanceMetric
       description: |
         The distance metric to use (integer, 0-6, see flags above)
     - name: action

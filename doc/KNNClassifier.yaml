@@ -25,10 +25,10 @@ messages:
    description: |
       Fit the model to a source :fluid-obj:`FluidDataSet` and a target :fluid-obj:`FluidLabelSet`. These need to be the same size
    args:
-    - name: dataset
+    - name: dataSet
       description: |
         Source data
-    - name: labelset
+    - name: labelSet
       description: |
         Labels for the source data
     - name: action
@@ -38,10 +38,10 @@ messages:
    description: |
       Given a fitted model, predict labels for a :fluid-obj:`FluidDataSet` and write these to a :fluid-obj:`FluidLabelSet`
    args:
-    - name: dataset
+    - name: dataSet
       description: |
         data to predict labels for
-    - name: labelset
+    - name: labelSet
       description: |
         place to write labels
     - name: action

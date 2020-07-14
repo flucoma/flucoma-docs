@@ -18,9 +18,9 @@ description: |
 messages: 
   fit:
    description: |
-      Fit model to a dataset without applying scaling
+      Fit model to a DataSet without applying scaling
    args:
-    - name: dataset
+    - name: dataSet
       description: |
         The :fluid-obj:`FluidDataSet` to standardize
     - name: action
@@ -30,10 +30,10 @@ messages:
    description: |
       Standardize a :fluid-obj:`FluidDataSet`, using the learned statistics from a previous call to :fluid-obj:`FluidStandardize#fit`
    args:
-    - name: sourceDataset
+    - name: sourceDataSet
       description: |
         The :fluid-obj:`FluidDataSet` to standardize
-    - name: destDataset
+    - name: destDataSet
       description: |
         The :fluid-obj:`FluidDataSet` to populate with standardized data
     - name: action
@@ -43,10 +43,10 @@ messages:
    description: |
       Standardize a :fluid-obj:`FluidDataSet` into another :fluid-obj:`FluidDataSet`
    args:
-    - name: sourceDataset
+    - name: sourceDataSet
       description: |
         The :fluid-obj:`FluidDataSet` to standardize
-    - name: destDataset
+    - name: destDataSet
       description: |
         The :fluid-obj:`FluidDataSet` to populate with standardized data
     - name: action

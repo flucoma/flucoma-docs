@@ -16,11 +16,11 @@ description: |
 parameters:
   name:
     description: |
-      A symbol with the name of the dataset. ​
+      A symbol with the name of the DataSet. ​
 messages: 
   addPoint:
    description: |
-      Add a new point to the data set. The dimensionality of the dataset is governed by the size of the first point added. Will report an error if the label already exists, or if the size of the data does not match the dimensionality of the dataset.
+      Add a new point to the data set. The dimensionality of the DataSet is governed by the size of the first point added. Will report an error if the label already exists, or if the size of the data does not match the dimensionality of the DataSet.
    args:
     - name: label
       description: |
@@ -33,7 +33,7 @@ messages:
         A function to run when the point has been added. ​​
   updatePoint:
    description: |
-      Update an existing label's data. Will report an error if the label doesn't exist, or if the size of the data does not match the given dimensionality of the dataset.
+      Update an existing label's data. Will report an error if the label doesn't exist, or if the size of the data does not match the given dimensionality of the DataSet.
    args:
   getPoint:
    description: |
@@ -53,7 +53,7 @@ messages:
    args:
   print:
    description: |
-      Post an abbreviated content of the dataset in the window by default, but you can supply a custom action instead. ​​
+      Post an abbreviated content of the DataSet in the window by default, but you can supply a custom action instead. ​​
    args:
   synth:
    description: |

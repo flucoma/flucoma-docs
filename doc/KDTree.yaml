@@ -27,7 +27,7 @@ messages:
    description: |
       Build the tree by scanning the points of a :fluid-obj:`FluidDataSet`
    args:
-    - name: dataset
+    - name: dataSet
       description: |
         The :fluid-obj:`FluidDataSet` of interest. This can either be a data set object itself, or the name of one.
     - name: action

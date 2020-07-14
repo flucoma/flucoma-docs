@@ -27,7 +27,7 @@ messages:
    description: |
       Compute the normalization factors from a :fluid-obj:`FluidDataSet` for later.
    args:
-    - name: dataset
+    - name: dataSet
       description: |
         The :fluid-obj:`FluidDataSet` to normalize
     - name: action
@@ -37,10 +37,10 @@ messages:
    description: |
       Normalize a :fluid-obj:`FluidDataSet` into another :fluid-obj:`FluidDataSet`, using the learned extrema from a previous call to :fluid-obj:`FluidNormalize#fit`
    args:
-    - name: sourceDataset
+    - name: sourceDataSet
       description: |
         The :fluid-obj:`FluidDataSet` to normalize
-    - name: destDataset
+    - name: destDataSet
       description: |
         The :fluid-obj:`FluidDataSet` to populate with normalized data
     - name: action
@@ -50,10 +50,10 @@ messages:
    description: |
       Normalize a :fluid-obj:`FluidDataSet`
    args:
-    - name: sourceDataset
+    - name: sourceDataSet
       description: |
         The :fluid-obj:`FluidDataSet` to normalize
-    - name: destDataset
+    - name: destDataSet
       description: |
         The :fluid-obj:`FluidDataSet` to populate with normalized data
     - name: action

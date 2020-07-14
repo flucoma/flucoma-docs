@@ -25,12 +25,12 @@ parameters:
 messages: 
   fit:
    description: |
-      Map a source :fluid-obj:`FluidDataSet` to a one-dimensional target; both datasets need to have the same number of points.
+      Map a source :fluid-obj:`FluidDataSet` to a one-dimensional target; both DataSets need to have the same number of points.
    args:
-    - name: sourceDataset
+    - name: sourceDataSet
       description: |
         Source data
-    - name: targetDataset
+    - name: targetDataSet
       description: |
         Target data
     - name: action
@@ -38,12 +38,12 @@ messages:
         Run when done
   predict:
    description: |
-      Apply learned mapping to a :fluid-obj:`FluidDataSet` and write to an output dataset
+      Apply learned mapping to a :fluid-obj:`FluidDataSet` and write to an output DataSet
    args:
-    - name: sourceDataset
+    - name: sourceDataSet
       description: |
         data to regress
-    - name: targetDataset
+    - name: targetDataSet
       description: |
         output data
     - name: action
@@ -55,7 +55,7 @@ messages:
    args:
     - name: buffer
       description: |
-        data point 
+        data point
     - name: action
       description: |
         Run when done

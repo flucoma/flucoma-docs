@@ -27,7 +27,7 @@ messages:
    description: |
       Identify `k` clusters in a :fluid-obj:`FluidDataSet`
    args:
-    - name: dataset
+    - name: dataSet
       description: |
         A :fluid-obj:`FluidDataSet` of data points.
     - name: action
@@ -35,12 +35,12 @@ messages:
         A function to run when fitting is complete, taking as its argument an array with the number of data points for each cluster.
   predict:
    description: |
-      Given a trained object, return the cluster ID for each data point in a dataset to a label set.
+      Given a trained object, return the cluster ID for each data point in a DataSet to a label set.
    args:
-    - name: dataset
+    - name: dataSet
       description: |
         a :fluid-obj:`FluidDataSet` containing the data to predict.
-    - name: labelset
+    - name: labelSet
       description: |
         a :fluid-obj:`FluidLabelSet` to retrieve the predicted clusters.
     - name: action
@@ -50,10 +50,10 @@ messages:
    description: |
       Run :fluid-obj:`FluidKMeans#*fit` and :fluid-obj:`FluidKMeans#*predict` in a single pass: i.e. train the model on the incoming :fluid-obj:`FluidDataSet` and then return the learned clustering to the passed :fluid-obj:`FluidLabelSet`
    args:
-    - name: dataset
+    - name: dataSet
       description: |
         a :fluid-obj:`FluidDataSet` containing the data to fit and predict.
-    - name: labelset
+    - name: labelSet
       description: |
         a :fluid-obj:`FluidLabelSet` to retrieve the predicted clusters.
     - name: action
@@ -73,10 +73,10 @@ messages:
    description: |
       Report cluster assignments for previously unseen data.
    args:
-    - name: dataset
+    - name: dataSet
       description: |
         A :fluid-obj:`FluidDataSet` of data points.
-    - name: labelset
+    - name: labelSet
       description: |
         A :fluid-obj:`FluidLabelSet` to contain assignments.
     - name: action

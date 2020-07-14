@@ -106,12 +106,12 @@ messages:
    description: |
       Apply the query to a source :fluid-obj:`FluidDataSet` and write to a destination. Can be the same.
    args:
-    - name: sourceDataset
+    - name: sourceDataSet
       description: |
-        Source data, or the dataset name
-    - name: destDataset
+        Source data, or the DataSet name
+    - name: destDataSet
       description: |
-        Destination data, or the dataset name
+        Destination data, or the DataSet name
     - name: action
       description: |
         Run when done
