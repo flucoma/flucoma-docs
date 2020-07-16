@@ -6,12 +6,12 @@
 # under the European Union’s Horizon 2020 research and innovation programme
 # (grant agreement No 725899).
 ---
-digest: Regression with a multi-layer perceptron
+digest: Classification with a multi-layer perceptron
 sc-categries: Machine learning
-sc-related: Classes/FluidMLPClassifier, Classes/FluidDataSet
+sc-related: Classes/FluidMLPRegressor, Classes/FluidDataSet
 see-also: 
 description: |
-  Perform regression between :fluid-obj:`FluidDataSet`s using a Multi-Layer Perception neural network.
+  Perform classification between a :fluid-obj:`FluidDataSet` and a :fluid-obj:`FluidLabelSet` using a Multi-Layer Perception neural network.
 
 parameters:
   hidden:
@@ -38,12 +38,12 @@ parameters:
 messages: 
   fit:
    description: |
-      Train the network to map between a source and target :fluid-obj:`FluidDataSet`
+      Train the network to map between a source :fluid-obj:`FluidDataSet` and a target :fluid-obj:`FluidLabelSet`
    args:
     - name: sourceDataSet
       description: |
         Source data
-    - name: targetDataSet
+    - name: targetLabelSet
       description: |
         Target data
     - name: action
@@ -56,12 +56,9 @@ messages:
     - name: sourceDataSet
       description: |
         Input data
-    - name: targetDataSet
+    - name: targetLabelSet
       description: |
         Output data
-    - name: layer
-      description: |
-        Layer whose output to return.
     - name: action
       description: |
         Function to run when complete
@@ -75,9 +72,6 @@ messages:
     - name: targetBuffer
       description: |
         Output point
-    - name: layer
-      description: |
-        Layer whose output to return.
     - name: action
       description: |
         A function to run when complete
