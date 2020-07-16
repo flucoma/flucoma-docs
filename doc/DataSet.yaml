@@ -47,6 +47,19 @@ messages:
    description: |
       Empty the data set. ​
    args:
+  merge:
+   description: |
+      Merge sourceDataSet in the current DataSet. It will update the value of points with the same label if overwrite is set to 1. ​
+   args:
+     - name: sourceDataSet
+       description: |
+         The source DataSet to be merged.
+     - name: overwrite
+       description: |
+         A flag to allow overwrite points with the same label.
+     - name: action
+       description: |
+         A function to run when the merge has happened. ​​
   free:
    description: |
       Destroy the object on the server.
