@@ -81,3 +81,10 @@ messages:
     - name: action
       description: |
         A function to run when complete
+  init:
+   description: |
+      This will erase all the learning done in the neural network.
+   args:
+    - name: action
+      description: |
+        A function to run when complete
