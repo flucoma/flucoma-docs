@@ -19,7 +19,7 @@ parameters:
   numNeighbours:
     description: |
       The number of neighbours to return.
-  lookupDataSet:
+  dataSet:
     description: |
       An optional :fluid-obj:`FluidDataSet` from which data points will be returned for realtime queries. This does not need to be the same DataSet that the tree was fitted against, but does need to have matching labels. Using this mechanism, we have a way to, e.g. associate labels with segments of playback buffers, without needing pass strings around the server.
 messages: 

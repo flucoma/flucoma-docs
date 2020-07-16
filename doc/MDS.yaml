@@ -32,3 +32,6 @@ messages:
     - name: distanceMetric
       description: |
         The distance metric to use (integer, 0-6, see flags above)
+    - name: action
+      description: |
+        Run when done
