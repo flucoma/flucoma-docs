@@ -19,7 +19,10 @@ parameters:
       An `Classes/Array` that gives the sizes of any hidden layers in the network (default is two hidden layers of three units each).
   activation:
     description: |
-      The activation function to use for the hidden layer units.
+      The activation function to use for the hidden layer units. Beware of the permitted ranges of each: relu (0->inf), sigmoid (0->1), tanh (-1,1)
+  outputLayer:
+    description: |
+      The layer whose output to return. It is negative 0 counting, where the default of 0 is the output layer, and 1 would be the last hidden layer, and so on.
   maxIter:
     description: |
       The maximum number of iterations to use in training.
@@ -59,9 +62,6 @@ messages:
     - name: targetDataSet
       description: |
         Output data
-    - name: layer
-      description: |
-        Layer whose output to return.
     - name: action
       description: |
         Function to run when complete
@@ -75,9 +75,6 @@ messages:
     - name: targetBuffer
       description: |
         Output point
-    - name: layer
-      description: |
-        Layer whose output to return.
     - name: action
       description: |
         A function to run when complete
