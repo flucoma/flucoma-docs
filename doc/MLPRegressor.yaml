@@ -20,6 +20,9 @@ parameters:
   activation:
     description: |
       The activation function to use for the hidden layer units. Beware of the permitted ranges of each: relu (0->inf), sigmoid (0->1), tanh (-1,1)
+  finalActivation:
+    description: |
+      The activation function to use for the final layer units. Beware of the permitted ranges of each: relu (0->inf), sigmoid (0->1), tanh (-1,1)
   outputLayer:
     description: |
       The layer whose output to return. It is negative 0 counting, where the default of 0 is the output layer, and 1 would be the last hidden layer, and so on.
