@@ -1,0 +1,46 @@
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
+---
+digest: Morph between sounds
+sc-categries: FluidCorpusManipulation
+sc-related: Classes/FluidAudioTransport, Classes/FluidBufNMFCross
+see-also: 
+description: |
+  Perform cross-synthesis using Nonnegative Matrix Factorization (NMF) and Optimal Transport (OT). NMF analyses of `source` and `target` sounds decompose their material in to a selectable number of components, which are in turn represented by their *bases* (spectrum) and *activations* (temporal pattern of each component).
+
+  `FluidNMFMorph` provides the ability to interpolate between `source` and `target` spectra using a technique called Optimal Transport, that provides richer results than a simple linear interpolation between spectral shapes. The resulting sound is built up using a buffer of temporal activations, then resynthesised using a phase estimate.
+
+parameters:
+  source:
+    description: |
+      A |buffer| with the spectral bases for the source sound.
+  target:
+    description: |
+      A |buffer| with the spectral bases for the target sound.
+  activations:
+    description: |
+      A |buffer| with the temporal activations for the target sound.
+  autoassign:
+    description: |
+      If set to `1` the algorithm will attempt to optimally match which NMF basis components from source and target best match each other, and will use this mapping as its basis for interpolation.
+  interp:
+    description: |
+      Set the relative contributions of `source` and `target` between 0 and 1.
+  windowSize:
+    description: |
+      The analysis window size in samples. Needs to match that of the seeding NMF analyses
+  hopSize:
+    description: |
+      The analysis hop size in samples. Needs to match that of the seeding NMF analyses
+  fftSize:
+    description: |
+      The analysis FFT size in samples. Needs to match that of the seeding NMF analyses
+  maxFFTSize:
+    description: |
+      The maximum FFT size to allocate memory for
+messages: 
