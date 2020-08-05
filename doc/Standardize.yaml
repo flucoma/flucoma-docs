@@ -15,6 +15,10 @@ description: |
 
   See http://www.faqs.org/faqs/ai-faq/neural-nets/part2/section-16.html
 
+parameters:
+  invert:
+    description: |
+      The direction in which the standardization will occur for transform and transformpoint. The default 0 is taking in the range of the input used to fit and transforms it towards the standardized range. A value of 1 will expect an input of the standardized range to transform back to the original range.
 messages: 
   fit:
    description: |
