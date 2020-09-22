@@ -49,7 +49,7 @@ messages:
    args:
   merge:
    description: |
-      Merge sourceDataSet in the current DataSet. It will update the value of points with the same label if overwrite is set to 1. ​
+      Merge sourceDataSet in the current DataSet. It will update the value of points with the same label if overwrite is set to 1. ​To add columns instead, see the 'transformJoin' method of FluidDataSetQuery.
    args:
      - name: sourceDataSet
        description: |

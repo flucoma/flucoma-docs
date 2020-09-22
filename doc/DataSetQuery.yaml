@@ -115,3 +115,19 @@ messages:
     - name: action
       description: |
         Run when done
+  transformJoin:
+   description: |
+      Apply the query to a source FluidDataSet and join the resulting subset at the end of the items sharing the same labels in a second source. Items unique to a source dataset will be ignored. To add items at the end of a dataset instead, see the 'merge' method of FluidDataSet.
+  args:
+   - name: source1DataSet
+     description: |
+        Source data, or the DataSet name
+  - name: source2DataSet
+     description: |
+        Source data, or the DataSet name
+    - name: destDataSet
+      description: |
+        Destination data, or the DataSet name
+    - name: action
+      description: |
+        Run when done
