@@ -15,6 +15,14 @@ description: |
 
   https://scikit-learn.org/stable/modules/manifold.html#multi-dimensional-scaling-mds
 
+parameters:
+    numDimensions:
+      description: |
+        The number of dimensions to reduce to
+    distanceMetric:
+      description: |
+        The distance metric to use (integer, 0-6, see flags above)
+        
 messages: 
   fitTransform:
    description: |
@@ -26,12 +34,6 @@ messages:
     - name: destDataSet
       description: |
         Destination data, or the DataSet name
-    - name: numDimensions
-      description: |
-        The number of dimensions to reduce to
-    - name: distanceMetric
-      description: |
-        The distance metric to use (integer, 0-6, see flags above)
     - name: action
       description: |
         Run when done
