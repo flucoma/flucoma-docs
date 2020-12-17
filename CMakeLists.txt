@@ -8,6 +8,8 @@
 
 cmake_minimum_required(VERSION 3.11)
 
+cmake_policy(SET CMP0074 NEW) 
+
 if (APPLE)
 	set(CMAKE_OSX_ARCHITECTURES x86_64)
   set(CMAKE_XCODE_GENERATE_SCHEME ON)
