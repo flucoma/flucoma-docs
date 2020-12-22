@@ -9,7 +9,7 @@
 digest: Dimensionality Reduction with Uniform Manifold Approximation and Projection
 sc-categries: Dimensionality Reduction, Data Processing
 sc-related: Classes/FluidMDS, Classes/FluidDataSet
-see-also: 
+see-also:
 description: |
   Multidimensional scaling of a :fluid-obj:`FluidDataSet` using Uniform Manifold Approximation and Projection (UMAP)
 
@@ -34,11 +34,31 @@ parameters:
     learnRate:
       description: |
         The learning rate of the algorithm, aka how much of the error it uses to estimate the next iteration.
-    batchSize:
+
+messages:
+  fit:
+   description: |
+      Train this model on a :fluid-obj:`FluidDataSet` but don't transform the data
+   args:
+    - name: dataSet
       description: |
-        The training batch size.
-        
-messages: 
+        A :fluid-obj:`FluidDataSet` to analyse
+    - name: action
+      description: |
+        Run when done
+  transform:
+   description: |
+      Given a trained model, apply the reduction to a source :fluid-obj:`FluidDataSet` and write to a destination. Can be the same for both input and output (in-place).
+   args:
+    - name: sourceDataSet
+      description: |
+        Source data, or the DataSet name
+    - name: destDataSet
+      description: |
+        Destination data, or the DataSet name
+    - name: action
+      description: |
+        Run when done
   fitTransform:
    description: |
       Fit the model to a :fluid-obj:`FluidDataSet` and write the new projected data to a destination FluidDataSet.
