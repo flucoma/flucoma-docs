@@ -11,7 +11,7 @@ sc-categries: Dimensionality Reduction, Data Processing
 sc-related: Classes/FluidMDS, Classes/FluidDataSet
 see-also:
 description: |
-  Multidimensional scaling of a :fluid-obj:`FluidDataSet` using Uniform Manifold Approximation and Projection (UMAP)
+  Multidimensional scaling of a :fluid-obj:`DataSet` using Uniform Manifold Approximation and Projection (UMAP)
 
   Please refer to https://umap-learn.readthedocs.io/ for more information on the algorithm.
 
@@ -38,17 +38,17 @@ parameters:
 messages:
   fit:
    description: |
-      Train this model on a :fluid-obj:`FluidDataSet` but don't transform the data
+      Train this model on a :fluid-obj:`DataSet` but don't transform the data
    args:
     - name: dataSet
       description: |
-        A :fluid-obj:`FluidDataSet` to analyse
+        A :fluid-obj:`DataSet` to analyse
     - name: action
       description: |
         Run when done
   transform:
    description: |
-      Given a trained model, apply the reduction to a source :fluid-obj:`FluidDataSet` and write to a destination. Can be the same for both input and output (in-place).
+      Given a trained model, apply the reduction to a source :fluid-obj:`DataSet` and write to a destination. Can be the same for both input and output (in-place).
    args:
     - name: sourceDataSet
       description: |
@@ -61,7 +61,7 @@ messages:
         Run when done
   fitTransform:
    description: |
-      Fit the model to a :fluid-obj:`FluidDataSet` and write the new projected data to a destination FluidDataSet.
+      Fit the model to a :fluid-obj:`DataSet` and write the new projected data to a destination FluidDataSet.
    args:
     - name: sourceDataSet
       description: |

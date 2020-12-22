@@ -11,7 +11,7 @@ sc-categries: Dimensionality Reduction, Data Processing
 sc-related: Classes/FluidMDS, Classes/FluidDataSet
 see-also: 
 description: |
-  Multidimensional scaling of a :fluid-obj:`FluidDataSet`
+  Multidimensional scaling of a :fluid-obj:`DataSet`
 
   https://scikit-learn.org/stable/modules/manifold.html#multi-dimensional-scaling-mds
 
@@ -26,7 +26,7 @@ parameters:
 messages: 
   fitTransform:
    description: |
-      Fit the model to a :fluid-obj:`FluidDataSet` and write the new projected data to a destination FluidDataSet.
+      Fit the model to a :fluid-obj:`DataSet` and write the new projected data to a destination FluidDataSet.
    args:
     - name: sourceDataSet
       description: |

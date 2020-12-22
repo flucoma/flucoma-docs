@@ -28,43 +28,43 @@ parameters:
   messages:
   fit:
    description: |
-      Compute the scaling factors from a :fluid-obj:`FluidDataSet` for later.
+      Compute the scaling factors from a :fluid-obj:`DataSet` for later.
    args:
     - name: dataSet
       description: |
-        The :fluid-obj:`FluidDataSet` to scale
+        The :fluid-obj:`DataSet` to scale
     - name: action
       description: |
         A function to run when processing is complete
   transform:
    description: |
-      Scale a :fluid-obj:`FluidDataSet` into another :fluid-obj:`FluidDataSet`, using the learned range from a previous call to :fluid-obj:`FluidRobustScale#fit`
+      Scale a :fluid-obj:`DataSet` into another :fluid-obj:`DataSet`, using the learned range from a previous call to :fluid-obj:`RobustScale#fit`
    args:
     - name: sourceDataSet
       description: |
-        The :fluid-obj:`FluidDataSet` to scale
+        The :fluid-obj:`DataSet` to scale
     - name: destDataSet
       description: |
-        The :fluid-obj:`FluidDataSet` to populate with scaled data
+        The :fluid-obj:`DataSet` to populate with scaled data
     - name: action
       description: |
         A function to run when processing is complete
   fitTransform:
    description: |
-      Scale a :fluid-obj:`FluidDataSet`
+      Scale a :fluid-obj:`DataSet`
    args:
     - name: sourceDataSet
       description: |
-        The :fluid-obj:`FluidDataSet` to scale
+        The :fluid-obj:`DataSet` to scale
     - name: destDataSet
       description: |
-        The :fluid-obj:`FluidDataSet` to populate with scaled data
+        The :fluid-obj:`DataSet` to populate with scaled data
     - name: action
       description: |
         A function to run when processing is complete
   transformPoint:
    description: |
-      Scale a new data point, using the learned extrema from a previous call to :fluid-obj:`FluidRobustScale#fit`
+      Scale a new data point, using the learned extrema from a previous call to :fluid-obj:`RobustScale#fit`
    args:
     - name: sourceBuffer
       description: |

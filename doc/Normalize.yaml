@@ -11,7 +11,7 @@ sc-categries: FluidManipulation
 sc-related: Classes/FluidStandardize, Classes/FluidDataSet
 see-also: 
 description: |
-  Normalize the entries of a :fluid-obj:`FluidDataSet`, or normalize a data point according to the learned bounds of a data set. On the server.
+  Normalize the entries of a :fluid-obj:`DataSet`, or normalize a data point according to the learned bounds of a data set. On the server.
 
   See http://www.faqs.org/faqs/ai-faq/neural-nets/part2/section-16.html
 
@@ -28,43 +28,43 @@ parameters:
 messages: 
   fit:
    description: |
-      Compute the normalization factors from a :fluid-obj:`FluidDataSet` for later.
+      Compute the normalization factors from a :fluid-obj:`DataSet` for later.
    args:
     - name: dataSet
       description: |
-        The :fluid-obj:`FluidDataSet` to normalize
+        The :fluid-obj:`DataSet` to normalize
     - name: action
       description: |
         A function to run when processing is complete
   transform:
    description: |
-      Normalize a :fluid-obj:`FluidDataSet` into another :fluid-obj:`FluidDataSet`, using the learned extrema from a previous call to :fluid-obj:`FluidNormalize#fit`
+      Normalize a :fluid-obj:`DataSet` into another :fluid-obj:`DataSet`, using the learned extrema from a previous call to :fluid-obj:`Normalize#fit`
    args:
     - name: sourceDataSet
       description: |
-        The :fluid-obj:`FluidDataSet` to normalize
+        The :fluid-obj:`DataSet` to normalize
     - name: destDataSet
       description: |
-        The :fluid-obj:`FluidDataSet` to populate with normalized data
+        The :fluid-obj:`DataSet` to populate with normalized data
     - name: action
       description: |
         A function to run when processing is complete
   fitTransform:
    description: |
-      Normalize a :fluid-obj:`FluidDataSet`
+      Normalize a :fluid-obj:`DataSet`
    args:
     - name: sourceDataSet
       description: |
-        The :fluid-obj:`FluidDataSet` to normalize
+        The :fluid-obj:`DataSet` to normalize
     - name: destDataSet
       description: |
-        The :fluid-obj:`FluidDataSet` to populate with normalized data
+        The :fluid-obj:`DataSet` to populate with normalized data
     - name: action
       description: |
         A function to run when processing is complete
   transformPoint:
    description: |
-      Normalize a new data point, using the learned extrema from a previous call to :fluid-obj:`FluidNormalize#fit`
+      Normalize a new data point, using the learned extrema from a previous call to :fluid-obj:`Normalize#fit`
    args:
     - name: sourceBuffer
       description: |

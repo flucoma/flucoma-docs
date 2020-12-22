@@ -17,7 +17,7 @@ description: |
 
   The process works by attempting to reconstruct the `target` sound using the timbre of the `source` sound, resulting in a hybrid whose character depends on how well the target can be represnted by the source's spectral frames.
 
-  In contrast to :fluid-obj:`FluidBufNMF`, the size and content of the bases dictionary are fixed in this application to be the spectrogram of the `source`. Each spectral frame of `source` is a template: be aware that NMF is O(N^2) in the number of templates, so longer `source` buffers will take dramatically longer to process.
+  In contrast to :fluid-obj:`BufNMF`, the size and content of the bases dictionary are fixed in this application to be the spectrogram of the `source`. Each spectral frame of `source` is a template: be aware that NMF is O(N^2) in the number of templates, so longer `source` buffers will take dramatically longer to process.
 
 parameters:
   source:

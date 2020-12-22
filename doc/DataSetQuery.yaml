@@ -104,7 +104,7 @@ messages:
         Run when done
   transform:
    description: |
-      Apply the query to a source :fluid-obj:`FluidDataSet` and write to a destination. Can be passed the same for input and output (in-place).
+      Apply the query to a source :fluid-obj:`DataSet` and write to a destination. Can be passed the same for input and output (in-place).
    args:
     - name: sourceDataSet
       description: |

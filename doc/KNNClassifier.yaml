@@ -11,7 +11,7 @@ sc-categries: Classification, KNN
 sc-related: Classes/FluidKNNRegressor, Classes/FluidDataSet, Classes/FluidLabelSet
 see-also: 
 description: |
-  A nearest-neighbour classifier using :fluid-obj:`FluidKDTree` . Each point is assigned the class that is most common among its nearest neighbours. https://scikit-learn.org/stable/modules/neighbors.html#classification
+  A nearest-neighbour classifier using :fluid-obj:`KDTree` . Each point is assigned the class that is most common among its nearest neighbours. https://scikit-learn.org/stable/modules/neighbors.html#classification
 
 parameters:
   numNeighbours:
@@ -23,7 +23,7 @@ parameters:
 messages: 
   fit:
    description: |
-      Fit the model to a source :fluid-obj:`FluidDataSet` and a target :fluid-obj:`FluidLabelSet`. These need to be the same size
+      Fit the model to a source :fluid-obj:`DataSet` and a target :fluid-obj:`LabelSet`. These need to be the same size
    args:
     - name: dataSet
       description: |
@@ -36,7 +36,7 @@ messages:
         Run when done
   predict:
    description: |
-      Given a fitted model, predict labels for a :fluid-obj:`FluidDataSet` and write these to a :fluid-obj:`FluidLabelSet`
+      Given a fitted model, predict labels for a :fluid-obj:`DataSet` and write these to a :fluid-obj:`LabelSet`
    args:
     - name: dataSet
       description: |

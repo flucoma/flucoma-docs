@@ -11,7 +11,7 @@ sc-categries: Machine learning
 sc-related: Classes/FluidMLPRegressor, Classes/FluidDataSet
 see-also: 
 description: |
-  Perform classification between a :fluid-obj:`FluidDataSet` and a :fluid-obj:`FluidLabelSet` using a Multi-Layer Perception neural network.
+  Perform classification between a :fluid-obj:`DataSet` and a :fluid-obj:`LabelSet` using a Multi-Layer Perception neural network.
 
 parameters:
   hidden:
@@ -38,7 +38,7 @@ parameters:
 messages: 
   fit:
    description: |
-      Train the network to map between a source :fluid-obj:`FluidDataSet` and a target :fluid-obj:`FluidLabelSet`
+      Train the network to map between a source :fluid-obj:`DataSet` and a target :fluid-obj:`LabelSet`
    args:
     - name: sourceDataSet
       description: |
@@ -51,7 +51,7 @@ messages:
         Function to run when training is complete
   predict:
    description: |
-      Apply the learned mapping to a :fluid-obj:`FluidDataSet` (given a trained network)
+      Apply the learned mapping to a :fluid-obj:`DataSet` (given a trained network)
    args:
     - name: sourceDataSet
       description: |

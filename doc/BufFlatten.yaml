@@ -11,7 +11,7 @@ sc-categries: FluidCorpusManipulation
 sc-related: Classes/Buffer
 see-also: 
 description: |
-  Flatten a multichannel |buffer| to a single channel. This can be useful for constructing n-dimensional data points for use with :fluid-obj:`FluidDataSet`
+  Flatten a multichannel |buffer| to a single channel. This can be useful for constructing n-dimensional data points for use with :fluid-obj:`DataSet`
 
   The `axis` determines how the flattening is arranged. The default value, 1, flattens channel-wise, such that (if we imagine channels are rows, time positions are columns):
 

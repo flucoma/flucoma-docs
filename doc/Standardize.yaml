@@ -11,7 +11,7 @@ sc-categries: FluidManipulation
 sc-related: Classes/FluidDataSet, Classes/FluidStandardize
 see-also: 
 description: |
-  Standardize a :fluid-obj:`FluidDataSet`, i.e. rescale using its mean(s) and standard deviation(s) in each dimension.
+  Standardize a :fluid-obj:`DataSet`, i.e. rescale using its mean(s) and standard deviation(s) in each dimension.
 
   See http://www.faqs.org/faqs/ai-faq/neural-nets/part2/section-16.html
 
@@ -26,39 +26,39 @@ messages:
    args:
     - name: dataSet
       description: |
-        The :fluid-obj:`FluidDataSet` to standardize
+        The :fluid-obj:`DataSet` to standardize
     - name: action
       description: |
         A function to run when processing is complete
   transform:
    description: |
-      Standardize a :fluid-obj:`FluidDataSet`, using the learned statistics from a previous call to :fluid-obj:`FluidStandardize#fit`
+      Standardize a :fluid-obj:`DataSet`, using the learned statistics from a previous call to :fluid-obj:`Standardize#fit`
    args:
     - name: sourceDataSet
       description: |
-        The :fluid-obj:`FluidDataSet` to standardize
+        The :fluid-obj:`DataSet` to standardize
     - name: destDataSet
       description: |
-        The :fluid-obj:`FluidDataSet` to populate with standardized data
+        The :fluid-obj:`DataSet` to populate with standardized data
     - name: action
       description: |
         A function to run when processing is complete
   fitTransform:
    description: |
-      Standardize a :fluid-obj:`FluidDataSet` into another :fluid-obj:`FluidDataSet`
+      Standardize a :fluid-obj:`DataSet` into another :fluid-obj:`DataSet`
    args:
     - name: sourceDataSet
       description: |
-        The :fluid-obj:`FluidDataSet` to standardize
+        The :fluid-obj:`DataSet` to standardize
     - name: destDataSet
       description: |
-        The :fluid-obj:`FluidDataSet` to populate with standardized data
+        The :fluid-obj:`DataSet` to populate with standardized data
     - name: action
       description: |
         A function to run when processing is complete
   transformPoint:
    description: |
-      Standardize a new data point, using the learned statistics from a previous call to :fluid-obj:`FluidStandardize#fit`
+      Standardize a new data point, using the learned statistics from a previous call to :fluid-obj:`Standardize#fit`
    args:
     - name: sourceBuffer
       description: |

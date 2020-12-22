@@ -11,7 +11,7 @@ sc-categries: Dimensionality Reduction, Data Processing
 sc-related: Classes/FluidMDS, Classes/FluidDataSet
 see-also:
 description: |
-  Principal Components Analysis of a :fluid-obj:`FluidDataSet`
+  Principal Components Analysis of a :fluid-obj:`DataSet`
 
   https://scikit-learn.org/stable/modules/decomposition.html#principal-component-analysis-pca
 
@@ -22,17 +22,17 @@ parameters:
 messages:
   fit:
    description: |
-      Train this model on a :fluid-obj:`FluidDataSet` but don't transform the data
+      Train this model on a :fluid-obj:`DataSet` but don't transform the data
    args:
     - name: dataSet
       description: |
-        A :fluid-obj:`FluidDataSet` to analyse
+        A :fluid-obj:`DataSet` to analyse
     - name: action
       description: |
         Run when done
   transform:
    description: |
-      Given a trained model, apply the reduction to a source :fluid-obj:`FluidDataSet` and write to a destination. Can be the same for both input and output (in-place). Returns the fraction of accounted variance, aka the fidelity of the new representation: a value near 1.0 means a higher fidelity to the original.
+      Given a trained model, apply the reduction to a source :fluid-obj:`DataSet` and write to a destination. Can be the same for both input and output (in-place). Returns the fraction of accounted variance, aka the fidelity of the new representation: a value near 1.0 means a higher fidelity to the original.
    args:
     - name: sourceDataSet
       description: |
@@ -45,7 +45,7 @@ messages:
         Run when done
   fitTransform:
    description: |
-      :fluid-obj:`FluidPCA#fit` and :fluid-obj:`FluidPCA#transform` in a single pass. Returns the fraction of accounted variance, aka the fidelity of the new representation: a value near 1.0 means a higher fidelity to the original.
+      :fluid-obj:`PCA#fit` and :fluid-obj:`PCA#transform` in a single pass. Returns the fraction of accounted variance, aka the fidelity of the new representation: a value near 1.0 means a higher fidelity to the original.
    args:
     - name: sourceDataSet
       description: |

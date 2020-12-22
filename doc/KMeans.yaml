@@ -11,7 +11,7 @@ sc-categries: FluidManipulation
 sc-related: Classes/FluidDataSet, Classes/FluidLabelSet, Classes/FluidKNNClassifier, Classes/FluidKNNRegressor
 see-also: 
 description: |
-  Uses the K-Means algorithm to learn clusters from a :fluid-obj:`FluidDataSet`
+  Uses the K-Means algorithm to learn clusters from a :fluid-obj:`DataSet`
 
   https://scikit-learn.org/stable/tutorial/statistical_inference/unsupervised_learning.html#clustering-grouping-observations-together
 
@@ -25,11 +25,11 @@ parameters:
 messages: 
   fit:
    description: |
-      Identify `k` clusters in a :fluid-obj:`FluidDataSet`
+      Identify `k` clusters in a :fluid-obj:`DataSet`
    args:
     - name: dataSet
       description: |
-        A :fluid-obj:`FluidDataSet` of data points.
+        A :fluid-obj:`DataSet` of data points.
     - name: action
       description: |
         A function to run when fitting is complete, taking as its argument an array with the number of data points for each cluster.
@@ -39,23 +39,23 @@ messages:
    args:
     - name: dataSet
       description: |
-        a :fluid-obj:`FluidDataSet` containing the data to predict.
+        a :fluid-obj:`DataSet` containing the data to predict.
     - name: labelSet
       description: |
-        a :fluid-obj:`FluidLabelSet` to retrieve the predicted clusters.
+        a :fluid-obj:`LabelSet` to retrieve the predicted clusters.
     - name: action
       description: |
         A function to run when the server responds.
   fitPredict:
    description: |
-      Run :fluid-obj:`FluidKMeans#*fit` and :fluid-obj:`FluidKMeans#*predict` in a single pass: i.e. train the model on the incoming :fluid-obj:`FluidDataSet` and then return the learned clustering to the passed :fluid-obj:`FluidLabelSet`
+      Run :fluid-obj:`KMeans#*fit` and :fluid-obj:`KMeans#*predict` in a single pass: i.e. train the model on the incoming :fluid-obj:`DataSet` and then return the learned clustering to the passed :fluid-obj:`LabelSet`
    args:
     - name: dataSet
       description: |
-        a :fluid-obj:`FluidDataSet` containing the data to fit and predict.
+        a :fluid-obj:`DataSet` containing the data to fit and predict.
     - name: labelSet
       description: |
-        a :fluid-obj:`FluidLabelSet` to retrieve the predicted clusters.
+        a :fluid-obj:`LabelSet` to retrieve the predicted clusters.
     - name: action
       description: |
         A function to run when the server responds
@@ -75,10 +75,10 @@ messages:
    args:
     - name: dataSet
       description: |
-        A :fluid-obj:`FluidDataSet` of data points.
+        A :fluid-obj:`DataSet` of data points.
     - name: labelSet
       description: |
-        A :fluid-obj:`FluidLabelSet` to contain assignments.
+        A :fluid-obj:`LabelSet` to contain assignments.
     - name: action
       description: |
         A function to run when complete, taking an array of the counts for each category as its argument.
