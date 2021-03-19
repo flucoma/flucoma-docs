@@ -1,0 +1,53 @@
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
+---
+digest: Perform a Short-Time Fourier Transform on one channel of a buffer 
+sc-categries: FluidCorpusManipulation
+sc-related: Classes/Buffer
+see-also: 
+description: |
+  Perform either a forward or inverse Short-Time Fourier Transform (STFT) on a single channel source |buffer|. In the forward case, resulting magnitudes and phases can be written to output buffers. In the inverse case, these buffers can be used to reconstruct the original source into a new buffer. 
+  
+  The magntude and phase buffers are laid out as (number of hops, number of bins). The number of hops is a function of the source length and the hop size. The number of bins is (1 + (fft size / 2)). 
+  
+  The object is restricted to analysnig a single source channel, because the channel counts of the magntude and phase buffers would quickly get out of hand otherwise. 
+  
+parameters:
+  source:
+    description: |
+      The |buffer| to use for the foward STFT 
+  startFrame:
+     description: |
+         The starting point for analysis in the source (in samples) 
+  numFrames:
+     description: |
+         The duration (in samples) to analyse
+  startChan:
+     description: |
+         The channel to analyse
+  magnitude:
+    description: |
+      The |buffer| to write magnitudes to in the forward case, or read from in the inverse case. This is optional for the forward transform, mandatory for the inverse. 
+  phase:
+    description: |
+      The |buffer| to write phases to in the forward case, or read from in the inverse case. This is optional for the forward transform, mandatory for the inverse. 
+  resynthesis:
+    description: |
+      The |buffer| to write re-synthesised data to in the inverse case. Ignored for the forward transform. Mandatory in the inverse case.  
+  inverse: 
+    description: |
+      When set to 1, an inverse STFT is performed, and the resynthesised data is written to the resynthesis buffer using overlap-add. 
+  windowSize:
+    description: |
+      The number of source samples that are analysed at once.  
+  hopSize:
+    description: |
+       How many samples there are inbetween analysis windows. The -1 default value will default to half of windowSize (overlap of 2).
+  fftSize:
+    description: |
+       The FFT/IFFT size. It should be at least 4 samples long, at least the size of the window, and a power of 2. Making it larger allows an oversampling of the spectral precision. The -1 default value will use the next power of 2 equal or above the windowSize. For this object it is effectively capped at 65536.      
