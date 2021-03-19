@@ -1,0 +1,28 @@
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
+---
+digest: Cherry pick values from a buffer
+sc-categries: FluidCorpusManipulation
+sc-related: Classes/Buffer
+see-also: BufSelectEvery
+description: |
+  Pick sets of values from a buffer, described in terms of a list of frame indices and channel numbers. 
+  
+parameters:
+  source:
+    description: |
+      The |buffer| to select values from
+  destination:
+    description: |
+      The |buffer| to write the selected data to
+  indices:
+    description: |
+      A 0-based list of frame indices to recover. Default is [-1], meaning all frames
+  indices:
+    description: |
+      A 0-based list of channel numbers to recover. Default is [-1], meaning all frames

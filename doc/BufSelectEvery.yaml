@@ -1,0 +1,40 @@
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
+---
+digest: Extract every N samples / channels from a buffer
+sc-categries: FluidCorpusManipulation
+sc-related: Classes/Buffer
+see-also: BufSelect
+description: |
+  Pick every N frames and / or channels from a buffer, described in terms of independent hop sizes for frames and channels
+  
+parameters:
+  source:
+    description: |
+      The |buffer| to pick values from 
+  startFrame:
+     description: |
+         The starting point (in samples) from which to copy in the source buffer.
+  numFrames:
+     description: |
+         The duration (in samples) to copy from the source buffer. The default (-1) copies the full length of the buffer.
+  startChan:
+     description: |
+         The first channel from which to copy in the source buffer.
+  numChans:
+     description: |
+         The number of channels from which to copy in the source buffer.  
+  destination:
+    description: |
+      The |buffer| to write the selected data to
+  framehop:
+    description: |
+      Take every `framehop` frames. Default = 1 = all frames (where 2 would be every other frame, etc.)
+  channelhop:
+    description: |
+      Take every `channelhop` channels. Default = 1 = all channels (where 2 would be every other channel, etc.)
