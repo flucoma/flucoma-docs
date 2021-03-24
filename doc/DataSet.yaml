@@ -9,7 +9,7 @@
 digest: Container for labelled,  multidimensional data
 sc-categries: UGens>FluidManipulation
 sc-related: Classes/FluidLabelSet, Classes/FluidKDTree, Classes/FluidKNN, Classes/FluidKMeans
-see-also: 
+see-also:
 description: |
   A server-side container associating labels with multi-dimensional data. FluidDataSet is identified by its name.
 
@@ -17,7 +17,7 @@ parameters:
   name:
     description: |
       A symbol with the name of the DataSet. ​
-messages: 
+messages:
   addPoint:
    description: |
       Add a new point to the data set. The dimensionality of the DataSet is governed by the size of the first point added. Will report an error if the label already exists, or if the size of the data does not match the dimensionality of the DataSet.
@@ -43,6 +43,9 @@ messages:
    description: |
       Remove a point from the data set. Will report an error if the label doesn't exist. ​​
    args:
+  setPoint:
+   description: |
+    Set the point: if the label exists, this method behaves like updatePoint; if the label doesn't exist, behaves like addPoint.
   clear:
    description: |
       Empty the data set. ​
