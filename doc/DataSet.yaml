@@ -53,30 +53,36 @@ messages:
    args:
   toBuffer:
    description: |
-    Dump the content of the dataset to a buffer, with optional transposition, and a map of channel/frames to the original IDs as LabelSet.
+    Dump the content of the dataset to a |buffer|, with optional transposition, and a map of channel/frames to the original IDs as |LabelSet|.
    args:
     - name: buffer
       description: |
-       The buffer to write to. It will be resized.
+        The buffer to write to. It will be resized.
     - name: transpose
       description: |
         If 0, each dataset point becomes a channel, and each dataset dimension becomes a frame. If 1, points become frames, and dimensions become channels.
     - name: labelSet
       description: |
-        The labelset in which to dump the point's IDs associated with their reference channel number (or frame number if transposed).
+        The LabelSet in which to dump the point's IDs associated with their reference channel number (or frame number if transposed).
+    - name: action
+      description: |
+        A function to run when the point has been added.
   fromBuffer:
-     description: |
-      Import to the dataset the content of a buffer, with optional transposition, and a map of channel/frames to the original IDs as LabelSet.
-     args:
-      - name: buffer
-        description: |
-          The buffer to read from. The dataset will be resized.
-      - name: transpose
-        description: |
-          If 0, each channel becomes a dataset point, and each frame becomes a dataset dimension. If 1, frames become points, and channels become dimensions.
-      - name: labelSet
-        description: |
-          The labelset from which to retrieve the point's IDs associated with their reference channel number (or frame number if transposed).
+   description: |
+    Import to the dataset the content of a |buffer|, with optional transposition, and a map of channel/frames to the original IDs as |LabelSet|.
+   args:
+    - name: buffer
+      description: |
+        The buffer to read from. The dataset will be resized.
+    - name: transpose
+      description: |
+        If 0, each channel becomes a dataset point, and each frame becomes a dataset dimension. If 1, frames become points, and channels become dimensions.
+    - name: labelSet
+      description: |
+        The LabelSet from which to retrieve the point's IDs associated with their reference channel number (or frame number if transposed).
+    - name: action
+      description: |
+        A function to run when the point has been added.
   merge:
    description: |
       Merge sourceDataSet in the current DataSet. It will update the value of points with the same label if overwrite is set to 1. ​To add columns instead, see the 'transformJoin' method of FluidDataSetQuery.
