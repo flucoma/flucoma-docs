@@ -53,33 +53,33 @@ messages:
    args:
   toBuffer:
    description: |
-    Dump the content of the dataset to a |buffer|, with optional transposition, and a map of channel/frames to the original IDs as |LabelSet|.
+    Dump the content of the dataset to a |buffer|, with optional transposition, and a map of frames/channel to the original IDs as a FluidLabelSet.
    args:
     - name: buffer
       description: |
         The buffer to write to. It will be resized.
     - name: transpose
       description: |
-        If 0, each dataset point becomes a channel, and each dataset dimension becomes a frame. If 1, points become frames, and dimensions become channels.
+        If 0, each dataset point becomes a buffer frame, and each dataset dimension becomes a buffer channel. If 1, points become channels, and dimensions become frames.
     - name: labelSet
       description: |
-        The LabelSet in which to dump the point's IDs associated with their reference channel number (or frame number if transposed).
+        The FluidLabelSet in which to dump the point's IDs associated with their reference frame number (or channel number if transposed).
     - name: action
       description: |
         A function to run when the point has been added.
   fromBuffer:
    description: |
-    Import to the dataset the content of a |buffer|, with optional transposition, and a map of channel/frames to the original IDs as |LabelSet|.
+    Import to the dataset the content of a |buffer|, with optional transposition, and a map of frames/channels to the original IDs as a FluidLabelSet.
    args:
     - name: buffer
       description: |
         The buffer to read from. The dataset will be resized.
     - name: transpose
       description: |
-        If 0, each channel becomes a dataset point, and each frame becomes a dataset dimension. If 1, frames become points, and channels become dimensions.
+        If 0, each buffer frame becomes a dataset point, and each buffer channel becomes a dataset dimension. If 1, channels become points, and frames become dimensions.
     - name: labelSet
       description: |
-        The LabelSet from which to retrieve the point's IDs associated with their reference channel number (or frame number if transposed).
+        The FluidLabelSet from which to retrieve the point's IDs associated with their reference frame number (or channel number if transposed).
     - name: action
       description: |
         A function to run when the point has been added.
