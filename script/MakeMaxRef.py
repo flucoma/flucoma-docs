@@ -21,10 +21,13 @@ def max_type(value):
         'long': 'int',
         'buffer':'symbol',
         'enum':'int',
-        'symbol':'symbol'
+        'symbol':'symbol',
+        'fft': 'int', 
+        'dataset': 'symbol',
+        'labelset': 'symbol'
     }
     # print(value)
-    return type_map[value] if value in type_map else 'UNKOWN'
+    return type_map[value] if value in type_map else 'UNKOWN({})'.format(value)
     # return "atype"
 
 def truefalse(value):

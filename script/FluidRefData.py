@@ -128,9 +128,12 @@ def max_type(value):
         'float':'float64',
         'long': 'int',
         'buffer':'symbol',
-        'enum':'int'
+        'enum':'int', 
+        'fft': 'int',
+        'dataset':'symbol',
+        'labelset':'symbol'
     }
-    return type_map[value] if value in type_map else 'UNKNOWN'
+    return type_map[value] if value in type_map else 'UNKNOWN({})'.format(value)
 
 def max_parameter_link(name,bits):
     return "<at>{}</at>".format(name.lower()) if bits['fixed'] == True else "<at>{}</at>".format(name.lower())
@@ -182,6 +185,14 @@ def constraints(thisAttr,allAttrs,allArgs,host):
             res += '<li>Snaps to {}</li>'.format(snaps[cons['snap']])
         if 'FreqAmpPair' in cons:
             res += '<li>Two amplitude + frequency pairs. Amplitudes are unbounded, frequencies in range 0-1</li>'    
+        try:        
+            if thisAttr['name'].lower() == 'fftsettings': 
+                res += '<li> FFTSize, if != -1, will set to the next greatest power of two &gt; 4</li>'
+                if 'MaxFFT' in cons: 
+                    res += '<li>The maximum manual FFT size is limited to the value of the {} initialization argument</li>'.format(host['parameter_link']('maxFFTSize',allParams['maxFFTSize'.lower()]))  
+                res += '<li>if FFT size != -1, then window size is clipped at FFT size</li>'
+        except KeyError: 
+            pass
         res += '</ul>'
         # print(Markup(res))    
         return Markup(res)
@@ -311,7 +322,7 @@ def process_client_data(jsonfile, yamldir):
             if 'enum' in human_data['parameters'][d.lower()] and 'values' in v:
                 param[d.lower()]['enum'] = dict(zip(v['values'],human_data['parameters'][d]['enum'].values()))
 
-        if d == 'fftSettings':
+        if d.lower() == 'fftsettings':
             fftdesc ='FFT settings consist of three numbers representing the window size, hop size and FFT size in samples:\n'
             if 'parameters' in human_data:
                 if 'windowSize' in  human_data['parameters']:
