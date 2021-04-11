@@ -24,6 +24,9 @@ set(CMAKE_XCODE_GENERATE_TOP_LEVEL_PROJECT_ONLY ON)
 
 set(FLUID_PATH "" CACHE PATH "The top level of the flucoma-core repo. Will clone from repo if blank")
 set(FLUID_M_PATH ~/fluid_manipulation CACHE PATH "The top level of the fluid_manipulation repo")
+
+set(MAX_DOC_OUT "${CMAKE_BINARY_DIR}/max_ref" CACHE PATH "")
+
 include(FetchContent)
 
 set(FETCHCONTENT_QUIET FALSE)
@@ -112,19 +115,22 @@ endforeach ()
 macro(add_ref_target platform comment)  
   string(TOUPPER ${platform} platform_uc)
   string(TOLOWER ${platform} platform_lc)
+    
   get_directory_property(hasParent PARENT_DIRECTORY)
   if(hasParent)
     set(FLUID_${platform_uc}_REF_TARGET MAKE_${platform_uc}_REF PARENT_SCOPE)
     set(FLUID_${platform_uc}_REF_PATH "${CMAKE_BINARY_DIR}/${platform_lc}_ref" PARENT_SCOPE)
   endif()
+  
   add_custom_target(MAKE_${platform_uc}_REF
-    COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/${platform_lc}_ref"
-  	COMMAND ${PYTHON_3} "${CMAKE_CURRENT_SOURCE_DIR}/script/MakeRef.py" "${platform_lc}" ${FLUID_JSON_DOC} ${FLUID_YAML_DOC} "${CMAKE_BINARY_DIR}/${platform_lc}_ref" ${FLIUD_JINJA_TEMPLATES}
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${${platform_uc}_DOC_OUT}"
+  	COMMAND ${PYTHON_3} "${CMAKE_CURRENT_SOURCE_DIR}/script/MakeRef.py" "${platform_lc}" ${FLUID_JSON_DOC} ${FLUID_YAML_DOC} "${${platform_uc}_DOC_OUT}" ${FLIUD_JINJA_TEMPLATES}
   	COMMENT ${comment}
     DEPENDS ${json_files}
   	VERBATIM
   )
 endmacro()
+
 
 add_ref_target(max "Making Max ref")
 # add_ref_target(pd "Making PD ref")
