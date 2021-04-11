@@ -370,7 +370,10 @@ def process_client_data(jsonfile, yamldir):
                 margs = human_data['messages'][d.lower()]['args']
                 if margs:
                     arg_names = [a['name'] for a in margs]
-                    arg_names.remove('action')
+                    try: 
+                        arg_names.remove('action')
+                    except ValueError: 
+                        pass #if it's not there, move on
                     # print(len(v['args']), len(arg_names),arg_names)
                     arg_types = list(v['args'].values())
                     if(len(v['args']) == len(arg_names)): 
