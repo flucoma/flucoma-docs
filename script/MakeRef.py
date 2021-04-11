@@ -9,8 +9,33 @@
 import argparse
 from pathlib import Path
 from FluidRefData import *
+import json
 import locale 
 
+
+def write_max_indices(idx,path):
+    maxdb_objs = {'maxdb':{'externals':{}}}
+    qlookup = {}
+    for client,data in idx.items():
+        maxname = 'fluid.{}~'.format(data['client'].lower())
+        if 'messages' in data: 
+            if 'dump' in data['messages']:
+                maxdb_objs['maxdb']['externals'][maxname]={
+                    'object':'fluid.libmanipulation',
+                    'package':'Fluid Corpus Manipulation'
+                }
+        qlookup[maxname] = {
+            'digest': data['digest'],'category':['Fluid Corpus Manuipulation']
+        }
+    
+    maxdbfile = path / 'max.db.json'
+    with open(maxdbfile,'w') as f:
+        json.dump(maxdb_objs,f,sort_keys=True, indent=4)
+    qlookup_file = path / 'flucoma-obj-qlookup.json'
+    with open(qlookup_file,'w') as f: 
+        json.dump(qlookup,f,sort_keys=True, indent=4)
+    
+    
 """
 Set default locale, in case it hasn't been, otherwise we can't read text
 """
@@ -38,9 +63,18 @@ args = parser.parse_args()
 clients = list(args.json_path.glob(host_vars[args.host]['glob']))
 args.output_path.mkdir(exist_ok=True)
 
+print('OUTPUT PATH {}'.format(args.output_path))
+
+index = {}
+
 for c in clients:
     d = process_client_data(c, args.yaml_path)
-    process_template(args.template_path, args.output_path, d, host_vars[args.host])
+    index[c] = process_template(args.template_path, args.output_path, d, host_vars[args.host])
+
+index_path = args.output_path / '../interfaces'
+index_path.mkdir(exist_ok=True)
+
+write_max_indices(index,index_path)
 
 topics = list(Path('/Users/owen/flucoma_paramdump/topics').glob('*.yaml'))
 for t in topics: 
