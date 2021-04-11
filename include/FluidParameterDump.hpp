@@ -303,7 +303,8 @@ public:
   static std::string getParamType(const EnumT&) {return "enum"; }
   static std::string getParamType(const LongArrayT&) { return "long"; }
 
-  static std::string getParamType(const SharedClientRef<DataSetClient>::ParamType&) {return "dataset"; } 
+  static std::string getParamType(const DataSetClientRef::ParamType&) {return "dataset"; }
+  static std::string getParamType(const LabelSetClientRef::ParamType&) {return "labelset"; }
 
   template<typename U>
   static std::string getReturn(U&&)
