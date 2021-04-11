@@ -21,6 +21,7 @@ from collections import OrderedDict
 import pprint
 import warnings
 import inspect
+
 def fluid_object_role(role, rawtext, text, lineno, inliner,
                        options={}, content=[]):
     """Create a link to a FluCoMa object
@@ -29,6 +30,17 @@ def fluid_object_role(role, rawtext, text, lineno, inliner,
     roles.set_classes(options)
     node = nodes.reference(rawtext,utils.unescape(text), **options)
     return [node], []
+
+def fluid_topic_role(role, rawtext, text, lineno, inliner,
+                       options={}, content=[]):
+    """Create a link to a FluCoMa topic
+    """
+    print('topic {}'.format(rawtext))
+    options['flucoma'] = 1
+    roles.set_classes(options)
+    node = nodes.reference(rawtext,utils.unescape(text), **options)
+    return [node], []
+
 
 
 class MaxBufferSubstitution(Directive):
@@ -118,7 +130,7 @@ def rst_filter(s,translator,**kwargs):
     
     s += "\n\n.. |buffer| replace:: buffer~\n"     
          
-    settings = {}
+    settings = {'report_level':1}
     if(kwargs):
         settings = kwargs['settings']         
     return Markup(publish_parts(source=s, writer=FluidHTMLWriter(translator),settings_overrides=settings)['html_body'])
@@ -384,7 +396,7 @@ def process_client_data(jsonfile, yamldir):
                 if margs:
                     arg_names = [a['name'] for a in margs]      
                     arg_data = [a for a in margs]              
-                    print(arg_data)
+                    # print(arg_data)
                     arg_data = list(filter(lambda a: a['name'] != 'action',arg_data))
                     # print(arg_data)
                     # try:                         
@@ -401,7 +413,7 @@ def process_client_data(jsonfile, yamldir):
                                 arg_data[i]['description'] = 'Awaiting documentation'
                             newargs[arg_data[i]['name']] = {'type':arg_types[i],'description':arg_data[i]['description']}
                         message_data[d.lower()]['args'] = newargs  
-                        print(newargs)                  
+                        # print(newargs)                  
                     else: 
                         print("WARNING: Arg counts don't match")
                 else: 
@@ -491,6 +503,7 @@ def process_template(template_path,outputdir,client_data,host):
     ofile = outputdir / '{}.{}'.format(host['namer'](client_data['client']),host['extension'])
     # print(host['namer'](client_data['client']))
     roles.register_local_role('fluid-obj', fluid_object_role)
+    roles.register_local_role('fluid-topic', fluid_topic_role)
     # directives.register_directive('buffer', MaxBufferSubstitution)
     env = Environment(
         loader=FileSystemLoader([template_path]),
@@ -513,6 +526,7 @@ def process_template(template_path,outputdir,client_data,host):
             discussion=client_data['discussion'], 
             seealso = client_data['seealso'] 
             ))
+    return client_data; 
 
 def process_topic(topic_file,template_path,outputdir,host):
     ofile = outputdir / '{}.{}'.format(Path(host['topic_subdir']) / Path(topic_file.stem),host['topic_extension'])    
