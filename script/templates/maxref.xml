@@ -82,20 +82,52 @@ under the European Union’s Horizon 2020 research and innovation programme
     </method>
 
 	{%- for name, bits in messages.items() -%}
-		<method name='{{ name|e }}'> 
+		 {% if name == 'dump'  %}
+     <method name='dump'>
+       <digest>Dump the state of this object from the dump outlet as a <o>dict</o>.</digest>
+     </method>           
+     {% elif name == 'load' %}
+     <method name='load'>
+       <arglist>
+         <arg name="dictionary" optional='0' type='dictionary'/>
+       </arglist> 
+       <description>Replace the internal state of the object from a <o>dict</o>. The message should take the form <code>load dictionary &lt;dictid&gt;</code>
+      </description>
+     </method>                   
+     {% elif name == 'read' %}
+     <method name='read'>
+       <arglist>
+         <arg name="path" optional="1" type='symbol, optional'/>
+       </arglist> 
+       <description>Replace the internal state of the object from a JSON file on disk. With no argument, a file dialog will appear to choose the file. 
+      </description>
+     </method>   
+     {% elif name == 'write' %}
+     <method name='write'>
+       <arglist>
+         <arg name="path" optional="1" type='symbol, optional'/>
+       </arglist> 
+       <description>Save the internal state of the object to a JSON file on disk. With no argument, a file dialog will appear to choose the file. 
+      </description>
+     </method>   
+    {% else %}
+    <method name='{{ name|e }}'> 
 			<arglist>
-				{%- for argname,argtype in bits['args'].items() -%}
-				<arg name= '{{ argname | e }}' optional='0' type='{{ argtype | e}}' />
+				{%- for argname,argdata in bits['args'].items() -%}
+				<arg name= "{{ argname | e }}" optional='0' type="{{ argdata['type'] | lower | typename}}" />
 				{%- endfor -%}
 			</arglist> 	 
-			<digest> 
-				<!-- Human documentation is yet to happen -->
-				{{ bits['description'] | rst }}
-			</digest>			
 			<description> 
-				<!-- Human documentation is yet to happen -->
+        {{ bits['description'] | rst }}
+        {% if bits['args'].items() | length != 0 %}<h5>Argument details:</h5>{% endif %}
+        <ul>
+        {%- for argname,argdata in bits['args'].items() -%}
+          <li>{{ argname | e }}: {{argdata['description'] | rst }}</li>
+        {%- endfor -%}
+      </ul>
 			</description>
 		</method> 
+    {% endif %}
 	{%- endfor -%}
 	</methodlist>
 	<!--ATTRIBUTES-->

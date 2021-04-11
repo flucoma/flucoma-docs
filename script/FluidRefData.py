@@ -128,6 +128,8 @@ def max_type(value):
         'float':'float64',
         'long': 'int',
         'buffer':'symbol',
+        'integer': 'int',
+        'string': 'symbol',
         'enum':'int', 
         'fft': 'int',
         'dataset':'symbol',
@@ -375,24 +377,31 @@ def process_client_data(jsonfile, yamldir):
         if 'messages' in human_data \
         and d in human_data['messages']:
             if 'description' in human_data['messages'][d.lower()]:
-                message_data[d.lower()].update({'description': human_data['messages'][d]['description']})
+                message_data[d.lower()].update({'description': human_data['messages'][d.lower()]['description']})
             # print(v['args'])
             if 'args' in human_data['messages'][d.lower()]:
                 margs = human_data['messages'][d.lower()]['args']
                 if margs:
-                    arg_names = [a['name'] for a in margs]
-                    try: 
-                        arg_names.remove('action')
-                    except ValueError: 
-                        pass #if it's not there, move on
+                    arg_names = [a['name'] for a in margs]      
+                    arg_data = [a for a in margs]              
+                    print(arg_data)
+                    arg_data = list(filter(lambda a: a['name'] != 'action',arg_data))
+                    # print(arg_data)
+                    # try:                         
+                    #     arg_names.remove('action')
+                    # except ValueError: 
+                    #     pass #if it's not there, move on
                     # print(len(v['args']), len(arg_names),arg_names)
                     arg_types = list(v['args'].values())
-                    if(len(v['args']) == len(arg_names)): 
+                    # print(v['args'])
+                    if(len(v['args']) == len(arg_data)): 
                         newargs = {}
-                        for i in range(len(arg_names)):
-                            newargs[arg_names[i]] = arg_types[i]
-                        message_data[d.lower()]['args'] = newargs
-                        
+                        for i in range(len(arg_data)):
+                            if('description' not in arg_data[i]):
+                                arg_data[i]['description'] = 'Awaiting documentation'
+                            newargs[arg_data[i]['name']] = {'type':arg_types[i],'description':arg_data[i]['description']}
+                        message_data[d.lower()]['args'] = newargs  
+                        print(newargs)                  
                     else: 
                         print("WARNING: Arg counts don't match")
                 else: 
@@ -400,7 +409,25 @@ def process_client_data(jsonfile, yamldir):
             else: 
                 message_data[d.lower()]['args'] = {}
                     # print(human_data['messages'][d.lower()]['args'])
-    
+        if 'messages' in human_data:
+            if d.lower() == 'cols' and 'cols' not in human_data['messages']:
+                    message_data['cols'] = {
+                        'description': 'The number of columns (dimensions) in this model or dataset / labeset', 
+                        'args':{},                        
+                    }
+            if d.lower() == 'size' and 'size' not in human_data['messages']:
+                    message_data['size'] = {
+                        'description': 'The number of data points (entries / observations) in this model or dataset / labeset', 
+                        'args':{},                        
+                    }
+            if d.lower() == 'clear':
+                if 'clear' not in human_data['messages']:
+                    message_data['clear'] = {
+                        'description': 'Resets the internal state of the model', 
+                        'args':{},                        
+                    }
+                    message_data['clear']['args'] = {}   
+        
     messages = message_data
     # print(messages)
     return {
