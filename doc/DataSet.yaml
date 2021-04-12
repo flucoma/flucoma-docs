@@ -83,6 +83,16 @@ messages:
     - name: action
       description: |
         A function to run when the point has been added.
+  getIds:
+   description: |
+    Export to the dataset IDs to a FluidLabelSet.
+   args:
+    - name: labelSet
+      description: |
+        The FluidLabelSet to export to. Its content will be replaced.
+    - name: action
+      description: |
+        A function to run when the point has been added.
   merge:
    description: |
       Merge sourceDataSet in the current DataSet. It will update the value of points with the same label if overwrite is set to 1. ​To add columns instead, see the 'transformJoin' method of FluidDataSetQuery.
