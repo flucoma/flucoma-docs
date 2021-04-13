@@ -9,7 +9,7 @@
 digest: Cluster data points with K-Means
 sc-categries: FluidManipulation
 sc-related: Classes/FluidDataSet, Classes/FluidLabelSet, Classes/FluidKNNClassifier, Classes/FluidKNNRegressor
-see-also: 
+see-also:
 description: |
   Uses the K-Means algorithm to learn clusters from a :fluid-obj:`DataSet`
 
@@ -22,10 +22,10 @@ parameters:
   maxIter:
     description: |
       The maximum number of iterations the algorithm will use whilst fitting.
-messages: 
+messages:
   fit:
    description: |
-      Identify `k` clusters in a :fluid-obj:`DataSet`
+      Identify `numClusters` clusters in a :fluid-obj:`DataSet`. It will optimise until no improvement is possible, or up to `maxIter`, whichever comes first. Subsequent calls will continue training from the stopping point with the same conditions.
    args:
     - name: dataSet
       description: |
@@ -35,14 +35,14 @@ messages:
         A function to run when fitting is complete, taking as its argument an array with the number of data points for each cluster.
   predict:
    description: |
-      Given a trained object, return the cluster ID for each data point in a DataSet to a label set.
+      Given a trained object, return the cluster ID for each data point in a :fluid-obj:`DataSet` to a :fluid-obj:`LabelSet`.
    args:
     - name: dataSet
       description: |
-        a :fluid-obj:`DataSet` containing the data to predict.
+        A :fluid-obj:`DataSet` containing the data to predict.
     - name: labelSet
       description: |
-        a :fluid-obj:`LabelSet` to retrieve the predicted clusters.
+        A :fluid-obj:`LabelSet` to retrieve the predicted clusters.
     - name: action
       description: |
         A function to run when the server responds.
@@ -52,10 +52,10 @@ messages:
    args:
     - name: dataSet
       description: |
-        a :fluid-obj:`DataSet` containing the data to fit and predict.
+        A :fluid-obj:`DataSet` containing the data to fit and predict.
     - name: labelSet
       description: |
-        a :fluid-obj:`LabelSet` to retrieve the predicted clusters.
+        A :fluid-obj:`LabelSet` to retrieve the predicted clusters.
     - name: action
       description: |
         A function to run when the server responds
@@ -65,20 +65,70 @@ messages:
    args:
     - name: buffer
       description: |
-        a |buffer| containing a data point.
+        A |buffer| containing a data point.
     - name: action
       description: |
         A function to run when the server responds, taking the ID of the cluster as its argument.
-  predict:
+  transform:
    description: |
-      Report cluster assignments for previously unseen data.
+      Given a trained object, return for each item of a provided :fluid-obj:`DataSet` its distance to each cluster as an array, often reffered to as the cluster-distance space.
    args:
-    - name: dataSet
+    - name: srcDataSet
       description: |
-        A :fluid-obj:`DataSet` of data points.
-    - name: labelSet
+        A :fluid-obj:`DataSet` containing the data to transform.
+    - name: dstDataSet
       description: |
-        A :fluid-obj:`LabelSet` to contain assignments.
+        A :fluid-obj:`DataSet` to contain the new cluster-distance space.
     - name: action
       description: |
-        A function to run when complete, taking an array of the counts for each category as its argument.
+        A function to run when the server responds.
+  fitTransform:
+   description: |
+      Run :fluid-obj:`KMeans#*fit` and :fluid-obj:`KMeans#*transform` in a single pass: i.e. train the model on the incoming :fluid-obj:`DataSet` and then return its cluster-distance space in the destination :fluid-obj:`DataSet`
+   args:
+    - name: srcDataSet
+      description: |
+        A :fluid-obj:`DataSet` containing the data to fit and transform.
+    - name: dstDataSet
+      description: |
+        A :fluid-obj:`DataSet` to contain the new cluster-distance space.
+    - name: action
+      description: |
+        A function to run when the server responds
+  transformPoint:
+   description: |
+      Given a trained object, return the distance of the provided point to each cluster. Both points are handled as |buffer|
+   args:
+    - name: buffer
+      description: |
+        A |buffer| containing a data point.
+    - name: action
+      description: |
+        A function to run when complete.
+  getMeans:
+    description: |
+      Given a trained object, retrieve the means (centroids) of each cluster as a :fluid-obj:`DataSet`
+    args:
+    - name: dataSet
+      description: |
+        A :fluid-obj:`DataSet` of clusers with a mean per column.
+    - name: action
+      description: |
+        A function to run when complete.
+  setMeans:
+    description: |
+      Overwrites the means (centroids) of each cluster, and declare the object trained.
+    args:
+    - name: dataSet
+      description: |
+        A :fluid-obj:`DataSet` of clusers with a mean per column.
+    - name: action
+      description: |
+        A function to run when complete.
+  clear:
+    description: |
+      Reset the object status to not fitted and untrained.
+    args:
+    - name: action
+      description: |
+        A function to run when complete.
