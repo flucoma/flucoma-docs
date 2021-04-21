@@ -9,7 +9,7 @@
 digest: Flatten a multichannel buffer on the server
 sc-categries: FluidCorpusManipulation
 sc-related: Classes/Buffer
-see-also: 
+see-also:
 description: |
   Flatten a multichannel |buffer| to a single channel. This can be useful for constructing n-dimensional data points for use with :fluid-obj:`DataSet`
 
@@ -40,6 +40,14 @@ parameters:
   source:
     description: |
       The |buffer| to flatten
+  startFrame:
+     description: Where in the source should the flattening process start, in samples.
+  numFrames:
+     description: How many frames should be processed.
+  startChan:
+     description: For multichannel source buffers, which channel to start processing at.
+  numChans:
+     description: For multichannel source buffers, how many channels should be processed.
   destination:
     description: |
       The |buffer| to write the flattened data to
