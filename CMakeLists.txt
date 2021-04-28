@@ -23,7 +23,6 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(CMAKE_XCODE_GENERATE_TOP_LEVEL_PROJECT_ONLY ON)
 
 set(FLUID_PATH "" CACHE PATH "The top level of the flucoma-core repo. Will clone from repo if blank")
-set(FLUID_M_PATH ~/fluid_manipulation CACHE PATH "The top level of the fluid_manipulation repo")
 
 set(MAX_DOC_OUT "${CMAKE_BINARY_DIR}/max_ref" CACHE PATH "")
 
@@ -33,7 +32,7 @@ set(FETCHCONTENT_QUIET FALSE)
 
 FetchContent_Declare(
   flucoma-core
-  GIT_REPOSITORY https://bitbucket.org/flucoma/fluid_decomposition.git
+  GIT_REPOSITORY https://github.com/flucoma/flucoma-core.git
   GIT_PROGRESS TRUE
 )
 

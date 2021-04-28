@@ -24,7 +24,6 @@ target_include_directories (
 	PRIVATE
 	"${CMAKE_CURRENT_SOURCE_DIR}/../../../include"
 	"${CMAKE_CURRENT_SOURCE_DIR}/../../../thirdparty"
-  "${FLUID_M_PATH}/include"
 )
 
 if(APPLE)
