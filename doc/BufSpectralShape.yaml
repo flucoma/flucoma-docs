@@ -23,7 +23,7 @@ dicussion: |
   	* the flatness (6) in dB. This is the ratio of geometric mean of the magnitude, over the arithmetic mean of the magnitudes. It yields a very approximate measure on how noisy a signal is.
   	* the crest (7) in dB. This is the ratio of the loudest magnitude over the RMS of the whole frame. A high number is an indication of a loud peak poking out from the overal spectral curve.
 
-  	The drawings in Peeters 2003 (http://recherche.ircam.fr/anasyn/peeters/ARTICLES/Peeters_2003_cuidadoaudiofeatures.pdf) are useful, as are the commented examples below. For the mathematically-inclined reader, the tutorials and code offered here (https://www.audiocontentanalysis.org/) are interesting to further the understanding.
+  	The drawings in Peeters 2003 (http://recherche.ircam.fr/anasyn/peeters/ARTICLES/Peeters_2003_cuidadoaudiofeatures.pdf) are useful, as are the commented examples below. For the mathematically-inclined reader, the tutorials and code offered here (https://www.audiocontentanalysis.org/) are interesting to further the understanding. For examples of the impact of computing the moments in power magnitudes, and/or in exponential frequency scale, please refer to the :fluid-obj:`SpectralShape` helpfile.
 
   	The process will return a multichannel buffer with the seven channels per input channel, each containing the 7 shapes. Each sample represents a value, which is every hopSize.
 process: This is the method that calls for the spectral shape descriptors to be calculated on a given source buffer.
@@ -49,6 +49,21 @@ parameters:
   features:
     description: |
       The destination buffer for the 7 spectral features describing the spectral shape.
+  minFreq:
+    description: |
+      The minimum frequency that the algorithm will consider for computing the spectral shape. Frequencies below will be ignored. The default of 0 goes down to DC when possible.
+  maxFreq:
+    description: |
+      The maximum frequency that the algorithm will consider for computing the spectral shape. Frequencies above will be ignored. The default of -1 goes up to Nyquist.
+  rolloffPercent:
+    description: |
+      This sets the percentage of the frame's energy that will be reported as the rolloff frequency. The default is 95%.
+  unit:
+    description: |
+      The frequency unit for the spectral shapes to be computed upon, and outputted at. The default (0) is in Hertz and computes the moments on a linear spectrum. The alternative is in MIDI note numbers(1), which compute the moments on an exponential spectrum.
+  power:
+    description: |
+      This flag sets the scaling of the magnitudes in the moment calculation. It uses either its amplitude (0, by default) or its power (1).
   windowSize:
     description: |
       The window size. As sinusoidal estimation relies on spectral frames, we need to decide what precision we give it spectrally and temporally, in line with Gabor Uncertainty principles. http://www.subsurfwiki.org/wiki/Gabor_uncertainty
