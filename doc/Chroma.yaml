@@ -12,7 +12,7 @@ sc-related: Guides/FluCoMa, Guides/FluidDecomposition, Classes/FluidMFCC
 see-also: BufChroma, Pitch, Loudness, MFCC, SpectralShape
 description: This class computes a histogram of the energy contained for each pitch class across the analysis frequency range.
 discussion: |
-  Also known as a chromagram, this typically allows you to get a contour of how much each semitone is represented in the spectrum over time. The number of bands (and, thus, pitch classes) and the central reference frequency can be adjusted.
+  Also known as a chromagram, this typically allows you to get a contour of how much each semitone is represented in the spectrum over time. The number of chroma bins (and, thus, pitch classes) and the central reference frequency can be adjusted.
 
   The process will return a multichannel control steam of size maxNumChroma, which will be repeated if no change happens within the algorithm, i.e. when the hopSize is larger than the server's kr period.
 process: The audio rate in, control rate out version of the object.
@@ -22,13 +22,13 @@ parameters:
       The audio to be processed.
   numChroma:
        description: |
-         The number of chroma bands per octave. It will determine how many channels are output per input channel.
+         The number of chroma bins per octave. It will determine how many channels are output per input channel.
   ref:
        description: |
         	The frequency of reference in Hz for the tuning of the middle A (default: 440 Hz)
   normalize:
        description: |
-         This flag enables the scaling of the output. It is off (0) by default. (1) will normalise each frame to sum to 1. (2) normalises each frame relative to the loudest chroma being 1.
+         This flag enables the scaling of the output. It is off (0) by default. (1) will normalise each frame to sum to 1. (2) normalises each frame relative to the loudest chroma bin being 1.
   minFreq:
        description: |
          The lower frequency included in the analysis, in Hz.
@@ -37,7 +37,7 @@ parameters:
          The highest frequency included in the analysis, in Hz.
   maxNumChroma:
     description: |
-      The maximum number of pitch classes. This sets the number of channels of the output stream, and therefore cannot be modulated.
+      The maximum number of chroma bins. This sets the number of channels of the output stream, and therefore cannot be modulated.
   windowSize:
     description: |
       The window size. As sinusoidal estimation relies on spectral frames, we need to decide what precision we give it spectrally and temporally, in line with Gabor Uncertainty principles. http://www.subsurfwiki.org/wiki/Gabor_uncertainty
@@ -51,7 +51,7 @@ parameters:
     description: |
       How large can the FFT be, by allocating memory at instantiation time. This cannot be modulated.
 output: |
-  A  KR signal of maxNumBands channels, giving the measure amplitudes for each band. The latency is windowSize.
+  A  KR signal of maxNumChroma channels, giving the measure amplitudes for each chroma bin. The latency is windowSize.
 sc-code: |
     code::
     //create a monitoring bus for the descriptors
