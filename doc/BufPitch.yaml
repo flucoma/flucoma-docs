@@ -13,7 +13,7 @@ see-also: Pitch, BufLoudness, BufMelBands, BufMFCC, BufSpectralShape, BufStats
 description: |
   Implements three pitch descriptors, computed as frequency and the confidence in its value.
 discussion: |
-  The process will return a multichannel buffer with two channels per input channel, one for pitch and one for the pitch tracking confidence. Each sample represents a value, which is every hopSize. Its sampling rate is sourceSR / hopSize.
+  The process will return a multichannel buffer with two channels per input channel, one for pitch and one for the pitch tracking confidence. A pitch of 0 is yield when the algorithm cannot find a fundamental at all. Each sample represents a value, which is every hopSize. Its sampling rate is sourceSR / hopSize.
 process: This is the method that calls for the pitch descriptor to be calculated on a given source buffer.
 parameters:
   server:
