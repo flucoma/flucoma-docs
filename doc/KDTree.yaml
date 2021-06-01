@@ -6,12 +6,12 @@
 # under the European Union’s Horizon 2020 research and innovation programme
 # (grant agreement No 725899).
 ---
-digest: KD Tree on the server
+digest: KD Tree
 sc-categries: FluidManipulation
 sc-related: Classes/FluidDataSet
-see-also: 
+see-also:
 description: |
-  A server-side K-Dimensional tree for efficient neighbourhood searches of multi-dimensional data.
+  A K-Dimensional tree for efficient neighbourhood searches of multi-dimensional data.
 
   See https://scikit-learn.org/stable/modules/neighbors.html#nearest-neighbor-algorithms for more on KD Trees
 
@@ -21,8 +21,8 @@ parameters:
       The number of neighbours to return.
   dataSet:
     description: |
-      An optional :fluid-obj:`DataSet` from which data points will be returned for realtime queries. This does not need to be the same DataSet that the tree was fitted against, but does need to have matching labels. Using this mechanism, we have a way to, e.g. associate labels with segments of playback buffers, without needing pass strings around the server.
-messages: 
+      An optional :fluid-obj:`DataSet` from which data points will be returned for realtime queries. This does not need to be the same DataSet that the tree was fitted against, but does need to have matching labels. Using this mechanism, we have a way to, e.g. associate labels with segments of playback buffers, without needing pass strings around.
+messages:
   fit:
    description: |
       Build the tree by scanning the points of a :fluid-obj:`DataSet`

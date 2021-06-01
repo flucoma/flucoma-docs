@@ -11,7 +11,7 @@ sc-categries: FluidManipulation
 sc-related: Classes/FluidStandardize, Classes/FluidNormalize, Classes/FluidDataSet
 see-also:
 description: |
-  Scales the entries of a FluidDataSet, or scales a data point according to the learned values of a data set. It will centre the median of each dimension to 0, and will scale the data to +/- the provided centiles, by default providing the first and third qartile (25 and 75).All happens on the server.
+  Scales the entries of a FluidDataSet, or scales a data point according to the learned values of a data set. It will centre the median of each dimension to 0, and will scale the data to +/- the provided centiles, by default providing the first and third qartile (25 and 75).
 
   See https://scikit-learn.org/stable/auto_examples/preprocessing/plot_all_scaling.html#robustscaler
 

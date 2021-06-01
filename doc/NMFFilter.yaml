@@ -26,7 +26,7 @@ parameters:
     description: The signal input to the factorisation process.
   bases:
     description: |
-      The server index of the buffer containing the different bases that the input signal will be matched against. Bases must be (fft size / 2) + 1 frames. If the buffer has more than maxComponents channels, the excess will be ignored.
+      The buffer containing the different bases that the input signal will be matched against. Bases must be (fft size / 2) + 1 frames. If the buffer has more than maxComponents channels, the excess will be ignored.
   maxComponents:
     description: |
       The maximum number of elements the NMF algorithm will try to divide the spectrogram of the source in. This dictates the number of output channels for the ugen. This cannot be modulated.

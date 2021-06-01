@@ -15,10 +15,6 @@ description: |
 
   The process will return a buffer with the same size and shape than the requested range.
 
-  **Threading**
-
-  By default, this UGen spawns a new thread to avoid blocking the server command queue, so it is free to go about with its business. For a more detailed discussion of the available threading and monitoring options, including the two undocumented Class Methods below (.processBlocking and .kr) please read the guide :fluid-topic:`FluidBufMultiThreading`.
-
 parameters:
   source:
     description: |

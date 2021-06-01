@@ -9,9 +9,9 @@
 digest: Normalize a FluidDataSet
 sc-categries: FluidManipulation
 sc-related: Classes/FluidStandardize, Classes/FluidDataSet
-see-also: 
+see-also:
 description: |
-  Normalize the entries of a :fluid-obj:`DataSet`, or normalize a data point according to the learned bounds of a data set. On the server.
+  Normalize the entries of a :fluid-obj:`DataSet`, or normalize a data point according to the learned bounds of a data set.
 
   See http://www.faqs.org/faqs/ai-faq/neural-nets/part2/section-16.html
 
@@ -25,7 +25,7 @@ parameters:
   invert:
     description: |
       The direction in which the normalization will occur for transform and transformpoint. The default 0 is taking in the range of the input used to fit and transforms it towards the normalised range. A value of 1 will expect an input of the normalized range to transform back to the original range.
-messages: 
+messages:
   fit:
    description: |
       Compute the normalization factors from a :fluid-obj:`DataSet` for later.

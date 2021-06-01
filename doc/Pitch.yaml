@@ -11,7 +11,7 @@ sc-categories: Libraries>FluidDecomposition
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition, Classes/Pitch
 see-also: BufPitch, MFCC, MelBands, Loudness, SpectralShape
 description: Three popular pitch descriptors, computed as frequency and the confidence in its value.
-discussion: The process will return a multichannel control steam with [pitch, confidence] values, which will be repeated if no change happens within the algorithm, i.e. when the hopSize is larger than the server's kr period. A pitch of 0 Hz is yield (or -999.0 when the unit is in MIDI note) when the algorithm cannot find a fundamental at all.
+discussion: The process will return a multichannel control steam with [pitch, confidence] values, which will be repeated if no change happens within the algorithm, i.e. when the hopSize is larger than the signal vector size. A pitch of 0 Hz is yield (or -999.0 when the unit is in MIDI note) when the algorithm cannot find a fundamental at all.
 process: The audio rate in, control rate out version of the object.
 parameters:
   in:

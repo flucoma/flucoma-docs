@@ -9,15 +9,15 @@
 digest: A set of labels associated with IDs
 sc-categries: FluidManipulation
 sc-related: Classes/FluidDataSet, Classes/FluidKMeans
-see-also: 
+see-also:
 description: |
-  FluidLabelSet is a server-side container of associations between labels (from a :fluid-obj:`DataSet`) and IDs, for instance from some clustering or classification of the points in a data set.
+  FluidLabelSet is a container of associations between labels (from a :fluid-obj:`DataSet`) and IDs, for instance from some clustering or classification of the points in a data set.
 
 parameters:
   name:
     description: |
       symbol with the label set's name.
-messages: 
+messages:
   addLabel:
    description: |
       Add a label to the label set.

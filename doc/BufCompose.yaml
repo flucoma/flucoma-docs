@@ -9,9 +9,9 @@
 digest: Buffer Compositing Utility
 sc-categories: Libraries>FluidDecomposition, UGens>Buffer
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition, Classes/Buffer
-see-also: 
+see-also:
 description: |
-  A flexible utility for combining the contents of buffers on the server. It can be used for thing like mixing down multichannel buffers, or converting from left-right stereo to mid-side. It is used extensively in the example code of Fluid Decomposition.
+  A flexible utility for combining the contents of buffers. It can be used for thing like mixing down multichannel buffers, or converting from left-right stereo to mid-side. It is used extensively in the example code of Fluid Decomposition.
 discussion: |
   At its most simple, the object copies the content of a source buffer into a destination buffer. The flexibility comes from the various flags controlling which portions and channels of the source to use, and by applying gains (which can be positive or negative) to the source data and the portion of the destination that would be overwritten.
 

@@ -26,7 +26,7 @@ discussion: |
 
   The drawings in Peeters 2003 (http://recherche.ircam.fr/anasyn/peeters/ARTICLES/Peeters_2003_cuidadoaudiofeatures.pdf) are useful, as are the commented examples below. For the mathematically-inclined reader, the tutorials and code offered here (https://www.audiocontentanalysis.org/) are interesting to further the understanding. For examples of the impact of computing the moments in power magnitudes, and/or in exponential frequency scale, please refer to the helpfile.
 
-  The process will return a multichannel control steam with the seven values, which will be repeated if no change happens within the algorithm, i.e. when the hopSize is larger than the server's kr period.
+  The process will return a multichannel control steam with the seven values, which will be repeated if no change happens within the algorithm, i.e. when the hopSize is larger than the signal vector size.
 process: The audio rate in, control rate out version of the object.
 parameters:
   in:

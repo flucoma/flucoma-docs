@@ -11,7 +11,7 @@ sc-categries: UGens>FluidManipulation
 sc-related: Classes/FluidLabelSet, Classes/FluidKDTree, Classes/FluidKNN, Classes/FluidKMeans
 see-also:
 description: |
-  A server-side container associating labels with multi-dimensional data. FluidDataSet is identified by its name.
+  A container associating labels with multi-dimensional data. FluidDataSet is identified by its name.
 
 parameters:
   name:
@@ -106,17 +106,9 @@ messages:
      - name: action
        description: |
          A function to run when the merge has happened. ​​
-  free:
-   description: |
-      Destroy the object on the server.
-   args:
   print:
    description: |
       Post an abbreviated content of the DataSet in the window by default, but you can supply a custom action instead. ​​
-   args:
-  synth:
-   description: |
-      The internal synth the object uses to communicate with the server
    args:
   server:
    description: |
