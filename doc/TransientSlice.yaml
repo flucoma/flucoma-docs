@@ -25,7 +25,7 @@ parameters:
       The order in samples of the impulse response filter used to model the estimated continuous signal. It is how many previous samples are used by the algorithm to predict the next one as reference for the model. The higher the order, the more accurate is its spectral definition, not unlike fft, improving low frequency resolution, but it differs in that it is not connected to its temporal resolution.
   blockSize:
     description: |
-      The size in samples of frame on which it the algorithm is operating. High values are more cpu intensive, and also determines the maximum transient size, which will not be allowed to be more than half that lenght in size.
+      The size in samples of frame on which it the algorithm is operating. High values are more cpu intensive, and also determines the maximum transient size, which will not be allowed to be more than half that length in size.
   padSize:
     description: |
       The size of the handles on each sides of the block simply used for analysis purpose and avoid boundary issues.
