@@ -19,7 +19,7 @@ discussion: |
 parameters:
   rampUp:
      description: |
-         The number of samples the envelope follower will take to reach the next value when raising
+         The number of samples the envelope follower will take to reach the next value when rising.
   rampDown:
      description: |
          The number of samples the envelope follower will take to reach the next value when falling.
