@@ -11,7 +11,9 @@ sc-categries: Dimensionality Reduction, Data Processing
 sc-related: Classes/FluidMDS, Classes/FluidPCA, Classes/FluidUMAP, Classes/FluidDataSet
 see-also:
 description: |
-  Maps a set of 2D points in a :fluid-obj:`DataSet` to a rectangular grid using a variant of the jonker-volgenant algorithm(https://www.gwern.net/docs/statistics/decision/1987-jonker.pdf). It can be useful to obtain compact grid layouts from the output of dimensionality reduction algorithms such as :fluid-obj:`UMAP`, :fluid-obj:`PCA` or :fluid-obj:`MDS`. This is similar to projects like CloudToGrid (https://github.com/kylemcdonald/CloudToGrid/), RasterFairy (https://github.com/Quasimondo/RasterFairy) or IsoMatch (https://github.com/ohadf/isomatch).
+  Maps a set of 2D points in a :fluid-obj:`DataSet` to a rectangular grid using a variant of the Jonker-Volgenant algorithm (https://www.gwern.net/docs/statistics/decision/1987-jonker.pdf). It can be useful to obtain compact grid layouts from the output of dimensionality reduction algorithms such as :fluid-obj:`UMAP`, :fluid-obj:`PCA` or :fluid-obj:`MDS`.
+
+  This is similar to projects like CloudToGrid (https://github.com/kylemcdonald/CloudToGrid/), RasterFairy (https://github.com/Quasimondo/RasterFairy) or IsoMatch (https://github.com/ohadf/isomatch).
 
 parameters:
     oversample:
