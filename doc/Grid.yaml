@@ -1,0 +1,40 @@
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
+---
+digest: Constrain a 2D DataSet into a Grid.
+sc-categries: Dimensionality Reduction, Data Processing
+sc-related: Classes/FluidMDS, Classes/FluidPCA, Classes/FluidUMAP, Classes/FluidDataSet
+see-also:
+description: |
+  Maps a set of 2D points in a :fluid-obj:`DataSet` to a rectangular grid using a variant of the jonker-volgenant algorithm(https://www.gwern.net/docs/statistics/decision/1987-jonker.pdf). It can be useful to obtain compact grid layouts from the output of dimensionality reduction algorithms such as :fluid-obj:`UMAP`, :fluid-obj:`PCA` or :fluid-obj:`MDS`. This is similar to projects like CloudToGrid (https://github.com/kylemcdonald/CloudToGrid/), RasterFairy (https://github.com/Quasimondo/RasterFairy) or IsoMatch (https://github.com/ohadf/isomatch).
+
+parameters:
+    oversample:
+      description: |
+        A factor to oversample the destination grid. The default is 1, so the grid has the same number of points as the input. Factors of 2 or more will allow a larger destination grid, which will respect the original shape a little more, but will also be sparser.
+    extent:
+      description: |
+        The size to which the selected axis will be constrained. The default is 0, which turns the constraints off.
+    axis:
+      description: |
+        The axis to which the extent constraint is applied. The default 0 is horizontal, and 1 is vertical.
+
+messages:
+  fitTransform:
+   description: |
+      Fit the model to a :fluid-obj:`DataSet` and write the new projected data to a destination FluidDataSet.
+   args:
+    - name: sourceDataSet
+      description: |
+        Source data, or the DataSet name
+    - name: destDataSet
+      description: |
+        Destination data, or the DataSet name
+    - name: action
+      description: |
+        Run when done
