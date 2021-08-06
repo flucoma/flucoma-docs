@@ -13,7 +13,7 @@ under the European Union’s Horizon 2020 research and innovation programme
 <vignette name="{{ title | e }}" package="FluidCorpusManuipulation">
   <h1>{{ title | e }}</h1>
   <!-- <h3>{{ digest | e }}</h3> -->
-  <h3><openfilelink filename="FluCoMa Overview.maxpat">Open the Overview Patch</openfilelink></h3>
-  
+  <h3><openfilelink filename="Fluid Corpus Manipulation Toolkit.maxpat">Open the Overview Patch</openfilelink></h3>
+
   {{ description | rst }}
 </vignette>

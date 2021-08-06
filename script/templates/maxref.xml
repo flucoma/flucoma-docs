@@ -14,11 +14,11 @@ under the European Union’s Horizon 2020 research and innovation programme
 	<digest>{{ digest }}</digest>
 	<description>{{ description |rst }}</description>
   <discussion>
-      <h4><openfilelink filename="FluCoMa Overview.maxpat">Open the Overview Patch</openfilelink></h4>
+      <h4><openfilelink filename="Fluid Corpus Manipulation Toolkit.maxpat">Open the Overview Patch</openfilelink></h4>
     {{ discussion | rst }}
-		
+
 		{{ client_name | as_host_object_name }} is part of the Fluid Decomposition Toolkit of the FluCoMa project. For more explanations, learning material, and discussions on its musicianly uses, visit <a href="http://www.flucoma.org/">flucoma.org</a>.
-		
+
   </discussion>
 	<!--METADATA-->
 	<metadatalist>
@@ -85,39 +85,39 @@ under the European Union’s Horizon 2020 research and innovation programme
 		 {% if name == 'dump'  %}
      <method name='dump'>
        <digest>Dump the state of this object from the dump outlet as a <o>dict</o>.</digest>
-     </method>           
+     </method>
      {% elif name == 'load' %}
      <method name='load'>
        <arglist>
          <arg name="dictionary" optional='0' type='dictionary'/>
-       </arglist> 
+       </arglist>
        <description>Replace the internal state of the object from a <o>dict</o>. The message should take the form <code>load dictionary &lt;dictid&gt;</code>
       </description>
-     </method>                   
+     </method>
      {% elif name == 'read' %}
      <method name='read'>
        <arglist>
          <arg name="path" optional="1" type='symbol, optional'/>
-       </arglist> 
-       <description>Replace the internal state of the object from a JSON file on disk. With no argument, a file dialog will appear to choose the file. 
+       </arglist>
+       <description>Replace the internal state of the object from a JSON file on disk. With no argument, a file dialog will appear to choose the file.
       </description>
-     </method>   
+     </method>
      {% elif name == 'write' %}
      <method name='write'>
        <arglist>
          <arg name="path" optional="1" type='symbol, optional'/>
-       </arglist> 
-       <description>Save the internal state of the object to a JSON file on disk. With no argument, a file dialog will appear to choose the file. 
+       </arglist>
+       <description>Save the internal state of the object to a JSON file on disk. With no argument, a file dialog will appear to choose the file.
       </description>
-     </method>   
+     </method>
     {% else %}
-    <method name='{{ name|e }}'> 
+    <method name='{{ name|e }}'>
 			<arglist>
 				{%- for argname,argdata in bits['args'].items() -%}
 				<arg name= "{{ argname | e }}" optional='0' type="{{ argdata['type'] | lower | typename}}" />
 				{%- endfor -%}
-			</arglist> 	 
-			<description> 
+			</arglist>
+			<description>
         {{ bits['description'] | rst }}
         {% if bits['args'].items() | length != 0 %}<h5>Argument details:</h5>{% endif %}
         <ul>
@@ -126,7 +126,7 @@ under the European Union’s Horizon 2020 research and innovation programme
         {%- endfor -%}
       </ul>
 			</description>
-		</method> 
+		</method>
     {% endif %}
 	{%- endfor -%}
 	</methodlist>
