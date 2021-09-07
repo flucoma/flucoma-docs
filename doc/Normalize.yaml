@@ -13,8 +13,6 @@ see-also:
 description: |
   Normalize the entries of a :fluid-obj:`DataSet`, or normalize a data point according to the learned bounds of a data set.
 
-  See http://www.faqs.org/faqs/ai-faq/neural-nets/part2/section-16.html
-
 parameters:
   min:
     description: |
