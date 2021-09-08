@@ -9,7 +9,7 @@
 digest: A set of labels associated with IDs
 sc-categries: FluidManipulation
 sc-related: Classes/FluidDataSet, Classes/FluidKMeans
-see-also:
+see-also: DataSet, DataSetQuery
 description: |
   FluidLabelSet is a container of associations between labels (from a :fluid-obj:`DataSet`) and IDs, for instance from some clustering or classification of the points in a data set.
 
@@ -53,7 +53,7 @@ messages:
     - name: label
       description: |
         symbol or string with the label to update.
-        
+
   getLabel:
    description: |
       Retrieve the label associated with an ID. Will report an error if the ID isn't present in the set.
