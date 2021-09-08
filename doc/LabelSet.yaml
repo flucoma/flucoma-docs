@@ -31,10 +31,17 @@ messages:
     - name: action
       description: |
         function to run when the operation completes.
+        
   updateLabel:
    description: |
       Update a label for a given ID in the label set.
    args:
+    - name: id
+      description: |
+        symbol or string with the ID for this label.
+    - name: label
+      description: |
+        symbol or string with the label to update. 
   getLabel:
    description: |
       Retrieve the label associated with an ID. Will report an error if the ID isn't present in the set.
