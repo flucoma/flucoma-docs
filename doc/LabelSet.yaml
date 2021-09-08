@@ -33,7 +33,7 @@ messages:
         function to run when the operation completes.
   updateLabel:
    description: |
-      Change a label in the label set.
+      Update a label for a given ID in the label set.
    args:
   getLabel:
    description: |
