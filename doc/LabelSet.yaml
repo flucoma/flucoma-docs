@@ -6,65 +6,72 @@
 # under the European Union’s Horizon 2020 research and innovation programme
 # (grant agreement No 725899).
 ---
-digest: A set of labels associated with IDs
+digest: A set of labels associated with identifiers.
 sc-categries: FluidManipulation
 sc-related: Classes/FluidDataSet, Classes/FluidKMeans
 see-also: DataSet, DataSetQuery
 description: |
-  FluidLabelSet is a container of associations between labels (from a :fluid-obj:`DataSet`) and IDs, for instance from some clustering or classification of the points in a data set.
+  FluidLabelSet is a container of associating identifiers with labels.
 
 parameters:
   name:
     description: |
-      symbol with the label set's name.
+      Symbol with the FluidLabelSet name.
 messages:
   addLabel:
    description: |
-      Add a label to the label set.
+      Add a label to the FluidLabelSet.
    args:
-    - name: id
+    - name: identifier
       description: |
-        symbol or string with the ID for this label.
+        Symbol or string with the identifier for this label.
     - name: label
       description: |
-        symbol or string with the label to add.
+        Symbol or string with the label to add.
     - name: action
       description: |
-        function to run when the operation completes.
+        Function to run when the operation completes.
         
   updateLabel:
    description: |
-      Update a label for a given ID in the label set.
+      Update a label for a given identifier in the label set.
    args:
-    - name: id
+    - name: identifier
       description: |
-        symbol or string with the ID for this label.
+        Symbol or string with the identifier for this label.
     - name: label
       description: |
-        symbol or string with the label to update. 
+        Symbol or string with the label to update. 
 
   setLabel:
    description: |
-      Set a label for a given ID in the label set.
+      Set a label for a given identifier.
    args:
-    - name: id
+    - name: identifier
       description: |
-        symbol or string with the ID for this label.
+        Symbol or string with the identifier for this label.
     - name: label
       description: |
-        symbol or string with the label to update.
+        Symbol or string with the label to update.
 
   getLabel:
    description: |
-      Retrieve the label associated with an ID. Will report an error if the ID isn't present in the set.
+      Retrieve the label associated with an identifier. Will report an error if the identifier is not present in the set.
    args:
+    - name: identifier
+      description: |
+        Symbol or string with the identifier for the label to be retrieved.
+
   deleteLabel:
    description: |
-      Remove a id-label pair from the label set.
+      Delete a identifier-label pair.
    args:
+    - name: identifier
+      description: | 
+        Symbol or string with the identifier to be deleted.
   clear:
    description: |
-      Empty the label set.
+      Empty the label set and reset to a clean state.
    args:
   print:
    description: |

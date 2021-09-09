@@ -6,47 +6,75 @@
 # under the European Union’s Horizon 2020 research and innovation programme
 # (grant agreement No 725899).
 ---
-digest: Container for labelled,  multidimensional data
-sc-categries: UGens>FluidManipulation
+digest: A set of data associated with identifiers.
+sc-categories: UGens>FluidManipulation
 sc-related: Classes/FluidLabelSet, Classes/FluidKDTree, Classes/FluidKNN, Classes/FluidKMeans
 see-also:
 description: |
-  A container associating labels with multi-dimensional data. FluidDataSet is identified by its name.
+  FluidDataSet is a container associating identifiers with data.
 
 parameters:
   name:
     description: |
-      A symbol with the name of the DataSet. ​
+      Symbol with the name of the DataSet. ​
+
 messages:
   addPoint:
    description: |
-      Add a new point to the data set. The dimensionality of the DataSet is governed by the size of the first point added. Will report an error if the label already exists, or if the size of the data does not match the dimensionality of the DataSet.
+      Add a new point to the data set. The dimensionality of the DataSet is governed by the size of the first point added. Will report an error if the identifier already exists, or if the size of the data does not match the dimensionality of the DataSet.
    args:
-    - name: label
+    - name: identifier
       description: |
-        A symbol or string with the label for the new point.
+        A symbol or string with the identifier for the new point.
     - name: buffer
       description: |
         A |buffer| with the new data point.
     - name: action
       description: |
-        A function to run when the point has been added. ​​
+        A function to run when the point has been added.
+         ​​
   updatePoint:
    description: |
-      Update an existing label's data. Will report an error if the label doesn't exist, or if the size of the data does not match the given dimensionality of the DataSet.
+      Update an existing identifier's data. Will report an error if the identifier doesn't exist, or if the size of the data does not match the given dimensionality of the DataSet.
    args:
+    - name: identifier
+      description: |
+        Symbol or string with the identifier for this point.
+    - name: buffer
+      description: |
+        A |buffer| with the new data point.
+
   getPoint:
    description: |
-      Retrieve a point from the data set into a |buffer|. Will report an error if the label or buffer doesn't exist​.
+      Retrieve a point from the data set into a |buffer|. Will report an error if the identifier or buffer does not exist​.
    args:
+    - name: identifier
+      description: |
+        Symbol or string with the identifier for the point to be retrieved.
+    - name: buffer
+      description: |
+        A |buffer| where the associated data will be stored.
+
   deletePoint:
    description: |
-      Remove a point from the data set. Will report an error if the label doesn't exist. ​​
+      Remove a point from the data set. Will report an error if the identifier doesn't exist. ​​
    args:
+    - name: identifier
+      description: |
+        Symbol or string with the identifier to be deleted.
+
   setPoint:
    description: |
-    Set the point: if the label exists, this method behaves like updatePoint; if the label doesn't exist, behaves like addPoint.
+    Set the point: if the identifier exists, this method behaves like updatePoint; if the identifier doesn't exist, behaves like addPoint.
    args:
+    - name: identifier
+      description: |
+        Symbol or string with the identifier for this point.
+      
+    - name: buffer
+      description: |
+        A |buffer| containing the new data for the point.
+
   clear:
    description: |
       Empty the data set. ​
@@ -95,14 +123,14 @@ messages:
         A function to run when the point has been added.
   merge:
    description: |
-      Merge sourceDataSet in the current DataSet. It will update the value of points with the same label if overwrite is set to 1. ​To add columns instead, see the 'transformJoin' method of FluidDataSetQuery.
+      Merge sourceDataSet in the current DataSet. It will update the value of points with the same identifier if overwrite is set to 1. ​To add columns instead, see the 'transformJoin' method of FluidDataSetQuery.
    args:
      - name: sourceDataSet
        description: |
          The source DataSet to be merged.
      - name: overwrite
        description: |
-         A flag to allow overwrite points with the same label.
+         A flag to allow overwrite points with the same identifier.
      - name: action
        description: |
          A function to run when the merge has happened. ​​
