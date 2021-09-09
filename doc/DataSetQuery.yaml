@@ -7,7 +7,7 @@
 # (grant agreement No 725899).
 ---
 digest: Query a FluidDataSet
-sc-categries: UGens>FluidManipulation
+sc-categories: UGens>FluidManipulation
 sc-related: Classes/FluidDataSet
 see-also: 
 description: |

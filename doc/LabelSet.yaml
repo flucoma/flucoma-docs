@@ -7,7 +7,7 @@
 # (grant agreement No 725899).
 ---
 digest: A set of labels associated with identifiers.
-sc-categries: FluidManipulation
+sc-categories: FluidManipulation
 sc-related: Classes/FluidDataSet, Classes/FluidKMeans
 see-also: DataSet, DataSetQuery
 description: |
