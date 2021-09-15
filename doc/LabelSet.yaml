@@ -11,7 +11,7 @@ sc-categories: FluidManipulation
 sc-related: Classes/FluidDataSet, Classes/FluidKMeans
 see-also: DataSet, DataSetQuery
 description: |
-  FluidLabelSet is a container of associating identifiers with labels.
+  FluidLabelSet is a container associating identifiers with labels.
 
 parameters:
   name:

@@ -16,7 +16,7 @@ description: |
 parameters:
   name:
     description: |
-      The name of the FluidDataSet. This is unique between all FluidDataSets. ​
+      The name of the FluidDataSet. This is unique between all FluidDataSets.
 
 messages:
   addPoint:
