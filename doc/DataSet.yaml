@@ -11,7 +11,7 @@ sc-categories: UGens>FluidManipulation
 sc-related: Classes/FluidLabelSet, Classes/FluidKDTree, Classes/FluidKNN, Classes/FluidKMeans
 see-also:
 description: |
-  FluidDataSet is a container associating identifiers with data.
+  FluidDataSet is a container associating data points with identifiers.
 
 parameters:
   name:
