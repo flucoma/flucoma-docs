@@ -30,7 +30,7 @@ messages:
         The label to add.
     - name: action
       description: |
-        Function to run when the operation completes.
+        A function to run when the operation completes.
         
   updateLabel:
    description: |
@@ -64,7 +64,7 @@ messages:
 
   deleteLabel:
    description: |
-      Delete a identifier-label pair.
+      Delete a label given a certain identifier.
    args:
     - name: identifier
       description: | 
