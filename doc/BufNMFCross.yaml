@@ -7,7 +7,7 @@
 # (grant agreement No 725899).
 ---
 digest: Resynthesise a target sound based on a source sound
-sc-categries: FluidManipulation
+sc-categories: FluidManipulation
 sc-related: Classes/FluidBufNMF, Classes/FluidNMFMatch, Classes/FluidNMFFilter
 see-also: 
 description: Reconstructs the sound in the target buffer using components learned from the source buffer using an NMF decomposition 

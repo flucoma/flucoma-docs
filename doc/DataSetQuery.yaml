@@ -7,7 +7,7 @@
 # (grant agreement No 725899).
 ---
 digest: Query a FluidDataSet
-sc-categries: UGens>FluidManipulation
+sc-categories: UGens>FluidManipulation
 sc-related: Classes/FluidDataSet
 see-also: 
 description: |
@@ -117,7 +117,7 @@ messages:
         Run when done
   transformJoin:
    description: |
-      Apply the query to a source FluidDataSet and join the resulting subset at the end of the items sharing the same labels in a second source. Items unique to a source dataset will be ignored. To add items at the end of a dataset instead, see the 'merge' method of FluidDataSet.
+      Apply the query to a source FluidDataSet and join the resulting subset at the end of the items sharing the same identifiers in a second source. Items unique to a source dataset will be ignored. To add items at the end of a dataset instead, see the 'merge' method of FluidDataSet.
   args:
     - name: source1DataSet
       description: |

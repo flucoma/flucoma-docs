@@ -11,69 +11,69 @@ sc-categories: UGens>FluidManipulation
 sc-related: Classes/FluidLabelSet, Classes/FluidKDTree, Classes/FluidKNN, Classes/FluidKMeans
 see-also:
 description: |
-  FluidDataSet is a container associating identifiers with data.
+  FluidDataSet is a container associating data points with identifiers.
 
 parameters:
   name:
     description: |
-      Symbol with the name of the DataSet. ​
+      The name of the FluidDataSet. This is unique between all FluidDataSets.
 
 messages:
   addPoint:
    description: |
-      Add a new point to the data set. The dimensionality of the DataSet is governed by the size of the first point added. Will report an error if the identifier already exists, or if the size of the data does not match the dimensionality of the DataSet.
+      Add a new point to the FluidDataSet. The dimensionality of the FluidDataSet is governed by the size of the first point added. If the identifier already exists, or if the size of the data does not match the dimensionality of the FluidDataSet an error will be reported.
    args:
     - name: identifier
       description: |
-        A symbol or string with the identifier for the new point.
+        The identifier for the point.
     - name: buffer
       description: |
-        A |buffer| with the new data point.
+        A |buffer| containing the data for the point.
     - name: action
       description: |
         A function to run when the point has been added.
          ​​
   updatePoint:
    description: |
-      Update an existing identifier's data. Will report an error if the identifier doesn't exist, or if the size of the data does not match the given dimensionality of the DataSet.
+      Update an existing identifier's data. If the identifier does not exist, or if the size of the data does not match the dimensionality of the FluidDataSet an error will be reported.
    args:
     - name: identifier
       description: |
-        Symbol or string with the identifier for this point.
+        The identifier for this point.
     - name: buffer
       description: |
-        A |buffer| with the new data point.
+        A |buffer| containing the data for the point.
 
   getPoint:
    description: |
-      Retrieve a point from the data set into a |buffer|. Will report an error if the identifier or buffer does not exist​.
+      Retrieve a point from the data set into a |buffer|. If the identifier does not exist an error will be reported.
    args:
     - name: identifier
       description: |
-        Symbol or string with the identifier for the point to be retrieved.
+        The identifier for the point to be retrieved.
     - name: buffer
       description: |
-        A |buffer| where the associated data will be stored.
+        A |buffer| where the retrieved data will be stored.
 
   deletePoint:
    description: |
-      Remove a point from the data set. Will report an error if the identifier doesn't exist. ​​
+      Remove a point from the data set. If the identifier doesn't exist an error will be reported. ​​
    args:
     - name: identifier
       description: |
-        Symbol or string with the identifier to be deleted.
+        The identifier to be deleted.
 
   setPoint:
    description: |
-    Set the point: if the identifier exists, this method behaves like updatePoint; if the identifier doesn't exist, behaves like addPoint.
+    Set the point. If the identifier exists, this method behaves like updatePoint. If the identifier doesn't exist, it behaves like addPoint.
    args:
     - name: identifier
       description: |
-        Symbol or string with the identifier for this point.
+        The identifier for this point.
       
     - name: buffer
       description: |
-        A |buffer| containing the new data for the point.
+        A |buffer| containing the data for the point.
 
   clear:
    description: |
@@ -113,14 +113,14 @@ messages:
         A function to run when the point has been added.
   getIds:
    description: |
-    Export to the dataset IDs to a FluidLabelSet.
+    Export to the dataset identifier to a FluidLabelSet.
    args:
     - name: labelSet
       description: |
         The FluidLabelSet to export to. Its content will be replaced.
     - name: action
       description: |
-        A function to run when the point has been added.
+        A function to run when the export is done.
   merge:
    description: |
       Merge sourceDataSet in the current DataSet. It will update the value of points with the same identifier if overwrite is set to 1. ​To add columns instead, see the 'transformJoin' method of FluidDataSetQuery.
@@ -140,5 +140,5 @@ messages:
    args:
   server:
    description: |
-      The server instance the object uses ​
+      The server instance the object uses .
    args:

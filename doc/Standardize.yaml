@@ -7,7 +7,7 @@
 # (grant agreement No 725899).
 ---
 digest: Standardize a FluidDataSet
-sc-categries: FluidManipulation
+sc-categories: FluidManipulation
 sc-related: Classes/FluidDataSet, Classes/FluidStandardize
 see-also: 
 description: |

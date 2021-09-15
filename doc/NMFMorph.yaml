@@ -7,7 +7,7 @@
 # (grant agreement No 725899).
 ---
 digest: Morph between sounds
-sc-categries: FluidCorpusManipulation
+sc-categories: FluidCorpusManipulation
 sc-related: Classes/FluidAudioTransport, Classes/FluidBufNMFCross
 see-also: 
 description: |

@@ -7,7 +7,7 @@
 # (grant agreement No 725899).
 ---
 digest: Non-Negative Double Singular Value Decomposition on a Buffer
-sc-categries: FluidManipulation
+sc-categories: FluidManipulation
 sc-related: Classes/FluidBufNMF
 see-also: 
 description: |

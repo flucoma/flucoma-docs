@@ -7,7 +7,7 @@
 # (grant agreement No 725899).
 ---
 digest: Interpolate between buffers
-sc-categries: FluidManipulation
+sc-categories: FluidManipulation
 sc-related: Classes/FluidAudioTransport
 see-also: 
 description: |

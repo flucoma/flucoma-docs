@@ -7,7 +7,7 @@
 # (grant agreement No 725899).
 ---
 digest: Dimensionality Reduction with Multidimensional Scaling
-sc-categries: Dimensionality Reduction, Data Processing
+sc-categories: Dimensionality Reduction, Data Processing
 sc-related: Classes/FluidMDS, Classes/FluidDataSet
 see-also: 
 description: |

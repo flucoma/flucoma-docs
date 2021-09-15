@@ -7,7 +7,7 @@
 # (grant agreement No 725899).
 ---
 digest: Regression with K Nearest Neighbours
-sc-categries: Regression
+sc-categories: Regression
 sc-related: Classes/FluidKNNClassifier, Classes/FluidDataSet
 see-also: 
 description: |

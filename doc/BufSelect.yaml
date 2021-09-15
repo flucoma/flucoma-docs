@@ -7,7 +7,7 @@
 # (grant agreement No 725899).
 ---
 digest: Cherry pick values from a buffer
-sc-categries: FluidCorpusManipulation
+sc-categories: FluidCorpusManipulation
 sc-related: Classes/Buffer
 see-also: BufSelectEvery
 description: |
