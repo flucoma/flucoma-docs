@@ -24,10 +24,10 @@ messages:
    args:
     - name: identifier
       description: |
-        Symbol or string with the identifier for this label.
+        The identifier for this label.
     - name: label
       description: |
-        Symbol or string with the label to add.
+        The label to add.
     - name: action
       description: |
         Function to run when the operation completes.
@@ -38,10 +38,10 @@ messages:
    args:
     - name: identifier
       description: |
-        Symbol or string with the identifier for this label.
+        The identifier for this label.
     - name: label
       description: |
-        Symbol or string with the label to update. 
+        The label to update. 
 
   setLabel:
    description: |
@@ -49,10 +49,10 @@ messages:
    args:
     - name: identifier
       description: |
-        Symbol or string with the identifier for this label.
+        The identifier for this label.
     - name: label
       description: |
-        Symbol or string with the label to update.
+        The label to update.
 
   getLabel:
    description: |
@@ -60,7 +60,7 @@ messages:
    args:
     - name: identifier
       description: |
-        Symbol or string with the identifier for the label to be retrieved.
+        The identifier for the label to be retrieved.
 
   deleteLabel:
    description: |
@@ -68,7 +68,7 @@ messages:
    args:
     - name: identifier
       description: | 
-        Symbol or string with the identifier to be deleted.
+        The identifier to be deleted.
   clear:
    description: |
       Empty the label set and reset to a clean state.
