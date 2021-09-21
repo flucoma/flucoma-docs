@@ -40,6 +40,9 @@ parameters:
   numBands:
     description: |
        The number of bands that will be perceptually equally distributed between **minFreq** and **maxFreq**.
+  startCoeff:
+    description: |
+       The lowest index of the output cepstral coefficient, zero-counting.
   minFreq:
     description: |
        The lower boundary of the lowest band of the model, in Hz.
