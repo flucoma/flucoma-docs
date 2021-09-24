@@ -19,6 +19,7 @@ under the European Union’s Horizon 2020 research and innovation programme
 #include <array>
 #include <fstream>
 #include <string>
+#include <type_traits>
 #include <utility>
 
 /// This will produce JSON output of the params and messages for a Fluid Client object
@@ -201,7 +202,19 @@ void to_json(json& j, const FloatPairsArrayT::FloatPairsArrayType& p)
   j = json{{"value", p.value}};
 }
 
-
+template<typename T>
+struct is_tuple_impl : std::false_type {};
+    
+template<typename... Ts>
+struct is_tuple_impl<std::tuple<Ts...>> : std::true_type {};
+    
+template<typename T>
+struct is_tuple : is_tuple_impl<std::decay_t<T>> {};
+    
+template <typename A>
+std::enable_if_t<is_tuple<A>::value, std::string>
+getArgType(A&) { return "tuple"; }
+    
 template <typename A>
 std::enable_if_t<std::is_integral<A>::value, std::string>
 getArgType(A&) { return "integer"; }
