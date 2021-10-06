@@ -25,6 +25,7 @@ set(CMAKE_XCODE_GENERATE_TOP_LEVEL_PROJECT_ONLY ON)
 set(FLUID_PATH "" CACHE PATH "The top level of the flucoma-core repo. Will clone from repo if blank")
 
 set(MAX_DOC_OUT "${CMAKE_BINARY_DIR}/max_ref" CACHE PATH "")
+set(PD_DOC_OUT  "${CMAKE_BINARY_DIR}/pd_ref" CACHE PATH "")
 
 include(FetchContent)
 
@@ -133,5 +134,5 @@ endmacro()
 
 
 add_ref_target(max "Making Max ref")
-# add_ref_target(pd "Making PD ref")
+add_ref_target(pd "Making PD ref")
 # add_ref_target(cli "Making CLI ref")
