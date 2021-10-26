@@ -284,8 +284,35 @@ public:
     j["parameters"] = json::array({jsonify<std::get<Is>(std::make_tuple(Offsets...))>(
         std::get<Is>(p.descriptors()), p.descriptors())...});
     j["messages"] = jsonify_messages();
+    j["input_type"] = inputType();
     return j;
   }
+  
+  
+  template <typename U>
+  using NRTWrapped = typename U::RTClient;
+  
+
+  template<typename WrappedClient = T>
+  static std::enable_if_t<!isDetected<NRTWrapped, WrappedClient>::value,std::string>
+  inputType()
+  { 
+    using Client = typename T::Client;
+    if(std::is_base_of<AudioIn,Client>::value) return "audio";
+    if(std::is_base_of<ControlIn,Client>::value) return "control";
+    if(std::is_base_of<OfflineIn,Client>::value) return "buffer or data client";
+    return "unknown";     
+  }
+  
+  template<typename WrappedClient = T>
+  static std::enable_if_t<isDetected<NRTWrapped, WrappedClient>::value,std::string>
+  inputType()
+  {
+    return "buffer or data client";
+  }
+  
+  static std::string processorType(OfflineIn&) { return "offline"; }
+  static std::string processorType(ControlIn&) { return "control"; }
 
   template <size_t Offset, size_t... Is, typename C, typename P>
   static json constraints(const C& constraints, std::index_sequence<Is...>,

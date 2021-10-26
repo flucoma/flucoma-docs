@@ -378,6 +378,13 @@ def process_client_data(jsonfile, yamldir):
 
     message_data = OrderedDict([(d['name'].lower(), d) for d in raw_data['messages']]) 
     
+    if(('input_type' in raw_data) and (raw_data['input_type'] == 'control')):
+        message_data['list'] = {
+              "args": [],
+              "name": "list",
+              "returns": "void"
+            }
+        
     if 'messages' in human_data and human_data['messages']:
         human_data['messages'] = {k.lower():v for k,v in human_data['messages'].items()}
     
