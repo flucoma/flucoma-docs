@@ -183,7 +183,7 @@ def constraints(thisAttr,allAttrs,allArgs,host):
                     lower.append(host['parameter_link'](p,allParams[p.lower()]))    
         if 'max' in cons: upper.append(cons['max'])
         if 'min' in cons: lower.append(cons['min'])           
-        res = '<h4>Constraints</h4><ul>'
+        res = '<h5>Constraints</h5><ul>'
         
         if len(lower) > 1: 
             res += '<li>Minimum: MAX({})</li>'.format(','.join(map(str,lower)))
@@ -226,7 +226,12 @@ def pd_type(value):
         'float':'number',
         'long': 'number',
         'buffer':'symbol',
-        'enum':'number'
+        'integer': 'int',
+        'string': 'symbol',
+        'enum':'int', 
+        'fft': 'int',
+        'dataset':'symbol',
+        'labelset':'symbol'
     }
     return type_map[value] if value in type_map else 'UNKNOWN'
 
