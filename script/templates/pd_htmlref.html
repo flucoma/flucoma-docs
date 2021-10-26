@@ -22,7 +22,7 @@ under the European Union’s Horizon 2020 research and innovation programme
 </head>
 <body>
   <h1 class="ref_title">{{ client_name | as_host_object_name }}</h1>
-  <p class="digest">{{ digest }}</p>
+  <div class="digest">{{ digest }}</div>
   <section class="object_description">
     <h2>Description</h2> 
     <p>{{ description|rst }}</p>    
@@ -40,7 +40,7 @@ under the European Union’s Horizon 2020 research and innovation programme
       {%- if 'default' in bits  -%}
       <span class="defaultval"> (default: {{ bits['default'] }})</span>
       {%- endif -%}
-      <p class="description">{{ bits['description']| rst }}</p>
+      <div class="description">{{ bits['description']| rst }}</div>
       {{ bits | constraints(attributes,arguments) }}
     {%- endfor -%}
   </section> 
@@ -52,7 +52,7 @@ under the European Union’s Horizon 2020 research and innovation programme
         <span class="type"> [{{ bits['type']| typename }}]</span>
         <span class="defaultval"> (default: {{ bits['default'] }})</span>
       </h3>
-      <p class="description">{{ bits['description']|rst }}</p>       
+      <div class="description">{{ bits['description']|rst }}</div>       
       {{ bits | constraints(attributes,arguments) }}
     </div>
     {%- endfor -%}
@@ -70,6 +70,46 @@ under the European Union’s Horizon 2020 research and innovation programme
       <div class="description"> When processing in non-blocking mode, this will cancel the job underway, without updating destination buffers. </div>
     </div>    
     {%- endif -%}
+    {%- for name, bits in messages.items() -%}
+    {% if name == 'dump'  %}
+    <!-- nothing for dump and load --> 
+
+    {% elif name == 'load' %}
+    {% elif name == 'read' %}
+    <div class='method_group'><h3 class='method_name' name='read'>read</h3>
+      <span class='arglist'>Arguments</span>
+        <span class='arg'>path (symbol, optional)</span>
+      
+      <div class='description'>Replace the internal state of the object from a JSON file on disk. With no argument, a file dialog will appear to choose the file.
+     </div>
+    </div>
+    {% elif name == 'write' %}
+    <div class='method_group'><h3 class='method_name' name='write'>write</h3>
+      <span class='arglist'>Arguments</span>
+        <span class='arg'>path (symbol, optional)</span>
+      
+      <div class='description'>Save the internal state of the object to a JSON file on disk. With no argument, a file dialog will appear to choose the file.
+     </div>
+    </div>
+   {% else %}
+   <div class='method_group'><h3 class='method_name' name='{{ name|e }}'>{{ name|e }}</h3>
+     <span class='arglist'>Arguments: </span>
+       {%- for argname,argdata in bits['args'].items() -%}
+       <span class='arg'>{{ argname | e }} ({{ argdata['type'] | lower | typename}}){{ ", " if not loop.last else "" }} </span>
+       {%- endfor -%}
+     
+     <div class='description'>
+       {{ bits['description'] | rst }}
+       {% if bits['args'].items() | length != 0 %}<h5>Argument details:</h5>{% endif %}
+       <ul>
+       {%- for argname,argdata in bits['args'].items() -%}
+         <li>{{ argname | e }}: {{argdata['description'] | rst }}</li>
+       {%- endfor -%}
+     </ul>
+     </div>
+   </div>
+   {% endif %}
+    {%- endfor -%}
     <div class="method_group">
       <h3 class="method_name" name="reset">reset</h3>
       <div class="description"> Calling <span class="messagename" data-message="reset"> reset </span> will change parameter values back to those the object was <em> created </em> with, i.e. any attribute values set in the box will be retained </div>
