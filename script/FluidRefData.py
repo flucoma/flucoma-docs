@@ -450,6 +450,7 @@ def process_client_data(jsonfile, yamldir):
     messages = message_data
     # print(messages)
     return {
+        'input_type': raw_data['input_type'],
         'arguments': args, 
         'attributes': attrs, 
         'messages':messages,
@@ -507,8 +508,14 @@ host_vars = {
     }
 
 def process_template(template_path,outputdir,client_data,host):
-    ofile = outputdir / '{}.{}'.format(host['namer'](client_data['client']),host['extension'])
-    # print(host['namer'](client_data['client']))
+    
+    if('input_type' in client_data and client_data['input_type'] == 'control'):
+        namer =  lambda n : 'fluid.{}'.format(n.lower())
+    else: 
+        namer = host['namer'] 
+    
+    ofile = outputdir / '{}.{}'.format(namer(client_data['client']),host['extension'])
+    # print(namer(client_data['client']))
     roles.register_local_role('fluid-obj', fluid_object_role)
     roles.register_local_role('fluid-topic', fluid_topic_role)
     # directives.register_directive('buffer', MaxBufferSubstitution)
@@ -517,7 +524,7 @@ def process_template(template_path,outputdir,client_data,host):
         autoescape=select_autoescape(['html', 'xml'])
     )
     env.filters['rst'] = partial(rst_filter,translator=host['translator'])
-    env.filters['as_host_object_name'] = host['namer']
+    env.filters['as_host_object_name'] = namer
     env.filters['typename'] = host['types']
     env.filters['constraints'] = partial(constraints,host=host)
     env.tests['incli'] = lambda s: s.lower().startswith('buf')
