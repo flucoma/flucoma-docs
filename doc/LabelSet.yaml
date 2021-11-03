@@ -77,3 +77,13 @@ messages:
    description: |
       Post an abbreviated content of the label set in the window by default, but you can supply a custom action instead.
    args:
+  getIds:
+   description: |
+    Export to the dataset identifier to a FluidLabelSet.
+   args:
+    - name: labelSet
+      description: |
+        The FluidLabelSet to export to. Its content will be replaced.
+    - name: action
+      description: |
+        A function to run when the export is done.
