@@ -13,8 +13,6 @@ see-also:
 description: |
   A K-Dimensional tree for efficient neighbourhood searches of multi-dimensional data.
 
-  See https://scikit-learn.org/stable/modules/neighbors.html#nearest-neighbor-algorithms for more on KD Trees
-
 parameters:
   numNeighbours:
     description: |
