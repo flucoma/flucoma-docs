@@ -53,6 +53,17 @@ under the European Union’s Horizon 2020 research and innovation programme
         <span class="defaultval"> (default: {{ bits['default'] }})</span>
       </h3>
       <div class="description">{{ bits['description']|rst }}</div>       
+      {%- if 'enum' in bits -%}
+      <div class="enumvals">      
+      <ol start='0'> 
+        {%- for enumname,desc in bits['enum'].items() -%}
+        <li>
+          {{ desc|rst }}
+        </li> 
+        {%- endfor -%}
+      </ol>
+      </div>
+      {%- endif -%}            
       {{ bits | constraints(attributes,arguments) }}
     </div>
     {%- endfor -%}
