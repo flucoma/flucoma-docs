@@ -26,6 +26,7 @@ set(FLUID_PATH "" CACHE PATH "The top level of the flucoma-core repo. Will clone
 
 set(MAX_DOC_OUT "${CMAKE_BINARY_DIR}/max_ref" CACHE PATH "")
 set(PD_DOC_OUT  "${CMAKE_BINARY_DIR}/pd_ref" CACHE PATH "")
+set(CLI_DOC_OUT  "${CMAKE_BINARY_DIR}/cli_ref" CACHE PATH "") 
 
 include(FetchContent)
 
