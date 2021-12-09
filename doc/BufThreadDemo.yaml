@@ -18,8 +18,10 @@ description: |
 process: This is the method that calls for the job to be done. In this case, simply waiting **time** milliseconds before writing a value in the destination buffer.
 
 parameters:
-  result: The destination buffer, where the value should be written at the end of the process.
-  time: The duration in milliseconds of the delay that the background thread will wait for before yielding the value to the destination buffer.
+  result: 
+    description: The destination buffer, where the value should be written at the end of the process.
+  time: 
+    description: The duration in milliseconds of the delay that the background thread will wait for before yielding the value to the destination buffer.
 sc-code: |
   // define a destination buffer
   b=Buffer.alloc(s,1);

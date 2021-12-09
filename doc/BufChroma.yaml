@@ -10,7 +10,7 @@ digest: An histogram of pitch classes on a Buffer
 sc-categories: Libraries>FluidDecomposition
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition, Classes/FluidBufMFCC
 see-also: Chroma, BufPitch, BufLoudness, BufMFCC, BufSpectralShape, BufStats
-descritpion: |
+description: |
   This class computes a histogram of the energy contained for each pitch class across the analysis frequency range.
 discussion: |
   Also known as a chromagram, this typically allows you to get a contour of how much each semitone is represented in the spectrum over time. The number of chroma bins (and, thus, pitch classes) and the central reference frequency can be adjusted.
