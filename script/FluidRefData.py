@@ -253,11 +253,14 @@ def cli_name(value):
 def process_client_data(jsonfile, yamldir):
     print('Processing reference data for {}'.format(jsonfile.stem))
     # template = env.get_template('maxref.xml')
-    raw_data = json.load(open(jsonfile.resolve()))
+    with open(jsonfile.resolve()) as jf:
+        raw_data = json.load(jf)
+    
     human_data = {}
     human_data_path = yamldir / (jsonfile.stem+'.yaml')    
     if(human_data_path.exists()):
-        human_data = yaml.load(open(human_data_path.resolve()), Loader=yaml.FullLoader)
+        with open(human_data_path.resolve()) as yf:
+            human_data = yaml.load(yf, Loader=yaml.FullLoader)
     else:
         print("WARNING NO HUMAN DOCUMENTATION YET FOR {}".format(jsonfile.stem))            
         # print(human_data['digest'])
