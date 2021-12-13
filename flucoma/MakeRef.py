@@ -8,7 +8,7 @@
 
 import argparse
 from pathlib import Path
-from FluidRefData import *
+from .FluidRefData import *
 import json
 import locale 
 
