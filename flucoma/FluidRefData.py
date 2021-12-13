@@ -264,7 +264,9 @@ def process_client_data(jsonfile, yamldir):
     else:
         print("WARNING NO HUMAN DOCUMENTATION YET FOR {}".format(jsonfile.stem))            
         # print(human_data['digest'])
-    # print(human_data)
+    return validate_and_merge(jsonfile.stem, raw_data,human_data)
+    
+def validate_and_merge(client, raw_data, human_data):
     args={}
     attrs={}
     messages={}    
@@ -273,7 +275,7 @@ def process_client_data(jsonfile, yamldir):
     if 'parameters' in human_data:
         for k,v in data.items():
             if k != 'fftSettings' and not k in human_data['parameters']:
-                print("WARNING CAN'T FIND {} in {}".format(k,jsonfile.stem))
+                print("WARNING CAN'T FIND {} in {}".format(k,client))
     # else: 
     #     print("WARNING NO HUMAN DOCUMENTATION YET FOR {}".format(jsonfile.stem))            
     
@@ -300,7 +302,7 @@ def process_client_data(jsonfile, yamldir):
         "description" : "Enable warnings to be issued whenever a parameter value is constrained (e.g. clipped)"
     }
 
-    if jsonfile.stem.lower().startswith('buf'):
+    if client.lower().startswith('buf'):
         data['blocking'] = {
             "displayName" : "Blocking Mode",
             "default": 1,
@@ -380,7 +382,7 @@ def process_client_data(jsonfile, yamldir):
 
     discussion = human_data['discussion'] if 'discussion' in human_data else ''
     # client  = 'fluid.{}~'.format(jsonfile.stem.lower())
-    client = jsonfile.stem
+    # client = jsonfile.stem
     attrs = OrderedDict(sorted(attrs.items(), key=lambda t: t[0]))
 
 
