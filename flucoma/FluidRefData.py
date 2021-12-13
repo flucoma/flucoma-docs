@@ -252,33 +252,33 @@ def cli_name(value):
 
 def process_client_data(jsonfile, yamldir):
     print('Processing reference data for {}'.format(jsonfile.stem))
-    # template = env.get_template('maxref.xml')
+
     with open(jsonfile.resolve()) as jf:
         raw_data = json.load(jf)
     
     human_data = {}
     human_data_path = yamldir / (jsonfile.stem+'.yaml')    
+
     if(human_data_path.exists()):
         with open(human_data_path.resolve()) as yf:
             human_data = yaml.load(yf, Loader=yaml.FullLoader)
     else:
         print("WARNING NO HUMAN DOCUMENTATION YET FOR {}".format(jsonfile.stem))            
-        # print(human_data['digest'])
+
     return validate_and_merge(jsonfile.stem, raw_data,human_data)
     
 def validate_and_merge(client, raw_data, human_data):
     args={}
     attrs={}
     messages={}    
-    # data = data['parameters'] #data is in json array to preserve order,
+
+
     data = OrderedDict([(d['name'], d) for d in raw_data['parameters']]) 
     if 'parameters' in human_data:
         for k,v in data.items():
             if k != 'fftSettings' and not k in human_data['parameters']:
                 print("WARNING CAN'T FIND {} in {}".format(k,client))
-    # else: 
-    #     print("WARNING NO HUMAN DOCUMENTATION YET FOR {}".format(jsonfile.stem))            
-    
+             
     data = {k.lower():v for k,v in data.items()}  
     
     #if there's an empty 'parameters' item in the yaml, just get rid of it 
@@ -331,9 +331,7 @@ def validate_and_merge(client, raw_data, human_data):
         }
 
     for d,v in data.items():
-        # print(d)
         fixed = False;
-        # description = ''
 
         param = {}
 
@@ -373,16 +371,13 @@ def validate_and_merge(client, raw_data, human_data):
             args.update(param)
         else:
             attrs.update(param)
-
-
-    # print(args)
+    
     digest  = human_data['digest'] if 'digest' in human_data else 'A Fluid Decomposition Object'
     description = human_data['description'] if 'description' in human_data else ''
     seealso = [s.strip() for s in human_data['see-also'].split(',')] if 'see-also' in human_data and human_data['see-also'] else []
 
     discussion = human_data['discussion'] if 'discussion' in human_data else ''
-    # client  = 'fluid.{}~'.format(jsonfile.stem.lower())
-    # client = jsonfile.stem
+
     attrs = OrderedDict(sorted(attrs.items(), key=lambda t: t[0]))
 
 
@@ -398,7 +393,6 @@ def validate_and_merge(client, raw_data, human_data):
     if 'messages' in human_data and human_data['messages']:
         human_data['messages'] = {k.lower():v for k,v in human_data['messages'].items()}
     
-    # some things will happen here
     for d,v in message_data.items():
         
         v['args'] = {'arg{}'.format(i):t for i,t in enumerate(v['args'])}
@@ -407,20 +401,12 @@ def validate_and_merge(client, raw_data, human_data):
         and d in human_data['messages']:
             if 'description' in human_data['messages'][d.lower()]:
                 message_data[d.lower()].update({'description': human_data['messages'][d.lower()]['description']})
-            # print(v['args'])
             if 'args' in human_data['messages'][d.lower()]:
                 margs = human_data['messages'][d.lower()]['args']
                 if margs:
                     arg_names = [a['name'] for a in margs]      
                     arg_data = [a for a in margs]              
-                    # print(arg_data)
                     arg_data = list(filter(lambda a: a['name'] != 'action',arg_data))
-                    # print(arg_data)
-                    # try:                         
-                    #     arg_names.remove('action')
-                    # except ValueError: 
-                    #     pass #if it's not there, move on
-                    # print(len(v['args']), len(arg_names),arg_names)
                     arg_types = list(v['args'].values())
                     # print(v['args'])
                     if(len(v['args']) == len(arg_data)): 
@@ -430,14 +416,13 @@ def validate_and_merge(client, raw_data, human_data):
                                 arg_data[i]['description'] = 'Awaiting documentation'
                             newargs[arg_data[i]['name']] = {'type':arg_types[i],'description':arg_data[i]['description']}
                         message_data[d.lower()]['args'] = newargs  
-                        # print(newargs)                  
                     else: 
                         print("WARNING: Arg counts don't match")
                 else: 
                     message_data[d.lower()]['args'] = {}
             else: 
                 message_data[d.lower()]['args'] = {}
-                    # print(human_data['messages'][d.lower()]['args'])
+
         if 'messages' in human_data:
             if d.lower() == 'cols' and 'cols' not in human_data['messages']:
                     message_data['cols'] = {
@@ -458,7 +443,7 @@ def validate_and_merge(client, raw_data, human_data):
                     message_data['clear']['args'] = {}   
         
     messages = message_data
-    # print(messages)
+
     return {
         'input_type': raw_data['input_type'],
         'arguments': args, 
