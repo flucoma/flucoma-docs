@@ -21,6 +21,7 @@ from collections import OrderedDict
 import pprint
 import warnings
 import inspect
+from . import DefaultData 
 
 def fluid_object_role(role, rawtext, text, lineno, inliner,
                        options={}, content=[]):
@@ -272,7 +273,6 @@ def validate_and_merge(client, raw_data, human_data):
     attrs={}
     messages={}    
 
-
     data = OrderedDict([(d['name'], d) for d in raw_data['parameters']]) 
     if 'parameters' in human_data:
         for k,v in data.items():
@@ -288,47 +288,12 @@ def validate_and_merge(client, raw_data, human_data):
         
     if 'parameters' in human_data and human_data['parameters']:
         human_data['parameters'] = {k.lower():v for k,v in human_data['parameters'].items()}
-
-    data['warnings'] = {
-        "displayName" : "Warnings",
-        "constraints": {
-            "min": 0,
-            "max": 1
-        } ,
-        "default": 0,
-        "type": "long",
-        "size": 1,
-        "fixed": False,
-        "description" : "Enable warnings to be issued whenever a parameter value is constrained (e.g. clipped)"
-    }
+    
+    data['warnings'] = DefaultData.warningDoc(); 
 
     if client.lower().startswith('buf'):
-        data['blocking'] = {
-            "displayName" : "Blocking Mode",
-            "default": 1,
-            "fixed": False,
-            "size": 1,
-            "type": "enum",
-            "values": [
-                "Non-Blocking",
-                "Blocking (Low Priority)",
-                "Blocking (High Priority)"
-            ],
-            "enum": {
-                "Non-Blocking": "Processing runs in a worker thread",
-                "Blocking (Low Priority)" : "Processing runs in the main application thread",
-                "Blocking (High Priority)" : "(Max only) Processing runs in the scheduler thread"
-            },
-            "description" : "Set the threading mode for the object"
-        }
-        data['queue'] = {
-            "displayName" : "Non-Blocking Queue Flag",
-            "default": 0,
-            "fixed": False,
-            "size": 1,
-            "type": "long",
-            "description" : "In non-blocking mode enable jobs to be queued up if successive bangs are sent whilst the object is busy. With the queue disabled, successive bangs will produce a warning. When enabled, the object will processing successively, against the state of its parameters when each bang was sent"
-        }
+        data['blocking'] = DefaultData.blockingDoc(); 
+        data['queue'] = DefaultData.queueDoc(); 
 
     for d,v in data.items():
         fixed = False;
@@ -349,21 +314,13 @@ def validate_and_merge(client, raw_data, human_data):
             if 'parameters' in human_data:
                 if 'windowSize' in  human_data['parameters']:
                     fftdesc += '   \n* ' + human_data['parameters']['windowSize']['description'] 
-                    #+ ' . Window size can be any integer (in samples), but is clipped at its upper range by the FFT size (when this is not -1)'
                 if 'hopSize' in human_data['parameters']:
                     fftdesc += '   \n* ' + human_data['parameters']['hopSize']['description']
-                    # + '. The default of -1 sets the hop size to window size / 2. However it can be *any* size (although some small integer fraction of the window size is conventional).'
                 if 'fftSize' in human_data['parameters']:
                     fftdesc += '   \n* ' + human_data['parameters']['fftSize']['description'] 
-                    #+ '. The default of -1 sets the FFT size to the nearest power of 2 equal to or above the window size. When set manually, it will always snap internally to the next power of two, and can not be smaller than the window size. When greater than the window size, the input frame is zero-padded.'
             fftdesc += '\n\n'
-            
-            fftDefault = 'The hop size and fft size can both be set to -1 (and are by default), with slightly different meanings:\n   \n* For the hop size, -1 = ``windowSize/2``\n* For the FFT size, -1 = ``windowSize`` snapped to the nearest equal / greater power of 2 (e.g. ``windowSize 1024`` => ``fftSize 1024``, but ``windowsSize 1000`` also => ``fftSize 1024``)\n'
-            
-            fftdesc += fftDefault
-            
+            fftdesc += DefaultData.fftDoc();             
             param[d.lower()].update({'description': fftdesc})
-
 
         if 'fixed' in v:
             fixed = v['fixed']
@@ -379,7 +336,6 @@ def validate_and_merge(client, raw_data, human_data):
     discussion = human_data['discussion'] if 'discussion' in human_data else ''
 
     attrs = OrderedDict(sorted(attrs.items(), key=lambda t: t[0]))
-
 
     message_data = OrderedDict([(d['name'].lower(), d) for d in raw_data['messages']]) 
     
@@ -408,7 +364,6 @@ def validate_and_merge(client, raw_data, human_data):
                     arg_data = [a for a in margs]              
                     arg_data = list(filter(lambda a: a['name'] != 'action',arg_data))
                     arg_types = list(v['args'].values())
-                    # print(v['args'])
                     if(len(v['args']) == len(arg_data)): 
                         newargs = {}
                         for i in range(len(arg_data)):
@@ -425,22 +380,11 @@ def validate_and_merge(client, raw_data, human_data):
 
         if 'messages' in human_data:
             if d.lower() == 'cols' and 'cols' not in human_data['messages']:
-                    message_data['cols'] = {
-                        'description': 'The number of columns (dimensions) in this model or dataset / labeset', 
-                        'args':{},                        
-                    }
+                    message_data['cols'] = DefaultData.colsDoc(); 
             if d.lower() == 'size' and 'size' not in human_data['messages']:
-                    message_data['size'] = {
-                        'description': 'The number of data points (entries / observations) in this model or dataset / labeset', 
-                        'args':{},                        
-                    }
-            if d.lower() == 'clear':
-                if 'clear' not in human_data['messages']:
-                    message_data['clear'] = {
-                        'description': 'Resets the internal state of the model', 
-                        'args':{},                        
-                    }
-                    message_data['clear']['args'] = {}   
+                    message_data['size'] = DefaultData.sizeDoc(); 
+            if d.lower() == 'clear' and 'clear' not in human_data['messages']:
+                    message_data['clear'] = DefaultData.clearDoc();  
         
     messages = message_data
 
