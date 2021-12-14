@@ -13,16 +13,16 @@ see-also: BufSpectralShape, Pitch, MelBands, Loudness, MFCC
 description: Seven of the  spectral shape descriptors, computed on a linear scale for both amplitude and frequency.
 discussion: |
   The descriptors are:
-
-    * the four first statistical moments (`<https://en.wikipedia.org/wiki/Moment_(mathematics)>`_), more commonly known as:
-
-    	* the spectral centroid (1) in Hertz. This is the point that splits the spectrum in 2 halves of equal energy. It is the weighted average of the magnitude spectrum.
-    	* the spectral spread (2) in Hertz. This is the standard deviation of the spectrum envelop, or the average of the distance to the centroid.
-    	* the normalised skewness (3) as ratio. This indicates how tilted is the spectral curve in relation to the middle of the spectral frame, i.e. half of the Nyquist frequency. If it is below the frequency of the magnitude spectrum, it is positive.
-       * the normalised kurtosis (4) as ratio. This indicates how focused is the spectral curve. If it is peaky, it is high.
-  	* the rolloff (5) in Hertz. This indicates the frequency under which 95% of the energy is included.
-  	* the flatness (6) in dB. This is the ratio of geometric mean of the magnitude, over the arithmetic mean of the magnitudes. It yields a very approximate measure on how noisy a signal is.
-  	* the crest (7) in dB. This is the ratio of the loudest magnitude over the RMS of the whole frame. A high number is an indication of a loud peak poking out from the overal spectral curve.
+  * the four first statistical moments (`<https://en.wikipedia.org/wiki/Moment_(mathematics)>`_), more commonly known as:
+          
+    * the spectral centroid (1) in Hertz. This is the point that splits the spectrum in 2 halves of equal energy. It is the weighted average of the magnitude spectrum.
+    * the spectral spread (2) in Hertz. This is the standard deviation of the spectrum envelop, or the average of the distance to the centroid.
+    * the normalised skewness (3) as ratio. This indicates how tilted is the spectral curve in relation to the middle of the spectral frame, i.e. half of the Nyquist frequency. If it is below the frequency of the magnitude spectrum, it is positive.
+    * the normalised kurtosis (4) as ratio. This indicates how focused is the spectral curve. If it is peaky, it is high.
+      
+  * the rolloff (5) in Hertz. This indicates the frequency under which 95% of the energy is included.
+  * the flatness (6) in dB. This is the ratio of geometric mean of the magnitude, over the arithmetic mean of the magnitudes. It yields a very approximate measure on how noisy a signal is.
+  * the crest (7) in dB. This is the ratio of the loudest magnitude over the RMS of the whole frame. A high number is an indication of a loud peak poking out from the overal spectral curve.
 
   The drawings in Peeters 2003 (http://recherche.ircam.fr/anasyn/peeters/ARTICLES/Peeters_2003_cuidadoaudiofeatures.pdf) are useful, as are the commented examples below. For the mathematically-inclined reader, the tutorials and code offered here (https://www.audiocontentanalysis.org/) are interesting to further the understanding. For examples of the impact of computing the moments in power magnitudes, and/or in exponential frequency scale, please refer to the helpfile.
 

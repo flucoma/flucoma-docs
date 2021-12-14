@@ -11,7 +11,7 @@ sc-categories: Machine learning
 sc-related: Classes/FluidMLPClassifier, Classes/FluidDataSet
 see-also: 
 description: |
-  Perform regression between :fluid-obj:`DataSet`s using a Multi-Layer Perception neural network.
+  Perform regression between :fluid-obj:`DataSets<DataSet>` using a Multi-Layer Perception neural network.
 
 parameters:
   hidden:
