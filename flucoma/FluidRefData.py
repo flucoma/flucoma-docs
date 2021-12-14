@@ -120,9 +120,9 @@ class CLIHTMLTranslator(html4css1.HTMLTranslator):
 class FluidHTMLWriter(html4css1.Writer):
     """docutils writer for Max ref
     """    
-    def __init__(self,Writer=None):
+    def __init__(self,Translator=None):
         html4css1.Writer.__init__(self)
-        self.translator_class = Writer
+        self.translator_class = Translator
 
 
 def rst_filter(s,translator,**kwargs):    
@@ -279,16 +279,12 @@ def validate_and_merge(client, raw_data, human_data):
         for k,v in data.items():
             if k != 'fftSettings' and not k in human_data['parameters']:
                 print("WARNING CAN'T FIND {} in {}".format(k,client))
-             
-    # data = {k.lower():v for k,v in data.items()}  
-    
+                 
     #if there's an empty 'parameters' item in the yaml, just get rid of it 
     # otherwise we have to check for both existence and not None-ness every time
     if 'parameters' in human_data and not human_data['parameters']:
         del human_data['parameters']
         
-    # if 'parameters' in human_data and human_data['parameters']:
-    #     human_data['parameters'] = {k.lower():v for k,v in human_data['parameters'].items()}
     
     data['warnings'] = DefaultData.warningDoc(); 
 
@@ -300,8 +296,6 @@ def validate_and_merge(client, raw_data, human_data):
         fixed = False;
 
         param = {d:v}
-
-        # param.update({d.lower():v})
         
         if 'parameters' in human_data \
         and d in human_data['parameters']:
@@ -312,17 +306,17 @@ def validate_and_merge(client, raw_data, human_data):
 
         if d == 'fftSettings':
             fftdesc ='FFT settings consist of three numbers representing the window size, hop size and FFT size in samples:\n'
-            # if 'parameters' in human_data:
-            #     if 'windowSize' in  human_data['parameters']:
-            #         fftdesc += '   \n* ' + human_data['parameters']['windowSize']['description'] 
-            #     if 'hopSize' in human_data['parameters']:
-            #         fftdesc += '   \n* ' + human_data['parameters']['hopSize']['description']
-            #     if 'fftSize' in human_data['parameters']:
-            #         fftdesc += '   \n* ' + human_data['parameters']['fftSize']['description'] 
+            if 'parameters' in human_data:
+                if 'windowSize' in  human_data['parameters']:
+                    fftdesc += '   \n* ' + human_data['parameters']['windowSize']['description'] 
+                if 'hopSize' in human_data['parameters']:
+                    fftdesc += '   \n* ' + human_data['parameters']['hopSize']['description']
+                if 'fftSize' in human_data['parameters']:
+                    fftdesc += '   \n* ' + human_data['parameters']['fftSize']['description'] 
             fftdesc += '\n\n'
             fftdesc += DefaultData.fftDoc();             
             param[d].update({'description': fftdesc})
-            # param[d] = {'description': fftdesc}
+
 
         if 'fixed' in v:
             fixed = v['fixed']
@@ -347,9 +341,6 @@ def validate_and_merge(client, raw_data, human_data):
               "name": "list",
               "returns": "void"
             }
-        
-    # if 'messages' in human_data and human_data['messages']:
-    #     human_data['messages'] = {k:v for k,v in human_data['messages'].items()}
     
     for d,v in message_data.items():
         
@@ -451,26 +442,45 @@ host_vars = {
 
 def process_template(template_path,outputdir,client_data,host):
     
+    # hack for fluid stats, TODO: move to its proper place(s)
     if('input_type' in client_data and client_data['input_type'] == 'control'):
         namer =  lambda n : 'fluid.{}'.format(n.lower())
     else: 
         namer = host['namer'] 
     
     ofile = outputdir / '{}.{}'.format(namer(client_data['client']),host['extension'])
-    # print(namer(client_data['client']))
+    
+    ########################################################################  
+    # Set up docutils to do RST parsing; here we make 'roles' to generate CCE specific links to other FluCoMa objects or guides
     roles.register_local_role('fluid-obj', fluid_object_role)
     roles.register_local_role('fluid-topic', fluid_topic_role)
-    # directives.register_directive('buffer', MaxBufferSubstitution)
+    
+    ########################################################################  
+    # Configure Jinja
     env = Environment(
         loader=FileSystemLoader([template_path]),
         autoescape=select_autoescape(['html', 'xml'])
     )
+    
+    ########################################################################  
+    #    Custom filter functions, invocable with a pipe in jinja templates 
+      
+    # convert reStructuredText blocks in descriptions etc to the output format for that CCE (html in all cases except SC)
     env.filters['rst'] = partial(rst_filter,translator=host['translator'])
+    # generate a properly formatted object name for this CCE
     env.filters['as_host_object_name'] = namer
+    # lookup a type name for this CCE
     env.filters['typename'] = host['types']
+    # generate parameter constraints text for this CCE
     env.filters['constraints'] = partial(constraints,host=host)
+    # determine if the object in question is part of the CLI distribution (in order to filter out stuff from see-also)
     env.tests['incli'] = lambda s: s.lower().startswith('buf')
+    
+    ########################################################################  
+    # run jinja on template for this host 
+    
     template = env.get_template(host['template'])
+    
     with open(ofile,'w') as f:
         f.write(template.render(
             arguments=client_data['arguments'],
@@ -492,7 +502,9 @@ def process_topic(topic_file,template_path,outputdir,host):
     
     
     # print(ofile)
-    roles.register_local_role('fluid_object', fluid_object_role)
+    # roles.register_local_role('fluid_object', fluid_object_role)
+    roles.register_local_role('fluid-obj', fluid_object_role)
+    roles.register_local_role('fluid-topic', fluid_topic_role)
     env = Environment(
         loader=FileSystemLoader([template_path]),
         autoescape=select_autoescape(['html', 'xml'])
