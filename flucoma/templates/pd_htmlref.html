@@ -48,7 +48,7 @@ under the European Union’s Horizon 2020 research and innovation programme
     <h2>Attributes</h2>
     {%- for name,bits in attributes.items()  -%}
     <div class="attribute_group">
-      <h3 class="attribute_name">{{ name | e}}
+      <h3 class="attribute_name">{{ name | lower | e}}
         <span class="type"> [{{ bits['type']| typename }}]</span>
         <span class="defaultval"> (default: {{ bits['default'] }})</span>
       </h3>
@@ -89,10 +89,11 @@ under the European Union’s Horizon 2020 research and innovation programme
     {% elif name == 'read' %}
     <div class='method_group'><h3 class='method_name' name='read'>read</h3>
       <span class='arglist'>Arguments</span>
-        <span class='arg'>path (symbol, optional)</span>
+      <span class='arg'>path (symbol, optional)</span>
       
       <div class='description'>Replace the internal state of the object from a JSON file on disk. With no argument, a file dialog will appear to choose the file.
      </div>
+     
     </div>
     {% elif name == 'write' %}
     <div class='method_group'><h3 class='method_name' name='write'>write</h3>
@@ -103,7 +104,8 @@ under the European Union’s Horizon 2020 research and innovation programme
      </div>
     </div>
    {% else %}
-   <div class='method_group'><h3 class='method_name' name='{{ name|e }}'>{{ name|e }}</h3>
+   <div class='method_group'>
+     <h3 class='method_name' name='{{ name | lower |e }}'>{{ name | lower |e }}</h3>
      <span class='arglist'>Arguments: </span>
        {%- for argname,argdata in bits['args'].items() -%}
        <span class='arg'>{{ argname | e }} ({{ argdata['type'] | lower | typename}}){{ ", " if not loop.last else "" }} </span>

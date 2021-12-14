@@ -52,7 +52,7 @@ under the European Union’s Horizon 2020 research and innovation programme
     <h2>Options</h2>
     {%- for name,bits in attributes.items()  -%}
     <div class="attribute_group">
-      <h3 class="attribute_name">-{{ name | e}}
+      <h3 class="attribute_name">-{{ name | lower | e}}
         <span class="type"> [{{ bits['type']| typename }}]</span>
         <span class="defaultval"> (default: {{ bits['default'] }})</span>
       </h3>

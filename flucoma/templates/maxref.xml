@@ -29,7 +29,7 @@ under the European Union’s Horizon 2020 research and innovation programme
 	<!--ARGUMENTS-->
 	<objarglist>
     {%- for name,bits in arguments.items()  -%}
-      <objarg name='{{ name|e }}' optional='1' type='number'>
+      <objarg name='{{ name | lower | e }}' optional='1' type='number'>
         <digest>
           {{ bits['displayName']|e }}
         </digest>
@@ -111,7 +111,7 @@ under the European Union’s Horizon 2020 research and innovation programme
       </description>
      </method>
     {% else %}
-    <method name='{{ name|e }}'>
+    <method name='{{ name| lower | e }}'>
 			<arglist>
 				{%- for argname,argdata in bits['args'].items() -%}
 				<arg name= "{{ argname | e }}" optional='0' type="{{ argdata['type'] | lower | typename}}" />
@@ -133,7 +133,7 @@ under the European Union’s Horizon 2020 research and innovation programme
 	<!--ATTRIBUTES-->
 	<attributelist>
     {%- for name,bits in attributes.items()  -%}
-      <attribute name='{{ name|e }}' get='1' set='1' type='{{ bits['type']|typename }}' size='{{ bits['size'] }}'>
+      <attribute name='{{ name | lower | e }}' get='1' set='1' type='{{ bits['type']|typename }}' size='{{ bits['size'] }}'>
         <digest>
           {{ bits['displayName']|e }}
         </digest>

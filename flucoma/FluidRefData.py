@@ -172,16 +172,16 @@ def constraints(thisAttr,allAttrs,allArgs,host):
             if isinstance(cons['upper'],list):
                 for p in cons['upper']:
                     # pprint.pprint(allParams)
-                    upper.append(max_parameter_link(p,allParams[p.lower()]))
+                    upper.append(max_parameter_link(p,allParams[p]))
             else: 
                 if cons['upper'] == 'fftFrame':
-                    upper.append(host['code_block'].format('(fftSize/2) + 1') + '(see {})'.format(host['parameter_link']('fftSettings',allParams['fftSettings'.lower()])))
+                    upper.append(host['code_block'].format('(fftSize/2) + 1') + '(see {})'.format(host['parameter_link']('fftSettings',allParams['fftSettings'])))
                 if cons['upper'] == 'maxFFTFrame':
-                    upper.append(host['code_block'].format('(maxFFTsize/2) + 1') + '(see {})'.format(host['parameter_link']('maxFFTSize',allParams['maxFFTSize'.lower()])))
+                    upper.append(host['code_block'].format('(maxFFTsize/2) + 1') + '(see {})'.format(host['parameter_link']('maxFFTSize',allParams['maxFFTSize'])))
         if 'lower' in cons: 
             if isinstance(cons['lower'],list):
                 for p in cons['lower']:
-                    lower.append(host['parameter_link'](p,allParams[p.lower()]))    
+                    lower.append(host['parameter_link'](p,allParams[p]))    
         if 'max' in cons: upper.append(cons['max'])
         if 'min' in cons: lower.append(cons['min'])           
         res = '<h5>Constraints</h5><ul>'
@@ -201,10 +201,10 @@ def constraints(thisAttr,allAttrs,allArgs,host):
         if 'FreqAmpPair' in cons:
             res += '<li>Two amplitude + frequency pairs. Amplitudes are unbounded, frequencies in range 0-1</li>'    
         try:        
-            if thisAttr['name'].lower() == 'fftsettings': 
+            if thisAttr['name'] == 'fftSettings': 
                 res += '<li> FFTSize, if != -1, will set to the next greatest power of two &gt; 4</li>'
                 if 'MaxFFT' in cons: 
-                    res += '<li>The maximum manual FFT size is limited to the value of the {} initialization argument</li>'.format(host['parameter_link']('maxFFTSize',allParams['maxFFTSize'.lower()]))  
+                    res += '<li>The maximum manual FFT size is limited to the value of the {} initialization argument</li>'.format(host['parameter_link']('maxFFTSize',allParams['maxFFTSize']))  
                 res += '<li>if FFT size != -1, then window size is clipped at FFT size</li>'
         except KeyError: 
             pass
@@ -273,21 +273,22 @@ def validate_and_merge(client, raw_data, human_data):
     attrs={}
     messages={}    
 
-    data = OrderedDict([(d['name'], d) for d in raw_data['parameters']]) 
+    data = dict([(d['name'], d) for d in raw_data['parameters']])
+    
     if 'parameters' in human_data:
         for k,v in data.items():
             if k != 'fftSettings' and not k in human_data['parameters']:
                 print("WARNING CAN'T FIND {} in {}".format(k,client))
              
-    data = {k.lower():v for k,v in data.items()}  
+    # data = {k.lower():v for k,v in data.items()}  
     
     #if there's an empty 'parameters' item in the yaml, just get rid of it 
     # otherwise we have to check for both existence and not None-ness every time
     if 'parameters' in human_data and not human_data['parameters']:
         del human_data['parameters']
         
-    if 'parameters' in human_data and human_data['parameters']:
-        human_data['parameters'] = {k.lower():v for k,v in human_data['parameters'].items()}
+    # if 'parameters' in human_data and human_data['parameters']:
+    #     human_data['parameters'] = {k.lower():v for k,v in human_data['parameters'].items()}
     
     data['warnings'] = DefaultData.warningDoc(); 
 
@@ -298,29 +299,30 @@ def validate_and_merge(client, raw_data, human_data):
     for d,v in data.items():
         fixed = False;
 
-        param = {}
+        param = {d:v}
 
-        param.update({d.lower():v})
-
+        # param.update({d.lower():v})
+        
         if 'parameters' in human_data \
         and d in human_data['parameters']:
-            if 'description' in human_data['parameters'][d.lower()]:
-                param[d.lower()].update({'description': human_data['parameters'][d]['description']})
-            if 'enum' in human_data['parameters'][d.lower()] and 'values' in v:
-                param[d.lower()]['enum'] = dict(zip(v['values'],human_data['parameters'][d]['enum'].values()))
+            if 'description' in human_data['parameters'][d]:
+                param[d].update({'description': human_data['parameters'][d]['description']})
+            if 'enum' in human_data['parameters'][d] and 'values' in v:
+                param[d]['enum'] = dict(zip(v['values'],human_data['parameters'][d]['enum'].values()))
 
-        if d.lower() == 'fftsettings':
+        if d == 'fftSettings':
             fftdesc ='FFT settings consist of three numbers representing the window size, hop size and FFT size in samples:\n'
-            if 'parameters' in human_data:
-                if 'windowSize' in  human_data['parameters']:
-                    fftdesc += '   \n* ' + human_data['parameters']['windowSize']['description'] 
-                if 'hopSize' in human_data['parameters']:
-                    fftdesc += '   \n* ' + human_data['parameters']['hopSize']['description']
-                if 'fftSize' in human_data['parameters']:
-                    fftdesc += '   \n* ' + human_data['parameters']['fftSize']['description'] 
+            # if 'parameters' in human_data:
+            #     if 'windowSize' in  human_data['parameters']:
+            #         fftdesc += '   \n* ' + human_data['parameters']['windowSize']['description'] 
+            #     if 'hopSize' in human_data['parameters']:
+            #         fftdesc += '   \n* ' + human_data['parameters']['hopSize']['description']
+            #     if 'fftSize' in human_data['parameters']:
+            #         fftdesc += '   \n* ' + human_data['parameters']['fftSize']['description'] 
             fftdesc += '\n\n'
             fftdesc += DefaultData.fftDoc();             
-            param[d.lower()].update({'description': fftdesc})
+            param[d].update({'description': fftdesc})
+            # param[d] = {'description': fftdesc}
 
         if 'fixed' in v:
             fixed = v['fixed']
@@ -335,9 +337,9 @@ def validate_and_merge(client, raw_data, human_data):
 
     discussion = human_data['discussion'] if 'discussion' in human_data else ''
 
-    attrs = OrderedDict(sorted(attrs.items(), key=lambda t: t[0]))
+    attrs = OrderedDict(sorted(attrs.items(), key=lambda t: t[0].lower()))
 
-    message_data = OrderedDict([(d['name'].lower(), d) for d in raw_data['messages']]) 
+    message_data = OrderedDict([(d['name'], d) for d in raw_data['messages']]) 
     
     if(('input_type' in raw_data) and (raw_data['input_type'] == 'control')):
         message_data['list'] = {
@@ -346,8 +348,8 @@ def validate_and_merge(client, raw_data, human_data):
               "returns": "void"
             }
         
-    if 'messages' in human_data and human_data['messages']:
-        human_data['messages'] = {k.lower():v for k,v in human_data['messages'].items()}
+    # if 'messages' in human_data and human_data['messages']:
+    #     human_data['messages'] = {k:v for k,v in human_data['messages'].items()}
     
     for d,v in message_data.items():
         
@@ -355,10 +357,10 @@ def validate_and_merge(client, raw_data, human_data):
         
         if 'messages' in human_data \
         and d in human_data['messages']:
-            if 'description' in human_data['messages'][d.lower()]:
-                message_data[d.lower()].update({'description': human_data['messages'][d.lower()]['description']})
-            if 'args' in human_data['messages'][d.lower()]:
-                margs = human_data['messages'][d.lower()]['args']
+            if 'description' in human_data['messages'][d]:
+                message_data[d].update({'description': human_data['messages'][d]['description']})
+            if 'args' in human_data['messages'][d]:
+                margs = human_data['messages'][d]['args']
                 if margs:
                     arg_names = [a['name'] for a in margs]      
                     arg_data = [a for a in margs]              
@@ -370,20 +372,21 @@ def validate_and_merge(client, raw_data, human_data):
                             if('description' not in arg_data[i]):
                                 arg_data[i]['description'] = 'Awaiting documentation'
                             newargs[arg_data[i]['name']] = {'type':arg_types[i],'description':arg_data[i]['description']}
-                        message_data[d.lower()]['args'] = newargs  
+                        message_data[d]['args'] = newargs  
                     else: 
-                        print("WARNING: Arg counts don't match")
+                        print(f'WARNING: {d}: Arg counts don\'t match')
+
                 else: 
-                    message_data[d.lower()]['args'] = {}
+                    message_data[d]['args'] = {}
             else: 
-                message_data[d.lower()]['args'] = {}
+                message_data[d]['args'] = {}
 
         if 'messages' in human_data:
-            if d.lower() == 'cols' and 'cols' not in human_data['messages']:
+            if d == 'cols' and 'cols' not in human_data['messages']:
                     message_data['cols'] = DefaultData.colsDoc(); 
-            if d.lower() == 'size' and 'size' not in human_data['messages']:
+            if d == 'size' and 'size' not in human_data['messages']:
                     message_data['size'] = DefaultData.sizeDoc(); 
-            if d.lower() == 'clear' and 'clear' not in human_data['messages']:
+            if d == 'clear' and 'clear' not in human_data['messages']:
                     message_data['clear'] = DefaultData.clearDoc();  
         
     messages = message_data
