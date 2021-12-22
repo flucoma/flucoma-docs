@@ -53,7 +53,7 @@ fork{
 // and it might have worked! but it may not have, and it won't provide the same result every time because it
 // starts each process from a stochastic state (you can seed this state if you want...see below).
 
-// ====== ok so what is it doing? ========
+// ====== bases and activations ========
 
 // first, let's make two new buffers called...
 ~bases = Buffer(s);
