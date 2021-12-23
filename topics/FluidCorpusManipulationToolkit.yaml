@@ -18,74 +18,74 @@ description: |
   ******
   
   Slice by amplitude envelope:
-  :fluid_object:`AmpSlice` :fluid_object:`BufAmpSlice` 
+  :fluid-obj:`AmpSlice` :fluid-obj:`BufAmpSlice` 
 
 
   Slice by onsets in the spectral domain:
-  :fluid_object:`OnsetSlice` :fluid_object:`BufOnsetSlice` 
+  :fluid-obj:`OnsetSlice` :fluid-obj:`BufOnsetSlice` 
 
 
   Slice by estimated novelty on a choice of features:
-  :fluid_object:`NoveltySlice` :fluid_object:`BufNoveltySlice` 
+  :fluid-obj:`NoveltySlice` :fluid-obj:`BufNoveltySlice` 
 
 
   Slice by transient modelling:
-  :fluid_object:`TransientSlice` :fluid_object:`BufTransientSlice` 
+  :fluid-obj:`TransientSlice` :fluid-obj:`BufTransientSlice` 
 
   
   Layers
   ******
   
   Decompose into sines + residual
-  :fluid_object:`Sines` :fluid_object:`BufSines` 
+  :fluid-obj:`Sines` :fluid-obj:`BufSines` 
 
   
   Decompose into transients + residual
-  :fluid_object:`Transients` :fluid_object:`BufTransients` 
+  :fluid-obj:`Transients` :fluid-obj:`BufTransients` 
 
   
   Decompose into 'harmonic' and 'percussive' layers
-  :fluid_object:`HPSS` :fluid_object:`BufHPSS` 
+  :fluid-obj:`HPSS` :fluid-obj:`BufHPSS` 
 
   
   Objects
   *******
   
   Use Nonnegative Matrix Factorisation to explore and decompose sounds
-  :fluid_object:`BufNMF` :fluid_object:`NMFFilter`  :fluid_object:`NMFMatch` 
+  :fluid-obj:`BufNMF` :fluid-obj:`NMFFilter`  :fluid-obj:`NMFMatch` 
 
   
   Descriptors
   ***********
   
   Report amplitude and peak, or r128 loudness and true peak
-  :fluid_object:`Loudness` :fluid_object:`BufLoudness` 
+  :fluid-obj:`Loudness` :fluid-obj:`BufLoudness` 
 
   A suite of pitch estimators
-  :fluid_object:`Pitch` :fluid_object:`BufPitch` 
+  :fluid-obj:`Pitch` :fluid-obj:`BufPitch` 
 
   
   Energy across Mel bands
-  :fluid_object:`MelBands` :fluid_object:`BufMelBands` 
+  :fluid-obj:`MelBands` :fluid-obj:`BufMelBands` 
 
   
   Mel Frequency Ceptstral Coefficients
-  :fluid_object:`MFCC`  :fluid_object:`BufMFCC` 
+  :fluid-obj:`MFCC`  :fluid-obj:`BufMFCC` 
 
   
   Summary measures of spectral shape
-  :fluid_object:`SpectralShape` :fluid_object:`BufSpectralShape` 
+  :fluid-obj:`SpectralShape` :fluid-obj:`BufSpectralShape` 
 
 
   Statistics of buffers
-  :fluid_object:`BufStats` 
+  :fluid-obj:`BufStats` 
 
 
   Utility
   *******
   
   Copy, slice, stack, mix concatenate. All the things you've wanted to do with buffers...
-  :fluid_object:`BufCompose` 
+  :fluid-obj:`BufCompose` 
 
   A tutorial object to experiment with multithreading in FluidBuf* objects
-  :fluid_object:`BufThreadDemo` 
+  :fluid-obj:`BufThreadDemo` 

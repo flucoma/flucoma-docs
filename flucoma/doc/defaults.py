@@ -1,3 +1,10 @@
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
 
 def warningDoc():
     return {
@@ -44,25 +51,35 @@ def queueDoc():
     }
     
 def fftDoc(): 
-    return  'The hop size and fft size can both be set to -1 (and are by default), with slightly different meanings:\n   \n* For the hop size, -1 = ``windowSize/2``\n* For the FFT size, -1 = ``windowSize`` snapped to the nearest equal / greater power of 2 (e.g. ``windowSize 1024`` => ``fftSize 1024``, but ``windowsSize 1000`` also => ``fftSize 1024``)\n'    
+    return  'FFT settings consist of three numbers representing the window size, hop size and FFT size in samples:\n\nThe hop size and fft size can both be set to -1 (and are by default), with slightly different meanings:\n   \n* For the hop size, -1 = ``windowSize/2``\n* For the FFT size, -1 = ``windowSize`` snapped to the nearest equal / greater power of 2 (e.g. ``windowSize 1024`` => ``fftSize 1024``, but ``windowsSize 1000`` also => ``fftSize 1024``)\n'    
 
 def colsDoc():
     return {
         'description': 'The number of columns (dimensions) in this model or dataset / labeset', 
-        'args':{},                        
+        'args':[],                        
     }
 
 def sizeDoc():
     return {
         'description': 'The number of data points (entries / observations) in this model or dataset / labeset', 
-        'args':{},                        
+        'args':[],                        
     }
     
 def clearDoc(): 
     return {
         'description': 'Resets the internal state of the model', 
-        'args':{},                        
+        'args':[],                        
     }
-        
 
-       
+DefaultControlDocs = {
+    'warnings': warningDoc(), 
+    'blocking': blockingDoc(), 
+    'queue': queueDoc(),
+    'fftSettings':fftDoc()
+}
+
+DefaultMessageDocs = {
+    'cols' : colsDoc(),
+    'size' : sizeDoc(), 
+    'clear': clearDoc()
+}
