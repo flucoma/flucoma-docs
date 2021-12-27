@@ -13,7 +13,7 @@ from schema import Schema, Or, Optional, Use, SchemaError
 from functools import partial, reduce
 from ..defaults import DefaultControlDocs, DefaultMessageDocs
 import logging 
-from ..logger import ContextLogger, add_context
+from ..logger import add_context
 
 """
 Given some machine generated documentation (in a dict), and some human documentation (in a dict), we use the structure of the former to check over the completeness of the latter, using defaults where we can, or issuing warnings otherwise 

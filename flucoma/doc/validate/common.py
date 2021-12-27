@@ -9,6 +9,7 @@
 from schema import Schema, Optional 
 
 from ..logger import add_context 
+import logging
 
 not_yet_documented = """
 

@@ -5,8 +5,29 @@ from collections.abc import Mapping
 
 logging_context = []
 
+
+class ContextFilter(logging.Filter):
+    '''
+    Filter for the python logging framework that adds the logging context to the current LogRecord (the Format still needs to be set in the logging config to see the context in the string though)
+    '''
+    def filter(self, record):        
+        record.context = logging_context.copy()
+        return True
+
 @contextmanager
 def add_context(*args):  
+    '''
+    contextmanager decorator function to be used in `with` blocks to add to the current logging context, so that we can trace a hierarchy through log mesages (e.g. object::control or object::message), e.g 
+    
+    ```
+    with add_context(`BufCompose`):
+        #stuff
+        with add_context (`process`):
+            #stuff 
+            logging.warning('ohno')
+    ```
+    would preface the log message with the context 'BufCompose, process'
+    '''
     global  logging_context 
     length = len(logging_context)
     try: 
@@ -15,10 +36,10 @@ def add_context(*args):
         logging_context = logging_context[:length]
 
 
-# def factory(name, level, fn, lno, msg, args, exc_info, func=None, sinfo=None, **kwargs):
-# 
-
 class ContextView(Mapping):
+    '''
+    Make a view round a dict (or any sort of Mapping) that uses add_context in the __iter__ generator to add the current key to the logging context. Used to wrap the collections of contols and messages for processing in Jinja, so that any logging messages are contextualised w/r/t the object at hand
+    '''
     def __init__(self,mapping,*args):
         self.mapping = mapping 
         self.args = args
@@ -33,27 +54,4 @@ class ContextView(Mapping):
     
     def __getitem__(self,key):
         return self.mapping[key]
-        
-class ContextFilter(logging.Filter):
-
-    def filter(self, record):        
-        record.context = logging_context.copy()
-        return True
-
-class ContextLogger(logging.LoggerAdapter):
-    
-    def __init__(self, logger, extra):
-        super(ContextLogger, self).__init__(logger, extra)
-        self.env = extra
-
-    def process(self, msg, kwargs):
-        passed_context = kwargs['extra'].pop('context',[])
-        msg, kwargs = super(ContextLogger, self).process(msg, kwargs)
-        result = copy.deepcopy(kwargs)        
-        context = result['extra'].pop('context',[])   
-        context.append(passed_context)
-        result['extra']['context'] = context
-        return msg, result
-
-
         

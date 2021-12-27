@@ -11,7 +11,7 @@ from .common import PermissveSchema, not_yet_documented, RecordContext
 from schema import Schema, And, Or, Optional, Use, SchemaError,Hook
 from functools import partial, reduce
 from ..defaults import DefaultControlDocs, DefaultMessageDocs
-from ..logger import ContextLogger,add_context
+from ..logger import add_context
 
 def render_constraints_markup(data, control):
     '''
