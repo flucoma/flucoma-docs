@@ -6,10 +6,12 @@
 # under the European Union’s Horizon 2020 research and innovation programme
 # (grant agreement No 725899).
 
-from .common import PermissveSchema, not_yet_documented
-from schema import Schema, And, Or, Optional, Use, SchemaError
+import logging
+from .common import PermissveSchema, not_yet_documented, RecordContext
+from schema import Schema, And, Or, Optional, Use, SchemaError,Hook
 from functools import partial, reduce
 from ..defaults import DefaultControlDocs, DefaultMessageDocs
+from ..logger import ContextLogger,add_context
 
 def render_constraints_markup(data, control):
     '''
@@ -148,9 +150,7 @@ def validate_controls(generated_control_data, human_control_data, **kwargs):
     We use the schema library for validation, whose natural inclination is to bail when stuff is missing. However, we just want to detect it and, if all else fails, tag it. So some mild acrobatics are invoked, with only petty crimes committed.  
     """
     lookup = kwargs.pop('defaults_lookup', DefaultControlDocs)
-    
-    human_control_data = human_control_data or {}
-    
+    logging.debug(f'validating controls...')    
     def hasContent(x):
         if not len(x):
             raise SchemaError
@@ -158,6 +158,11 @@ def validate_controls(generated_control_data, human_control_data, **kwargs):
 
     def tryLookup(x, name, lookup):
         return lookup[name]
+        
+    def uncdocumented(x,scope): 
+        """return the built in not documented tag string"""        
+        logging.warning('not yet documented')#,extra={'context':scope})
+        return not_yet_documented
     
     # deal with the aberation that is fftSettings (unified in generated docs, split out into win-hop-fft in human docs)
     if 'fftSettings' in [x['name'] for x in generated_control_data]:
@@ -181,22 +186,24 @@ def validate_controls(generated_control_data, human_control_data, **kwargs):
         }
         for d in generated_control_data        
     }).validate(human_control_data)
-        
+            
     # second pass: for anything with None, we see if we have a stored default for this Control description, and if we don't then we use a 'not yet documented' shame banner
     s_second = PermissveSchema({
-        d['name']: {
+        d['name']: RecordContext({
             'description': And(
                 Or(
                     Use(hasContent),
                     Use(partial(tryLookup, name=d['name'], lookup=lookup)),
-                    Use(lambda x: not_yet_documented)
+                    Use(partial(uncdocumented,scope=d['name']))
                 ), 
                 Use(partial(render_constraints_markup,control=d))
             ),
             Optional('enum'):object,
             Optional(object):object
-        }
+        }, 'control', d['name'])
         for d in generated_control_data 
     })
-
-    return s_second.validate(s_first)
+    
+    result =  s_second.validate(s_first)
+    # logging.getLogger().removeFilter(f)
+    return result

@@ -12,7 +12,8 @@ from .messages import validate_messages
 from schema import Schema, Or, Optional, Use, SchemaError
 from functools import partial, reduce
 from ..defaults import DefaultControlDocs, DefaultMessageDocs
-
+import logging 
+from ..logger import ContextLogger, add_context
 
 """
 Given some machine generated documentation (in a dict), and some human documentation (in a dict), we use the structure of the former to check over the completeness of the latter, using defaults where we can, or issuing warnings otherwise 
@@ -38,23 +39,28 @@ def validate_object(generated_data, human_data):
     """
     Given some generated doc data for a FluCoMa object, and its human made counterpart, check the completeness of the latter against the former (which is canonical). For any missing stuff, we use a default placeholder if available, else tag it as undocumented 
     """
-    human_data =  Schema(human_schema).validate(human_data)
-    
-    human_data['parameters'] = validate_controls( 
-        generated_data['parameters'], human_data['parameters']
-    ) 
-    
-    human_data['messages'] = validate_messages(
-        generated_data['messages'], human_data['messages']
-    )
-    
-    return generated_data, human_data
+
+    with add_context(generated_data['name']):
+        human_data =  Schema(human_schema).validate(human_data)
+        logging.info(f"valdating data for {generated_data['name']}")
+        human_data['parameters'] = validate_controls( 
+            generated_data['parameters'], human_data['parameters']
+        ) 
+        
+        human_data['messages'] = validate_messages(
+            generated_data['messages'], human_data['messages']
+        )
+        
+        return generated_data, human_data
     
 
 def merge_object(generated_data,human_data):
     """
     Given some generated doc data for a FluCoMa object, and its human made counterpart, merge these into a unified data structure for use in doc generation
     """
+    
+    logging.info(f"merging {generated_data['name']}")
+    
     def noParamsMessages(data):
         return filter(
             lambda x: x[0] != 'parameters' and x[0] != 'messages', 

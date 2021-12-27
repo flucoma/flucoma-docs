@@ -6,10 +6,12 @@
 # under the European Union’s Horizon 2020 research and innovation programme
 # (grant agreement No 725899).
 
-from .common import PermissveSchema, not_yet_documented 
+from .common import PermissveSchema, not_yet_documented, RecordContext
 from schema import Schema, Or, Optional, Use, SchemaError
 from functools import partial, reduce
 from ..defaults import DefaultControlDocs, DefaultMessageDocs
+import logging
+
 
 def validate_messages(generated_message_data, human_message_data,**kwargs):
     """
@@ -18,7 +20,7 @@ def validate_messages(generated_message_data, human_message_data,**kwargs):
     We use the schema library for validation, whose natural inclination is to bail when stuff is missing. However, we just want to detect it and, if all else fails, tag it. So some mild acrobatics are invoked, with only petty crimes committed.  
     """
     lookup = kwargs.pop('defaults_lookup', DefaultMessageDocs)
-    
+    logging.debug('validating messages')
     null_arg = { 'name':None, 'description':None }
     
     human_message_data = human_message_data or {}
@@ -71,6 +73,7 @@ def validate_messages(generated_message_data, human_message_data,**kwargs):
     
     def uncdocumented(x): 
         """return the built in not documented tag string"""
+        logging.warning('not yet documented')#,extra={'context':scope})
         return not_yet_documented
     
     def fill_args(x,length):
@@ -115,9 +118,9 @@ def validate_messages(generated_message_data, human_message_data,**kwargs):
     In our second pass, we now know that there is *an* entity in all the expected places, so we can use our `Fallbacks` sequence to see if it has actual content, and try for a default otherwise, issuing a not-documented tag if that fails 
     '''
     s_second = PermissveSchema({
-        d['name']: {
-            'description': Fallbacks([d['name'],'description']), 
-            'args':[Or(
+        d['name']: RecordContext({
+            'description': RecordContext(Fallbacks([d['name'],'description']), 'description'), 
+            'args':[RecordContext(Or(
                 {
                     'name': Fallbacks([d['name'],'args','name']),
                     'description':Fallbacks([d['name'],'args','description']) 
@@ -125,9 +128,9 @@ def validate_messages(generated_message_data, human_message_data,**kwargs):
                 {
                     'name':Use(uncdocumented),
                     'description':Use(uncdocumented)
-                })
-            ] * len(d['args'])
-        }
+                }),'argument'
+            )] * len(d['args'])
+        },d['name'])
         for d in generated_message_data
     })
     return s_second.validate(s_first)

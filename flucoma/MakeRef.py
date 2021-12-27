@@ -20,33 +20,37 @@ from flucoma.doc.validate.object import validate_object, merge_object
 from flucoma.doc.legacy.adaptor import make_it_like_it_was
 from pprint import pprint
 
+from flucoma.doc.logger import ContextFilter
+
 def load_generated_data(client_file):
-        logging.debug(f'opening {client_file.stem}')
+        logging.debug(f'opening {client_file}')
         
         with open(client_file.resolve()) as f:
-            return json.load(f)
+            data = json.load(f)
+            data['name'] = client_file.stem 
+            return data 
 
 def load_human_data(client_file,args):
     
     yamldir = args.yaml_path
     human_data = {}
     human_data_path = yamldir / (client_file.stem + '.yaml')    
-
+    logging.debug(f'opening {human_data_path}')
     if(human_data_path.exists()):
         with open(human_data_path.resolve()) as f:
             return yaml.load(f, Loader=yaml.FullLoader)
     else:
-        logging.warn(f'No human documentation found for {client_file.stem}')
+        logging.warning(f'No human documentation found for {client_file.stem}')
         return None
 
 def load_topic_data(topic):
-    logging.debug(f'opening {topic.stem}')        
+    logging.debug(f'opening {topic}')        
     if(topic.exists()):
         with open(topic.resolve()) as f:
              data = yaml.load(f, Loader=yaml.FullLoader)
              data['name'] = topic.stem
              return data
-    else: 
+    else:         
         raise NameError(f'{topic} not found')
 
 def main(passed_args):
@@ -54,8 +58,15 @@ def main(passed_args):
     Set default locale, in case it hasn't been, otherwise we can't read text
     """
     locale.setlocale(locale.LC_ALL,'')
-
-    logging.basicConfig(level=logging.DEBUG)
+    
+    formatter = logging.Formatter('{levelname}: {context} - {message}', style='{')    
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.WARNING)
+    ch.setFormatter(formatter)
+    logging.getLogger().addFilter(ContextFilter())
+    logging.getLogger().addHandler(ch)    
+    
+    
     logging.debug(f'raw arguments {passed_args}')
     
     parser = argparse.ArgumentParser(
