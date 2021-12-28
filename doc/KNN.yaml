@@ -1,4 +1,5 @@
 digest: Offline KMeans Clustering of a Dataset
+species: data
 sc-categories: Libraries>FluidManipulation
 sc-related: 
 description: Learns clusters from a Dataset, using the K Means algorithm 

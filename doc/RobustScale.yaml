@@ -7,6 +7,7 @@
 # (grant agreement No 725899).
 ---
 digest: Apply Robust Scaling to a FluidDataSet
+species: data
 sc-categories: FluidManipulation
 sc-related: Classes/FluidStandardize, Classes/FluidNormalize, Classes/FluidDataSet
 see-also:

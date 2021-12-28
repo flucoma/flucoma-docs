@@ -1,0 +1,7 @@
+TITLE:: {{ title }}
+SUMMARY:: {{ digest }}
+CATEGORIES:: Libraries>FluidCorpusManipulation, {{ sc_category }}
+RELATED:: {{ seealso }}, {{ sc_related }}
+DESCRIPTION:: 
+
+{{ description | rst | indent(first=True) }}

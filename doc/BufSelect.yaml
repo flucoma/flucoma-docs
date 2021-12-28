@@ -7,6 +7,7 @@
 # (grant agreement No 725899).
 ---
 digest: Cherry pick values from a buffer
+species: buffer-proc
 sc-categories: FluidCorpusManipulation
 sc-related: Classes/Buffer
 see-also: BufSelectEvery

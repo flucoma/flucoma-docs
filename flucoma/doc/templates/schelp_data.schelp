@@ -1,0 +1,34 @@
+{% extends "schelp_base.schelp" %}
+{% block classmethods %}
+CLASSMETHODS::
+
+METHOD:: new
+
+{% for name, data in attributes.items()  %}
+ARGUMENT:: {{ name }}
+
+{{ data['description'] | rst | indent(first=True) }}
+
+{% endfor %} 
+{% for name, data in arguments.items()  %}
+{% if name != 'name' %} {# we hide the name parameter for these objects in SC  #}
+
+ARGUMENT:: {{ name }}
+
+{{ data['description'] | rst | indent(first=True) }}
+
+{% endif %}
+{% endfor %} 
+{% endblock %}
+{% block extra_instancemethods %} {# we expose getters and setters for attributes #}
+{% for name, data in attributes.items() %}
+METHOD:: {{ name }}
+
+  Getter for code::{{ name }}::. See CODE::new::
+
+METHOD:: {{ name }}_
+
+  Setter for code::{{ name }}::. See CODE::new::
+
+{% endfor %}
+{% endblock %}

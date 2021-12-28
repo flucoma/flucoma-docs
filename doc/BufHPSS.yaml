@@ -7,6 +7,7 @@
 # (grant agreement No 725899).
 ---
 digest : Buffer-Based Harmonic-Percussive Source Separation Using Median Filtering
+species: buffer-proc
 sc-categories : Libraries>FluidDecomposition, UGens>Buffer
 sc-related : Guides/FluCoMa, Guides/FluidDecomposition
 see-also: HPSS, BufSines, BufTransients

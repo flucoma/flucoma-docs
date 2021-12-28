@@ -13,7 +13,7 @@ from flucoma.doc.rst.html import rst_filter
 import logging
 from functools import partial
 from pathlib import Path
-
+from collections.abc import Callable
 from .logger import ContextView,add_context
 
 def type_map(x,namer):
@@ -32,7 +32,7 @@ def setup_jinja(client_index, args, driver):
     Custom jinja filters and tests
     """
     # e.filters['rst'] = partial(rst_filter,data=client_index, driver=driver)
-    e.filters['rst'] = rst_filter
+    e.filters['rst'] = driver['rst_render']
     e.filters['as_host_object_name'] = lambda x: driver['namer'](client_index[x]) if x in client_index else f'Unresolved lookup ({x})'
     e.filters['typename'] = partial(type_map, namer=driver['types'])
     e.filters['constraints'] = lambda x,y,z: ''     
@@ -49,7 +49,11 @@ def client(client, client_index, args, driver):
     ofile = outputdir / f"{driver['namer'](client_data)}.{driver['extension']}"
     
     env = setup_jinja(client_index, args, driver)    
-    template = env.get_template(driver['template'])
+    
+    template_string = driver['template'](client_data) if isinstance(driver['template'],Callable) else driver['template']
+    
+    
+    template = env.get_template(template_string)
     logging.info(f'{client}: Making {ofile}')
     
     client_data['attributes'] = ContextView(client_data.pop('attributes'))

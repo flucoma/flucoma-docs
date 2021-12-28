@@ -7,6 +7,7 @@
 # (grant agreement No 725899).
 ---
 digest: Perform a Short-Time Fourier Transform on one channel of a buffer
+species: buffer-proc
 sc-categories: FluidCorpusManipulation
 sc-related: Classes/Buffer
 see-also:

@@ -7,8 +7,8 @@
 # (grant agreement No 725899).
 
 import unittest
-from ..SCDocWriter import *
-
+from flucoma.doc.rst.scdoc import *
+    
 from docutils.core import publish_parts
 
 test_strings = {}
@@ -122,7 +122,7 @@ TABLE::
 class TestRst2SCDoc(unittest.TestCase):
                         
         def render(self,s):
-            return publish_parts(source=s, writer=SCHelpWriter())['whole']
+            return publish_parts(source=s, writer=SCDocWriter())['whole']
         
         def test_text(self):
             self.assertEqual("Lorem ipsum", self.render("Lorem ipsum"))

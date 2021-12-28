@@ -8,6 +8,8 @@
 
 from docutils import nodes, utils
 
+from flucoma.doc.rst.html import FluidHTMLWriter
+
 from .. legacy.adaptor import make_it_like_it_was
 
 import json
@@ -95,7 +97,8 @@ settings = {
     'glob': '**/*.json', 
     'parameter_link': max_jinja_parameter_link, 
     'code_block': '<m>{}</m>', 
-    # 'translator': MaxHTMLTranslator, 
+    'writer': FluidHTMLWriter, 
+    'rst_render': rst_filter,
     'write_cross_ref': (max_visit_flucoma_reference,max_depart_flucoma_reference),
     'topic_extension': 'maxvig.xml', 
     'topic_subdir': 'vignettes',

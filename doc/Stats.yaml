@@ -7,6 +7,7 @@
 # (grant agreement No 725899).
 ---
 digest: Rolling mean and standard deviation on list inputs
+species: descriptor
 sc-categories: Libraries>FluidDecomposition
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition
 see-also: BufStats, Standardize

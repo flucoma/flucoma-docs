@@ -6,6 +6,9 @@
 # under the European Union’s Horizon 2020 research and innovation programme
 # (grant agreement No 725899).
 
+
+from flucoma.doc.rst.html import FluidHTMLWriter
+
 from docutils import nodes, utils
 
 from .. legacy.adaptor import make_it_like_it_was
@@ -79,7 +82,8 @@ settings = {
     'parameter_link': pd_jinja_parameter_link, 
     'write_cross_ref': (pd_visit_flucoma_reference,pd_depart_flucoma_reference),
     'code_block': '<m>{}</m>', 
-    # 'translator': PDHTMLTranslator, 
+    'writer': FluidHTMLWriter,
+    'rst_render': rst_filter,
     'topic_extension': '.html', 
     'topic_subdir': '',
     'topic_template':'pd_htmltopic.html',

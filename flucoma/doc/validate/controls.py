@@ -72,7 +72,7 @@ def render_constraints_markup(data, control):
             resultStr += '* The maximum FFT size is limited to the value of the ``maxFFTSize`` argument\n'
         resultStr += '* if FFT size != -1, then window size is clipped at FFT size\n\n'
 
-    return data + resultStr
+    return data + resultStr + '\n'
 
 class ConstraintSchema(Schema):
     """

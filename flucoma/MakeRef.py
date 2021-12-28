@@ -72,7 +72,7 @@ def main(passed_args):
     parser = argparse.ArgumentParser(
         description='Generate FluCoMa documentation for a given host, using input JSON and YAML data and a jinja template')
 
-    parser.add_argument('host', choices=['max','pd','cli'])
+    parser.add_argument('host', choices=['max','pd','cli','sc'])
 
     parser.add_argument('json_path', type=Path,
                         help='Path to generated JSON client data')
