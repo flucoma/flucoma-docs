@@ -6,11 +6,13 @@
 # under the European Union’s Horizon 2020 research and innovation programme
 # (grant agreement No 725899).
 
-from .common import PermissveSchema, not_yet_documented, RecordContext
-from schema import Schema, Or, Optional, Use, SchemaError
-from functools import partial, reduce
-from ..defaults import DefaultControlDocs, DefaultMessageDocs
 import logging
+from functools import partial, reduce
+
+from schema import Schema, Or, Optional, Use, SchemaError
+
+from ..defaults import DefaultControlDocs, DefaultMessageDocs
+from .common import PermissveSchema, RecordContext, Fallbacks, undocumented
 
 
 def validate_messages(generated_message_data, human_message_data,**kwargs):
@@ -42,40 +44,6 @@ def validate_messages(generated_message_data, human_message_data,**kwargs):
         """
         return  {'description': None, 'args':[null_arg] * num_args}
     
-    def hasContent(x):
-        """
-        If x has content (assuming it's a str, dict or array, which is safe here), return x else raise SchemaError to fallback to next option
-        """
-        if not len(x):
-            raise SchemaError
-        return x
-         
-    def tryLookup(x, keys):
-        """
-        see if there is an entry for `keys` in the lookup table passed to the parent function. `keys` is an array of dict keys to be descended through, e.g. `['foo','bar','description']` would query `lookup` for 
-        {
-            'foo':{'bar'{'description':<whatever>}}
-        }
-        """
-        def step(acc,next):
-            """
-            Function used by `reduce` to step through `keys`. 
-            
-            Could be a lambda, but being able to print in debugging is handy 
-            """
-            # print(acc,next)
-            return acc[next]
-
-        try: 
-            return reduce(step, keys, lookup) #mild code crime
-        except: 
-            raise SchemaError # lookup failed, fallback to next option 
-    
-    def uncdocumented(x): 
-        """return the built in not documented tag string"""
-        logging.warning('not yet documented')#,extra={'context':scope})
-        return not_yet_documented
-    
     def fill_args(x,length):
         """
         when validating the array of message arguments, we need the input to be the required length already, so if there are too many then trim, or not enough then pad with None-d-out objects, before then validating against schema
@@ -91,15 +59,15 @@ def validate_messages(generated_message_data, human_message_data,**kwargs):
 
         return ret
 
-    def Fallbacks(keys):
-        """
-        Composes the series of fallbacks above into a Schema that will use valid content, or try a lookup, or tag undocumented as a last resort 
-        """
-        return Or(
-            Use(hasContent),
-            Use(partial(tryLookup,keys=keys)),
-            Use(uncdocumented)        
-        )
+    # def Fallbacks(keys):
+    #     """
+    #     Composes the series of fallbacks above into a Schema that will use valid content, or try a lookup, or tag undocumented as a last resort 
+    #     """
+    #     return Or(
+    #         Use(hasContent),
+    #         Use(partial(tryLookup,keys=keys)),
+    #         Use(uncdocumented)        
+    #     )
     
     '''
     In our first pass, any expected parts of the structure are filled in with null entries (the expected parts of the structure are supplied by generated_message_data)
@@ -119,15 +87,22 @@ def validate_messages(generated_message_data, human_message_data,**kwargs):
     '''
     s_second = PermissveSchema({
         d['name']: RecordContext({
-            'description': RecordContext(Fallbacks([d['name'],'description']), 'description'), 
+            'description': RecordContext(
+                            Fallbacks(
+                                [d['name'],'description'], 
+                                lookup), 
+                            'description'), 
             'args':[RecordContext(Or(
                 {
-                    'name': Fallbacks([d['name'],'args','name']),
-                    'description':Fallbacks([d['name'],'args','description']) 
+                    'name': Fallbacks([d['name'],'args','name'], lookup),
+                    'description':Fallbacks(
+                                            [d['name'],'args','description'],
+                                            lookup
+                                            ) 
                 },
                 {
-                    'name':Use(uncdocumented),
-                    'description':Use(uncdocumented)
+                    'name':Use(undocumented),
+                    'description':Use(undocumented)
                 }),'argument'
             )] * len(d['args'])
         },d['name'])

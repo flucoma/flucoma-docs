@@ -7,9 +7,11 @@
 # (grant agreement No 725899).
 
 import logging
-from .common import PermissveSchema, not_yet_documented, RecordContext
-from schema import Schema, And, Or, Optional, Use, SchemaError,Hook
 from functools import partial, reduce
+
+from schema import Schema, And, Or, Optional, Use, SchemaError,Hook
+
+from .common import PermissveSchema, not_yet_documented, RecordContext,Fallbacks
 from ..defaults import DefaultControlDocs, DefaultMessageDocs
 from ..logger import add_context
 
@@ -151,18 +153,18 @@ def validate_controls(generated_control_data, human_control_data, **kwargs):
     """
     lookup = kwargs.pop('defaults_lookup', DefaultControlDocs)
     logging.debug(f'validating controls...')    
-    def hasContent(x):
-        if not len(x):
-            raise SchemaError
-        return x
-
-    def tryLookup(x, name, lookup):
-        return lookup[name]
-        
-    def uncdocumented(x,scope): 
-        """return the built in not documented tag string"""        
-        logging.warning('not yet documented')#,extra={'context':scope})
-        return not_yet_documented
+    # def hasContent(x):
+    #     if not len(x):
+    #         raise SchemaError
+    #     return x
+    # 
+    # def tryLookup(x, name, lookup):
+    #     return lookup[name]
+    # 
+    # def uncdocumented(x,scope): 
+    #     """return the built in not documented tag string"""        
+    #     logging.warning('not yet documented')#,extra={'context':scope})
+    #     return not_yet_documented
     
     # deal with the aberation that is fftSettings (unified in generated docs, split out into win-hop-fft in human docs)
     if 'fftSettings' in [x['name'] for x in generated_control_data]:
@@ -191,11 +193,12 @@ def validate_controls(generated_control_data, human_control_data, **kwargs):
     s_second = PermissveSchema({
         d['name']: RecordContext({
             'description': And(
-                Or(
-                    Use(hasContent),
-                    Use(partial(tryLookup, name=d['name'], lookup=lookup)),
-                    Use(partial(uncdocumented,scope=d['name']))
-                ), 
+                Fallbacks([d['name'],'description'],lookup),
+                # Or(
+                #     Use(hasContent),
+                #     Use(partial(tryLookup, name=d['name'], lookup=lookup)),
+                #     Use(partial(uncdocumented,scope=d['name']))
+                # ), 
                 Use(partial(render_constraints_markup,control=d))
             ),
             Optional('enum'):object,
