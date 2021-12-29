@@ -1,4 +1,4 @@
-{# in SC the order of params is non-fixed ('attributes') follwed by fixed ('arguments') #}
+{# in SC the order of params is non-fixed ('attributes') followed by fixed ('arguments') #}
 {% for name, data in attributes.items()  %}
 ARGUMENT:: {{ name }}
 

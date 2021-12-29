@@ -10,7 +10,7 @@ ARGUMENT:: server
 
 RETURNS:: An instance of the processor 
 
-{% include "schelp_controls.schelp" -%}
+{% include "schelp_controls.schelp" %}
 ARGUMENT:: freeWhenDone
   Free the server instance when processing complete. Default CODE::true::
 
