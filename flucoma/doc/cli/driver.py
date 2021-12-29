@@ -70,5 +70,6 @@ settings = {
     'topic_template':'cli_htmltopic.html',
     'transform': transform_data, 
     'post': None, 
-    'defaults': None
+    'defaults': None, 
+    'buffer-string':'file'
 }

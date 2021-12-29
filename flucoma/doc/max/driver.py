@@ -100,12 +100,14 @@ settings = {
     'code_block': '<m>{}</m>', 
     'writer': FluidHTMLWriter, 
     'rst_render': rst_filter,
-    'write_cross_ref': (max_visit_flucoma_reference,max_depart_flucoma_reference),
+    'write_cross_ref': (max_visit_flucoma_reference,    
+                        max_depart_flucoma_reference),
     'topic_extension': 'maxvig.xml', 
     'topic_subdir': 'vignettes',
     'topic_template':'maxvig.xml',
     'transform': transform_data, 
     'post': write_max_indices, 
-    'defaults': defaults
+    'defaults': defaults, 
+    'buffer-string':'<o>buffer~</o>'
 }
      

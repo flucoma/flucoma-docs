@@ -357,7 +357,7 @@ def rst_filter(ctx,value):
     if value is None or len(value) == 0:
          return ''
     logging.debug('Parsing rst block')
-    value += "\n\n.. |buffer| replace:: LINK::Classes/Buffer::\n"     
+    value += "\n\n.. |buffer| replace:: `<Classes/Buffer>`__\n"     
         
     driver = ctx.parent['driver']
     index =  ctx.parent['index']

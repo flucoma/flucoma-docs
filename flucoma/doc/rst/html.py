@@ -71,10 +71,13 @@ def rst_filter(ctx,value):
     if value is None or len(value) == 0:
          return ''
     logging.debug('Parsing rst block')
-    value += "\n\n.. |buffer| replace:: buffer~\n"     
+         
         
     driver = ctx.parent['driver']
     index =  ctx.parent['index']
+    
+    value += f"\n\n.. |buffer| replace:: {driver.get('buffer-string','buffer')}\n"
+    
     #stop docutils mirroing warnings to console, but we probably want to see errors
     settings = {'report_level':Reporter.ERROR_LEVEL} 
     

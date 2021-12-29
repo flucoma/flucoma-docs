@@ -2,6 +2,7 @@ from docutils import nodes
 from collections import OrderedDict
 from ..transformers import * 
 from flucoma.doc.rst.scdoc import SCDocWriter,rst_filter
+from .defaults import defaults
 
 def buffer_reference_role(role, rawtext, text, lineno, inliner,
                            options={}, content=[]):
@@ -73,9 +74,11 @@ def sc_transform_data(object_name,data):
     
     return data
 
-
 def choose_template(client_data):
     return f"schelp_{client_data['species']}.schelp"
+
+def configure_jinja(environment, client_index, args):    
+    environment.filters['example_code'] = lambda name: f'{name}.scd'
 
 settings = {   
     'namer':sc_object_namer,     
@@ -92,5 +95,7 @@ settings = {
     'topic_subdir': 'guides',
     'topic_template':'schelp_topic.schelp',
     'transform': sc_transform_data, 
-    'post': None
+    'post': None, 
+    'defaults': defaults, 
+    'jinja_extra': configure_jinja
 }

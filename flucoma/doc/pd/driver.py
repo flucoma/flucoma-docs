@@ -7,12 +7,13 @@
 # (grant agreement No 725899).
 
 
-from flucoma.doc.rst.html import FluidHTMLWriter
+import json
 
 from docutils import nodes, utils
 
+from flucoma.doc.rst.html import FluidHTMLWriter
 from .. legacy.adaptor import make_it_like_it_was
-import json
+from . defaults import defaults
 
 def buffer_reference_role(role, rawtext, text, lineno, inliner,
                            options={}, content=[]):
@@ -71,7 +72,13 @@ def pd_type_map(type):
     }[type]
     
 def transform_data(client, data):
-    return make_it_like_it_was(client, data)
+    
+    res = make_it_like_it_was(client, data)
+    
+    res.get('messages',{}).pop('dump', None)
+    res.get('messages',{}).pop('load', None)
+    
+    return res
 
 settings = {   
     'namer':pd_object_namer,     
@@ -88,5 +95,7 @@ settings = {
     'topic_subdir': '',
     'topic_template':'pd_htmltopic.html',
     'transform': transform_data, 
-    'post': None
+    'post': None, 
+    'defaults': defaults,
+    'buffer-string': 'array'
 }
