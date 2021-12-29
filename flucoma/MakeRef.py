@@ -66,6 +66,10 @@ def main(passed_args):
     logging.getLogger().addFilter(ContextFilter())
     logging.getLogger().addHandler(ch)    
     
+    fh = logging.FileHandler('flucoma-makeref.log',mode='w')
+    fh.setLevel(logging.WARNING)
+    fh.setFormatter(formatter)
+    logging.getLogger().addHandler(fh)    
     
     logging.debug(f'raw arguments {passed_args}')
     
@@ -85,8 +89,13 @@ def main(passed_args):
 
     parser.add_argument('template_path', type=Path,
                         help='Path containing Jinja template(s)')
-
+    
+    parser.add_argument('--quiet',help='surpress stderr output', action="store_true")
+                            
     args = parser.parse_args(passed_args)
+    
+    if(args.quiet):
+        logging.getLogger().removeHandler(ch)
     
     driver = importlib.import_module('.driver', f'flucoma.doc.{args.host}')
     host_settings = driver.settings 
