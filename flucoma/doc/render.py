@@ -24,8 +24,10 @@ def type_map(x,namer):
         return f'Unknown Type ({x})'
 
 def setup_jinja(client_index, args, driver):
+    
+    examples_path = (args.yaml_path.resolve() / '../example-code' / args.host).resolve()
     e = Environment(
-        loader = FileSystemLoader([args.template_path]),
+    loader = FileSystemLoader([args.template_path, examples_path]),
         autoescape=select_autoescape(['html','xml']),
         trim_blocks=True, lstrip_blocks=True
     )
@@ -38,7 +40,13 @@ def setup_jinja(client_index, args, driver):
     e.filters['typename'] = partial(type_map, namer=driver['types'])
     e.filters['constraints'] = lambda x,y,z: ''     
     e.filters['lookup'] = lambda x: client_index[x] if x in client_index else ''       
+    
+    e.filters['include_raw'] = lambda name: Markup(e.loader.get_source(e,name)[0])
+    
     e.tests['incli'] = lambda s: s.lower().startswith('buf')
+    
+    if('jinja_extra' in driver): 
+        driver['jinja_extra'](e, client_index, args)
     
     return e 
     

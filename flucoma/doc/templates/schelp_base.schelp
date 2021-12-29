@@ -33,9 +33,4 @@ ARGUMENT:: action
 {% endfor %} {# messages #}
 
 EXAMPLES::
-
-code::
-
-{{ sc_code }}
-
-::
+{{client_name | example_code | include_raw}}
