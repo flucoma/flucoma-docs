@@ -6,14 +6,15 @@
 # under the European Union’s Horizon 2020 research and innovation programme
 # (grant agreement No 725899).
 
-from jinja2 import Template, Environment, PackageLoader, FileSystemLoader, select_autoescape
-from markupsafe import Markup
-import flucoma.doc.rst.references
-from flucoma.doc.rst.html import rst_filter
 import logging
 from functools import partial
 from pathlib import Path
 from collections.abc import Callable
+
+from jinja2 import Template, Environment, PackageLoader, FileSystemLoader, select_autoescape
+from markupsafe import Markup
+
+import flucoma.doc.rst.references #registers docutils roles on load!
 from .logger import ContextView,add_context
 
 def type_map(x,namer):

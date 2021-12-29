@@ -11,7 +11,7 @@ class ContextFilter(logging.Filter):
     Filter for the python logging framework that adds the logging context to the current LogRecord (the Format still needs to be set in the logging config to see the context in the string though)
     '''
     def filter(self, record):        
-        record.context = logging_context.copy()
+        record.context = ' '.join(logging_context)
         return True
 
 @contextmanager
@@ -30,8 +30,9 @@ def add_context(*args):
     '''
     global  logging_context 
     length = len(logging_context)
+    
     try: 
-        yield logging_context.extend(args); 
+        yield logging_context.extend(*args); 
     finally:
         logging_context = logging_context[:length]
 

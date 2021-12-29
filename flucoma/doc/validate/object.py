@@ -16,7 +16,6 @@ from .common import PermissveSchema, not_yet_documented
 from .controls import validate_controls
 from .messages import validate_messages
 from ..defaults import DefaultControlDocs, DefaultMessageDocs
-
 from ..logger import add_context
 
 """
@@ -39,20 +38,23 @@ human_schema = {
     Optional(object): object #pass through any extras
 }
 
-def validate_object(generated_data, human_data):
+def validate_object(generated_data, human_data, **kwargs):
     """
     Given some generated doc data for a FluCoMa object, and its human made counterpart, check the completeness of the latter against the former (which is canonical). For any missing stuff, we use a default placeholder if available, else tag it as undocumented 
     """
 
-    with add_context(generated_data['name']):
-        human_data =  Schema(human_schema).validate(human_data)
+    with add_context([generated_data['name']]):
+        
         logging.info(f"valdating data for {generated_data['name']}")
+        
+        human_data =  Schema(human_schema).validate(human_data)
+            
         human_data['parameters'] = validate_controls( 
-            generated_data['parameters'], human_data['parameters']
+            generated_data['parameters'], human_data['parameters'],**kwargs
         ) 
         
         human_data['messages'] = validate_messages(
-            generated_data['messages'], human_data['messages']
+            generated_data['messages'], human_data['messages'],**kwargs
         )
         
         return generated_data, human_data

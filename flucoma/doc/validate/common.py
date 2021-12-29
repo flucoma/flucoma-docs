@@ -8,7 +8,7 @@
 
 
 import logging
-from functools import partial 
+from functools import partial,reduce
 
 from schema import Schema, Optional,Or,Use
 
@@ -28,14 +28,15 @@ def hasContent(x):
         raise SchemaError
     return x
      
-def tryLookup(x, keys):
+def tryLookup(x, keys,lookup):
     """
     see if there is an entry for `keys` in the lookup table passed to the parent function. `keys` is an array of dict keys to be descended through, e.g. `['foo','bar','description']` would query `lookup` for 
     {
         'foo':{'bar'{'description':<whatever>}}
     }
     """
-    def step(acc,next,lookup):
+        
+    def step(acc,next):
         """
         Function used by `reduce` to step through `keys`. 
         
@@ -46,7 +47,7 @@ def tryLookup(x, keys):
 
     try: 
         return reduce(step, keys, lookup) #mild code crime
-    except: 
+    except KeyError:
         raise SchemaError # lookup failed, fallback to next option 
 
 def undocumented(x): 

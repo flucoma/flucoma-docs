@@ -11,10 +11,10 @@ from .common import LoggingDocutilsReader
 
 from docutils import nodes
 from docutils.utils import Reporter
-from docutils.core import publish_parts
+from docutils.core import publish_parts, publish_doctree
 from docutils.writers import html4css1
 from docutils.readers.standalone import Reader
-from docutils.transforms import TransformError, Transform
+
 
 from functools import partial 
 from jinja2 import pass_context
@@ -77,7 +77,10 @@ def rst_filter(ctx,value):
     index =  ctx.parent['index']
     #stop docutils mirroing warnings to console, but we probably want to see errors
     settings = {'report_level':Reporter.ERROR_LEVEL} 
-    return Markup(publish_parts(source=value, 
+    
+    tre = publish_parts(source=value, 
                                 writer = FluidHTMLWriter(index, driver),  
                                 reader = LoggingDocutilsReader(),
-                                settings_overrides=settings)['html_body'])
+                                settings_overrides=settings)
+    
+    return Markup(tre['fragment'])

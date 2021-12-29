@@ -64,10 +64,11 @@ settings = {
     'write_cross_ref': (cli_visit_flucoma_reference,cli_depart_flucoma_reference),
     'code_block': '<m>{}</m>', 
     'writer': FluidHTMLWriter, 
-    'rst_render': rst_filter
-    'topic_extension': '.html', 
+    'rst_render': rst_filter,
+    'topic_extension':'.html',
     'topic_subdir': '',
     'topic_template':'cli_htmltopic.html',
     'transform': transform_data, 
-    'post': None
+    'post': None, 
+    'defaults': None
 }

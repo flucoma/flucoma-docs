@@ -101,8 +101,8 @@ def main(passed_args):
                 merge_object(
                     *validate_object(
                         load_generated_data(c), 
-                        load_human_data(c, args)
-                    )
+                        load_human_data(c, args),
+                    **host_settings)
                 )
             ) for c in clients     
     }    

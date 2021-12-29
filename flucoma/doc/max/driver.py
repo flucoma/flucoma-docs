@@ -6,13 +6,14 @@
 # under the European Union’s Horizon 2020 research and innovation programme
 # (grant agreement No 725899).
 
+import json
+
 from docutils import nodes, utils
 
-from flucoma.doc.rst.html import FluidHTMLWriter
-
+from flucoma.doc.rst.html import FluidHTMLWriter, rst_filter
 from .. legacy.adaptor import make_it_like_it_was
 
-import json
+from .defaults import defaults
 
 def buffer_reference_role(role, rawtext, text, lineno, inliner,
                            options={}, content=[]):
@@ -104,6 +105,7 @@ settings = {
     'topic_subdir': 'vignettes',
     'topic_template':'maxvig.xml',
     'transform': transform_data, 
-    'post': write_max_indices
+    'post': write_max_indices, 
+    'defaults': defaults
 }
      

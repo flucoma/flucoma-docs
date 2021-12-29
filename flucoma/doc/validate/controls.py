@@ -151,20 +151,13 @@ def validate_controls(generated_control_data, human_control_data, **kwargs):
     
     We use the schema library for validation, whose natural inclination is to bail when stuff is missing. However, we just want to detect it and, if all else fails, tag it. So some mild acrobatics are invoked, with only petty crimes committed.  
     """
-    lookup = kwargs.pop('defaults_lookup', DefaultControlDocs)
+    
+    lookup = {
+                **DefaultControlDocs,    
+                **kwargs.get('defaults',{}).get('controls',{})
+    }
+     
     logging.debug(f'validating controls...')    
-    # def hasContent(x):
-    #     if not len(x):
-    #         raise SchemaError
-    #     return x
-    # 
-    # def tryLookup(x, name, lookup):
-    #     return lookup[name]
-    # 
-    # def uncdocumented(x,scope): 
-    #     """return the built in not documented tag string"""        
-    #     logging.warning('not yet documented')#,extra={'context':scope})
-    #     return not_yet_documented
     
     # deal with the aberation that is fftSettings (unified in generated docs, split out into win-hop-fft in human docs)
     if 'fftSettings' in [x['name'] for x in generated_control_data]:
@@ -203,7 +196,7 @@ def validate_controls(generated_control_data, human_control_data, **kwargs):
             ),
             Optional('enum'):object,
             Optional(object):object
-        }, 'control', d['name'])
+        }, d['name'])
         for d in generated_control_data 
     })
     

@@ -21,7 +21,13 @@ def validate_messages(generated_message_data, human_message_data,**kwargs):
     
     We use the schema library for validation, whose natural inclination is to bail when stuff is missing. However, we just want to detect it and, if all else fails, tag it. So some mild acrobatics are invoked, with only petty crimes committed.  
     """
-    lookup = kwargs.pop('defaults_lookup', DefaultMessageDocs)
+    # print(kwargs.get('defaults',{}).get('messages',{}))
+    lookup = {
+                **DefaultMessageDocs,    
+                **kwargs.get('defaults',{}).get('messages',{})
+    }
+    
+    # lookup = kwargs.pop('defaults_lookup', DefaultMessageDocs)
     logging.debug('validating messages')
     null_arg = { 'name':None, 'description':None }
     
@@ -94,17 +100,17 @@ def validate_messages(generated_message_data, human_message_data,**kwargs):
                             'description'), 
             'args':[RecordContext(Or(
                 {
-                    'name': Fallbacks([d['name'],'args','name'], lookup),
-                    'description':Fallbacks(
-                                            [d['name'],'args','description'],
+                    'name': RecordContext(Fallbacks([d['name'],'args',i ,'name'], lookup),'name'),
+                    'description':RecordContext(Fallbacks(
+                                            [d['name'],'args',i, 'description'],
                                             lookup
-                                            ) 
+                                            ),'description')
                 },
                 {
                     'name':Use(undocumented),
                     'description':Use(undocumented)
-                }),'argument'
-            )] * len(d['args'])
+                }),f'argument {i}'
+            ) for i,_ in enumerate(d['args'])] 
         },d['name'])
         for d in generated_message_data
     })
