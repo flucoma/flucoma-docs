@@ -8,50 +8,16 @@
 
 import argparse
 from pathlib import Path
-import yaml
-import json
 import locale 
-import pickle
 import logging 
 import importlib
 import sys 
+
 from flucoma.doc import render
-from flucoma.doc.validate.object import validate_object, merge_object
-from flucoma.doc.legacy.adaptor import make_it_like_it_was
-from pprint import pprint
-
+from flucoma.doc.data import load_generated_data, load_human_data, load_topic_data
+from flucoma.doc.validate.object import validate_object
+from flucoma.doc.merge import merge_object
 from flucoma.doc.logger import ContextFilter
-
-def load_generated_data(client_file):
-        logging.debug(f'opening {client_file}')
-        
-        with open(client_file.resolve()) as f:
-            data = json.load(f)
-            data['name'] = client_file.stem 
-            return data 
-
-def load_human_data(client_file,args):
-    
-    yamldir = args.yaml_path
-    human_data = {}
-    human_data_path = yamldir / (client_file.stem + '.yaml')    
-    logging.debug(f'opening {human_data_path}')
-    if(human_data_path.exists()):
-        with open(human_data_path.resolve()) as f:
-            return yaml.load(f, Loader=yaml.FullLoader)
-    else:
-        logging.warning(f'No human documentation found for {client_file.stem}')
-        return None
-
-def load_topic_data(topic):
-    logging.debug(f'opening {topic}')        
-    if(topic.exists()):
-        with open(topic.resolve()) as f:
-             data = yaml.load(f, Loader=yaml.FullLoader)
-             data['name'] = topic.stem
-             return data
-    else:         
-        raise NameError(f'{topic} not found')
 
 def main(passed_args):
     """
@@ -100,7 +66,11 @@ def main(passed_args):
     driver = importlib.import_module('.driver', f'flucoma.doc.{args.host}')
     host_settings = driver.settings 
 
-    clients = list(args.json_path.glob(host_settings['glob']))
+    glob_filter = host_settings.get('glob_filter',lambda x: True)
+    glob_string = host_settings.get('glob_glob','**/*.json')
+    clients = filter(glob_filter,    
+                                args.json_path.glob(glob_string))
+        
     args.output_path.mkdir(exist_ok=True)
     
     logging.debug(f'passed options: {args}')

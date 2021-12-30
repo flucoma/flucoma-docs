@@ -18,7 +18,6 @@ def fluid_object_role(role, rawtext, text, lineno, inliner,
     node = nodes.reference(rawtext,utils.unescape(text), **options)
     return [node], []
 
-roles.register_local_role('fluid-obj', fluid_object_role)
 
 def fluid_topic_role(role, rawtext, text, lineno, inliner,
                        options={}, content=[]):
@@ -29,4 +28,6 @@ def fluid_topic_role(role, rawtext, text, lineno, inliner,
     node = nodes.reference(rawtext,utils.unescape(text), **options)
     return [node], []
 
-roles.register_local_role('fluid-topic', fluid_topic_role)
+def register_custom_roles():
+    roles.register_local_role('fluid-obj', fluid_object_role)
+    roles.register_local_role('fluid-topic', fluid_topic_role)

@@ -11,10 +11,10 @@ from functools import partial
 from pathlib import Path
 from collections.abc import Callable
 
-from jinja2 import Template, Environment, PackageLoader, FileSystemLoader, select_autoescape
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 from markupsafe import Markup
 
-import flucoma.doc.rst.references #registers docutils roles on load!
+from flucoma.doc.rst.docutils import register_custom_roles
 from .logger import ContextView,add_context
 
 def type_map(x,namer):
@@ -22,6 +22,10 @@ def type_map(x,namer):
         return namer(x)
     except KeyError: 
         return f'Unknown Type ({x})'
+
+def setup_docutils(client_index, args, driver):
+    register_custom_roles()
+setup_docutils(None,None,None)
 
 def setup_jinja(client_index, args, driver):
     
@@ -50,8 +54,7 @@ def setup_jinja(client_index, args, driver):
     
     return e 
     
-def client(client, client_index, args, driver):    
-    template_path = args.template_path
+def client(client, client_index, args, driver):        
     outputdir = args.output_path
     client_data = client_index[client]
     
@@ -100,3 +103,5 @@ def topic(topic_data,client_index,args,driver):
         ))
         
     return topic_data
+    
+    

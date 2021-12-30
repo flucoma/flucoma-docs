@@ -6,17 +6,31 @@
 # under the European Union’s Horizon 2020 research and innovation programme
 # (grant agreement No 725899).
 
-from flucoma.doc.rst.html import FluidHTMLWriter, rst_filter
 
-from .. legacy.adaptor import make_it_like_it_was
-from docutils import nodes, utils
-import json
+
+import re
+
+from flucoma.doc.rst.html import FluidHTMLWriter, rst_filter
+from .. transformers import default_transform
+from docutils import nodes
+
+'''
+CLI driver file 
+'''
 
 def buffer_reference_role(role, rawtext, text, lineno, inliner,
                            options={}, content=[]):
+    '''
+    Not yet used 
+    
+    docutils Role for substituting the correct string in place of 'buffer' in reST docs
+    '''                       
     return 'file'
 
 def cli_visit_flucoma_reference(self, node, data, transform_name):
+    '''
+    docutils Translator visit function for rendering links to FluCoMa objects in the CLI docs 
+    '''
     if transform_name:
         if(node.astext()) in data:
             name = cli_object_namer(data[node.astext()]) 
@@ -29,16 +43,37 @@ def cli_visit_flucoma_reference(self, node, data, transform_name):
     self.body.append(self.starttag(node, 'a','',**attrs))
     
 def cli_depart_flucoma_reference(self, node, data):
+    '''
+    closes the link opened by `cli_visit_flucoma_reference`
+    
+    perhaps this is surplus to requirements because we know (?) that the link content isn't going to have any extra markup, so we could just close in `visit` by raising `SkipNode`
+    '''
     self.body.append('</a>')
 
 def cli_object_namer(data):    
-    tilde = '~' if not data['client_name'].startswith('Buf') else ''
-    return f"fluid.{data['client_name'].lower()}{tilde}"    
+    '''
+    returns a properly formatted name for the CLI object, given the stub, e.g. `BufHPSS` beccomes `fluid-hpss`
+    
+    nb the CLI only uses Buf* objects
+    '''
+    return f"fluid-{data.lower().split('buf')[1]}"
 
-def cli_jinja_parameter_link(name,bits): 
+def cli_jinja_parameter_link(name,bits):
+    '''
+    not yet used? 
+    
+    renders a reST link to a parameter as html `<code>`. 
+    
+    todo: This could be turned into an actual link if we rendered anchors around parameter and message definitions 
+    ''' 
     return f"<code>{name.lower()}</code>"
 
 def cli_type_map(type):    
+    '''
+    map types from generated JSON to 'types' for rendered HTML
+    
+    will throw KeyError if an unown type is passed in 
+    '''
     return {
         'float':'number',
         'long': 'number',
@@ -52,17 +87,24 @@ def cli_type_map(type):
     }[type]
     
 def transform_data(client, data):
-    return make_it_like_it_was(client, data)
+    '''
+    post-merge processing for data. defers to function in flucoma.doc.legacy that reproduces pre-refactor behaviour
+    '''
+    return default_transform(client, data)
 
+'''
+
+'''
 settings = {   
     'namer':cli_object_namer,     
     'template': 'cli_htmlref.html',    
     'extension': 'html',
     'types': cli_type_map,
-    'glob': '**/*.json', 
+    'glob': '**/Buf*.json', 
+    'glob_filter': lambda x: re.match('Buf(?!Compose).*',x.stem) is not None,
     'parameter_link': cli_jinja_parameter_link, 
     'write_cross_ref': (cli_visit_flucoma_reference,cli_depart_flucoma_reference),
-    'code_block': '<m>{}</m>', 
+    'code_block': '<code>{}</code>', 
     'writer': FluidHTMLWriter, 
     'rst_render': rst_filter,
     'topic_extension':'.html',

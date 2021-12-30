@@ -8,12 +8,11 @@
 
 """Simple schelp writer from RST blocks. Not designed to cope with whole documents yet (for which I use jinja). Largely cribbed from https://github.com/cgwrench/rst2md/blob/master/markdown.py"""
 
-import docutils
 from docutils.utils import Reporter
 from docutils.core import publish_parts
 import logging
 from .common import LoggingDocutilsReader
-from docutils import frontend, nodes, writers, languages
+from docutils import nodes, writers, languages
 from collections.abc import Iterable
 from jinja2 import pass_context
 
@@ -359,8 +358,7 @@ def rst_filter(ctx,value):
     logging.debug('Parsing rst block')
     value += "\n\n.. |buffer| replace:: `<Classes/Buffer>`__\n"     
         
-    driver = ctx.parent['driver']
-    index =  ctx.parent['index']
+
     #stop docutils mirroing warnings to console, but we probably want to see errors
     settings = {'report_level':Reporter.ERROR_LEVEL} 
     return publish_parts(source=value, 

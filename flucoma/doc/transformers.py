@@ -26,3 +26,43 @@ def tidy_split(string,separator=','):
         filter(lambda x: len(x), string.split(separator))
     )
  
+def default_transform(object_name, data):
+    
+    data['client_name'] = object_name 
+    data['category'] = []
+    data['keywords'] = []
+    data['module'] = 'fluid decomposition'
+    
+    data['discussion'] = data.pop('discussion','') 
+
+    data['seealso'] = [x for x in tidy_split(data.pop('see-also',''))]
+    
+    data['parameters'].append({
+        'name':'warnings',
+        'constraints': {'max': 1, 'min': 0},
+        'default': 0,
+        'description': 'Enable warnings to be issued '
+                     'whenever a parameter value is '
+                     'constrained (e.g. clipped)',
+        'displayName': 'Warnings',
+        'fixed': False,
+        'size': 1,
+        'type': 'long'
+    })
+    
+    params = {x['name']:x for x in data.pop('parameters')} 
+    
+    data['attributes'] = OrderedDict(
+        sorted(filter_fixed_controls(params,fixed=False))    
+    )
+
+    data['arguments'] = OrderedDict(
+        filter_fixed_controls(params,fixed=True) 
+    )
+    
+    data['messages'] = {x['name']:x for x in data.pop('messages')}
+    
+    for n,m in data['messages'].items(): 
+        m['args'] = {x['name']:x for x in m.pop('args')}
+    
+    return data 

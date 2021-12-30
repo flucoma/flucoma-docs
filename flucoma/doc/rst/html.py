@@ -9,12 +9,9 @@
 
 from .common import LoggingDocutilsReader
 
-from docutils import nodes
 from docutils.utils import Reporter
-from docutils.core import publish_parts, publish_doctree
+from docutils.core import publish_parts
 from docutils.writers import html4css1
-from docutils.readers.standalone import Reader
-
 
 from functools import partial 
 from jinja2 import pass_context

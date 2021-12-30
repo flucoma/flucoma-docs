@@ -8,11 +8,10 @@
 
 import json
 
-from docutils import nodes, utils
+from docutils import nodes
 
 from flucoma.doc.rst.html import FluidHTMLWriter, rst_filter
-from .. legacy.adaptor import make_it_like_it_was
-
+from .. transformers import default_transform
 from .defaults import defaults
 
 def buffer_reference_role(role, rawtext, text, lineno, inliner,
@@ -54,7 +53,7 @@ def max_type_map(type):
 
 
 def transform_data(client, data):
-    return make_it_like_it_was(client, data)
+    return default_transform(client, data)
 
 def max_jinja_parameter_link(name,data):
     return f'<at>{name.lower()}</at>'

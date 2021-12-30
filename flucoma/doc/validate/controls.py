@@ -7,27 +7,25 @@
 # (grant agreement No 725899).
 
 import logging
-from functools import partial, reduce
+from functools import partial
 
-from schema import Schema, And, Or, Optional, Use, SchemaError,Hook
+from schema import Schema, And, Or, Optional, Use, SchemaError
 
-from .common import PermissveSchema, not_yet_documented, RecordContext,Fallbacks
-from ..defaults import DefaultControlDocs, DefaultMessageDocs
-from ..logger import add_context
+from .common import PermissveSchema, RecordContext,Fallbacks
+from ..defaults import DefaultControlDocs
 
-def render_constraints_markup(data, control):
+
+def render_constraints_markup(control):
     '''
     render reStructuredText markup for a control's constraints. 
     
     This is a hellscape of special cases 
     '''
-    
-    if not 'constraints' in control: return data
+
+    if not len(control.get('constraints',{})): return ''
     
     constraints = control['constraints']
-    
-    upper = []
-    lower = []
+
     snaps = {
         'powerTwo':'powers of two', 
         'odd': 'odd numbers'
@@ -74,7 +72,11 @@ def render_constraints_markup(data, control):
             resultStr += '* The maximum FFT size is limited to the value of the ``maxFFTSize`` argument\n'
         resultStr += '* if FFT size != -1, then window size is clipped at FFT size\n\n'
 
-    return data + resultStr + '\n'
+    return f'\n{resultStr}\n'
+
+
+def add_constraints(data, control):
+    return data + render_constraints_markup(control)
 
 class ConstraintSchema(Schema):
     """
@@ -157,7 +159,7 @@ def validate_controls(generated_control_data, human_control_data, **kwargs):
                 **kwargs.get('defaults',{}).get('controls',{})
     }
      
-    logging.debug(f'validating controls...')    
+    logging.debug('validating controls...')    
     
     # deal with the aberation that is fftSettings (unified in generated docs, split out into win-hop-fft in human docs)
     if 'fftSettings' in [x['name'] for x in generated_control_data]:
@@ -192,7 +194,7 @@ def validate_controls(generated_control_data, human_control_data, **kwargs):
                 #     Use(partial(tryLookup, name=d['name'], lookup=lookup)),
                 #     Use(partial(uncdocumented,scope=d['name']))
                 # ), 
-                Use(partial(render_constraints_markup,control=d))
+                Use(partial(add_constraints,control=d))
             ),
             Optional('enum'):object,
             Optional(object):object

@@ -17,11 +17,12 @@ from pathlib import Path
 import json
 import yaml
 import re
-from collections import OrderedDict
+from collections import OrderedDict,ChainMap
 import pprint
 import warnings
 import inspect
-from . import DefaultData 
+from flucoma.doc import defaults 
+from schema import Schema, And,Or, Use, Optional, SchemaError
 
 def fluid_object_role(role, rawtext, text, lineno, inliner,
                        options={}, content=[]):
@@ -157,6 +158,7 @@ def plain_parameter_link(name,bits):
     return "<code>{}</code>".format(name.lower())
 
 def constraints(thisAttr,allAttrs,allArgs,host):
+    return
     upper = []
     lower = []
     snaps = {
@@ -267,11 +269,70 @@ def process_client_data(jsonfile, yamldir):
         print("WARNING NO HUMAN DOCUMENTATION YET FOR {}".format(jsonfile.stem))            
 
     return validate_and_merge(jsonfile.stem, raw_data,human_data)
+
+def spy(name,data):
+    print(name)
+    if data == None or not len(data): 
+        print("BURRRRRP")
+    return '{o:p}'
     
 def validate_and_merge(client, raw_data, human_data):
     args={}
     attrs={}
     messages={}    
+
+    data = raw_data 
+
+    # validate: build up a schema for the YAML based on what's in the JSON 
+    param_doc_schema = {'description':str} 
+    yaml_schema = {
+        'digest':str,
+        'sc-categories':str,
+        'sc-related':str, 
+        'description':str, 
+        Optional('discussion'):str, 
+        Optional('output'):str, 
+        Optional('sc-code'):str, 
+        Optional('see-also',default=''):Use(str)
+    }
+    
+    messagedoc_schema = Use(spy)
+    
+    yaml_params = {
+        d['name']:param_doc_schema for d in data['parameters']
+    }
+        
+    if yaml_params.pop('fftSettings', None):
+        yaml_params.update({
+            n:param_doc_schema for n in ['windowSize', 'hopSize', 'fftSize']                
+        })
+    
+    #make all the parameters optional with a warning generated if missing
+    yaml_params = { 
+       Optional(k,default=''):v for k,v in yaml_params.items()
+    }
+        
+    if len(yaml_params):
+        yaml_schema['parameters'] = yaml_params
+    
+    yaml_messages = { 
+        d['name']:Use(partial(spy,d['name'])) for d in data['messages']
+    }
+    
+    #make all the parameters optional with a warning generated if missing
+    # yaml_messages = { 
+    #    Optional(k,default=''):v for k,v in yaml_messages.items()
+    # }
+    
+    if len(yaml_messages):
+        yaml_schema[Optional('messages')] = yaml_messages
+    
+    # s = Schema(schema=yaml_schema, ignore_extra_keys = True) 
+    # validated = s.validate(human_data)
+    
+    # merged = dict(ChainMap(data,validated))
+    
+    # human_data = validated
 
     data = dict([(d['name'], d) for d in raw_data['parameters']])
     
@@ -286,11 +347,11 @@ def validate_and_merge(client, raw_data, human_data):
         del human_data['parameters']
         
     
-    data['warnings'] = DefaultData.warningDoc(); 
+    data['warnings'] = defaults.warningDoc(); 
 
     if client.lower().startswith('buf'):
-        data['blocking'] = DefaultData.blockingDoc(); 
-        data['queue'] = DefaultData.queueDoc(); 
+        data['blocking'] = defaults.blockingDoc(); 
+        data['queue'] = defaults.queueDoc(); 
 
     for d,v in data.items():
         fixed = False;
@@ -305,16 +366,16 @@ def validate_and_merge(client, raw_data, human_data):
                 param[d]['enum'] = dict(zip(v['values'],human_data['parameters'][d]['enum'].values()))
 
         if d == 'fftSettings':
-            fftdesc ='FFT settings consist of three numbers representing the window size, hop size and FFT size in samples:\n'
-            if 'parameters' in human_data:
-                if 'windowSize' in  human_data['parameters']:
-                    fftdesc += '   \n* ' + human_data['parameters']['windowSize']['description'] 
-                if 'hopSize' in human_data['parameters']:
-                    fftdesc += '   \n* ' + human_data['parameters']['hopSize']['description']
-                if 'fftSize' in human_data['parameters']:
-                    fftdesc += '   \n* ' + human_data['parameters']['fftSize']['description'] 
-            fftdesc += '\n\n'
-            fftdesc += DefaultData.fftDoc();             
+            # fftdesc ='FFT settings consist of three numbers representing the window size, hop size and FFT size in samples:\n'
+            # if 'parameters' in human_data:
+            #     if 'windowSize' in  human_data['parameters']:
+            #         fftdesc += '   \n* ' + human_data['parameters']['windowSize']['description'] 
+            #     if 'hopSize' in human_data['parameters']:
+            #         fftdesc += '   \n* ' + human_data['parameters']['hopSize']['description']
+            #     if 'fftSize' in human_data['parameters']:
+            #         fftdesc += '   \n* ' + human_data['parameters']['fftSize']['description'] 
+            # fftdesc += '\n\n'
+            fftdesc = defaults.fftDoc();             
             param[d].update({'description': fftdesc})
 
 
@@ -374,11 +435,14 @@ def validate_and_merge(client, raw_data, human_data):
 
         if 'messages' in human_data:
             if d == 'cols' and 'cols' not in human_data['messages']:
-                    message_data['cols'] = DefaultData.colsDoc(); 
+                    message_data['cols'] = defaults.colsDoc(); 
+                    message_data['cols']['args'] ={}
             if d == 'size' and 'size' not in human_data['messages']:
-                    message_data['size'] = DefaultData.sizeDoc(); 
+                    message_data['size'] = defaults.sizeDoc(); 
+                    message_data['size']['args'] ={}
             if d == 'clear' and 'clear' not in human_data['messages']:
-                    message_data['clear'] = DefaultData.clearDoc();  
+                    message_data['clear'] = defaults.clearDoc();  
+                    message_data['clear']['args'] ={}
         
     messages = message_data
 
@@ -448,7 +512,7 @@ def process_template(template_path,outputdir,client_data,host):
     else: 
         namer = host['namer'] 
     
-    ofile = outputdir / '{}.{}'.format(namer(client_data['client']),host['extension'])
+    ofile = outputdir / '{}.{}'.format(namer(client_data['client_name']),host['extension'])
     
     ########################################################################  
     # Set up docutils to do RST parsing; here we make 'roles' to generate CCE specific links to other FluCoMa objects or guides
@@ -482,24 +546,22 @@ def process_template(template_path,outputdir,client_data,host):
     template = env.get_template(host['template'])
     
     with open(ofile,'w') as f:
-        f.write(template.render(
-            arguments=client_data['arguments'],
-            attributes=client_data['attributes'],
-            messages=client_data['messages'],
-            client_name=client_data['client'],
-            digest=client_data['digest'],
-            description=client_data['description'],
-            discussion=client_data['discussion'], 
-            seealso = client_data['seealso'] 
-            ))
+        f.write(template.render(client_data))
+            # arguments=client_data['arguments'],
+            # attributes=client_data['attributes'],
+            # messages=client_data['messages'],
+            # client_name=client_data['client'],
+            # digest=client_data['digest'],
+            # description=client_data['description'],
+            # discussion=client_data['discussion'], 
+            # seealso = client_data['seealso'] 
+            # ))
     return client_data; 
 
 def process_topic(topic_file,template_path,outputdir,host):
     ofile = outputdir / '{}.{}'.format(Path(host['topic_subdir']) / Path(topic_file.stem),host['topic_extension'])    
     
     (outputdir / Path(host['topic_subdir'])).mkdir(exist_ok=True)
-    
-    
     
     # print(ofile)
     # roles.register_local_role('fluid_object', fluid_object_role)
@@ -518,7 +580,8 @@ def process_topic(topic_file,template_path,outputdir,host):
     
     topic_data = {}          
     if(topic_file.exists()):
-        topic_data = yaml.load(open(topic_file.resolve()), Loader=yaml.FullLoader)
+        with open(topic_file.resolve()) as f:
+            topic_data = yaml.load(f, Loader=yaml.FullLoader)
     else: 
         raise NameError('{} not found'.format(topic_file))
     

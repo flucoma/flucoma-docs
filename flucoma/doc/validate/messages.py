@@ -7,11 +7,11 @@
 # (grant agreement No 725899).
 
 import logging
-from functools import partial, reduce
+from functools import partial
 
-from schema import Schema, Or, Optional, Use, SchemaError
+from schema import Schema, Or, Optional, Use
 
-from ..defaults import DefaultControlDocs, DefaultMessageDocs
+from ..defaults import DefaultMessageDocs
 from .common import PermissveSchema, RecordContext, Fallbacks, undocumented
 
 

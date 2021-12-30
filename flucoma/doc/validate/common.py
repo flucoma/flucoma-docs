@@ -10,7 +10,7 @@
 import logging
 from functools import partial,reduce
 
-from schema import Schema, Optional,Or,Use
+from schema import Schema, Optional, Or, Use, SchemaError
 
 from ..logger import add_context 
 
