@@ -33,7 +33,14 @@ def merge_object(generated_data,human_data):
     
     object_data['messages'] = [{
         **p, 
-        **human_data['messages'][p['name']]
+        **human_data['messages'][p['name']], 
+        **{
+           'args':[{
+                'name':human_data['messages'][p['name']]['args'][i]['name'],
+                'description':human_data['messages'][p['name']]['args'][i]['description'],
+                'type': a
+           } for i, a in enumerate(p['args'])]
+        }
     } for p in generated_data['messages']]
     
     return object_data   
