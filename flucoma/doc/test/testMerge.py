@@ -28,9 +28,6 @@ class TestMergeObject(unittest.TestCase):
         }
         
         merged = merge_object(gen_obj,human_obj)
-        from pprint import pprint
-        
-        pprint(merged)
         
         self.assertEqual(len(merged['parameters']),len(gen_obj['parameters']))
         self.assertEqual(len(merged['messages']),len(gen_obj['messages']))
@@ -95,38 +92,6 @@ class TestMergeObject(unittest.TestCase):
                     a['type'],
                     gen_obj['messages'][i]['args'][j]
                 )
-
-            # self.assertEqual(
-            #     p['displayName'],
-            #     gen_obj['parameters'][i]['displayName']
-            # )
-            # self.assertEqual(
-            #     p['type'],
-            #     gen_obj['parameters'][i]['type']
-            # )
-            # self.assertEqual(
-            #     p['default'],
-            #     gen_obj['parameters'][i]['default']
-            # )
-            # self.assertEqual(
-            #     p['size'],
-            #     gen_obj['parameters'][i]['size']
-            # )
-            # self.assertEqual(
-            #     p['fixed'],
-            #     gen_obj['parameters'][i]['fixed']
-            # )
-            # self.assertEqual(
-            #     p['constraints'],
-            #     gen_obj['parameters'][i]['constraints']
-            # )
-            # self.assertEqual(
-            #     p['description'],
-            #     human_obj['parameters'][p['name']]['description']
-            # )    
-        
-        
-            
 
 if __name__ == '__main__':
     unittest.main() 
