@@ -58,9 +58,10 @@ fork{
 // first, let's make two new buffers called...
 ~bases = Buffer(s);
 ~activations = Buffer(s);
+~n_components = 2; // return to 2 components for this example
 
 // and we'll explicitly pass these into the process
-FluidBufNMF.processBlocking(s,~drums,bases:~bases,activations:~activations,resynth:~resynth,components:2,action:{"done".postln;});
+FluidBufNMF.processBlocking(s,~drums,bases:~bases,activations:~activations,resynth:~resynth,components:~n_components,action:{"done".postln;});
 
 // now we can plot them (because this process starts from a stochastic state, your results may vary!):
 FluidWaveform(~drums,featureBuffer:~activations,bounds:Rect(0,0,1200,300));
@@ -79,6 +80,8 @@ FluidWaveform(featureBuffer:~bases,bounds:Rect(0,0,1200,300));
 
 ~resynth.numChannels
 ~resynth.play;
+
+// ======== TODO: seeding activations and bases ======
 
 // ======== to further understand NMF's bases and activations, consider one more object: FluidNMFFilter ==========
 // FluidNMFFilter will use the bases (spectral templates) of a FluidBufNMF analysis to filter (i.e., decompose) real-time audio
