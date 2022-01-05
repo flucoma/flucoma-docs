@@ -9,7 +9,7 @@
 
 FluidBufNMF.processBlocking(s,~scratchy,bases:~bases,components:~n_components,action:{"done".postln;});
 
-~bases.plot // find out which one is the single spiking sine tone
+~bases.plot // find out which one is the single spiking sine tone and set the index equal to ~spike_base
 ~spike_base = 0;
 
 // each time a match for that is found it will trigger sine tones at different frequencies
