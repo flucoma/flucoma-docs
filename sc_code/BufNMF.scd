@@ -81,7 +81,7 @@ FluidWaveform(featureBuffer:~bases,bounds:Rect(0,0,1200,300));
 ~resynth.numChannels
 ~resynth.play;
 
-// ======== TODO: seeding activations and bases ======
+// ======== TODO: seeding bases ======
 
 // ======== to further understand NMF's bases and activations, consider one more object: FluidNMFFilter ==========
 // FluidNMFFilter will use the bases (spectral templates) of a FluidBufNMF analysis to filter (i.e., decompose) real-time audio
