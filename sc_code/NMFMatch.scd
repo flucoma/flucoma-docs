@@ -1,3 +1,5 @@
+/* For information on NMF and the associated Bases, please see the */ FluidBufNMF /* helpfile. */
+
 // FluidNMFMatch can be trained on a small section of audio and then used to identify whenever similar audio
 // appears again in the whole file or other files
 
