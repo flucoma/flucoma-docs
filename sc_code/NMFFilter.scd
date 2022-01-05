@@ -47,7 +47,27 @@ fork{
 )
 
 /* It is seprating the drum instrument components just like it did with FluidBufNMF--the difference here is that it is
-happening in real-time. This means that one could also send a live input audio signal through FluidNMFFilter and get these
+happening in real-time. */
+
+// This means one could different FX to each instrument:
+
+(
+{
+	var src = PlayBuf.ar(1,~drums,BufRateScale.ir(~drums),doneAction:2);
+	var sig = FluidNMFFilter.ar(src,~bases,3);
+	var mix;
+
+	mix = Splay.ar(sig);
+
+	mix = mix + CombN.ar(sig[2],0.1,[0.09,0.1],1.0);
+	mix = mix + CombC.ar(sig[1],0.2,LFTri.kr(0.1).range(0.0,0.2));
+	mix = mix + GVerb.ar(sig[0],100,7,0.9,drylevel:0,mul:-10.dbamp);
+
+	mix;
+}.play;
+)
+
+/* This also means that one could send a live input audio signal through FluidNMFFilter and get these
 drum instruments similarly decomposed into separate audio streams in *real-time*. */
 
 /* To test an idea like this, we could train it on just the first few seconds of this drum loop (like a training set when using

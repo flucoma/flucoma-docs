@@ -86,7 +86,7 @@ FluidWaveform(featureBuffer:~bases,bounds:Rect(0,0,1200,300));
 // ======== to further understand NMF's bases and activations, consider one more object: FluidNMFFilter ==========
 // FluidNMFFilter will use the bases (spectral templates) of a FluidBufNMF analysis to filter (i.e., decompose) real-time audio
 
-// for example, if we use the bases from the ~drums analysis above, it will separate the snare from the kick & hihat like before
+// for example, if we use the bases from the ~drums analysis above, it will separate the snare from the kick & hi hat like before
 // this time you'll hear one in each stereo channel (again, results may vary)
 
 (
