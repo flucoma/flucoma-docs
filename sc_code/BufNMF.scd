@@ -63,7 +63,7 @@ fork{
 FluidBufNMF.processBlocking(s,~drums,bases:~bases,activations:~activations,resynth:~resynth,components:2,action:{"done".postln;});
 
 // now we can plot them (because this process starts from a stochastic state, your results may vary!):
-~bases.plot("bases");
+FluidWaveform(~drums,feature_buf:~activations,bounds:Rect(0,0,1200,300));
 // the bases are a like a spectral template that FluidBufNMF has found in the source buffer
 // in one you should see one spectrum that resembles a snare spectrum (the resonant tone of the snare
 // in the mid range) and another that resembles the kick + hihat we heard earlier (a large peak in the very
