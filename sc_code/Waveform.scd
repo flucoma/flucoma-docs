@@ -6,10 +6,10 @@ s.boot;
 FluidWaveform(~drums,bounds:Rect(0,0,1200,300));
 
 // show spectrogram
-FluidWaveform(~drums,bounds:Rect(0,0,1200,300),showSpectrogram:true,spectrogramColorScheme:1);
+FluidWaveform(~drums,bounds:Rect(0,0,1200,300),showSpectrogram:true);
 
 // spectrogram with some nice colors and a bit of styling...
-FluidWaveform(~drums,bounds:Rect(0,0,1200,300),showSpectrogram:true,spectrogramColorScheme:1,waveformColor:Color.magenta(1,0.5),showWaveform:false);
+FluidWaveform(~drums,bounds:Rect(0,0,1200,300),showSpectrogram:true,spectrogramColorScheme:1,waveformColor:Color.magenta(1,0.5),showWaveform:true);
 
 // create a buffer to put indices into
 ~indices = Buffer(s);
