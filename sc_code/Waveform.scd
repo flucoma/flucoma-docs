@@ -2,6 +2,15 @@ s.boot;
 // load a sound to slice
 ~drums = Buffer.read(s,FluidFilesPath("Nicol-LoopE-M.wav"));
 
+// display
+FluidWaveform(~drums,bounds:Rect(0,0,1200,300));
+
+// show spectrogram
+FluidWaveform(~drums,bounds:Rect(0,0,1200,300),showSpectrogram:true,spectrogramColorScheme:1);
+
+// spectrogram with some nice colors and a bit of styling...
+FluidWaveform(~drums,bounds:Rect(0,0,1200,300),showSpectrogram:true,spectrogramColorScheme:1,waveformColor:Color.magenta(1,0.5),showWaveform:false);
+
 // create a buffer to put indices into
 ~indices = Buffer(s);
 
@@ -40,3 +49,6 @@ FluidWaveform(~noisy,featureBuffer:~pitch_analysis,bounds:Rect(0,0,1200,300));
 
 // plot stacked:
 FluidWaveform(~noisy,featureBuffer:~pitch_analysis,bounds:Rect(0,0,1200,300),stackFeatures:true,waveformColor:Color(*0.9.dup(3)));
+
+// add spectrogram:
+FluidWaveform(~noisy,featureBuffer:~pitch_analysis,bounds:Rect(0,0,1200,300),stackFeatures:true,waveformColor:Color(0,0,0,0.5),showSpectrogram:true,spectrogramAlpha:0.5);
