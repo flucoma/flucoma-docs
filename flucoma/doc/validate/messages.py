@@ -81,9 +81,8 @@ def validate_messages(generated_message_data, human_message_data,**kwargs):
     s_first = PermissveSchema({
         Optional(d['name'], default = NullMessage(len(d['args']))): {
             Optional('description', default = None): object,
-            Optional('args', default = []): Use(partial(
-                                                  fill_args,length=len(d['args']
-                                            )))
+            Optional('args',default = [null_arg] * len(d['args'])): Use(
+                            partial(fill_args,length=len(d['args'])))
         }
         for d in generated_message_data
     }).validate(human_message_data)
