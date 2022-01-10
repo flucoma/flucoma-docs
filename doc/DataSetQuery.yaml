@@ -14,11 +14,11 @@ see-also:
 description: |
   A selection of columns and a set of conditions that match rows of a FluidDataSet. Use to filter and search in a database of descriptors.
 
-messages: 
+messages:
   addColumn:
-   description: |
+    description: |
       Add a column to the query
-   args:
+    args:
     - name: column
       description: |
         Column index
@@ -117,18 +117,13 @@ messages:
       description: |
         Run when done
   transformJoin:
-   description: |
-      Apply the query to a source FluidDataSet and join the resulting subset at the end of the items sharing the same identifiers in a second source. Items unique to a source dataset will be ignored. To add items at the end of a dataset instead, see the 'merge' method of FluidDataSet.
-  args:
+   description:  Apply the query to a source FluidDataSet and join the resulting subset at the end of the items sharing the same identifiers in a second source. Items unique to a source dataset will be ignored. To add items at the end of a dataset instead, see the 'merge' method of FluidDataSet.
+   args:
     - name: source1DataSet
-      description: |
-        Source data, or the DataSet name
+      description: Source data, or the DataSet name
     - name: source2DataSet
-      description: |
-        Source data, or the DataSet name
+      description: Source data, or the DataSet name  
     - name: destDataSet
-      description: |
-        Destination data, or the DataSet name
+      description: Destination data, or the DataSet name
     - name: action
-      description: |
-        Run when done
+      description: Run when done
