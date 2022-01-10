@@ -83,7 +83,7 @@ endif()
 
 set(FLUID_JSON_DOC "${CMAKE_BINARY_DIR}/json")
 set(FLUID_YAML_DOC "${CMAKE_CURRENT_SOURCE_DIR}/doc")
-set(FLIUD_JINJA_TEMPLATES "${CMAKE_CURRENT_SOURCE_DIR}/flucoma/templates")
+set(FLIUD_JINJA_TEMPLATES "${CMAKE_CURRENT_SOURCE_DIR}/flucoma/doc/templates")
 
 # Make sure to build targets from flucoma-core
 macro(subdirlist result curdir)
