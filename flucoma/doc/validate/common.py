@@ -50,19 +50,19 @@ def tryLookup(x, keys,lookup):
     except KeyError:
         raise SchemaError # lookup failed, fallback to next option 
 
-def undocumented(x): 
+def undocumented(x,**kwargs): 
     """return the built in not documented tag string"""
     logging.warning('not yet documented')#,extra={'context':scope})
-    return not_yet_documented
+    return kwargs.get('undocumented_string', not_yet_documented)
 
-def Fallbacks(keys,lookup):
+def Fallbacks(keys,lookup,**kwargs):
         """
         Composes the series of fallbacks above into a Schema that will use valid content, or try a lookup, or tag undocumented as a last resort 
         """
         return Or(
             Use(hasContent),
             Use(partial(tryLookup,keys=keys,lookup=lookup)),
-            Use(undocumented)        
+            Use(partial(undocumented,**kwargs))        
         )
 
 

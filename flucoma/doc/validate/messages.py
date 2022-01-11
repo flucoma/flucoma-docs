@@ -89,11 +89,14 @@ def validate_messages(generated_message_data, human_message_data,**kwargs):
                             'description'), 
             'args':[RecordContext(Or(
                 {
-                    'name': RecordContext(Fallbacks([d['name'],'args',i ,'name'], lookup),'name'),
+                    'name': RecordContext(Fallbacks(
+                                    [d['name'],'args',i ,'name'], 
+                                    lookup,undocumented_string='unamed_arg'),
+                            'name'),
                     'description':RecordContext(Fallbacks(
-                                            [d['name'],'args',i, 'description'],
-                                            lookup
-                                            ),'description')
+                                    [d['name'],'args',i, 'description'],
+                                    lookup),
+                                'description')
                 },
                 {
                     'name':Use(undocumented),
