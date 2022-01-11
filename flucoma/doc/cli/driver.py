@@ -107,7 +107,7 @@ settings = {
     'code_block': '<code>{}</code>', 
     'writer': FluidHTMLWriter, 
     'rst_render': rst_filter,
-    'topic_extension':'.html',
+    'topic_extension':'html',
     'topic_subdir': '',
     'topic_template':'cli_htmltopic.html',
     'transform': transform_data, 

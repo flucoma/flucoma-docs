@@ -99,7 +99,7 @@ settings = {
     'code_block': 'code::{}::', 
     'writer': SCDocWriter, 
     'rst_render': rst_filter,
-    'topic_extension': '.schelp', 
+    'topic_extension': 'schelp', 
     'topic_subdir': 'guides',
     'topic_template':'schelp_topic.schelp',
     'transform': sc_transform_data, 
