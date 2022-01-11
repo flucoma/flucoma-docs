@@ -68,6 +68,7 @@ class SCHelpTranslator(nodes.NodeVisitor):
             'definition_list': ('\nDEFINITIONLIST::\n','::'), 
             'enumerated_list': ('\nNUMBEREDLIST::\n','::'), 
             'list_item': ('## ',''), 
+            'section':('\n\nSECTION::',''),
             'term': ('|| ',''),
             'table': ('\nTABLE::\n','::')
         }        
@@ -117,6 +118,16 @@ class SCHelpTranslator(nodes.NodeVisitor):
 
     def depart_body(self, node):
         pass       
+    
+    def visit_section(self, node):
+        self.body.append(self.defs['section'][0])
+
+    def visit_title(self,node):
+        self.body.append(node.astext())
+        raise nodes.SkipNode    
+
+    def depart_section(self, node):
+        pass        
         
     def visit_emphasis(self, node):
         self.body.append(self.defs['emphasis'][0])
@@ -294,7 +305,6 @@ class SCHelpTranslator(nodes.NodeVisitor):
         else: 
             self.body.append(f" {self.defs['term'][0]}")
         self.colindex += 1
-        # print(node)    	
 
     def depart_entry(self,node):
     	pass
@@ -306,12 +316,10 @@ class SCHelpTranslator(nodes.NodeVisitor):
     	pass    
         
     def visit_paragraph(self,node):
-        # self.ensure_eol()
-        # self.body.append('\n')
-        pass
+        self.body.append('\n')
     
     def depart_paragraph(self, node):
-        # self.body.append('\n')
+        self.body.append('\n')
         pass
         
         
