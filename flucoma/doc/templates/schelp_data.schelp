@@ -28,11 +28,7 @@ ARGUMENT:: {{ name }}
 {% for name, data in attributes.items() %}
 METHOD:: {{ name }}
 
-  Getter for code::{{ name }}::. See CODE::new::
-
-METHOD:: {{ name }}_
-
-  Setter for code::{{ name }}::. See CODE::new::
+  Property for code::{{ name }}::. See CODE::new::
 
 {% endfor %}
 {% endblock %}
