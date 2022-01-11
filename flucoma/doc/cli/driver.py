@@ -56,7 +56,7 @@ def cli_object_namer(data):
     
     nb the CLI only uses Buf* objects
     '''
-    return f"fluid-{data.lower().split('buf')[1]}"
+    return f"fluid-{data['client_name'].lower().split('buf')[1]}"
 
 def cli_jinja_parameter_link(name,bits):
     '''
