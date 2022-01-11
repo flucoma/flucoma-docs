@@ -21,13 +21,13 @@ def validate_messages(generated_message_data, human_message_data,**kwargs):
     
     We use the schema library for validation, whose natural inclination is to bail when stuff is missing. However, we just want to detect it and, if all else fails, tag it. So some mild acrobatics are invoked, with only petty crimes committed.  
     """
-    # print(kwargs.get('defaults',{}).get('messages',{}))
+    
     lookup = {
                 **DefaultMessageDocs,    
-                **kwargs.get('defaults',{}).get('messages',{})
+                **(kwargs.get('defaults',{}) or {}).get('messages',{})
     }
     
-    # lookup = kwargs.pop('defaults_lookup', DefaultMessageDocs)
+    
     logging.debug('validating messages')
     null_arg = { 'name':None, 'description':None }
     
@@ -64,16 +64,6 @@ def validate_messages(generated_message_data, human_message_data,**kwargs):
         }] * length).validate(x)
 
         return ret
-
-    # def Fallbacks(keys):
-    #     """
-    #     Composes the series of fallbacks above into a Schema that will use valid content, or try a lookup, or tag undocumented as a last resort 
-    #     """
-    #     return Or(
-    #         Use(hasContent),
-    #         Use(partial(tryLookup,keys=keys)),
-    #         Use(uncdocumented)        
-    #     )
     
     '''
     In our first pass, any expected parts of the structure are filled in with null entries (the expected parts of the structure are supplied by generated_message_data)

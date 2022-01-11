@@ -153,10 +153,10 @@ def validate_controls(generated_control_data, human_control_data, **kwargs):
     
     We use the schema library for validation, whose natural inclination is to bail when stuff is missing. However, we just want to detect it and, if all else fails, tag it. So some mild acrobatics are invoked, with only petty crimes committed.  
     """
-    
+        
     lookup = {
                 **DefaultControlDocs,    
-                **kwargs.get('defaults',{}).get('controls',{})
+                **(kwargs.get('defaults',{}) or {}).get('controls',{})
     }
      
     logging.debug('validating controls...')    
