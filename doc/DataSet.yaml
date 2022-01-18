@@ -7,6 +7,7 @@
 # (grant agreement No 725899).
 ---
 digest: A set of data associated with identifiers.
+species: data
 sc-categories: UGens>FluidManipulation
 sc-related: Classes/FluidLabelSet, Classes/FluidKDTree, Classes/FluidKNN, Classes/FluidKMeans
 see-also:

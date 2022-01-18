@@ -7,6 +7,7 @@
 # (grant agreement No 725899).
 ---
 digest: Real-Time Buffered Gain Changer
+species: transformer
 sc-categories: UGens>Algebraic, Libraries>FluidDecomposition, UGens>Buffer
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition,Classes/UnaryOpFunction
 description: This class implements a sanity test for the FluCoMa Real-Time Client Wrapper.

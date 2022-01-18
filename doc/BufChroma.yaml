@@ -7,6 +7,7 @@
 # (grant agreement No 725899).
 ---
 digest: An histogram of pitch classes on a Buffer
+species: buffer-proc
 sc-categories: Libraries>FluidDecomposition
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition, Classes/FluidBufMFCC
 see-also: Chroma, BufPitch, BufLoudness, BufMFCC, BufSpectralShape, BufStats

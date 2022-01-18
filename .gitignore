@@ -8,3 +8,5 @@ sphinxout
 doctrees
 schelp
 *.pyc
+interfaces/*
+*.log

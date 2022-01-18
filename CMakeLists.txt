@@ -26,7 +26,8 @@ set(FLUID_PATH "" CACHE PATH "The top level of the flucoma-core repo. Will clone
 set(MAX_DOC_OUT "${CMAKE_BINARY_DIR}/max_ref" CACHE PATH "")
 set(PD_DOC_OUT  "${CMAKE_BINARY_DIR}/pd_ref" CACHE PATH "")
 set(CLI_DOC_OUT  "${CMAKE_BINARY_DIR}/cli_ref" CACHE PATH "") 
-
+set(SC_DOC_OUT  "${CMAKE_BINARY_DIR}/sc_ref" CACHE PATH "") 
+# option(TESTS,"Run tests?")
 include(FetchContent)
 
 set(FETCHCONTENT_QUIET FALSE)
@@ -82,7 +83,7 @@ endif()
 
 set(FLUID_JSON_DOC "${CMAKE_BINARY_DIR}/json")
 set(FLUID_YAML_DOC "${CMAKE_CURRENT_SOURCE_DIR}/doc")
-set(FLIUD_JINJA_TEMPLATES "${CMAKE_CURRENT_SOURCE_DIR}/script/templates")
+set(FLIUD_JINJA_TEMPLATES "${CMAKE_CURRENT_SOURCE_DIR}/flucoma/doc/templates")
 
 # Make sure to build targets from flucoma-core
 macro(subdirlist result curdir)
@@ -125,14 +126,36 @@ macro(add_ref_target platform comment)
   
   add_custom_target(MAKE_${platform_uc}_REF
     COMMAND ${CMAKE_COMMAND} -E make_directory "${${platform_uc}_DOC_OUT}"
-  	COMMAND ${PYTHON_3} "${CMAKE_CURRENT_SOURCE_DIR}/script/MakeRef.py" "${platform_lc}" ${FLUID_JSON_DOC} ${FLUID_YAML_DOC} "${${platform_uc}_DOC_OUT}" ${FLIUD_JINJA_TEMPLATES}
+  	COMMAND ${PYTHON_3} "-mflucoma.MakeRef" "${platform_lc}" ${FLUID_JSON_DOC} ${FLUID_YAML_DOC} "${${platform_uc}_DOC_OUT}" ${FLIUD_JINJA_TEMPLATES}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
   	COMMENT ${comment}
     DEPENDS ${json_files}
   	VERBATIM
   )
 endmacro()
 
-
 add_ref_target(max "Making Max ref")
 add_ref_target(pd "Making PD ref")
 add_ref_target(cli "Making CLI ref")
+add_ref_target(sc "Making SC ref")
+
+enable_testing()
+
+execute_process(
+  COMMAND "python" "list_python_tests.py" 
+  OUTPUT_VARIABLE FLUCOMA-DOC-PYTHON_TESTS
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+  ERROR_STRIP_TRAILING_WHITESPACE
+)
+
+separate_arguments(TEST_LIST UNIX_COMMAND ${FLUCOMA-DOC-PYTHON_TESTS})
+
+foreach(THIS_TEST ${TEST_LIST})
+    message(STATUS ${THIS_TEST})
+    add_test(
+      NAME ${THIS_TEST} 
+      COMMAND ${PYTHON_3} "-m" "unittest" "-v" ${THIS_TEST}
+      WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+endforeach()

@@ -7,6 +7,7 @@
 # (grant agreement No 725899).
 ---
 digest: Transient-Based Real-Time Audio Slicer
+species: slicer
 sc-categories: Libraries>FluidDecomposition
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition
 see-also: BufTransientSlice, AmpSlice, NoveltySlice, OnsetSlice

@@ -1,0 +1,12 @@
+{% extends "schelp_base.schelp" %}
+{% block classmethods %}
+CLASSMETHODS::
+
+METHOD:: ar
+
+ARGUMENT:: in 
+
+  Audio-rate signal to slice
+
+{% include 'schelp_controls.schelp' %}
+{% endblock %}

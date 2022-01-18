@@ -1,0 +1,8 @@
+TITLE:: {{ title }}
+SUMMARY:: {{ digest }}
+CATEGORIES:: Libraries>FluidCorpusManipulation
+{% if seealso | length > 0 %}
+RELATED:: {{ seealso }}
+{% endif %}
+
+{{ description | rst }}

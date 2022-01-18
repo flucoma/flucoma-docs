@@ -7,6 +7,7 @@
 # (grant agreement No 725899).
 ---
 digest: Classify data with K Nearest Neighbours
+species: data
 sc-categories: Classification, KNN
 sc-related: Classes/FluidKNNRegressor, Classes/FluidDataSet, Classes/FluidLabelSet
 see-also: 

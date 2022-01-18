@@ -7,6 +7,7 @@
 # (grant agreement No 725899).
 ---
 digest: Buffer Compositing Utility
+species: buffer-proc
 sc-categories: Libraries>FluidDecomposition, UGens>Buffer
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition, Classes/Buffer
 see-also:

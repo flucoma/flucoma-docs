@@ -1,0 +1,15 @@
+{# in SC the order of params is non-fixed ('attributes') followed by fixed ('arguments') #}
+{% for name, data in attributes.items()  %}
+ARGUMENT:: {{ name }}
+
+{{ data['description'] | rst | indent(first=True) }}
+
+{% endfor %} 
+{% if species != 'buffer-proc' %}{# fixed controls are hidden for FluidBuf* #}
+{% for name, data in arguments.items()  %}
+ARGUMENT:: {{ name }}
+
+{{ data['description'] | rst | indent(first=True) }}
+
+{% endfor %} 
+{% endif %}

@@ -17,10 +17,12 @@ from pathlib import Path
 import json
 import yaml
 import re
-from collections import OrderedDict
+from collections import OrderedDict,ChainMap
 import pprint
 import warnings
 import inspect
+from flucoma.doc import defaults 
+from schema import Schema, And,Or, Use, Optional, SchemaError
 
 def fluid_object_role(role, rawtext, text, lineno, inliner,
                        options={}, content=[]):
@@ -119,9 +121,9 @@ class CLIHTMLTranslator(html4css1.HTMLTranslator):
 class FluidHTMLWriter(html4css1.Writer):
     """docutils writer for Max ref
     """    
-    def __init__(self,Writer=None):
+    def __init__(self,Translator=None):
         html4css1.Writer.__init__(self)
-        self.translator_class = Writer
+        self.translator_class = Translator
 
 
 def rst_filter(s,translator,**kwargs):    
@@ -156,6 +158,7 @@ def plain_parameter_link(name,bits):
     return "<code>{}</code>".format(name.lower())
 
 def constraints(thisAttr,allAttrs,allArgs,host):
+    return
     upper = []
     lower = []
     snaps = {
@@ -171,16 +174,16 @@ def constraints(thisAttr,allAttrs,allArgs,host):
             if isinstance(cons['upper'],list):
                 for p in cons['upper']:
                     # pprint.pprint(allParams)
-                    upper.append(max_parameter_link(p,allParams[p.lower()]))
+                    upper.append(max_parameter_link(p,allParams[p]))
             else: 
                 if cons['upper'] == 'fftFrame':
-                    upper.append(host['code_block'].format('(fftSize/2) + 1') + '(see {})'.format(host['parameter_link']('fftSettings',allParams['fftSettings'.lower()])))
+                    upper.append(host['code_block'].format('(fftSize/2) + 1') + '(see {})'.format(host['parameter_link']('fftSettings',allParams['fftSettings'])))
                 if cons['upper'] == 'maxFFTFrame':
-                    upper.append(host['code_block'].format('(maxFFTsize/2) + 1') + '(see {})'.format(host['parameter_link']('maxFFTSize',allParams['maxFFTSize'.lower()])))
+                    upper.append(host['code_block'].format('(maxFFTsize/2) + 1') + '(see {})'.format(host['parameter_link']('maxFFTSize',allParams['maxFFTSize'])))
         if 'lower' in cons: 
             if isinstance(cons['lower'],list):
                 for p in cons['lower']:
-                    lower.append(host['parameter_link'](p,allParams[p.lower()]))    
+                    lower.append(host['parameter_link'](p,allParams[p]))    
         if 'max' in cons: upper.append(cons['max'])
         if 'min' in cons: lower.append(cons['min'])           
         res = '<h5>Constraints</h5><ul>'
@@ -200,10 +203,10 @@ def constraints(thisAttr,allAttrs,allArgs,host):
         if 'FreqAmpPair' in cons:
             res += '<li>Two amplitude + frequency pairs. Amplitudes are unbounded, frequencies in range 0-1</li>'    
         try:        
-            if thisAttr['name'].lower() == 'fftsettings': 
+            if thisAttr['name'] == 'fftSettings': 
                 res += '<li> FFTSize, if != -1, will set to the next greatest power of two &gt; 4</li>'
                 if 'MaxFFT' in cons: 
-                    res += '<li>The maximum manual FFT size is limited to the value of the {} initialization argument</li>'.format(host['parameter_link']('maxFFTSize',allParams['maxFFTSize'.lower()]))  
+                    res += '<li>The maximum manual FFT size is limited to the value of the {} initialization argument</li>'.format(host['parameter_link']('maxFFTSize',allParams['maxFFTSize']))  
                 res += '<li>if FFT size != -1, then window size is clipped at FFT size</li>'
         except KeyError: 
             pass
@@ -252,114 +255,128 @@ def cli_name(value):
 
 def process_client_data(jsonfile, yamldir):
     print('Processing reference data for {}'.format(jsonfile.stem))
-    # template = env.get_template('maxref.xml')
-    raw_data = json.load(open(jsonfile.resolve()))
+
+    with open(jsonfile.resolve()) as jf:
+        raw_data = json.load(jf)
+    
     human_data = {}
     human_data_path = yamldir / (jsonfile.stem+'.yaml')    
+
     if(human_data_path.exists()):
-        human_data = yaml.load(open(human_data_path.resolve()), Loader=yaml.FullLoader)
+        with open(human_data_path.resolve()) as yf:
+            human_data = yaml.load(yf, Loader=yaml.FullLoader)
     else:
         print("WARNING NO HUMAN DOCUMENTATION YET FOR {}".format(jsonfile.stem))            
-        # print(human_data['digest'])
-    # print(human_data)
+
+    return validate_and_merge(jsonfile.stem, raw_data,human_data)
+
+def spy(name,data):
+    print(name)
+    if data == None or not len(data): 
+        print("BURRRRRP")
+    return '{o:p}'
+    
+def validate_and_merge(client, raw_data, human_data):
     args={}
     attrs={}
     messages={}    
-    # data = data['parameters'] #data is in json array to preserve order,
-    data = OrderedDict([(d['name'], d) for d in raw_data['parameters']]) 
+
+    data = raw_data 
+
+    # validate: build up a schema for the YAML based on what's in the JSON 
+    param_doc_schema = {'description':str} 
+    yaml_schema = {
+        'digest':str,
+        'sc-categories':str,
+        'sc-related':str, 
+        'description':str, 
+        Optional('discussion'):str, 
+        Optional('output'):str, 
+        Optional('sc-code'):str, 
+        Optional('see-also',default=''):Use(str)
+    }
+    
+    messagedoc_schema = Use(spy)
+    
+    yaml_params = {
+        d['name']:param_doc_schema for d in data['parameters']
+    }
+        
+    if yaml_params.pop('fftSettings', None):
+        yaml_params.update({
+            n:param_doc_schema for n in ['windowSize', 'hopSize', 'fftSize']                
+        })
+    
+    #make all the parameters optional with a warning generated if missing
+    yaml_params = { 
+       Optional(k,default=''):v for k,v in yaml_params.items()
+    }
+        
+    if len(yaml_params):
+        yaml_schema['parameters'] = yaml_params
+    
+    yaml_messages = { 
+        d['name']:Use(partial(spy,d['name'])) for d in data['messages']
+    }
+    
+    #make all the parameters optional with a warning generated if missing
+    # yaml_messages = { 
+    #    Optional(k,default=''):v for k,v in yaml_messages.items()
+    # }
+    
+    if len(yaml_messages):
+        yaml_schema[Optional('messages')] = yaml_messages
+    
+    # s = Schema(schema=yaml_schema, ignore_extra_keys = True) 
+    # validated = s.validate(human_data)
+    
+    # merged = dict(ChainMap(data,validated))
+    
+    # human_data = validated
+
+    data = dict([(d['name'], d) for d in raw_data['parameters']])
+    
     if 'parameters' in human_data:
         for k,v in data.items():
             if k != 'fftSettings' and not k in human_data['parameters']:
-                print("WARNING CAN'T FIND {} in {}".format(k,jsonfile.stem))
-    # else: 
-    #     print("WARNING NO HUMAN DOCUMENTATION YET FOR {}".format(jsonfile.stem))            
-    
-    data = {k.lower():v for k,v in data.items()}  
-    
+                print("WARNING CAN'T FIND {} in {}".format(k,client))
+                 
     #if there's an empty 'parameters' item in the yaml, just get rid of it 
     # otherwise we have to check for both existence and not None-ness every time
     if 'parameters' in human_data and not human_data['parameters']:
         del human_data['parameters']
         
-    if 'parameters' in human_data and human_data['parameters']:
-        human_data['parameters'] = {k.lower():v for k,v in human_data['parameters'].items()}
+    
+    data['warnings'] = defaults.warningDoc(); 
 
-    data['warnings'] = {
-        "displayName" : "Warnings",
-        "constraints": {
-            "min": 0,
-            "max": 1
-        } ,
-        "default": 0,
-        "type": "long",
-        "size": 1,
-        "fixed": False,
-        "description" : "Enable warnings to be issued whenever a parameter value is constrained (e.g. clipped)"
-    }
-
-    if jsonfile.stem.lower().startswith('buf'):
-        data['blocking'] = {
-            "displayName" : "Blocking Mode",
-            "default": 1,
-            "fixed": False,
-            "size": 1,
-            "type": "enum",
-            "values": [
-                "Non-Blocking",
-                "Blocking (Low Priority)",
-                "Blocking (High Priority)"
-            ],
-            "enum": {
-                "Non-Blocking": "Processing runs in a worker thread",
-                "Blocking (Low Priority)" : "Processing runs in the main application thread",
-                "Blocking (High Priority)" : "(Max only) Processing runs in the scheduler thread"
-            },
-            "description" : "Set the threading mode for the object"
-        }
-        data['queue'] = {
-            "displayName" : "Non-Blocking Queue Flag",
-            "default": 0,
-            "fixed": False,
-            "size": 1,
-            "type": "long",
-            "description" : "In non-blocking mode enable jobs to be queued up if successive bangs are sent whilst the object is busy. With the queue disabled, successive bangs will produce a warning. When enabled, the object will processing successively, against the state of its parameters when each bang was sent"
-        }
+    if client.lower().startswith('buf'):
+        data['blocking'] = defaults.blockingDoc(); 
+        data['queue'] = defaults.queueDoc(); 
 
     for d,v in data.items():
-        # print(d)
         fixed = False;
-        # description = ''
 
-        param = {}
-
-        param.update({d.lower():v})
-
+        param = {d:v}
+        
         if 'parameters' in human_data \
         and d in human_data['parameters']:
-            if 'description' in human_data['parameters'][d.lower()]:
-                param[d.lower()].update({'description': human_data['parameters'][d]['description']})
-            if 'enum' in human_data['parameters'][d.lower()] and 'values' in v:
-                param[d.lower()]['enum'] = dict(zip(v['values'],human_data['parameters'][d]['enum'].values()))
+            if 'description' in human_data['parameters'][d]:
+                param[d].update({'description': human_data['parameters'][d]['description']})
+            if 'enum' in human_data['parameters'][d] and 'values' in v:
+                param[d]['enum'] = dict(zip(v['values'],human_data['parameters'][d]['enum'].values()))
 
-        if d.lower() == 'fftsettings':
-            fftdesc ='FFT settings consist of three numbers representing the window size, hop size and FFT size in samples:\n'
-            if 'parameters' in human_data:
-                if 'windowSize' in  human_data['parameters']:
-                    fftdesc += '   \n* ' + human_data['parameters']['windowSize']['description'] 
-                    #+ ' . Window size can be any integer (in samples), but is clipped at its upper range by the FFT size (when this is not -1)'
-                if 'hopSize' in human_data['parameters']:
-                    fftdesc += '   \n* ' + human_data['parameters']['hopSize']['description']
-                    # + '. The default of -1 sets the hop size to window size / 2. However it can be *any* size (although some small integer fraction of the window size is conventional).'
-                if 'fftSize' in human_data['parameters']:
-                    fftdesc += '   \n* ' + human_data['parameters']['fftSize']['description'] 
-                    #+ '. The default of -1 sets the FFT size to the nearest power of 2 equal to or above the window size. When set manually, it will always snap internally to the next power of two, and can not be smaller than the window size. When greater than the window size, the input frame is zero-padded.'
-            fftdesc += '\n\n'
-            
-            fftDefault = 'The hop size and fft size can both be set to -1 (and are by default), with slightly different meanings:\n   \n* For the hop size, -1 = ``windowSize/2``\n* For the FFT size, -1 = ``windowSize`` snapped to the nearest equal / greater power of 2 (e.g. ``windowSize 1024`` => ``fftSize 1024``, but ``windowsSize 1000`` also => ``fftSize 1024``)\n'
-            
-            fftdesc += fftDefault
-            
-            param[d.lower()].update({'description': fftdesc})
+        if d == 'fftSettings':
+            # fftdesc ='FFT settings consist of three numbers representing the window size, hop size and FFT size in samples:\n'
+            # if 'parameters' in human_data:
+            #     if 'windowSize' in  human_data['parameters']:
+            #         fftdesc += '   \n* ' + human_data['parameters']['windowSize']['description'] 
+            #     if 'hopSize' in human_data['parameters']:
+            #         fftdesc += '   \n* ' + human_data['parameters']['hopSize']['description']
+            #     if 'fftSize' in human_data['parameters']:
+            #         fftdesc += '   \n* ' + human_data['parameters']['fftSize']['description'] 
+            # fftdesc += '\n\n'
+            fftdesc = defaults.fftDoc();             
+            param[d].update({'description': fftdesc})
 
 
         if 'fixed' in v:
@@ -368,20 +385,16 @@ def process_client_data(jsonfile, yamldir):
             args.update(param)
         else:
             attrs.update(param)
-
-
-    # print(args)
+    
     digest  = human_data['digest'] if 'digest' in human_data else 'A Fluid Decomposition Object'
     description = human_data['description'] if 'description' in human_data else ''
     seealso = [s.strip() for s in human_data['see-also'].split(',')] if 'see-also' in human_data and human_data['see-also'] else []
 
     discussion = human_data['discussion'] if 'discussion' in human_data else ''
-    # client  = 'fluid.{}~'.format(jsonfile.stem.lower())
-    client = jsonfile.stem
-    attrs = OrderedDict(sorted(attrs.items(), key=lambda t: t[0]))
 
+    attrs = OrderedDict(sorted(attrs.items(), key=lambda t: t[0].lower()))
 
-    message_data = OrderedDict([(d['name'].lower(), d) for d in raw_data['messages']]) 
+    message_data = OrderedDict([(d['name'], d) for d in raw_data['messages']]) 
     
     if(('input_type' in raw_data) and (raw_data['input_type'] == 'control')):
         message_data['list'] = {
@@ -389,71 +402,50 @@ def process_client_data(jsonfile, yamldir):
               "name": "list",
               "returns": "void"
             }
-        
-    if 'messages' in human_data and human_data['messages']:
-        human_data['messages'] = {k.lower():v for k,v in human_data['messages'].items()}
     
-    # some things will happen here
     for d,v in message_data.items():
         
         v['args'] = {'arg{}'.format(i):t for i,t in enumerate(v['args'])}
         
         if 'messages' in human_data \
         and d in human_data['messages']:
-            if 'description' in human_data['messages'][d.lower()]:
-                message_data[d.lower()].update({'description': human_data['messages'][d.lower()]['description']})
-            # print(v['args'])
-            if 'args' in human_data['messages'][d.lower()]:
-                margs = human_data['messages'][d.lower()]['args']
+            if 'description' in human_data['messages'][d]:
+                message_data[d].update({'description': human_data['messages'][d]['description']})
+            if 'args' in human_data['messages'][d]:
+                margs = human_data['messages'][d]['args']
                 if margs:
                     arg_names = [a['name'] for a in margs]      
                     arg_data = [a for a in margs]              
-                    # print(arg_data)
                     arg_data = list(filter(lambda a: a['name'] != 'action',arg_data))
-                    # print(arg_data)
-                    # try:                         
-                    #     arg_names.remove('action')
-                    # except ValueError: 
-                    #     pass #if it's not there, move on
-                    # print(len(v['args']), len(arg_names),arg_names)
                     arg_types = list(v['args'].values())
-                    # print(v['args'])
                     if(len(v['args']) == len(arg_data)): 
                         newargs = {}
                         for i in range(len(arg_data)):
                             if('description' not in arg_data[i]):
                                 arg_data[i]['description'] = 'Awaiting documentation'
                             newargs[arg_data[i]['name']] = {'type':arg_types[i],'description':arg_data[i]['description']}
-                        message_data[d.lower()]['args'] = newargs  
-                        # print(newargs)                  
+                        message_data[d]['args'] = newargs  
                     else: 
-                        print("WARNING: Arg counts don't match")
+                        print(f'WARNING: {d}: Arg counts don\'t match')
+
                 else: 
-                    message_data[d.lower()]['args'] = {}
+                    message_data[d]['args'] = {}
             else: 
-                message_data[d.lower()]['args'] = {}
-                    # print(human_data['messages'][d.lower()]['args'])
+                message_data[d]['args'] = {}
+
         if 'messages' in human_data:
-            if d.lower() == 'cols' and 'cols' not in human_data['messages']:
-                    message_data['cols'] = {
-                        'description': 'The number of columns (dimensions) in this model or dataset / labeset', 
-                        'args':{},                        
-                    }
-            if d.lower() == 'size' and 'size' not in human_data['messages']:
-                    message_data['size'] = {
-                        'description': 'The number of data points (entries / observations) in this model or dataset / labeset', 
-                        'args':{},                        
-                    }
-            if d.lower() == 'clear':
-                if 'clear' not in human_data['messages']:
-                    message_data['clear'] = {
-                        'description': 'Resets the internal state of the model', 
-                        'args':{},                        
-                    }
-                    message_data['clear']['args'] = {}   
+            if d == 'cols' and 'cols' not in human_data['messages']:
+                    message_data['cols'] = defaults.colsDoc(); 
+                    message_data['cols']['args'] ={}
+            if d == 'size' and 'size' not in human_data['messages']:
+                    message_data['size'] = defaults.sizeDoc(); 
+                    message_data['size']['args'] ={}
+            if d == 'clear' and 'clear' not in human_data['messages']:
+                    message_data['clear'] = defaults.clearDoc();  
+                    message_data['clear']['args'] ={}
         
     messages = message_data
-    # print(messages)
+
     return {
         'input_type': raw_data['input_type'],
         'arguments': args, 
@@ -514,37 +506,56 @@ host_vars = {
 
 def process_template(template_path,outputdir,client_data,host):
     
+    # hack for fluid stats, TODO: move to its proper place(s)
     if('input_type' in client_data and client_data['input_type'] == 'control'):
         namer =  lambda n : 'fluid.{}'.format(n.lower())
     else: 
         namer = host['namer'] 
     
-    ofile = outputdir / '{}.{}'.format(namer(client_data['client']),host['extension'])
-    # print(namer(client_data['client']))
+    ofile = outputdir / '{}.{}'.format(namer(client_data['client_name']),host['extension'])
+    
+    ########################################################################  
+    # Set up docutils to do RST parsing; here we make 'roles' to generate CCE specific links to other FluCoMa objects or guides
     roles.register_local_role('fluid-obj', fluid_object_role)
     roles.register_local_role('fluid-topic', fluid_topic_role)
-    # directives.register_directive('buffer', MaxBufferSubstitution)
+    
+    ########################################################################  
+    # Configure Jinja
     env = Environment(
         loader=FileSystemLoader([template_path]),
         autoescape=select_autoescape(['html', 'xml'])
     )
+    
+    ########################################################################  
+    #    Custom filter functions, invocable with a pipe in jinja templates 
+      
+    # convert reStructuredText blocks in descriptions etc to the output format for that CCE (html in all cases except SC)
     env.filters['rst'] = partial(rst_filter,translator=host['translator'])
+    # generate a properly formatted object name for this CCE
     env.filters['as_host_object_name'] = namer
+    # lookup a type name for this CCE
     env.filters['typename'] = host['types']
+    # generate parameter constraints text for this CCE
     env.filters['constraints'] = partial(constraints,host=host)
+    # determine if the object in question is part of the CLI distribution (in order to filter out stuff from see-also)
     env.tests['incli'] = lambda s: s.lower().startswith('buf')
+    
+    ########################################################################  
+    # run jinja on template for this host 
+    
     template = env.get_template(host['template'])
+    
     with open(ofile,'w') as f:
-        f.write(template.render(
-            arguments=client_data['arguments'],
-            attributes=client_data['attributes'],
-            messages=client_data['messages'],
-            client_name=client_data['client'],
-            digest=client_data['digest'],
-            description=client_data['description'],
-            discussion=client_data['discussion'], 
-            seealso = client_data['seealso'] 
-            ))
+        f.write(template.render(client_data))
+            # arguments=client_data['arguments'],
+            # attributes=client_data['attributes'],
+            # messages=client_data['messages'],
+            # client_name=client_data['client'],
+            # digest=client_data['digest'],
+            # description=client_data['description'],
+            # discussion=client_data['discussion'], 
+            # seealso = client_data['seealso'] 
+            # ))
     return client_data; 
 
 def process_topic(topic_file,template_path,outputdir,host):
@@ -552,10 +563,10 @@ def process_topic(topic_file,template_path,outputdir,host):
     
     (outputdir / Path(host['topic_subdir'])).mkdir(exist_ok=True)
     
-    
-    
     # print(ofile)
-    roles.register_local_role('fluid_object', fluid_object_role)
+    # roles.register_local_role('fluid_object', fluid_object_role)
+    roles.register_local_role('fluid-obj', fluid_object_role)
+    roles.register_local_role('fluid-topic', fluid_topic_role)
     env = Environment(
         loader=FileSystemLoader([template_path]),
         autoescape=select_autoescape(['html', 'xml'])
@@ -569,7 +580,8 @@ def process_topic(topic_file,template_path,outputdir,host):
     
     topic_data = {}          
     if(topic_file.exists()):
-        topic_data = yaml.load(open(topic_file.resolve()), Loader=yaml.FullLoader)
+        with open(topic_file.resolve()) as f:
+            topic_data = yaml.load(f, Loader=yaml.FullLoader)
     else: 
         raise NameError('{} not found'.format(topic_file))
     

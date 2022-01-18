@@ -7,6 +7,7 @@
 # (grant agreement No 725899).
 ---
 digest: Seven Spectral Shape Descriptors on a Buffer
+species: buffer-proc
 sc-categories: Libraries>FluidDecomposition
 sc-related: Guides/FluCoMa, Guides/FluidDecomposition, Classes/SpecCentroid, Classes/SpecFlatness, Classes/SpecCentroid, Classes/SpecPcile
 see-also: SpectralShape, BufPitch, BufMelBands, BufMFCC, BufLoudness, BufStats

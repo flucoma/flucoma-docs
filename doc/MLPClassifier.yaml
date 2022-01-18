@@ -7,6 +7,7 @@
 # (grant agreement No 725899).
 ---
 digest: Classification with a multi-layer perceptron
+species: data
 sc-categories: Machine learning
 sc-related: Classes/FluidMLPRegressor, Classes/FluidDataSet
 see-also: 
