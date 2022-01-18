@@ -57,7 +57,7 @@ struct Constraint<EnumT::EnumConstraint>
   }
 };
 
-template <int MaxFFT>
+template <index MaxFFT>
 struct Constraint<FFTParams::FFTSettingsConstraint<MaxFFT>>
 {
   template <size_t Offset, typename Tuple>
