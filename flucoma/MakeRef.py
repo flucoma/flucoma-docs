@@ -85,15 +85,18 @@ def main(passed_args):
                 )
             ) for c in clients     
     }    
+    
+    if host_settings.get('template'): 
+        for c in index: 
+            render.client(c, index, args, host_settings)
 
-    for c in index: 
-        render.client(c, index, args, host_settings)
+    if host_settings.get('post'): 
+            host_settings['post'](index,args)
 
-    if host_settings['post']: host_settings['post'](index,args)
-
-    topics = list(Path('topics/').resolve().glob('*.yaml'))
-    for t in topics: 
-      render.topic(load_topic_data(t),index, args, host_settings)
+    if host_settings.get('topic_template'):
+        topics = list(Path('topics/').resolve().glob('*.yaml'))
+        for t in topics: 
+          render.topic(load_topic_data(t),index, args, host_settings)
 
 if __name__ == '__main__':
     main(sys.argv[1:])
