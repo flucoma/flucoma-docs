@@ -138,6 +138,7 @@ add_ref_target(max "Making Max ref")
 add_ref_target(pd "Making PD ref")
 add_ref_target(cli "Making CLI ref")
 add_ref_target(sc "Making SC ref")
+add_ref_target(raw "Making raw API JSON")
 
 enable_testing()
 
