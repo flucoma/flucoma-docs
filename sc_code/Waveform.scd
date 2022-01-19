@@ -14,14 +14,17 @@ w.front;
 )
 
 // show spectrogram
-FluidWaveform(~drums,bounds:Rect(0,0,1200,300),showSpectrogram:true);
+~mags = Buffer(s);
+FluidBufSTFT.processBlocking(s,~drums,magnitude:~mags);
+FluidWaveform(~drums,bounds:Rect(0,0,1200,300),rasterBuffer:~mags,rasterColorScheme:1);
 
-// put in that another window
-(
-w = Window("FluidWaveform Test",Rect(0,0,1000,600));
-FluidWaveform(~drums,parent:w,bounds:Rect(100,100,800,300),showSpectrogram:true);
-w.front;
-)
+// show mels
+~mels = Buffer(s);
+FluidBufMelBands.processBlocking(s,~drums,features:~mels,numBands:512,windowSize:1024,action:{"done".postln});
+
+~mels.postln;
+
+FluidWaveform(~drums,bounds:Rect(0,0,1600,400),rasterBuffer:~mels,rasterColorScheme:1);
 
 // spectrogram with some nice colors and a bit of styling...
 FluidWaveform(~drums,bounds:Rect(0,0,1200,300),showSpectrogram:true,spectrogramColorScheme:1,waveformColor:Color.magenta(1,0.5),showWaveform:true);
@@ -34,13 +37,6 @@ FluidBufAmpSlice.processBlocking(s,~drums,indices:~indices,fastRampUp: 10,fastRa
 
 // plot the buffer with the indices overlayed
 FluidWaveform(~drums,~indices,bounds:Rect(0,0,800,200));
-
-// put in that another window
-(
-w = Window("FluidWaveform Test",Rect(0,0,1000,600));
-FluidWaveform(~drums,~indices,parent:w,bounds:Rect(100,100,800,300));
-w.front;
-)
 
 // do a descriptor analysis
 ~features = Buffer(s);
@@ -59,13 +55,6 @@ FluidBufAmpGate.processBlocking(s,~drums,indices:~gate_analysis,onThreshold:-35,
 
 // it will plot the ons and offs
 FluidWaveform(~drums,~gate_analysis,~features2,bounds:Rect(0,0,1200,300));
-
-// put in that another window
-(
-w = Window("FluidWaveform Test",Rect(0,0,1000,600));
-FluidWaveform(~drums,~gate_analysis,parent:w,bounds:Rect(100,100,800,300));
-w.front;
-)
 
 // do a descriptor analysis and plot both features either stacked or not:
 ~noisy = Buffer.read(s,FluidFilesPath("Tremblay-ASWINE-ScratchySynth-M.wav"));
