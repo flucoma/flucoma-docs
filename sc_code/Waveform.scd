@@ -1,6 +1,6 @@
 s.boot;
 
-// load a sound to slice
+// load a sound
 ~drums = Buffer.read(s,FluidFilesPath("Nicol-LoopE-M.wav"));
 
 // display
@@ -8,26 +8,23 @@ FluidWaveform(~drums,bounds:Rect(0,0,1200,300));
 
 // put in another window
 (
-w = Window("FluidWaveform Test",Rect(0,0,1000,600));
+w = Window("FluidWaveform Test",Rect(0,0,1000,500));
 FluidWaveform(~drums,parent:w,bounds:Rect(100,100,800,300));
 w.front;
 )
 
 // show spectrogram
 ~mags = Buffer(s);
-FluidBufSTFT.processBlocking(s,~drums,magnitude:~mags);
-FluidWaveform(~drums,bounds:Rect(0,0,1200,300),rasterBuffer:~mags,rasterColorScheme:1);
+FluidBufSTFT.processBlocking(s,~drums,magnitude:~mags,action:{"stft done".postln;});
+FluidWaveform(bounds:Rect(0,0,1200,300),imageBuffer:~mags,imageColorScheme:1);
 
 // show mels
 ~mels = Buffer(s);
-FluidBufMelBands.processBlocking(s,~drums,features:~mels,numBands:512,windowSize:1024,action:{"done".postln});
-
-~mels.postln;
-
-FluidWaveform(~drums,bounds:Rect(0,0,1600,400),rasterBuffer:~mels,rasterColorScheme:1);
+FluidBufMelBands.processBlocking(s,~drums,features:~mels,numBands:200,windowSize:2048,action:{"done".postln});
+FluidWaveform(bounds:Rect(0,0,1600,400),imageBuffer:~mels,imageColorScheme:1);
 
 // spectrogram with some nice colors and a bit of styling...
-FluidWaveform(~drums,bounds:Rect(0,0,1200,300),showSpectrogram:true,spectrogramColorScheme:1,waveformColor:Color.magenta(1,0.5),showWaveform:true);
+FluidWaveform(~drums,bounds:Rect(0,0,1200,300),imageBuffer:~mags,imageColorScheme:1,waveformColor:Color.magenta(1,0.5));
 
 // create a buffer to put indices into
 ~indices = Buffer(s);
@@ -68,21 +65,24 @@ FluidWaveform(~noisy,featureBuffer:~pitch_analysis,bounds:Rect(0,0,1200,300));
 // plot stacked:
 FluidWaveform(~noisy,featureBuffer:~pitch_analysis,bounds:Rect(0,0,1200,300),stackFeatures:true,waveformColor:Color(*0.9.dup(3)));
 
+~mags = Buffer(s);
+FluidBufSTFT.processBlocking(s,~noisy,magnitude:~mags,action:{"done".postln;});
+
 // add spectrogram:
-FluidWaveform(~noisy,featureBuffer:~pitch_analysis,bounds:Rect(0,0,1200,300),stackFeatures:true,waveformColor:Color(0,0,0,0.5),showSpectrogram:true,spectrogramAlpha:0.5);
+FluidWaveform(~noisy,featureBuffer:~pitch_analysis,imageBuffer:~mags,bounds:Rect(0,0,1200,300),stackFeatures:true,waveformColor:Color(0,0,0,0.5),imageAlpha:0.5);
 
 // plot in another window with all the things!
 
 (
-w = Window("FluidWaveform Test",Rect(0,0,1000,600));
+w = Window("FluidWaveform Test",Rect(0,0,1000,500));
 FluidWaveform(
 	~noisy,
 	featureBuffer:~pitch_analysis,
 	parent:w,
 	bounds:Rect(100,100,800,300),
 	stackFeatures:true,
-	showSpectrogram:true,
-	spectrogramAlpha:0.6,
+	imageBuffer:~mags,
+	imageAlpha:0.6,
 	waveformColor:Color(0,1,1,0.5)
 );
 w.front;
