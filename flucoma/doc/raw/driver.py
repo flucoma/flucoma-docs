@@ -24,8 +24,7 @@ def write_index(idx,program_args):
 
 settings = {   
     'glob': '**/*.json', 
-    'writer': FluidHTMLWriter, 
-    'transform': transform_data, 
+    'transform': default_transform, 
     'post': write_index, 
     'defaults': None, 
 }
