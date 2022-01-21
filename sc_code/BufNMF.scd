@@ -53,23 +53,24 @@ fork{
 // and it might have worked! but it may not have, and it won't provide the same result every time because it
 // starts each process from a stochastic state (you can seed this state if you want...see below).
 
-// ====== ok so what is it doing? ========
+// ====== bases and activations ========
 
 // first, let's make two new buffers called...
 ~bases = Buffer(s);
 ~activations = Buffer(s);
+~n_components = 2; // return to 2 components for this example
 
 // and we'll explicitly pass these into the process
-FluidBufNMF.processBlocking(s,~drums,bases:~bases,activations:~activations,resynth:~resynth,components:2,action:{"done".postln;});
+FluidBufNMF.processBlocking(s,~drums,bases:~bases,activations:~activations,resynth:~resynth,components:~n_components,action:{"done".postln;});
 
 // now we can plot them (because this process starts from a stochastic state, your results may vary!):
-~bases.plot("bases");
+FluidWaveform(~drums,featureBuffer:~activations,bounds:Rect(0,0,1200,300));
 // the bases are a like a spectral template that FluidBufNMF has found in the source buffer
 // in one you should see one spectrum that resembles a snare spectrum (the resonant tone of the snare
 // in the mid range) and another that resembles the kick + hihat we heard earlier (a large peak in the very
 // low register and some shimmery higher stuff)
 
-~activations.plot("activations");
+FluidWaveform(featureBuffer:~bases,bounds:Rect(0,0,1200,300));
 // the activations are the corresponding loudness envelope of each base above. It should like an amplitude
 // envelope follower of the drum hits in the corresponding bases.
 
@@ -80,10 +81,12 @@ FluidBufNMF.processBlocking(s,~drums,bases:~bases,activations:~activations,resyn
 ~resynth.numChannels
 ~resynth.play;
 
+// ======== TODO: seeding bases ======
+
 // ======== to further understand NMF's bases and activations, consider one more object: FluidNMFFilter ==========
 // FluidNMFFilter will use the bases (spectral templates) of a FluidBufNMF analysis to filter (i.e., decompose) real-time audio
 
-// for example, if we use the bases from the ~drums analysis above, it will separate the snare from the kick & hihat like before
+// for example, if we use the bases from the ~drums analysis above, it will separate the snare from the kick & hi hat like before
 // this time you'll hear one in each stereo channel (again, results may vary)
 
 (

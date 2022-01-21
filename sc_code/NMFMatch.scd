@@ -1,5 +1,33 @@
+/* For information on NMF and the associated Bases, please see the */ FluidBufNMF /* helpfile. */
+
+// get some bases from this source file:
+(
+~scratchy = Buffer.read(s,FluidFilesPath("Tremblay-ASWINE-ScratchySynth-M.wav"));
+~bases = Buffer(s);
+~n_components = 2;
+)
+
+FluidBufNMF.processBlocking(s,~scratchy,bases:~bases,components:~n_components,action:{"done".postln;});
+
+~bases.plot // find out which one is the single spiking sine tone and set the index equal to ~spike_base
+~spike_base = 0;
+
+// each time a match for that is found it will trigger sine tones at different frequencies
+(
+{
+	var sig = PlayBuf.ar(1,~scratchy,BufRateScale.ir(~scratchy),loop:1);
+	var match = FluidNMFMatch.kr(sig,~bases,~n_components);
+	var spike_match = match[~spike_base].poll;
+	var bool = spike_match > 2;
+	var sine = SinOsc.ar(TRand.kr(-3.0.dup,3.0,bool).midiratio * 2500,mul:-40.dbamp * bool.lag(0.03));
+	sig.dup + sine;
+}.play;
+)
+
+// =========================================================================================================
 // FluidNMFMatch can be trained on a small section of audio and then used to identify whenever similar audio
 // appears again in the whole file or other files
+// =========================================================================================================
 
 // for example, take this 22 second field recording that has _some_ dog barking in it
 ~golcar = Buffer.readChannel(s,FluidFilesPath("Tremblay-BaB-SoundscapeGolcarWithDog.wav"),channels:[0]);
