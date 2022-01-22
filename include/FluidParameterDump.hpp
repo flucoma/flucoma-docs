@@ -10,11 +10,7 @@ under the European Union’s Horizon 2020 research and innovation programme
 
 #pragma once
 #include <clients/common/FluidBaseClient.hpp>
-
 #include <clients/common/SharedClientUtils.hpp>
-#include <clients/nrt/DataSetClient.hpp>
-#include <clients/nrt/LabelSetClient.hpp>
-
 #include <nlohmann/json.hpp>
 #include <array>
 #include <fstream>
@@ -34,6 +30,20 @@ using json = nlohmann::json;
 
 namespace fluid {
 namespace client {
+
+
+template<typename> 
+class SharedClientRef;
+
+//forward decls to speed up building (a lot)
+namespace dataset {
+class DataSetClient;
+}
+
+namespace labelset {
+class LabelSetClient;
+}
+
 
 template <typename>
 struct ParamOffsets;
@@ -224,8 +234,8 @@ std::enable_if_t<std::is_floating_point<A>::value, std::string>
 getArgType(A&) { return "float"; }
 std::string getArgType(BufferT::type&) {return "buffer";}
 std::string getArgType(InputBufferT::type&) {return "buffer";}
-std::string getArgType(DataSetClientRef&) { return "DataSet"; }
-std::string getArgType(LabelSetClientRef&) { return "LabelSet"; }
+std::string getArgType(SharedClientRef<dataset::DataSetClient>&) { return "DataSet"; }
+std::string getArgType(SharedClientRef<labelset::LabelSetClient>&) { return "LabelSet"; }
 std::string getArgType(std::string&) { return "string"; }
 
 template <typename T,size_t N>
@@ -258,7 +268,7 @@ class ParameterDump
   template <typename Param>
   static std::enable_if_t<!isDetected<DefaultValue, Param>::value,
                    std::string>
-  makeValue(Param& p)
+  makeValue(Param&)
   {
     return "none";
   }
@@ -343,8 +353,8 @@ public:
   static std::string getParamType(const EnumT&) {return "enum"; }
   static std::string getParamType(const LongArrayT&) { return "long"; }
 
-  static std::string getParamType(const DataSetClientRef::ParamType&) {return "dataset"; }
-  static std::string getParamType(const LabelSetClientRef::ParamType&) {return "labelset"; }
+  static std::string getParamType(const SharedClientRef<dataset::DataSetClient>::ParamType&) {return "dataset"; }
+  static std::string getParamType(const SharedClientRef<labelset::LabelSetClient>::ParamType&) {return "labelset"; }
 
   template<typename U>
   static std::string getReturn(U&&)
