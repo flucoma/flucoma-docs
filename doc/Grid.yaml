@@ -10,11 +10,14 @@ digest: Constrain a 2D DataSet into a Grid.
 species: data
 sc-categories: Dimensionality Reduction, Data Processing
 sc-related: Classes/FluidMDS, Classes/FluidPCA, Classes/FluidUMAP, Classes/FluidDataSet
-see-also:
+see-also: UMAP, MDS, PCA, DataSet
 description: |
-  Maps a set of 2D points in a :fluid-obj:`DataSet` to a rectangular grid using a variant of the Jonker-Volgenant algorithm (https://www.gwern.net/docs/statistics/decision/1987-jonker.pdf). It can be useful to obtain compact grid layouts from the output of dimensionality reduction algorithms such as :fluid-obj:`UMAP`, :fluid-obj:`PCA` or :fluid-obj:`MDS`.
+  Maps a set of 2D points in a :fluid-obj:`DataSet` to a rectangular grid.
 
-  This is similar to projects like CloudToGrid (https://github.com/kylemcdonald/CloudToGrid/), RasterFairy (https://github.com/Quasimondo/RasterFairy) or IsoMatch (https://github.com/ohadf/isomatch).
+discussion: |
+  :fluid-obj:`Grid` transforms a two-dimensional dataset into a grid using a variant of the Jonker-Volgenant algorithm (https://www.gwern.net/docs/statistics/decision/1987-jonker.pdf). This can be useful to generate compact grid layouts from the output of dimensionality reduction algorithms such as :fluid-obj:`UMAP`, :fluid-obj:`PCA` or :fluid-obj:`MDS` and for making uniformally distributed spaces out of any two-dimensional dataset.
+
+  This approach is similar to projects like CloudToGrid (https://github.com/kylemcdonald/CloudToGrid/), RasterFairy (https://github.com/Quasimondo/RasterFairy) or IsoMatch (https://github.com/ohadf/isomatch).
 
 parameters:
     oversample:
