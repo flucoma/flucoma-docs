@@ -455,12 +455,12 @@ public:
     }
   };
 
-  static json::array_t jsonify_messages()
+  static  std::vector<json> jsonify_messages()
   {
     Messages          m = T::getMessageDescriptors();
     std::vector<json> ms;
     m.template iterate<DoMessage>(ms);
-    return {ms};
+    return ms;
   }
 };
 
