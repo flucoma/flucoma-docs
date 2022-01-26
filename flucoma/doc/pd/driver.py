@@ -20,12 +20,12 @@ def buffer_reference_role(role, rawtext, text, lineno, inliner,
     return 'array'
 
 # class PDHTMLTranslator(html4css1.HTMLTranslator):
-#     """docutils translator for PD ref    
-#     """    
-#     def visit_reference(self,node):    
-#         atts = {'class' : 'fluid_object'}    
+#     """docutils translator for PD ref
+#     """
+#     def visit_reference(self,node):
+#         atts = {'class' : 'fluid_object'}
 #         if('flucoma' in node):
-#             pdname = pd_object_namer(node.astext())  
+#             pdname = pd_object_namer(node.astext())
 #             node[:] = [nodes.raw('',pdname,format='html')]
 #             atts['href'] = pdname + '.html'
 #             self.body.append(self.starttag(node, 'a', '',**atts))
@@ -37,65 +37,66 @@ def buffer_reference_role(role, rawtext, text, lineno, inliner,
 def pd_visit_flucoma_reference(self, node, data, transform_name):
     if transform_name:
         if(node.astext()) in data:
-            name = pd_object_namer(data[node.astext()]) 
-        else: 
+            name = pd_object_namer(data[node.astext()])
+        else:
             name = f'Unresolved lookup ({node.astext()})'
-    else: 
+    else:
         name = node.astext()
     attrs = {'href': name + '.html'}
     node[:] = [nodes.raw('',name, format='html')]
     self.body.append(self.starttag(node, 'a','',**attrs))
-    
+
 def pd_depart_flucoma_reference(self, node, data):
     self.body.append('</a>')
 
 
-def pd_object_namer(data):    
+def pd_object_namer(data):
     tilde = '~' if not data['client_name'].startswith('Buf') else ''
-    return f"fluid.{data['client_name'].lower()}{tilde}"    
+    return f"fluid.{data['client_name'].lower()}{tilde}"
 
 
-def pd_jinja_parameter_link(name,bits): 
+def pd_jinja_parameter_link(name,bits):
     return f"<code>{name.lower()}</code>"
 
-def pd_type_map(type):    
+def pd_type_map(type):
     return {
         'float':'number',
         'long': 'number',
         'buffer':'symbol',
         'integer': 'int',
         'string': 'symbol',
-        'enum':'int', 
+        'enum':'int',
         'fft': 'int',
         'dataset':'symbol',
         'labelset':'symbol'
     }[type]
-    
+
 def transform_data(client, data):
-    
+
     res = default_transform(client, data)
-    
+
     res.get('messages',{}).pop('dump', None)
     res.get('messages',{}).pop('load', None)
-    
+
     return res
 
-settings = {   
-    'namer':pd_object_namer,     
+settings = {
+    'namer':pd_object_namer,
     'template': 'pd_htmlref.html',
     'extension': 'html',
     'types': pd_type_map,
-    'glob': '**/*.json', 
-    'parameter_link': pd_jinja_parameter_link, 
+    'glob': '**/*.json',
+    'parameter_link': pd_jinja_parameter_link,
     'write_cross_ref': (pd_visit_flucoma_reference,pd_depart_flucoma_reference),
-    'code_block': '<m>{}</m>', 
+    'code_block': '<m>{}</m>',
     'writer': FluidHTMLWriter,
     'rst_render': rst_filter,
-    'topic_extension': 'html', 
+    'topic_extension': 'html',
     'topic_subdir': '',
+    'client_subdir': '',
     'topic_template':'pd_htmltopic.html',
-    'transform': transform_data, 
-    'post': None, 
+    'transform': transform_data,
+    'post': None,
     'defaults': defaults,
     'buffer-string': 'array'
 }

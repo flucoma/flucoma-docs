@@ -21,31 +21,31 @@ def buffer_reference_role(role, rawtext, text, lineno, inliner,
 def max_visit_flucoma_reference(self, node, data, transform_name):
     if transform_name:
         if(node.astext()) in data:
-            name = max_object_namer(data[node.astext()]) 
-        else: 
+            name = max_object_namer(data[node.astext()])
+        else:
             name = f'Unresolved lookup ({node.astext()})'
-    else: 
+    else:
         name = node.astext()
-    
+
     node[:] = [nodes.raw('',name, format='html')]
     self.body.append(self.starttag(node, 'o'))
-    
+
 def max_depart_flucoma_reference(self, node, data):
     self.body.append('</o>')
-    
-def max_object_namer(data):    
-    tilde = '~' if not data['input_type'] == 'control' else ''
-    return f"fluid.{data['client_name'].lower()}{tilde}"    
 
-def max_type_map(type):       
-    
+def max_object_namer(data):
+    tilde = '~' if not data['input_type'] == 'control' else ''
+    return f"fluid.{data['client_name'].lower()}{tilde}"
+
+def max_type_map(type):
+
     return {
         'float':'float64',
         'long': 'int',
         'buffer':'symbol',
         'integer': 'int',
         'string': 'symbol',
-        'enum':'int', 
+        'enum':'int',
         'fft': 'int',
         'dataset':'symbol',
         'labelset':'symbol'
@@ -59,18 +59,18 @@ def max_jinja_parameter_link(name,data):
     return f'<at>{name.lower()}</at>'
 
 def write_max_indices(idx,program_args):
-    
+
     path = program_args.output_path / '../interfaces'
     path.mkdir(exist_ok=True)
-    
+
     maxdb_objs = {'maxdb':{'externals':{}}}
     qlookup = {}
-    
+
     for client,data in idx.items():
 
         maxname = max_object_namer(data)
-        
-        if 'messages' in data: 
+
+        if 'messages' in data:
             if 'dump' in data['messages']:
                 maxdb_objs['maxdb']['externals'][maxname]={
                     'object':'fluid.libmanipulation',
@@ -80,33 +80,33 @@ def write_max_indices(idx,program_args):
         qlookup[maxname] = {
             'digest': data['digest'],'category':['Fluid Corpus Manuipulation']
         }
-    
+
     maxdbfile = path / 'max.db.json'
     with open(maxdbfile,'w') as f:
         json.dump(maxdb_objs,f,sort_keys=True, indent=4)
     qlookup_file = path / 'flucoma-obj-qlookup.json'
-    with open(qlookup_file,'w') as f: 
+    with open(qlookup_file,'w') as f:
         json.dump(qlookup,f,sort_keys=True, indent=4)
 
 
-settings = {   
-    'namer':max_object_namer,     
+settings = {
+    'namer':max_object_namer,
     'template': 'maxref.xml',
     'extension': 'maxref.xml',
     'types': max_type_map,
-    'glob': '**/*.json', 
-    'parameter_link': max_jinja_parameter_link, 
-    'code_block': '<m>{}</m>', 
-    'writer': FluidHTMLWriter, 
+    'glob': '**/*.json',
+    'parameter_link': max_jinja_parameter_link,
+    'code_block': '<m>{}</m>',
+    'writer': FluidHTMLWriter,
     'rst_render': rst_filter,
-    'write_cross_ref': (max_visit_flucoma_reference,    
+    'write_cross_ref': (max_visit_flucoma_reference,
                         max_depart_flucoma_reference),
-    'topic_extension': 'maxvig.xml', 
+    'topic_extension': 'maxvig.xml',
     'topic_subdir': 'vignettes',
+    'client_subdir': '',
     'topic_template':'maxvig.xml',
-    'transform': transform_data, 
-    'post': write_max_indices, 
-    'defaults': defaults, 
+    'transform': transform_data,
+    'post': write_max_indices,
+    'defaults': defaults,
     'buffer-string':'<o>buffer~</o>'
 }
-     
