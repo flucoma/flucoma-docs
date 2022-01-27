@@ -1,6 +1,5 @@
 (
 SCDoc.indexAllDocuments(true);
-
 SCDoc.renderAll(true);
 )
 
@@ -27,9 +26,15 @@ FluidNormalize
 
 FluidBufHPSS
 
+FluidBufLoudness.process
+
 FluidDataSet
+FluidBufScale
+FluidSpectralShape
 
 FluidStats
+
+FluidLabelSet
 
 (
 {
