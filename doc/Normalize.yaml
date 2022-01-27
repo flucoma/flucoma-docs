@@ -32,9 +32,6 @@ messages:
     - name: dataSet
       description: |
         The :fluid-obj:`DataSet` to normalize
-    - name: action
-      description: |
-        A function to run when processing is complete
   transform:
    description: |
       Normalize a :fluid-obj:`DataSet` into another :fluid-obj:`DataSet`, using the learned extrema from a previous call to :fluid-obj:`Normalize#fit`
@@ -45,9 +42,6 @@ messages:
     - name: destDataSet
       description: |
         The :fluid-obj:`DataSet` to populate with normalized data
-    - name: action
-      description: |
-        A function to run when processing is complete
   fitTransform:
    description: |
       Normalize a :fluid-obj:`DataSet`
@@ -58,9 +52,6 @@ messages:
     - name: destDataSet
       description: |
         The :fluid-obj:`DataSet` to populate with normalized data
-    - name: action
-      description: |
-        A function to run when processing is complete
   transformPoint:
    description: |
       Normalize a new data point, using the learned extrema from a previous call to :fluid-obj:`Normalize#fit`
@@ -71,6 +62,3 @@ messages:
     - name: destBuffer
       description: |
         A |buffer| to contain the normalized value
-    - name: action
-      description: |
-        A function to run when processing is complete

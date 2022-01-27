@@ -9,7 +9,7 @@
 digest: A Perceptually Spread Spectral Contour Descriptor in Real-Time
 species: descriptor
 sc-categories: Libraries>FluidDecomposition
-sc-related: Guides/FluCoMa, Guides/FluidDecomposition, Classes/FluidMFCC
+sc-related: Guides/FluidCorpusManipulationToolkit, Classes/FluidMFCC
 see-also: BufMelBands, Pitch, Loudness, MFCC, SpectralShape
 description: Amplitude for a number of equally spread perceptual bands.
 discussion: |

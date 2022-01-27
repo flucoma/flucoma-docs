@@ -9,7 +9,7 @@
 digest: Amplitude-based Detrending Slicer for Buffers
 species: buffer-proc
 sc-categories: Libraries>FluidDecomposition
-sc-related: Guides/FluCoMa, Guides/FluidDecomposition
+sc-related: Guides/FluidCorpusManipulationToolkit
 see-also: AmpSlice, BufAmpGate, BufOnsetSlice, BufNoveltySlice, BufTransientSlice
 description: |
   This class implements an amplitude-based slicer,with various customisable options and conditions to detect relative amplitude changes as onsets.
@@ -66,9 +66,6 @@ parameters:
   highPassFreq:
     description: |
       The frequency of the fourth-order Linkwitz–Riley high-pass filter (https://en.wikipedia.org/wiki/Linkwitz%E2%80%93Riley_filter). This is done first on the signal to minimise low frequency intermodulation with very fast ramp lengths. A frequency of 0 bypasses the filter.
-  action:
-    description: |
-      A Function to be evaluated once the offline process has finished and indices instance variables have been updated on the client side. The metric will be passed indices as an argument.
 output: Nothing, as the destination buffer is declared in the function call.
 sc-code: |
   // define a test signal and a destination buffer

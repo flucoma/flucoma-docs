@@ -9,10 +9,10 @@
 digest: A Scaling Processor for Buffers
 species: buffer-proc
 sc-categories: Libraries>FluidDecomposition
-sc-related: Guides/FluCoMa, Guides/FluidDecomposition, Guides/FluidBufMultiThreading
+sc-related: Guides/FluidCorpusManipulationToolkit, Guides/FluidBufMultiThreading
 see-also:
 description: |
-  This class implements a simple Buffer preprocessor, by scaling its values. It draws a simple translation from inputLow to outputLow, and from inputHigh to outputHigh. It is part of the :fluid-topic:`FluidDecomposition` of `Guides/FluCoMa`. For more explanations, learning material, and discussions on its musicianly uses, visit http://www.flucoma.org/
+  This class implements a simple Buffer preprocessor, by scaling its values. It draws a simple translation from inputLow to outputLow, and from inputHigh to outputHigh.
 
   The process will return a buffer with the same size and shape than the requested range.
 

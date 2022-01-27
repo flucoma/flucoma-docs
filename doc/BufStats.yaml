@@ -9,7 +9,7 @@
 digest: Computing Statistics on Buffers as Series.
 species: buffer-proc
 sc-categories: Libraries>FluidDecomposition, UGens>Buffer
-sc-related: Guides/FluCoMa, Guides/FluidDecomposition
+sc-related: Guides/FluidCorpusManipulationToolkit
 see-also: BufLoudness, BufPitch, BufMelBands, BufMFCC, BufSpectralShape
 description: |
   Statistical analysis on buffer channels.

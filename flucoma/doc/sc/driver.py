@@ -58,6 +58,9 @@ def sc_transform_data(object_name,data):
     data['module'] = ''
     data['discussion'] = data.pop('discussion','')
 
+    if data['see-also'] ==  'None':
+        data['see-also'] = ''
+
     seealso = [f'Classes/Fluid{x}' for x in tidy_split(data.pop('see-also',''))]
     seealso.extend(tidy_split(data.pop('sc-related','')))
     data['seealso'] = ','.join(seealso)
