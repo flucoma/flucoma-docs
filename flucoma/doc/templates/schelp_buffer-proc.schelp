@@ -8,7 +8,6 @@ METHOD:: process, processBlocking
 ARGUMENT:: server
 	The LINK::Classes/Server:: on which the buffers to be processed are allocated.
 
-RETURNS:: An instance of the processor 
 
 {% include "schelp_controls.schelp" %}
 ARGUMENT:: freeWhenDone
@@ -26,6 +25,7 @@ ARGUMENT:: trig
 ARGUMENT:: blocking   
   Whether to execute this process directly on the server command FIFO or delegate to a worker thread. See CODE::processBlocking/process:: for caveats. 
 
+RETURNS:: An instance of the processor 
 {% endblock %}
 
 {% block extra_instancemethods %}

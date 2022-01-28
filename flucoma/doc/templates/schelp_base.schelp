@@ -8,6 +8,7 @@ DESCRIPTION::
 
 {{ discussion | rst | indent(first=True) }} 
 
+{{ scdescription | rst | indent(first=True) }}
 {% block classmethods %}
 CLASSMETHODS::
 {% endblock %}
