@@ -19,7 +19,7 @@ description: |
   The object is restricted to analysing a single source channel, because the channel counts of the magntude and phase buffers would quickly get out of hand otherwise.
 
 scdescription: |
-  If using an fftSize > 1024 the number of channels in the magnitude and phase buffers will be > 1024, which is the maximum number of channels a buffer can have when using Buffer's instance method .loadToFloatArray. This means you won't be able to get the values from the buffer using .loadToFloatArray. Instead you can use Buffer's instance method .getToFloatArray.
+  If using an fftSize > 1024 the number of channels in the magnitude and phase buffers will be > 1024, which is the maximum number of channels a buffer can have when using link::Classes/Buffer::'s instance method code::.loadToFloatArray::. This means you won't be able to get the values from the buffer using code::.loadToFloatArray::. Instead you can use link::Classes/Buffer::'s instance method code::.getToFloatArray::.
 parameters:
   source:
     description: |
