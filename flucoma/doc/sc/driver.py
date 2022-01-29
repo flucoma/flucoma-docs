@@ -71,6 +71,20 @@ def sc_transform_data(object_name,data):
         (filter_fixed_controls(params,fixed=False))    
     )
 
+    fftSettings = data['attributes'].pop('fftSettings',None) 
+    if fftSettings: 
+        data['attributes'] = {
+            **data['attributes'],
+            'windowSize': fftSettings['win'], 
+            'hopSize': fftSettings['hop'], 
+            'fftSize':  fftSettings['fft']
+        }
+    
+    # move 'padding to end'
+    padding = data['attributes'].pop('padding',None)    
+    if padding:
+        data['attributes'] = {**data['attributes'], 'padding': padding}
+
     data['arguments'] = OrderedDict(
         filter_fixed_controls(params,fixed=True) 
     )
