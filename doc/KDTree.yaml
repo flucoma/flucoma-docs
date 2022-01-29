@@ -34,14 +34,14 @@ messages:
         A function to run when indexing is complete.
   kNearest:
    description: |
-      Returns the IDs of the `k` points nearest to the one passed.
+      Returns the identifiers of the `k` points nearest to the one passed.
    args:
     - name: buffer
       description: |
         A |buffer| containing a data point to match against. The number of frames in the buffer must match the dimensionality of the :fluid-obj:`DataSet` the tree was fitted to.
     - name: action
       description: |
-        A function that will run when the query returns, whose argument is an array of point IDs from the tree's :fluid-obj:`DataSet`
+        A function that will run when the query returns, whose argument is an array of point identifiers from the tree's :fluid-obj:`DataSet`. The returned identifiers are always type symbol, therefore would need to be converted to a number type if intended to be used in that way.
   kNearestDist:
    description: |
       Get the distances of the K nearest neighbours to a point.
