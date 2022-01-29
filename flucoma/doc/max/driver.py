@@ -70,13 +70,12 @@ def write_max_indices(idx,program_args):
 
         maxname = max_object_namer(data)
         
-        if 'messages' in data: 
-            if 'dump' in data['messages']:
-                maxdb_objs['maxdb']['externals'][maxname]={
-                    'object':'fluid.libmanipulation',
-                    'package':'Fluid Corpus Manipulation'
-                }
-
+        if data.get('species','') == 'data':
+            maxdb_objs['maxdb']['externals'][maxname]={
+                'object':'fluid.libmanipulation',
+                'package':'Fluid Corpus Manipulation'
+            }
+        
         qlookup[maxname] = {
             'digest': data['digest'],'category':['Fluid Corpus Manuipulation']
         }
