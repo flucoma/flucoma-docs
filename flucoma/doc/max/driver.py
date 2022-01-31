@@ -103,10 +103,10 @@ settings = {
                         max_depart_flucoma_reference),
     'topic_extension': 'maxvig.xml', 
     'topic_subdir': 'vignettes',
+    'client_subdir': '',
     'topic_template':'maxvig.xml',
     'transform': transform_data, 
     'post': write_max_indices, 
     'defaults': defaults, 
     'buffer-string':'<o>buffer~</o>'
 }
-     

@@ -93,6 +93,7 @@ settings = {
     'rst_render': rst_filter,
     'topic_extension': 'html', 
     'topic_subdir': '',
+    'client_subdir': '',
     'topic_template':'pd_htmltopic.html',
     'transform': transform_data, 
     'post': None, 
