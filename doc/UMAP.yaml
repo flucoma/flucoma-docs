@@ -75,7 +75,7 @@ messages:
         Run when done
   transformPoint:
     description: |
-      Transform a new data point to the reduced number of dimensions using the projection learned from previous call to :fluid-obj:`UMAP`.
+      Transform a new data point to the reduced number of dimensions using the projection learned from previous fit call to :fluid-obj:`UMAP`.
     args:
       - name: sourceBuffer
         description: |
