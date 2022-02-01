@@ -26,7 +26,7 @@ parameters:
   invert:
     description: |
       The direction in which the scaling will occur for transform and transformpoint. The default 0 is taking in the range of the input used to fit and transforms it towards the robust scaling range. A value of 1 will expect an input of the scaling range to transform back to the original range.
-  messages:
+messages:
   fit:
    description: |
       Compute the scaling factors from a :fluid-obj:`DataSet` for later.
