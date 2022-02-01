@@ -66,6 +66,7 @@ def sc_transform_data(object_name,data):
     data['seealso'] = ','.join(seealso)
     data['sc_category'] = data.pop('sc-category','')
     
+    data['sc_description'] = data.pop('sc-description','')
     data['sc_code'] = data.pop('sc-code','')
     
     params = {x['name']:x for x in data.pop('parameters')}         
