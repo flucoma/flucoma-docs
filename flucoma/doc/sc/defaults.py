@@ -9,7 +9,7 @@
 defaults = {
     'messages': {
         'dump':{
-            'description':'Dump the state of this object from the dump outlet as a `<Classes/Dictionary>`__',
+            'description':'Dump the state of this object as a `<Classes/Dictionary>`__, which will be passed to the action function provided. This object must first be code::.fit:: before code::.write:: can be called.',
             'args':[]
         },
         'load':{
@@ -35,7 +35,7 @@ defaults = {
             ]
         },
         'write':{
-            'description':'Save the internal state of the object to a JSON file on disk.',
+            'description':'Save the internal state of the object to a JSON file on disk. This object must first be code::.fit:: before code::.write:: can be called.',
             'args': [
                 {
                     'name':'filename',
