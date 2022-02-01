@@ -73,3 +73,16 @@ messages:
     - name: action
       description: |
         Run when done
+  transformPoint:
+    description: |
+      Transform a new data point to the reduced number of dimensions using the projection learned from previous call to :fluid-obj:`UMAP#fit`.
+    args:
+      - name: sourceBuffer
+        description: |
+          A |buffer| with the new data point.
+      - name: destBuffer
+        description: |
+          A |buffer| to contain the dimensionally reduced data point.
+      - name: action
+        description: |
+          A function to run when processing is complete
