@@ -9,7 +9,7 @@
 digest: Amplitude-based Gating Slicer
 species: slicer
 sc-categories: Libraries>FluidDecomposition
-sc-related: Guides/FluCoMa, Guides/FluidDecomposition
+sc-related: Guides/FluidCorpusManipulationToolkit
 see-also: BufAmpGate, AmpSlice, OnsetSlice, NoveltySlice, TransientSlice
 description: |
   This class implements an amplitude-based slicer, with various customisable options and conditions to detect absolute amplitude changes as onsets and offsets.

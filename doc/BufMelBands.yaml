@@ -9,7 +9,7 @@
 digest: A Perceptually Spread Spectral Contour Descriptor on a Buffer
 species: buffer-proc
 sc-categories: Libraries>FluidDecomposition
-sc-related: Guides/FluCoMa, Guides/FluidDecomposition, Classes/FluidBufMFCC
+sc-related: Guides/FluidCorpusManipulationToolkit, Classes/FluidBufMFCC
 see-also: MelBands, BufPitch, BufLoudness, BufMFCC, BufSpectralShape, BufStats
 description: |
   A spectral shape descriptor where the amplitude is given for a number of equally spread perceptual bands.
