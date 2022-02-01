@@ -9,7 +9,7 @@
 digest: Mel-Frequency Cepstral Coefficients as Spectral Descriptors in Real-Time
 species: descriptor
 sc-categories: Libraries>FluidDecomposition
-sc-related: Guides/FluCoMa, Guides/FluidDecomposition
+sc-related: Guides/FluidCorpusManipulationToolkit
 see-also: BufMFCC, Pitch, MelBands, Loudness, SpectralShape
 description: This class implements a classic spectral descriptor, the Mel-Frequency Cepstral Coefficients (MFCCs)
 discussion: |

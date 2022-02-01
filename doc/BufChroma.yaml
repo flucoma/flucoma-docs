@@ -9,7 +9,7 @@
 digest: A histogram of pitch classes on a Buffer
 species: buffer-proc
 sc-categories: Libraries>FluidDecomposition
-sc-related: Guides/FluCoMa, Guides/FluidDecomposition, Classes/FluidBufMFCC
+sc-related: Guides/FluidCorpusManipulationToolkit, Classes/FluidBufMFCC
 see-also: Chroma, BufPitch, BufLoudness, BufMFCC, BufSpectralShape, BufStats
 description: |
   This class computes a histogram of the energy contained for each pitch class across the analysis frequency range.
@@ -70,9 +70,6 @@ parameters:
   maxFFTSize:
     description: |
       How large can the FFT be, by allocating memory at instantiation time. This cannot be modulated.
-  action:
-       description: |
-         A Function to be evaluated once the offline process has finished and all Buffer's instance variables have been updated on the client side. The function will be passed [features] as an argument.
 output:
    Nothing, as the destination buffer is declared in the function call.
 sc-code: |

@@ -9,7 +9,7 @@
 digest: Spectral Difference-Based Real-Time Audio Slicer
 species: slicer
 sc-categories: Libraries>FluidDecomposition
-sc-related: Guides/FluCoMa, Guides/FluidDecomposition
+sc-related: Guides/FluidCorpusManipulationToolkit
 see-also: BufOnsetSlice, AmpSlice, NoveltySlice, TransientSlice
 description: Real-time onset detection against a choice of metrics
 discussion: |

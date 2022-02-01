@@ -9,7 +9,7 @@
 digest : Buffer-Based Harmonic-Percussive Source Separation Using Median Filtering
 species: buffer-proc
 sc-categories : Libraries>FluidDecomposition, UGens>Buffer
-sc-related : Guides/FluCoMa, Guides/FluidDecomposition
+sc-related : Guides/FluidCorpusManipulationToolkit
 see-also: HPSS, BufSines, BufTransients
 description : FluidBufHPSS performs Harmonic-Percussive Source Separation (HPSS) on the contents of a Buffer.
 discussion: |
@@ -52,10 +52,10 @@ parameters :
       0: The traditional soft mask used in Fitzgerald's original method of 'Wiener-inspired' filtering. Complimentary, soft masks are made for the harmonic and percussive parts by allocating some fraction of a point in time-frequency to each. This provides the fewest artefacts, but the weakest separation. The two resulting buffers will sum to exactly the original material.
       1: Relative mode - Better separation, with more artefacts. The harmonic mask is constructed using a binary decision, based on whether a threshold is exceeded at a given time-frequency point (these are set using harmThreshFreq1, harmThreshAmp1, harmThreshFreq2, harmThreshAmp2, see below). The percussive mask is then formed as the inverse of the harmonic one, meaning that as above, the two components will sum to the original sound.
       2: Inter-dependent mode - Thresholds can be varied independently, but are coupled in effect. Binary masks are made for each of the harmonic and percussive components, and the masks are converted to soft at the end so that everything null sums even if the params are independent, that is what makes it harder to control. These aren't guranteed to cover the whole sound; in this case the 'leftovers' will placed into a third buffer.
-  harmThresh: 
+  harmThresh:
     description: |
-      When maskingmode is 1 or 2, set the threshold curve for classifying an FFT bin as harmonic. Takes a list of two frequency-amplitude pairs as coordinates: between these coordinates the threshold is linearly interpolated, and is kept constant between DC and coordinate 1, and coordinate 2 and Nyquist.  
-  percThresh: 
+      When maskingmode is 1 or 2, set the threshold curve for classifying an FFT bin as harmonic. Takes a list of two frequency-amplitude pairs as coordinates: between these coordinates the threshold is linearly interpolated, and is kept constant between DC and coordinate 1, and coordinate 2 and Nyquist.
+  percThresh:
     description: |
       In maskingmode 2, an independant pair of frequency-amplitude pairs defining the threshold for the percussive part. Its format is the same as above.
   # harmThreshFreq1:
@@ -91,8 +91,6 @@ parameters :
   maxPercFilterSize:
     description: |
       How large can the percussive filter be modulated to (percFilterSize), by allocating memory at instantiation time. This cannot be modulated.
-  action:
-     description: A Function to be evaluated once the offline process has finished and all Buffer's instance variables have been updated on the client side. The function will be passed [harmonic, percussive, residual] as an argument.
 output:
    Nothing, as the various destination buffers are declared in the function call.
 discussion: |
