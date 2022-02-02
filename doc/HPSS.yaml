@@ -11,16 +11,23 @@ species: transformer
 sc-categories: Libraries>FluidDecomposition
 sc-related: Guides/FluidCorpusManipulationToolkit
 see-also: BufHPSS, Sines, Transients
-description: Harmonic-Percussive Source Separation (HPSS) on the an audio input.
+description: Harmonic-Percussive Source Separation (HPSS) on an audio input.
 discussion: |
-  The class performs HPSS as described in
-  Fitzgerald, Derry. 2010. ‘Harmonic/Percussive Separation Using Median Filtering’. (In Proceedings DaFx 10. https://arrow.dit.ie/argcon/67.)
-  It also provides the variation detailed in Driedger, Jonathan, Meinard Uller, and Sascha Disch. 2014. ‘Extending Harmonic-Percussive Separation of Audio Signals’. (In Proc. ISMIR. http://www.terasoft.com.tw/conf/ismir2014/proceedings/T110_127_Paper.pdf.)
-
-  The algorithm takes an audio in, and divides it into two or three outputs, depending on the mode:
-  	* an harmonic component;
-  	* a percussive component;
+  HPSS takes in audio and divides it into two or three outputs, depending on the mode:
+  	* an harmonic component
+  	* a percussive component
   	* a residual of the previous two if the flag is set to inter-dependant thresholds. See the maskingMode below.
+
+  HPSS works by using median filters on the magnitudes of a spectrogram. It makes certain assumptions about what it is looking for in a sound: it is based on the observation that in a spectrogram “percussive” elements tend to form vertical “ridges” (tall in frequency band, narrow in time), while stable “harmonic” elements tend to form horizontal “ridges” (narrow in frequency band, long in time). By using median filters across time and frequency respectively, we get initial esitmates of the harominc-ness and percussive-ness of a point in time and frequency. These are then combined into 'masks' that are applied to the orginal spectrogram in order to produce a harmonic and percussive output (and residual if maskingMode = 2).
+
+  The maskingMode parameter provides different approaches to combining estimates and producing masks. Some settings (especially in modes 1 & 2) will provide better separation but with more artefacts.
+  
+  For more details visit https://learn.flucoma.org/reference/hpss
+  
+  These processes are described in:
+  Fitzgerald, Derry. 2010. ‘Harmonic/Percussive Separation Using Median Filtering’. (In Proceedings DaFx 10. https://arrow.dit.ie/argcon/67.)
+  It also provides the variation detailed in Driedger, Jonathan, Meinard Müller, and Sascha Disch. 2014. ‘Extending Harmonic-Percussive Separation of Audio Signals’. (In Proc. ISMIR. http://www.terasoft.com.tw/conf/ismir2014/proceedings/T110_127_Paper.pdf.)
+
 process: The audio rate version of the object.
 parameters:
   in:
@@ -89,10 +96,6 @@ parameters:
       How large can the percussive filter be modulated to (percFilterSize), by allocating memory at instantiation time. This cannot be modulated.
 output: >
   An array of three audio streams: [0] is the harmonic part extracted, [1] is the percussive part extracted, [2] is the rest. The latency between the input and the output is ((harmFilterSize - 1) * hopSize) + windowSize) samples.
-discussion: >
-  HPSS works by using median filters on the spectral magnitudes of a sound. It hinges on a simple modelling assumption that tonal components will tend to yield concentrations of energy across time, spread out in frequency, and percussive components will manifest as concentrations of energy across frequency, spread out in time. By using median filters across time and frequency respectively, we get initial esitmates of the tonal-ness / transient-ness of a point in time and frequency. These are then combined into 'masks' that are applied to the orginal spectral data in order to produce a separation.
-
-  The maskingMode parameter provides different approaches to combinging estimates and producing masks. Some settings (especially in modes 1 & 2) will provide better separation but with more artefacts. These can, in principle, be ameliorated by applying smoothing filters to the masks before transforming back to the time-domain (not yet implemented).
 sc-code: |
 
   CODE::
