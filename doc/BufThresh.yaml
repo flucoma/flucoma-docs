@@ -12,7 +12,7 @@ sc-categories: Libraries>FluidDecomposition
 sc-related: Guides/FluidCorpusManipulationToolkit, Guides/FluidBufMultiThreading
 see-also:
 description: |
-  This class implements a simple Buffer preprocessor, by replacing values under a threshold by 0s. It is part of the :fluid-topic:`FluidDecomposition` of `Guides/FluidCorpusManipulationToolkit`. For more explanations, learning material, and discussions on its musicianly uses, visit http://www.flucoma.org/
+  This class implements a simple Buffer preprocessor, by replacing values under a threshold by 0s. It is part of the :fluid-topic:`CorpusManipulationToolkit`. For more explanations, learning material, and discussions on its musicianly uses, visit http://www.flucoma.org/
 
   The process will return a buffer with the same size and shape than the requested range.
 
