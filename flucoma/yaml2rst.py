@@ -83,12 +83,11 @@ def control(name,m,stream):
             print(f"{' ' * 6}:{k}:",file=stream)
             print(f"{textwrap.indent(reallystrip(v),' ' * 9)}\n",file=stream)
 
-def main():
-    basepath = Path('/Users/owen/dev/flucoma-docs/doc')        
-        
-    # filelist = [basepath / 'HPSS.yaml'] 
-    filelist = basepath.glob('*.yaml')
+def main(basepath):
+    basepath = Path(basepath)
     
+    filelist = basepath.glob('*.yaml')
+        
     for thisfile in filelist:
         with open(thisfile,'r') as f: 
             ostream = io.StringIO()
@@ -120,6 +119,7 @@ def main():
             obj = parse_object.parse(ostream.getvalue())
             
             rstpath = (basepath / '..' / 'rst').resolve()
+            rstpath.mkdir(exist_ok=True)
             newfile = rstpath / Path((Path(thisfile).stem + '.rst'))
             # print(newfile)
             with open(newfile,'w') as f2: 
@@ -189,4 +189,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    # argv[1] needs to be the path to flucoma-docs/docs
+    main(sys.argv[1])
