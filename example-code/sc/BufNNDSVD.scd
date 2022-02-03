@@ -1,7 +1,7 @@
 
 code::
 (
-b = Buffer.read(s,File.realpath(FluidBufNNDSVD.class.filenameSymbol).dirname.withTrailingSlash ++ "../AudioFiles/Nicol-LoopE-M.wav");
+b = Buffer.read(s,FluidFilesPath("Nicol-LoopE-M.wav"));
 ~bases = Buffer.new(s);
 ~activations = Buffer.new(s);
 ~resynth = Buffer.new(s);

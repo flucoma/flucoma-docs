@@ -1,7 +1,7 @@
 
 code::
 
-~path = File.realpath(FluidBufNMFCross.class.filenameSymbol).dirname.withTrailingSlash +/+ "../AudioFiles/"
+~path = FluidFilesPath()
 b = Buffer.read(s,~path+/+"Nicol-LoopE-M.wav")
 t = Buffer.read(s,~path+/+"Tremblay-SA-UprightPianoPedalWide.wav")
 o = Buffer.new
@@ -25,4 +25,3 @@ Routine{
 )
 o.play
 ::
-
