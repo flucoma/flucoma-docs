@@ -90,7 +90,7 @@ def sc_transform_data(object_name,data):
             attrs = [(k,v) for (k,v) in data['attributes'].items()]
             newAttrs = [(k,v) for (k,v) in defaults['controls'][key].items()]
             data['attributes'] = dict(
-                attrs[0:idx-1] + newAttrs + attrs[idx+1:]        
+                attrs[0:idx] + newAttrs + attrs[idx+1:]        
             )      
     
     spliceAttrs('harmThresh') 
