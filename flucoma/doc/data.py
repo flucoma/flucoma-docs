@@ -9,6 +9,7 @@
 import logging
 import json 
 import yaml
+from flucoma.doc.rst import parse_object
 
 def load_generated_data(client_file):
         logging.debug(f'opening {client_file}')
@@ -20,12 +21,12 @@ def load_generated_data(client_file):
 
 def load_human_data(client_file,args):
     
-    yamldir = args.yaml_path
-    human_data_path = yamldir / (client_file.stem + '.yaml')    
+    docs_dir = args.doc_path
+    human_data_path = docs_dir / (client_file.stem + '.rst')    
     logging.debug(f'opening {human_data_path}')
     if(human_data_path.exists()):
         with open(human_data_path.resolve()) as f:
-            return yaml.load(f, Loader=yaml.FullLoader)
+            return parse_object.parse(f.read())
     else:
         logging.warning(f'No human documentation found for {client_file.stem}')
         return None
