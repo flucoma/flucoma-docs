@@ -1,5 +1,5 @@
 import textwrap
-from flucoma.doc.rst.common import LoggingDocutilsReader
+from flucoma.doc.rst.common import LogDocutilsMessages
 from pprint import pprint, pformat
 import docutils.nodes
 from docutils.parsers import rst
@@ -8,8 +8,10 @@ import docutils.utils
 import docutils.frontend
 from docutils import nodes
 from docutils.parsers.rst.states import Inliner
+from docutils.utils import Reporter
 import copy
 import re
+import logging
 
 """
 Parse the structure of a FluCoMa object reference from reStructuredText. We use a structured rst represntation of field lists to represent the various parts of an object's reference.
@@ -164,13 +166,17 @@ def parse(content):
     components = (rst.Parser,)
     
     settings = docutils.frontend.OptionParser(
-        components=components
+        components=components,         
     ).get_default_values()
     
     document = docutils.utils.new_document("<rst-doc>", settings=settings)
     
-    # reader = LoggingDocutilsReader()
-    # reader.read(document, parser,settings)
+    # Grab docutils error messages for ourselves so we can provide useful context
+    def log_badness(message):
+        logging.warning(f"{nodes.Element.astext(message)}\n\t{lines[message['line']-1]}")
+        
+    document.reporter.attach_observer(log_badness)
+    document.reporter.stream = None
     
     parser.parse(content, document)
         
