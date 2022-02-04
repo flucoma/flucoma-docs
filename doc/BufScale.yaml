@@ -12,10 +12,11 @@ sc-categories: Libraries>FluidDecomposition
 sc-related: Guides/FluidCorpusManipulationToolkit, Guides/FluidBufMultiThreading
 see-also:
 description: |
-  This class implements a simple Buffer preprocessor, by scaling its values. It draws a simple translation from inputLow to outputLow, and from inputHigh to outputHigh.
+  Buffer value scaling from an input range to an output range.
 
-  The process will return a buffer with the same size and shape than the requested range.
-
+discussion: |
+  This object is for scaling values stored in buffers. It copies data from a source buffer to a destination, scaling the source from an input range to an output range.
+  
 parameters:
   source:
     description: |
