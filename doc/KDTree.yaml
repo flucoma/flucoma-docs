@@ -6,14 +6,17 @@
 # under the European Union’s Horizon 2020 research and innovation programme
 # (grant agreement No 725899).
 ---
-digest: KD Tree
+digest: Efficient lookup of data using a k-d tree.
 species: data
 sc-categories: FluidManipulation
 sc-related: Classes/FluidDataSet
-see-also:
+see-also: DataSet
 description: |
-  A K-Dimensional tree for efficient neighbourhood searches of multi-dimensional data.
+  A k-dimensional tree for efficient neighbourhood searches of multi-dimensional data.
+discussion: |
+  :fluid-obj:`KDTree` facilitates efficient nearest neighbour searches of multi-dimensional data stored in a :fluid-obj:`DataSet`. By first "fitting" the :fluid-obj:`KDTree`, querying for nearest neighbours is possibly made much quicker at the time of searching. 
 
+  Whilst k-d trees can offer very good performance relative to naïve search algorithms, they suffer from something called “the curse of dimensionality” (like many algorithms for multi-dimensional data). In practice, this means that as the number of dimensions of your data goes up, the relative performance gains of a k-d tree go down.
 parameters:
   numNeighbours:
     description: |
