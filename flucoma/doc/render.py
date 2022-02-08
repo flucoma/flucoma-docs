@@ -14,7 +14,7 @@ from collections.abc import Callable
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from markupsafe import Markup
 
-from flucoma.doc.rst.docutils import register_custom_roles
+from flucoma.doc.rst.docutils import register_custom_roles, register_custom_directives
 from .logger import ContextView,add_context
 
 def type_map(x,namer):
@@ -25,6 +25,7 @@ def type_map(x,namer):
 
 def setup_docutils(client_index, args, driver):
     register_custom_roles()
+    register_custom_directives() 
 setup_docutils(None,None,None)
 
 def setup_jinja(client_index, args, driver):
@@ -77,7 +78,8 @@ def client(client, client_index, args, driver):
         with open(ofile,'w') as f:
             f.write(template.render(client_data, 
                                     index=client_index, 
-                                    driver = driver 
+                                    driver = driver, 
+                                    host=args.host
                                     )
                     )            
             
@@ -100,7 +102,8 @@ def topic(topic_data,client_index,args,driver):
             digest=topic_data['digest'],
             description=topic_data['description'],
             index=client_index, 
-            driver = driver 
+            driver = driver, 
+            host=args.host            
         ))
         
     return topic_data
