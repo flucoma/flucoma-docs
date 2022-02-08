@@ -137,6 +137,10 @@ under the European Union’s Horizon 2020 research and innovation programme
     {%-for s in seealso -%}
     <h3 class="seealso_name"><a href="{{ s | as_host_object_name }}.html">{{ s }}</a></h3>    
     {%- endfor -%}
+
+    {%-for s in pd_seealso -%}
+    <h3 class="seealso_name"><a href="{{ s }}.html">{{ s }}</a></h3>    
+    {%- endfor -%}
   </section> 
 </body>
 </html>
