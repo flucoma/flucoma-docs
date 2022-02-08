@@ -7,7 +7,7 @@
 # (grant agreement No 725899).
 ---
 digest: Morph between sounds
-species: transformer
+species: buffer-transformer
 sc-categories: FluidCorpusManipulation
 sc-related: Classes/FluidAudioTransport, Classes/FluidBufNMFCross
 see-also: 
