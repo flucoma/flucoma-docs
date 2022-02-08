@@ -17,34 +17,34 @@ description: |
   See Henderson and Solomonm (2019) AUDIO TRANSPORT: A GENERALIZED PORTAMENTO VIA OPTIMAL TRANSPORT, DaFx
 
 parameters:
-  source1:
+  sourceA:
     description: |
       The first source buffer
-  startFrame1:
+  startFrameA:
     description: |
       offset into the first source buffer (samples)
-  numFrames1:
+  numFramesA:
     description: |
       number of samples to use from first source buffer
-  startChan1:
+  startChanA:
     description: |
       starting channel of first source buffer
-  numChans1:
+  numChansA:
     description: |
       number of channels to process in first source buffer
-  source2:
+  sourceB:
     description: |
       the second source buffer
-  startFrame2:
+  startFrameB:
     description: |
       offset into the second source buffer (samples)
-  numFrames2:
+  numFramesB:
     description: |
       number of samples to process from second buffer
-  startChan2:
+  startChanB:
     description: |
       starting channel for second buffer
-  numChans2:
+  numChansB:
     description: |
       number of channels to process in second buffer
   destination:
