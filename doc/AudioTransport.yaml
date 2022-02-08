@@ -7,7 +7,7 @@
 # (grant agreement No 725899).
 ---
 digest: Interpolate between sounds
-species: transformer
+species: transformer2
 sc-categories: FluidManipulation
 sc-related: Classes/FluidBufAudioTransport
 see-also: 
@@ -17,6 +17,9 @@ description: |
   See Henderson and Solomonm (2019) AUDIO TRANSPORT: A GENERALIZED PORTAMENTO VIA OPTIMAL TRANSPORT, DaFx
 
 parameters:
+  in:
+    description: |
+      The input to be processed
   in2:
     description: |
       Source B
