@@ -88,3 +88,11 @@ messages:
     - name: action
       description: |
         A function to run when the export is done.
+  write:
+    description: |
+      Save the contents of the object to a JSON file on disk.
+    args:
+  dump:
+    description: |
+      Dump the state of this object as a Dictionary.
+    args:
