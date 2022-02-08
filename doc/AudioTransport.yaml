@@ -12,9 +12,6 @@ sc-related: Classes/FluidBufAudioTransport
 see-also: 
 description: |
   Interpolates between the spectra of two sounds using the Optimal Transport algorithm
-
-  See Henderson and Solomonm (2019) AUDIO TRANSPORT: A GENERALIZED PORTAMENTO VIA OPTIMAL TRANSPORT, DaFx
-
 parameters:
   in2:
     description: |
