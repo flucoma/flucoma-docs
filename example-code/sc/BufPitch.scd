@@ -2,7 +2,7 @@
 code::
 (
 // load a sound file
-~scratchy = Buffer.read(s,File.realpath(FluidBufPitch.class.filenameSymbol).dirname.withTrailingSlash ++ "../AudioFiles/Tremblay-ASWINE-ScratchySynth-M.wav");
+~scratchy = Buffer.read(s,FluidFilesPath("Tremblay-ASWINE-ScratchySynth-M.wav"));
 // and a buffer to write the FluidBufPitch features into
 ~pitch_features_buf = Buffer.new(s);
 // specify some params for the analysis (these are the defaults, but we'll specify them here so we can use them later)

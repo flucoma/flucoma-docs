@@ -98,11 +98,14 @@ messages:
         A function to run when the server responds
   transformPoint:
    description: |
-      Given a trained object, return the distance of the provided point to each cluster. Both points are handled as |buffer|
+      Given a trained object, return the distance of the provided point to each cluster centroid. Both points are handled as |buffer|
    args:
-    - name: buffer
+    - name: sourceBuffer
       description: |
         A |buffer| containing a data point.
+    - name: targetBuffer
+      description: |
+        A |buffer| to write in the distance to all the cluster centroids.
     - name: action
       description: |
         A function to run when complete.

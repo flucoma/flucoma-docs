@@ -56,11 +56,12 @@ parameters:
     description: |
       A ratio of the inter quantile range (IQR) that defines a range outside of which data will be rejected. It is run on each channel independently and a single channel being flagged as outlier removes the whole frame (on all channels). The default (-1) bypasses this function, keeping all frames in the statistical measurements. For more information on this statistical process, please refer to the concept of IQR and how the whiskers of a box plot are computed here (https://en.wikipedia.org/wiki/Box_plot)
   weights:
-    description: |
+    description: | 
       A buffer to provide relative weighting of the source material. Not providing one will not apply weighting and consider all frames equally. The provided buffer has to satisfy all of the following conditions:
-        * a single-channel, that will be applied to all channels of source;
-        * exactly the same amount of frames as ‘source’;
-        * weights must be positive (anything lower than 0 will be rejected).     
+        
+      * a single-channel, that will be applied to all channels of source;
+      * exactly the same amount of frames as ‘source’;
+      * weights must be positive (anything lower than 0 will be rejected).     
   action:
     description: |
       A Function to be evaluated once the offline process has finished and indices instance variables have been updated on the client side. The function will be passed stats as an argument.
