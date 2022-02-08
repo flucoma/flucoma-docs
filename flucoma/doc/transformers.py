@@ -36,7 +36,19 @@ def default_transform(object_name, data):
     data['discussion'] = data.pop('discussion','') 
 
     data['seealso'] = [x for x in tidy_split(data.pop('see-also',''))]
-    
+
+    try:
+        data['max_seealso'] = data['max-seealso'].split(',')
+    except (KeyError, AttributeError):
+        data['max_seealso'] = ['']
+        print(f'WARNING: No "max-seealso" for {object_name}. Inserting blank placeholder')
+
+    try:
+        data['pd_seealso'] = data['pd-seealso'].split(',')
+    except (KeyError, AttributeError):
+        data['pd_seealso'] = ['']
+        print(f'WARNING: No "pd-seealso" for {object_name}. Inserting blank placeholder')
+
     data['parameters'].append({
         'name':'warnings',
         'constraints': {'max': 1, 'min': 0},
