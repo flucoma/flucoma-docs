@@ -41,13 +41,11 @@ class OnlyDirective(Directive):
     def run(self):
         text = '\n'.join(self.content)        
         host = self.state.document.settings.ensure_value('flucoma-host','')
-        print(host, self.arguments)
+
         if host in self.arguments[0].split(): 
-            print('here')
             node = nodes.Element()
             self.state.nested_parse(self.content, self.content_offset,
-                                    node)
-            print(node.children)                            
+                                    node)                           
             return node.children                            
         return []
 
