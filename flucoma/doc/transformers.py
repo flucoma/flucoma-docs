@@ -6,6 +6,8 @@
 # under the European Union’s Horizon 2020 research and innovation programme
 # (grant agreement No 725899).
 
+import logging
+from flucoma.doc import logger
 from collections import OrderedDict
 
 """
@@ -37,17 +39,12 @@ def default_transform(object_name, data):
 
     data['seealso'] = [x for x in tidy_split(data.pop('see-also',''))]
 
-    try:
-        data['max_seealso'] = data['max-seealso'].split(',')
-    except (KeyError, AttributeError):
-        data['max_seealso'] = ['']
-        print(f'WARNING: No "max-seealso" for {object_name}. Inserting blank placeholder')
-
-    try:
-        data['pd_seealso'] = data['pd-seealso'].split(',')
-    except (KeyError, AttributeError):
-        data['pd_seealso'] = ['']
-        print(f'WARNING: No "pd-seealso" for {object_name}. Inserting blank placeholder')
+    with logger.add_context([object_name]): 
+        for k in ['max-seealso', 'pd-seealso']:    
+            if k in data: 
+                data[k.replace('-', '_')] = [x.strip() for x in data.get(k, '').split(',')]
+            else:
+                logging.warning(f"No {k} entry")
 
     data['parameters'].append({
         'name':'warnings',
