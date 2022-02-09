@@ -6,13 +6,13 @@
 # under the European Union’s Horizon 2020 research and innovation programme
 # (grant agreement No 725899).
 ---
-digest: Cherry pick values from a buffer
+digest: Select and copy specific values from a buffer
 species: buffer-proc
 sc-categories: FluidCorpusManipulation
 sc-related: Classes/Buffer
 see-also: BufSelectEvery
 description: |
-  Pick sets of values from a buffer, described in terms of a list of frame indices and channel numbers. 
+  Copies sets of values from a buffer, described in terms of a list of frame indices and channel numbers. 
   
 parameters:
   source:

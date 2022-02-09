@@ -45,5 +45,35 @@ defaults = {
                 }
             ]
         }
+    },
+    'controls': {
+      "harmThresh": {
+        "harmThreshFreq1": {
+          "description": "In modes 1 and 2, the frequency of the low part of the threshold for the harmonic filter (0-1)"
+        },
+        "harmThreshAmp1": {
+          "description": "In modes 1 and 2, the threshold of the low part for the harmonic filter. That threshold applies to all frequencies up to harmThreshFreq1: how much more powerful (in dB) the harmonic median filter needs to be than the percussive median filter for this bin to be counted as harmonic."
+        },
+        "harmThreshFreq2": {
+          "description": "In modes 1 and 2, the frequency of the hight part of the threshold for the harmonic filter. (0-1)"
+        },
+        "harmThreshAmp2": {
+          "description": "In modes 1 and 2, the threshold of the high part for the harmonic filter. That threshold applies to all frequencies above harmThreshFreq2. The threshold between harmThreshFreq1 and harmThreshFreq2 is interpolated between harmThreshAmp1 and harmThreshAmp2. How much more powerful (in dB) the harmonic median filter needs to be than the percussive median filter for this bin to be counted as harmonic."
+        }
+      },
+      "percThresh": {
+        "percThreshFreq1": {
+          "description": "In mode 2, the frequency of the low part of the threshold for the percussive filter. (0-1)"
+        },
+        "percThreshAmp1": {
+          "description": "In mode 2, the threshold of the low part for the percussive filter. That threshold applies to all frequencies up to percThreshFreq1. How much more powerful (in dB) the percussive median filter needs to be than the harmonic median filter for this bin to be counted as percussive."
+        },
+        "percThreshFreq2": {
+          "description": "In mode 2, the frequency of the hight part of the threshold for the percussive filter. (0-1)"
+        },
+        "percThreshAmp2": {
+          "description": "In mode 2, the threshold of the high part for the percussive filter. That threshold applies to all frequencies above percThreshFreq2. The threshold between percThreshFreq1 and percThreshFreq2 is interpolated between percThreshAmp1 and percThreshAmp2. How much more powerful (in dB) the percussive median filter needs to be than the harmonic median filter for this bin to be counted as percussive."
+        }
+      }
     }
 }

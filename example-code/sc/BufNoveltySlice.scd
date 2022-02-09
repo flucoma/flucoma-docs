@@ -2,7 +2,7 @@
 code::
 // load some buffers
 (
-b = Buffer.read(s,File.realpath(FluidBufNoveltySlice.class.filenameSymbol).dirname.withTrailingSlash ++ "../AudioFiles/Tremblay-AaS-AcousticStrums-M.wav");
+b = Buffer.read(s,FluidFilesPath("Tremblay-AaS-AcousticStrums-M.wav");
 c = Buffer.new(s);
 )
 
@@ -38,7 +38,7 @@ STRONG::Examples of the impact of the filterSize::
 	CODE::
 // load some buffers
 (
-b = Buffer.read(s,File.realpath(FluidBufNoveltySlice.class.filenameSymbol).dirname.withTrailingSlash ++ "../AudioFiles/Tremblay-AaS-AcousticStrums-M.wav");
+b = Buffer.read(s,FluidFilesPath("Tremblay-AaS-AcousticStrums-M.wav"));
 c = Buffer.new(s);
 )
 

@@ -183,7 +183,7 @@ CODE::
 //load the source and declare buffers/arrays
 
 (
-~guitar = Buffer.read(s,File.realpath(FluidNMFMatch.class.filenameSymbol).dirname.withTrailingSlash ++ "../AudioFiles/Tremblay-AaS-AcousticStrums-M.wav");
+~guitar = Buffer.read(s,FluidFilesPath("Tremblay-AaS-AcousticStrums-M.wav"));
 ~resynth = Buffer.new(s);
 ~bases = Buffer.new(s);
 ~spectralshapes = Buffer.new(s);

@@ -2,7 +2,7 @@ Use the pitch and confidence descriptions to control some filtered noise.
 code::
 
 // load some audio
-~scratchy = Buffer.read(s,File.realpath(FluidPitch.class.filenameSymbol).dirname.withTrailingSlash ++ "../AudioFiles/Tremblay-ASWINE-ScratchySynth-M.wav");
+~scratchy = Buffer.read(s,FluidFilesPath("Tremblay-ASWINE-ScratchySynth-M.wav"));
 
 // synth to do the analysis and drive the BPF
 (
@@ -22,7 +22,7 @@ Use the confidence descriptor to modulate a send amount to a delay line.
 
 code::
 // load some audio
-~scratchy = Buffer.read(s,File.realpath(FluidPitch.class.filenameSymbol).dirname.withTrailingSlash ++ "../AudioFiles/Tremblay-ASWINE-ScratchySynth-M.wav");
+~scratchy = Buffer.read(s,FluidFilesPath("Tremblay-ASWINE-ScratchySynth-M.wav"));
 
 // This synth sends the source sound to the delay only when the pitch confidence is above 0.95.
 // This way the scratchy, distorted parts of the sound file are not heard in the delay.
@@ -41,7 +41,7 @@ code::
 ::
 Just watch the parameters come out.
 code::
-~bass = Buffer.read(s,File.realpath(FluidPitch.class.filenameSymbol).dirname.withTrailingSlash ++ "../AudioFiles/Tremblay-AaS-AcBassGuit-Melo-M.wav");
+~bass = Buffer.read(s,FluidFilesPath("Tremblay-AaS-AcBassGuit-Melo-M.wav"));
 
 (
 {
@@ -64,7 +64,7 @@ Just watch the parameters come out on a strong::stereo:: signal.
 code::
 // When a stereo signal is analyzed by FluidPitch.kr it will output a 2D array as a KR stream.
 // See the .poll calls in the synth to see how the freq and conf for each channel are organized.
-~piano_stereo = Buffer.read(s,File.realpath(FluidPitch.class.filenameSymbol).dirname.withTrailingSlash ++ "../AudioFiles/Tremblay-SA-UprightPianoPedalWide.wav");
+~piano_stereo = Buffer.read(s,FluidFilesPath("Tremblay-SA-UprightPianoPedalWide.wav"));
 
 (
 {
