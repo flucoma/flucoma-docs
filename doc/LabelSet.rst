@@ -64,3 +64,11 @@
    :arg action: A function to run when the export is done.
 
    Export to the dataset identifier to a FluidLabelSet.
+
+:message write:
+
+   Save the contents of the object to a JSON file on disk.
+
+:message dump:
+
+   Dump the state of this object as a Dictionary.

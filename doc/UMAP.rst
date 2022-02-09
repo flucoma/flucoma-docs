@@ -3,10 +3,11 @@
 :sc-categories: Dimensionality Reduction, Data Processing
 :sc-related: Classes/FluidMDS, Classes/FluidDataSet
 :see-also: 
-:description: 
-   Multidimensional scaling of a :fluid-obj:`DataSet` using Uniform Manifold Approximation and Projection (UMAP)
+:description: Reduce the dimensions of a :fluid-obj:`DataSet` using the Uniform Manifold Approximation and Project (UMAP) algorithm.
+:discussion: 
+   Performs dimensionality reduction of a :fluid-obj:`DataSet` using Uniform Manifold Approximation and Projection (UMAP)
 
-   Please refer to https://umap-learn.readthedocs.io/ for more information on the algorithm.
+   Please refer to https://umap-learn.readthedocs.io/ and https://learn.flucoma.org/reference/umap for more information on the algorithm.
 
 
 

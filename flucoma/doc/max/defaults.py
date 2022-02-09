@@ -10,7 +10,7 @@
 defaults = {
     'messages': {
         'dump':{
-            'description':'Dump the state of this object from the dump outlet as a <o>dict</o>.',
+            'description':'Dump the state of this object from the dump outlet as a <o>dict</o>. This object must first be fitted before dump can be called.',
             'args':[]
         }, 
         'load':{
@@ -36,7 +36,7 @@ defaults = {
             ] 
         },
         'write':{
-            'description':'Save the internal state of the object to a JSON file on disk. With no argument, a file dialog will appear to choose the file.',
+            'description':'Save the internal state of the object to a JSON file on disk. With no argument, a file dialog will appear to choose the file. This object must first be fitted before write can be called.',
             'args': [
                 {
                     'name':'path',

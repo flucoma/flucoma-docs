@@ -2,12 +2,9 @@
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulationToolkit, Guides/FluidBufMultiThreading
-:see-also: 
-:description: 
-   This class implements a simple Buffer preprocessor, by scaling its values. It draws a simple translation from inputLow to outputLow, and from inputHigh to outputHigh.
-
-   The process will return a buffer with the same size and shape than the requested range.
-
+:see-also: BufThresh, BufCompose, BufFlatten
+:description: Scale |buffer| values from an input range to an output range.
+:discussion: This object is for scaling |buffer| values. It copies data from a source |buffer| to a destination |buffer|, scaling the source from an input range to an output range.
 
 
 :control source:
@@ -16,41 +13,41 @@
 
 :control startFrame:
 
-   The starting point (in samples) from which to copy in the source buffer.
+   The starting point (in samples) from which to copy in the source |buffer|.
 
 :control numFrames:
 
-   The duration (in samples) to copy from the source buffer. The default (-1) copies the full lenght of the buffer.
+   The duration (in samples) to copy from the source |buffer|. The default (-1) copies the full length of the |buffer|.
 
 :control startChan:
 
-   The first channel from which to copy in the source buffer.
+   The first channel from which to copy in the source |buffer|.
 
 :control numChans:
 
-   The number of channels from which to copy in the source buffer. This parameter will wrap around the number of channels in the source buffer. The default (-1) copies all of the buffer's channel.
+   The number of channels from which to copy in the source |buffer|. This parameter will wrap around the number of channels in the source |buffer|. The default (-1) copies all |buffer| channels.
 
 :control destination:
 
-   The index of the buffer to use as the destination for the processed material.
+   The destination |buffer|.
 
 :control inputLow:
 
-   The low reference point of the input. it will be scaled to yield outputLow at the output
+   The low reference value of the input scaling range.
 
 :control inputHigh:
 
-   The high reference point of the input. it will be scaled to yield outputHigh at the output
+   The high reference value of the input scaling range.
 
 :control outputLow:
 
-   The output value when the input is inputLow
+   The low reference value of the output scaling range.
 
 :control outputHigh:
 
-   The output value when the input is inputHigh
+   The high reference value of the output scaling range.
 
 :control clipping:
 
-   Optional clipping of the input (and therefore of the output). 0 is none. 1 caps the lowest input at inputLow. 2 caps the highest input at inputHigh, 3 caps both input low and high value within the described range.
+   Optional clipping of the input (and therefore of the output). 0 is none. 1 clips the lowest input at inputLow. 2 caps the highest input at inputHigh, 3 caps both input low and high value within the described range.
 

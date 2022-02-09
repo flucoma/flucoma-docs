@@ -95,3 +95,11 @@
 :message server:
 
    The server instance the object uses .
+
+:message write:
+
+   Save the contents of the object to a JSON file on disk.
+
+:message dump:
+
+   Dump the state of this object as a Dictionary.

@@ -10,43 +10,43 @@
 
 
 
-:control source1:
+:control sourceA:
 
    The first source buffer
 
-:control startFrame1:
+:control startFrameA:
 
    offset into the first source buffer (samples)
 
-:control numFrames1:
+:control numFramesA:
 
    number of samples to use from first source buffer
 
-:control startChan1:
+:control startChanA:
 
    starting channel of first source buffer
 
-:control numChans1:
+:control numChansA:
 
    number of channels to process in first source buffer
 
-:control source2:
+:control sourceB:
 
    the second source buffer
 
-:control startFrame2:
+:control startFrameB:
 
    offset into the second source buffer (samples)
 
-:control numFrames2:
+:control numFramesB:
 
    number of samples to process from second buffer
 
-:control startChan2:
+:control startChanB:
 
    starting channel for second buffer
 
-:control numChans2:
+:control numChansB:
 
    number of channels to process in second buffer
 
