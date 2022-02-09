@@ -4,8 +4,9 @@
 :sc-related: Guides/FluidCorpusManipulationToolkit, Classes/SpecCentroid, Classes/SpecFlatness, Classes/SpecCentroid, Classes/SpecPcile
 :see-also: SpectralShape, BufPitch, BufMelBands, BufMFCC, BufLoudness, BufStats
 :description: Seven of the spectral shape descriptors, computed on a linear scale for both amplitude and frequency.
-:dicussion: 
+:discussion: 
    The descriptors are:
+   
    * the four first statistical moments (https://en.wikipedia.org/wiki/Moment_(mathematics) ):
   
      * the spectral centroid (1) in Hertz. This is the point that splits the spectrum in 2 halves of equal energy. It is the weighted average of the magnitude spectrum.
@@ -92,4 +93,3 @@
 :control action:
 
    A Function to be evaluated once the offline process has finished and all Buffer's instance variables have been updated on the client side. The function will be passed [features] as an argument.
-

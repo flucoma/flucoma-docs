@@ -6,6 +6,7 @@
 :description: Seven of the  spectral shape descriptors, computed on a linear scale for both amplitude and frequency.
 :discussion: 
    The descriptors are:
+   
    * the four first statistical moments (`<https://en.wikipedia.org/wiki/Moment_(mathematics)>`_), more commonly known as:
         
      * the spectral centroid (1) in Hertz. This is the point that splits the spectrum in 2 halves of equal energy. It is the weighted average of the magnitude spectrum.
@@ -64,4 +65,3 @@
 :control maxFFTSize:
 
    How large can the FFT be, by allocating memory at instantiation time. This cannot be modulated.
-
