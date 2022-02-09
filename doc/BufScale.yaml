@@ -10,12 +10,12 @@ digest: A Scaling Processor for Buffers
 species: buffer-proc
 sc-categories: Libraries>FluidDecomposition
 sc-related: Guides/FluidCorpusManipulationToolkit, Guides/FluidBufMultiThreading
-see-also:
+see-also: BufThresh, BufCompose, BufFlatten
 description: |
-  Buffer value scaling from an input range to an output range.
+  Scale |buffer| values from an input range to an output range.
 
 discussion: |
-  This object is for scaling values stored in buffers. It copies data from a source buffer to a destination, scaling the source from an input range to an output range.
+  This object is for scaling |buffer| values. It copies data from a source |buffer| to a destination |buffer|, scaling the source from an input range to an output range.
   
 parameters:
   source:
@@ -23,31 +23,31 @@ parameters:
       This is the method that calls for the scaling to be calculated on a given source buffer.
   startFrame:
     description: |
-       The starting point (in samples) from which to copy in the source buffer.
+       The starting point (in samples) from which to copy in the source |buffer|.
   numFrames:
     description: |
-       The duration (in samples) to copy from the source buffer. The default (-1) copies the full lenght of the buffer.
+       The duration (in samples) to copy from the source |buffer|. The default (-1) copies the full length of the |buffer|.
   startChan:
     description: |
-       The first channel from which to copy in the source buffer.
+       The first channel from which to copy in the source |buffer|.
   numChans:
     description: |
-       The number of channels from which to copy in the source buffer. This parameter will wrap around the number of channels in the source buffer. The default (-1) copies all of the buffer's channel.
+       The number of channels from which to copy in the source |buffer|. This parameter will wrap around the number of channels in the source |buffer|. The default (-1) copies all |buffer| channels.
   destination:
     description: |
-      The index of the buffer to use as the destination for the processed material.
+      The destination |buffer|.
   inputLow:
     description: |
-      The low reference point of the input. it will be scaled to yield outputLow at the output
+      The low reference value of the input scaling range.
   inputHigh:
     description: |
-      The high reference point of the input. it will be scaled to yield outputHigh at the output
+      The high reference value of the input scaling range.
   outputLow:
     description: |
-      The output value when the input is inputLow
+      The low reference value of the output scaling range.
   outputHigh:
     description: |
-      The output value when the input is inputHigh
+      The high reference value of the output scaling range.
   clipping:
     description: |
-      Optional clipping of the input (and therefore of the output). 0 is none. 1 caps the lowest input at inputLow. 2 caps the highest input at inputHigh, 3 caps both input low and high value within the described range.
+      Optional clipping of the input (and therefore of the output). 0 is none. 1 clips the lowest input at inputLow. 2 caps the highest input at inputHigh, 3 caps both input low and high value within the described range.
