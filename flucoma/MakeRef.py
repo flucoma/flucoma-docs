@@ -47,7 +47,7 @@ def main(passed_args):
     parser.add_argument('json_path', type=Path,
                         help='Path to generated JSON client data')
 
-    parser.add_argument('yaml_path', type=Path,
+    parser.add_argument('doc_path', type=Path,
                         help='Path to human made YAML client documentation')
 
     parser.add_argument('output_path', type=Path,
@@ -90,10 +90,10 @@ def main(passed_args):
         render.client(c, index, args, host_settings)
 
     if host_settings['post']: host_settings['post'](index,args)
-
+    
     topics = list(Path('topics/').resolve().glob('*.yaml'))
-    for t in topics: 
-      render.topic(load_topic_data(t),index, args, host_settings)
+    for t in topics:
+        render.topic(load_topic_data(t),index, args, host_settings)
 
 if __name__ == '__main__':
     main(sys.argv[1:])

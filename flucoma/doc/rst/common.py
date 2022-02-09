@@ -9,6 +9,7 @@
 import logging
 from docutils import nodes
 from docutils.transforms import Transform
+from docutils.transforms.references import Substitutions
 from docutils.readers.standalone import Reader
 
 class LogDocutilsMessages(Transform):
@@ -51,4 +52,4 @@ class LoggingDocutilsReader(Reader):
     Exists only to attach our logging transform to the reading process 
     '''
     def get_transforms(self):            
-        return Reader.get_transforms(self) + [LogDocutilsMessages]
+        return Reader.get_transforms(self) + [Substitutions] + [LogDocutilsMessages] 

@@ -29,7 +29,7 @@ setup_docutils(None,None,None)
 
 def setup_jinja(client_index, args, driver):
     
-    examples_path = (args.yaml_path.resolve() / '../example-code' / args.host).resolve()
+    examples_path = (args.doc_path.resolve() / '../example-code' / args.host).resolve()
     e = Environment(
     loader = FileSystemLoader([args.template_path, examples_path]),
         autoescape=select_autoescape(['html','xml']),
