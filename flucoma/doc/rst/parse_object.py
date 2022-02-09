@@ -146,7 +146,7 @@ def control(name, node, obj, lines):
                     o['enum'][name] = val
                 node.children.remove(node.children[idx])
 
-    o['description'] = (
+    o['description'] = textwrap.dedent(
         #
         ''.join(recover_raw_text(node, lines))
         if len(node.children)
@@ -170,7 +170,7 @@ def message(name, node, obj, lines):
         o['args'] = visitor.args
         node.children.remove(node.children[idx])
 
-    o['description'] = (
+    o['description'] = textwrap.dedent(
         ''.join(recover_raw_text(node, lines))
         if len(node.children)
         else None
