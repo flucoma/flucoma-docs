@@ -90,6 +90,10 @@ def main(passed_args):
         render.client(c, index, args, host_settings)
 
     if host_settings['post']: host_settings['post'](index,args)
+    
+    topics = list(Path('topics/').resolve().glob('*.yaml'))
+    for t in topics:
+        render.topic(load_topic_data(t),index, args, host_settings)
 
 if __name__ == '__main__':
     main(sys.argv[1:])
