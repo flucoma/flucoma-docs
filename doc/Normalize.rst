@@ -2,7 +2,7 @@
 :species: data
 :sc-categories: FluidManipulation
 :sc-related: Classes/FluidStandardize, Classes/FluidDataSet
-:see-also: 
+:see-also: Standardize, RobustScale
 :description: Normalize the entries of a :fluid-obj:`DataSet`, or normalize a data point according to the learned bounds of a data set.
 
 
@@ -23,7 +23,7 @@
 
    :arg dataSet: The :fluid-obj:`DataSet` to normalize
 
-   Compute the normalization factors from a :fluid-obj:`DataSet` for later.
+   Compute the normalization factors from a :fluid-obj:`DataSet` and store them internally.
 
 :message transform:
 
@@ -31,7 +31,7 @@
 
    :arg destDataSet: The :fluid-obj:`DataSet` to populate with normalized data
 
-   Normalize a :fluid-obj:`DataSet` into another :fluid-obj:`DataSet`, using the learned extrema from a previous call to :fluid-obj:`Normalize#fit`
+   Transform a :fluid-obj:`DataSet` using learned extrema from :fluid-obj:`Normalize#fit` and copy the results to the destination :fluid-obj:`DataSet`.
 
 :message fitTransform:
 
@@ -39,7 +39,7 @@
 
    :arg destDataSet: The :fluid-obj:`DataSet` to populate with normalized data
 
-   Normalize a :fluid-obj:`DataSet`
+   Normalize a :fluid-obj:`DataSet` and copy the results to :fluid-obj:`DataSet`.
 
 :message transformPoint:
 
@@ -47,4 +47,4 @@
 
    :arg destBuffer: A |buffer| to contain the normalized value
 
-   Normalize a new data point, using the learned extrema from a previous call to :fluid-obj:`Normalize#fit`
+   Normalize a single data point, using the learned extrema from a previous call to :fluid-obj:`Normalize#fit`
