@@ -7,7 +7,7 @@
 :discussion: 
    The spread is based on the Mel scale (https://en.wikipedia.org/wiki/Mel_scale) which is one of the first attempt to mimic pitch perception scientifically. This implementation allows to select the range and number of bands dynamically.
 
-   The process will return a single multichannel buffer of `numBands` per input channel. Each frame represents a value, which is every hopSize.
+   The process will return a single multichannel buffer of ``numBands`` per input channel. Each frame represents a value, which is every hopSize.
 
 :process: This is the method that calls for the spectral shape descriptors to be calculated on a given source buffer.
 :output: Nothing, as the destination buffer is declared in the function call.

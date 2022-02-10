@@ -5,9 +5,9 @@
 :see-also: 
 :description: Reconstructs the sound in the target buffer using components learned from the source buffer using an NMF decomposition
 :discussion: 
-   The process works by attempting to reconstruct compoentns of the `target` sound using the timbre of the `source` sound, learned through a Nonnegative Matrix Factorisation. The result is a hybrid whose character depends on how well the target can be represnted by the source's spectral frames.
+   The process works by attempting to reconstruct compoentns of the ``target`` sound using the timbre of the ``source`` sound, learned through a Nonnegative Matrix Factorisation. The result is a hybrid whose character depends on how well the target can be represnted by the source's spectral frames.
 
-   In contrast to :fluid-obj:`BufNMF`, the size and content of the bases dictionary are fixed in this application to be the spectrogram of the `source`. Each spectral frame of `source` is a template: be aware that NMF is O(N^2) in the number of templates, so longer `source` buffers will take dramatically longer to process.
+   In contrast to :fluid-obj:`BufNMF`, the size and content of the bases dictionary are fixed in this application to be the spectrogram of the ``source``. Each spectral frame of ``source`` is a template: be aware that NMF is O(N^2) in the number of templates, so longer ``source`` buffers will take dramatically longer to process.
 
    See Driedger, J., Prätzlich, T., & Müller, M. (2015). Let it Bee-Towards NMF-Inspired Audio Mosaicing. ISMIR, 350–356. http://ismir2015.uma.es/articles/13_Paper.pdf
 

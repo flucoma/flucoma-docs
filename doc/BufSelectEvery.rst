@@ -32,9 +32,9 @@
 
 :control frameHop:
 
-   Take every `frameHop` frames. Default = 1 = all frames (where 2 would be every other frame, etc.)
+   Take every ``frameHop`` frames. Default = 1 = all frames (where 2 would be every other frame, etc.)
 
 :control chanHop:
 
-   Take every `chanHop` channels. Default = 1 = all channels (where 2 would be every other channel, etc.)
+   Take every ``chanHop`` channels. Default = 1 = all channels (where 2 would be every other channel, etc.)
 
