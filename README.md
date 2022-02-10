@@ -3,7 +3,7 @@ Produce documentation for [Fluid Corpus Manipulation Library](https://github.com
 ## Overview 
 The generated data comes from building an running a set of C++ executables that produce JSON files detailing the interface of FluCoMa objects (parameter and message names, etc.). 
 
-The handwritten documentation is (currently) in YAML files, that are meant to match up with the generated data. Some Python code then makes sure this assumption is true (i.e. validates the completeness of the handwritten docs against the generated data), and produces rendered documentation for a choice of environments (Max, Pure Data, Supercollider and the command line). 
+The handwritten documentation is in reStructuredText files that are meant to match up with the generated data. Some Python code then makes sure this assumption is true (i.e. validates the completeness of the handwritten docs against the generated data), and produces rendered documentation for a choice of environments (Max, Pure Data, Supercollider and the command line). 
 
 This is intended principally as internal tooling, so there may well be rough edges and weird things. Operation on platforms other than Mac OS or Linux is untested. 
 
