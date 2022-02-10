@@ -9,6 +9,25 @@
 from docutils import nodes, utils
 from docutils.parsers.rst import roles
 
+def parse_fieldlist(node):
+    """
+    node should be the parent of a bunch of fields
+    """
+    
+    res = {}
+    
+    f = node.next_node(nodes.field)
+    
+    while f is not None:
+        n = f.next_node(nodes.field_name) 
+        v = f.next_node(nodes.field_body) 
+        # print(n)
+        res[n.astext().strip()] = v.rawsource.strip() 
+        f = f.next_node(nodes.field,siblings=True,descend=False)
+    
+    return (res if bool(res) else None) 
+    
+
 def fluid_object_role(role, rawtext, text, lineno, inliner,
                        options={}, content=[]):
     """Create a link to a FluCoMa object
