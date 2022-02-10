@@ -3,7 +3,7 @@
 :sc-categories: FluidManipulation
 :sc-related: Classes/FluidStandardize, Classes/FluidDataSet
 :see-also: Standardize, RobustScale
-:description: Normalize the entries of a :fluid-obj:`DataSet`, or normalize a data point according to the learned bounds of a data set.
+:description: Normalize a :fluid-obj:`DataSet` according to learned minimum and maximum values.
 
 
 :control min:
