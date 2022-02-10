@@ -25,7 +25,7 @@
 
    :arg action: A function to run when fitting is complete, taking as its argument an array with the number of data points for each cluster.
 
-   Identify `numClusters` clusters in a :fluid-obj:`DataSet`. It will optimise until no improvement is possible, or up to `maxIter`, whichever comes first. Subsequent calls will continue training from the stopping point with the same conditions.
+   Identify ``numClusters`` clusters in a :fluid-obj:`DataSet`. It will optimise until no improvement is possible, or up to ``maxIter``, whichever comes first. Subsequent calls will continue training from the stopping point with the same conditions.
 
 :message predict:
 

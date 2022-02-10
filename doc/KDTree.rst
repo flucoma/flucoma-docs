@@ -36,7 +36,7 @@
 
    :arg action: A function that will run when the query returns, whose argument is an array of point identifiers from the tree's :fluid-obj:`DataSet`. The returned identifiers are always type symbol, therefore would need to be converted to a number type if intended to be used in that way.
 
-   Returns the identifiers of the `k` points nearest to the one passed.
+   Returns the identifiers of the ``k`` points nearest to the one passed.
 
 :message kNearestDist:
 

@@ -19,8 +19,8 @@
    Some additional options and flexibility can be found through combinations of the basesMode and actMode arguments. If these flags are set to 1, the object expects to be supplied with pre-formed spectra (or envelopes) that will be used as seeds for the decomposition, providing more guided results. When set to 2, the supplied buffers won't be updated, so become templates to match against instead. Note that having both bases and activations set to 2 doesn't make sense, so the object will complain.
 
    If supplying pre-formed data, it's up to the user to make sure that the supplied buffers are the right size:
-     * bases must be `(fft size / 2) + 1` frames and `(components * input channels)` channels
-     * activations  must be `(input frames / hopSize) + 1` frames and `(components * input channels)` channels
+     * bases must be ``(fft size / 2) + 1`` frames and ``(components * input channels)`` channels
+     * activations  must be ``(input frames / hopSize) + 1`` frames and ``(components * input channels)`` channels
 
    In this implementation, the components are reconstructed by masking the original spectrum, such that they will sum to yield the original sound.
 
@@ -52,11 +52,11 @@
 
 :control resynth:
 
-   The index of the buffer where the different reconstructed components will be reconstructed. The buffer will be resized to `components * numChannelsProcessed` channels and `sourceDuration` lenght. If `nil` is provided, the reconstruction will not happen.
+   The index of the buffer where the different reconstructed components will be reconstructed. The buffer will be resized to ``components * numChannelsProcessed`` channels and ``sourceDuration`` lenght. If ``nil`` is provided, the reconstruction will not happen.
 
 :control bases:
 
-   The index of the buffer where the different bases will be written to and/or read from: the behaviour is set in the following argument. If `nil` is provided, no bases will be returned.
+   The index of the buffer where the different bases will be written to and/or read from: the behaviour is set in the following argument. If ``nil`` is provided, no bases will be returned.
 
 :control basesMode:
 
@@ -65,7 +65,7 @@
    :enum:
 
       :0:
-         The bases are seeded randomly, and the resulting ones will be written after the process in the passed buffer. The buffer is resized to `components * numChannelsProcessed` channels and `(fftSize / 2 + 1)` lenght.
+         The bases are seeded randomly, and the resulting ones will be written after the process in the passed buffer. The buffer is resized to ``components * numChannelsProcessed`` channels and ``(fftSize / 2 + 1)`` lenght.
 
       :1:
          The passed buffer is considered as seed for the bases. Its dimensions should match the values above. The resulting bases will replace the seed ones.
@@ -75,7 +75,7 @@
 
 :control activations:
 
-   The index of the buffer where the different activations will be written to and/or read from: the behaviour is set in the following argument. If `nil` is provided, no activation will be returned.
+   The index of the buffer where the different activations will be written to and/or read from: the behaviour is set in the following argument. If ``nil`` is provided, no activation will be returned.
 
 :control actMode:
 
@@ -84,7 +84,7 @@
    :enum:
 
       :0:
-         The activations are seeded randomly, and the resulting ones will be written after the process in the passed buffer. The buffer is resized to `components * numChannelsProcessed` channels and `(sourceDuration / hopsize + 1)` lenght.
+         The activations are seeded randomly, and the resulting ones will be written after the process in the passed buffer. The buffer is resized to ``components * numChannelsProcessed`` channels and ``(sourceDuration / hopsize + 1)`` lenght.
 
       :1:
          The passed buffer is considered as seed for the activations. Its dimensions should match the values above. The resulting activations will replace the seed ones.

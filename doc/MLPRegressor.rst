@@ -8,7 +8,7 @@
 
 :control hidden:
 
-   An `Classes/Array` that gives the sizes of any hidden layers in the network (default is two hidden layers of three units each).
+   An ``Classes/Array`` that gives the sizes of any hidden layers in the network (default is two hidden layers of three units each).
 
 :control activation:
 

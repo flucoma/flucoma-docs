@@ -6,7 +6,7 @@
 :description: 
    Flatten a multichannel |buffer| to a single channel. This can be useful for constructing n-dimensional data points for use with :fluid-obj:`DataSet`
 
-   The `axis` determines how the flattening is arranged. The default value, 1, flattens channel-wise, such that (if we imagine channels are rows, time positions are columns):
+   The ``axis`` determines how the flattening is arranged. The default value, 1, flattens channel-wise, such that (if we imagine channels are rows, time positions are columns):
 
     ===  ===  ===
     a 1  a 2  a 3
@@ -22,7 +22,7 @@
     ===  ===  ===  ===  ===  ===  ===  ===  ===
 
 
-   whereas with `axis = 0` we get
+   whereas with ``axis = 0`` we get
 
     ===  ===  ===  ===  ===  ===  ===  ===  ===
     a 1  a 2  a 3  b 1  b 2  b 3  c 1  c 2  c 3
