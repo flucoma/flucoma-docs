@@ -392,7 +392,7 @@ def rst_filter(ctx,value):
         
 
     #stop docutils mirroing warnings to console, but we probably want to see errors
-    settings = {'report_level':Reporter.WARNING_LEVEL} 
+    settings = {'report_level':Reporter.ERROR_LEVEL, 'flucoma-host':'sc'} 
     ret=  publish_parts(source=value, 
                                 writer = SCDocWriter(),  
                                 reader = LoggingDocutilsReader(),
