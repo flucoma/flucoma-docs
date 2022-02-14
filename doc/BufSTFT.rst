@@ -12,7 +12,7 @@
 
    .. only_in:: sc
 
-      If using an fftSize  1024 the number of channels in the magnitude and phase buffers will be > 1024, which is the maximum number of channels a buffer can have when using |buffer|'s instance method ``loadToFloatArray``. This means you won't be able to get the values from the buffer using ``loadToFloatArray``. Instead you can use |buffer|'s instance method ``getToFloatArray``.
+      If using an fftSize > 1024 the number of channels in the magnitude and phase buffers will be > 1024, which is the maximum number of channels a buffer can have when using |buffer|'s instance method ``loadToFloatArray``. This means you won't be able to get the values from the buffer using ``loadToFloatArray``. Instead you can use |buffer|'s instance method ``getToFloatArray``.
 
 :control source:
 
