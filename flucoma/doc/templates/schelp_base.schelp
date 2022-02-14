@@ -1,0 +1,37 @@
+TITLE:: {{ client_name | as_host_object_name }}
+SUMMARY:: {{ digest }}
+CATEGORIES:: Libraries>FluidCorpusManipulation
+RELATED:: {{ seealso }}
+DESCRIPTION::
+
+{{ description | rst | indent(first=True) }}
+
+{{ discussion | rst | indent(first=True) }}
+
+{% block classmethods %}
+CLASSMETHODS::
+{% endblock %}
+
+INSTANCEMETHODS::
+{% block extra_instancemethods %}{% endblock %} {# for .kr on buffer procs #}
+{# client messages:  #}
+{% for name, data in messages.items() %}
+METHOD:: {{ name }}
+
+  {{ data['description'] | rst | indent(first=True) }}
+
+{% for argname,argdata in data['args'].items() %}
+ARGUMENT:: {{ argname }}
+
+{{ argdata['description'] | rst | indent(first=True) }}
+
+{% endfor %} {# arguments #}
+
+ARGUMENT:: action 
+
+  A function to execute when the server has completed running {{ name }}
+
+{% endfor %} {# messages #}
+
+EXAMPLES::
+{{client_name | example_code | include_raw}}
