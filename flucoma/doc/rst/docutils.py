@@ -7,7 +7,8 @@
 # (grant agreement No 725899).
 
 from docutils import nodes, utils
-from docutils.parsers.rst import roles
+from docutils.parsers.rst import roles,directives
+from docutils.parsers.rst import Directive
 
 def fluid_object_role(role, rawtext, text, lineno, inliner,
                        options={}, content=[]):
@@ -31,3 +32,22 @@ def fluid_topic_role(role, rawtext, text, lineno, inliner,
 def register_custom_roles():
     roles.register_local_role('fluid-obj', fluid_object_role)
     roles.register_local_role('fluid-topic', fluid_topic_role)
+
+
+class OnlyDirective(Directive):
+    final_argument_whitespace = True
+    has_content = True
+    required_arguments = 1
+    def run(self):
+        text = '\n'.join(self.content)        
+        host = self.state.document.settings.ensure_value('flucoma-host','')
+
+        if host in self.arguments[0].split(): 
+            node = nodes.Element()
+            self.state.nested_parse(self.content, self.content_offset,
+                                    node)                           
+            return node.children                            
+        return []
+
+def register_custom_directives():
+    directives.register_directive('only_in',OnlyDirective)

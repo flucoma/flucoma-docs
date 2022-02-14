@@ -1,5 +1,6 @@
 import textwrap
 from flucoma.doc.rst.common import LogDocutilsMessages
+from flucoma.doc.rst.docutils import register_custom_directives
 from pprint import pprint, pformat
 import docutils.nodes
 from docutils.parsers import rst
@@ -181,7 +182,7 @@ def message(name, node, obj, lines):
 def parse(content):
 
     lines = content.splitlines(keepends=True)
-
+    register_custom_directives() 
     parser = rst.Parser(inliner=NoInliner())
     components = (rst.Parser,)
 
