@@ -1,0 +1,15 @@
+{% extends "schelp_base.schelp" %}
+{% block classmethods %}
+CLASSMETHODS::
+
+METHOD:: ar
+
+ARGUMENT:: in
+Audio source A
+
+ARGUMENT:: in2
+Audio source B
+
+
+{% include "schelp_controls.schelp" %}
+{% endblock %}

@@ -1,5 +1,5 @@
 :digest: Interpolate between sounds
-:species: transformer
+:species: transformer[2]
 :sc-categories: FluidManipulation
 :sc-related: Classes/FluidBufAudioTransport
 :see-also: 
