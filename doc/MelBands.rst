@@ -9,6 +9,8 @@
 
    The process will return a multichannel control steam of size maxNumBands, which will be repeated if no change happens within the algorithm, i.e. when the hopSize is larger than the signal vector size.
 
+   When using a high value for ``numBands``, you may end up with empty channels (filled with zeros) in the MelBands output. This is because there is not enough information in the FFT analysis to properly calculate values for every MelBand. Increasing the ``fftSize`` will ensure you have values for all the MelBands.
+   
 :process: The audio rate in, control rate out version of the object.
 :output: A  KR signal of maxNumBands channels, giving the measure amplitudes for each band. The latency is windowSize.
 
