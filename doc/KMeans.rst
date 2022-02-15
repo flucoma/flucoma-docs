@@ -4,11 +4,12 @@
 :sc-related: Classes/FluidDataSet, Classes/FluidLabelSet, Classes/FluidKNNClassifier, Classes/FluidKNNRegressor
 :see-also: 
 :description: 
-   Uses the K-Means algorithm to learn clusters from a :fluid-obj:`DataSet`
 
-   https://scikit-learn.org/stable/tutorial/statistical_inference/unsupervised_learning.html#clustering-grouping-observations-together
+   Uses the K-means algorithm to learn clusters from a :fluid-obj:`DataSet`.
 
+:discussion:
 
+   :fluid-obj:`KMeans` facilitates learning of clusters from a :fluid-obj:`DataSet`. This allows you to assign each point in the data a discrete membership to a group or cluster. The algorithm works by paritioning points into discrete clumps that ideally have *equal variance*. See the scitkit-learn reference for a more technical explanation: https://scikit-learn.org/stable/modules/clustering.html#k-means
 
 :control numClusters:
 
@@ -17,7 +18,6 @@
 :control maxIter:
 
    The maximum number of iterations the algorithm will use whilst fitting.
-
 
 :message fit:
 
