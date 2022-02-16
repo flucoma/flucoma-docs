@@ -5,7 +5,11 @@ CLASSMETHODS::
 METHOD:: ar
 
 ARGUMENT:: in
-The audio to be processed.
+Audio source A
+
+ARGUMENT:: in2
+Audio source B
+
 
 {% include "schelp_controls.schelp" %}
 {% endblock %}
