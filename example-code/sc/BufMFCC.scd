@@ -1,50 +1,49 @@
-
 code::
-// create some buffers
+
+// load a sound
+~buf = Buffer.read(s,FluidFilesPath("Harker-DS-TenOboeMultiphonics-M.wav"));
+
+// do a FluidBufMFCC analysis
 (
-b = Buffer.read(s,FluidFilesPath("Nicol-LoopE-M.wav"));
-c = Buffer.new(s);
+~mfccs = Buffer(s);
+FluidBufMFCC.processBlocking(s,~buf,features:~mfccs,action:{"done".postln;})
 )
 
-// run the process with basic parameters
-(
-Routine{
-	t = Main.elapsedTime;
-	FluidBufMFCC.process(s, b, features: c).wait;
-	(Main.elapsedTime - t).postln;
-}.play
-)
+// plot it in FluidWaveform -- it's not *too* informative, but may be useful to get a sense of what these MFCC curves look like
+FluidWaveform(~buf,featuresBuffer:~mfccs,stackFeatures:true,bounds:Rect(0,0,1600,400));
 
-// listen to the source and look at the buffer
-b.play;
-c.plot(separately:true)
 ::
+strong::Load a lot of MFCC analyses to a data set for later data processing::
+code::
 
-STRONG::A stereo buffer example.::
-CODE::
+// load a sound
+~buf = Buffer.readChannel(s,FluidFilesPath("Tremblay-CF-ChurchBells.wav"),channels:[0]);
 
-// load two very different files
+// do a FluidBufMFCC analysis
 (
-b = Buffer.read(s,FluidFilesPath("Tremblay-SA-UprightPianoPedalWide.wav"));
-c = Buffer.read(s,FluidFilesPath("Tremblay-AaS-AcousticStrums-M.wav"));
+~mfccs = Buffer(s);
+FluidBufMFCC.processBlocking(s,~buf,features:~mfccs,action:{"done".postln;})
 )
 
-// composite one on left one on right as test signals
-FluidBufCompose.process(s, c, numFrames:b.numFrames, startFrame:555000,destStartChan:1, destination:b)
-b.play
-
-// create a buffer as destinations
-c = Buffer.new(s);
-
-//run the process on them
+// create a dataset to put the mfccs in
 (
-Routine{
-    t = Main.elapsedTime;
-    FluidBufMFCC.process(s, b, numCoeffs:5, features: c).wait;
-    (Main.elapsedTime - t).postln;
-}.play
+~ds = FluidDataSet(s).fromBuffer(~mfccs);
+~ds.print;
 )
 
-// look at the buffer: 5 coefs for left, then 5 coefs for right (the first of each is linked to the loudness)
-c.plot(separately:true)
+// dimensionally reduce the 13 MFCCs into 2D space
+( // this will take a bit of time to process!
+fork{
+	~umap = FluidUMAP(s);
+	~norm = FluidNormalize(s);
+	s.sync;
+	~umap.fitTransform(~ds,~ds);
+	~norm.fitTransform(~ds,~ds);
+	~dict = ~ds.dump({
+		arg dict;
+		~plotter = FluidPlotter(bounds:Rect(0,0,800,800),dict:dict);
+	});
+};
+)
+
 ::
