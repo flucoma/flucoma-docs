@@ -11,14 +11,14 @@
    
    Other that the 0th coefficient (they start counting from zero), MFCCs are unchanged by differences in the overall energy of the spectrum (which relates to how we perceive loudness). This means that timbres that are the same will have the same MFCC values (other than MFCC 0) even if they're analysed at different loudnesses. MFCC 0 can still be useful if a measure of the overall energy in the spectrum is important for an analysis. If MFCC 0 is not desired, the parameter ``startCoeff`` can tell this object to return MFCCs starting at a coefficient other than 0 (most often 1). 
    
-   The process will return a stream of ``maxNumCoeffs`` MFCCs, which will be repeated if no change happens within the algorithm, i.e. when the hopSize is larger than the host vector size.
-   
    .. only_in:: sc
 
-      When ``numCoeffs`` is less than ``maxNumCoeffs`` the result will be zero-padded on the right so the control stream returned by this object is alwasy ``maxNumCoeffs`` channels.
+      When ``numCoeffs`` is less than ``maxNumCoeffs`` the result will be zero-padded on the right so the control stream returned by this object is always ``maxNumCoeffs`` channels.
 
 :process: The audio rate in, control rate out version of the object.
-:output: A  KR signal of ``maxNumCoeffs`` channels. The latency is windowSize.
+:output: 
+
+   The process will return a stream of ``maxNumCoeffs`` MFCCs, which will be repeated if no change happens within the algorithm, i.e. when the hopSize is larger than the host vector size. When ``numCoeffs`` is less than ``maxNumCoeffs`` the result will be zero-padded on the right so the control stream returned by this object is always ``maxNumCoeffs`` channels. Latency is ``windowSize`` samples.
 
 
 :control in:
