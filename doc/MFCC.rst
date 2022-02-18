@@ -35,7 +35,7 @@
 
 :control startCoeff:
 
-   The lowest index of the output cepstral coefficient, zero-counting. This can be useful to skip over the 0th coefficient (by indicating ``startCoeff`` = 1), because the 0th coefficient is representative of the overall energy in spectrum, while the rest of the coefficients are not affected by overall energy, only the mel-frequency spectral contour.
+   The lowest index of the output cepstral coefficients to return, zero-counting. This can be useful to skip over the 0th coefficient (by indicating ``startCoeff`` = 1), because the 0th coefficient is representative of the overall energy in spectrum, while the rest of the coefficients are not affected by overall energy, only the mel-frequency spectral contour.
 
 :control minFreq:
 
