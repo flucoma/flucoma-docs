@@ -71,8 +71,36 @@ OSCdef(\mfccs,{
 )
 
 ::
+STRONG::Comparing MFCC Analyses in real-time::
+CODE::
 
-STRONG::A musical example::
+// we'll compare trombone to trombone (but at different playback rates to fake 2 different players
+~buf = Buffer.read(s,FluidFilesPath("Olencki-TenTromboneLongTones-M.wav"));
+
+// the more similar the timbres of the "2" trombonists, the lower the measured "distance" between them will be
+// here, MFCC's timbre measure captures differences in timbre across the trombone range
+// watch for how the more similar the trombone sound, the smaller distance measurement between the 2 analyses
+(
+{
+	var sigA = PlayBuf.ar(1,~buf,BufRateScale.ir(~buf) * 0.9,loop:1);
+	var sigB = PlayBuf.ar(1,~buf,BufRateScale.ir(~buf),loop:1);
+
+	var mfccA = FluidMFCC.kr(sigA,startCoeff:1);
+	var mfccB = FluidMFCC.kr(sigB,startCoeff:1);
+	var dist = Mix((mfccA - mfccB).squared).sqrt;
+	SendReply.kr(Impulse.kr(30),"/dists",dist);
+	[sigA,sigB];
+}.play;
+
+OSCdef(\dists,{
+	arg msg;
+	"\ndistance:\t%\t".format(msg[3].round).post;
+	{"*".post} ! (msg[3] / 5);
+},"/dists");
+)
+
+::
+STRONG::Using Dimensionality Reduction to plot MFCCs in 2D Space::
 
 CODE::
 
@@ -110,11 +138,18 @@ CODE::
 ~ds.print;
 
 (
-~umap.fitTransform(~ds,~ds);
+~umap.fitTransform(~ds,~ds); // dimensionally reduce the 13 MFCCs into 2D space
 ~norm.fitTransform(~ds,~ds);
 ~ds.dump({
 	arg dict;
-	~plotter = FluidPlotter(bounds:Rect(0,0,800,800),dict:dict);
+	var labels = Dictionary.newFrom(["data",Dictionary.new]);
+	dict["data"].keys.do{
+		arg key;
+		labels["data"][key] = [key[0..2]];
+	};
+	~plotter = FluidPlotter(bounds:Rect(0,0,800,800),dict:dict); // plot it: bass analyses will be one color, boxes will be another
+	~plotter.categories_(labels);
 });
 )
+
 ::
