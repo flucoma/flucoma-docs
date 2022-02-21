@@ -29,8 +29,6 @@ ARGUMENT:: blocking
 {% endblock %}
 
 {% block extra_instancemethods %}
-METHOD:: kr
-  Returns a UGen that reports the progress of the running task when executing in a worker thread. Calling code::scope:: with this can be used for a convinient progress monitor
 
 METHOD:: cancel
   Cancels non-blocking processing
