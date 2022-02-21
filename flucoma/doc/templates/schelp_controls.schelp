@@ -4,12 +4,28 @@ ARGUMENT:: {{ name }}
 
 {{ data['description'] | rst | indent(first=True) }}
 
+{%- if 'enum' in data -%}
+  table::{% for enumname,desc in data['enum'].items() -%}
+  ## {{ enumname }} || {{ desc|rst }} 
+{%- endfor %}
+::
+{%- endif -%}  
+
+
 {% endfor %} 
 {% if species != 'buffer-proc' %}{# fixed controls are hidden for FluidBuf* #}
 {% for name, data in arguments.items()  %}
 ARGUMENT:: {{ name }}
 
 {{ data['description'] | rst | indent(first=True) }}
+
+{%- if 'enum' in data -%}
+ table::{%- for enumname,desc in data['enum'].items() -%}
+  ## {{ enumname }} || {{ desc|rst }} 
+{%- endfor %}
+::
+{%- endif -%}  
+
 
 {% endfor %} 
 {% endif %}
