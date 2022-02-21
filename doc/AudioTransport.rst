@@ -2,7 +2,7 @@
 :species: transformer[2]
 :sc-categories: FluidManipulation
 :sc-related: Classes/FluidBufAudioTransport
-:see-also: 
+:see-also: NMFMorph, BufNMFCross
 :description: 
    Interpolates between the spectra of two sounds using optimal transport.
 
