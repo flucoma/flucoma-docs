@@ -5,8 +5,8 @@ ARGUMENT:: {{ name }}
 {{ data['description'] | rst | indent(first=True) }}
 
 {%- if 'enum' in data -%}
- LIST::{% for enumname,desc in data['enum'].items() -%}
-  ## {{ desc|rst }} 
+  table::{% for enumname,desc in data['enum'].items() -%}
+  ## {{ enumname }} || {{ desc|rst }} 
 {%- endfor %}
 ::
 {%- endif -%}  
@@ -20,8 +20,8 @@ ARGUMENT:: {{ name }}
 {{ data['description'] | rst | indent(first=True) }}
 
 {%- if 'enum' in data -%}
- LIST::{%- for enumname,desc in data['enum'].items() -%}
-  ## {{ desc|rst }} 
+ table::{%- for enumname,desc in data['enum'].items() -%}
+  ## {{ enumname }} || {{ desc|rst }} 
 {%- endfor %}
 ::
 {%- endif -%}  
