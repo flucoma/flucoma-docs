@@ -47,7 +47,8 @@ def sc_type_map(type):
         'enum':'Integer', 
         'fft': 'Integer',
         'dataset':'FluidDataSet',
-        'labelset':'FluidLabelSet'
+        'labelset':'FluidLabelSet', 
+        'chocies': 'Symbol'
     }[type]
 
 

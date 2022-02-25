@@ -83,7 +83,8 @@ def cli_type_map(type):
         'enum':'int', 
         'fft': 'int',
         'dataset':'symbol',
-        'labelset':'symbol'
+        'labelset':'symbol', 
+        'chocies': 'symbol'
     }[type]
     
 def transform_data(client, data):
