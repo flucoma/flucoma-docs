@@ -21,6 +21,17 @@ jobs:
           tag_name: api # tag name to delete
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Setup SSH
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH }}
+          known_hosts: 'placeholder'
+
+      - name: Adding Known Hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.DO_IP }} >> ~/.ssh/known_hosts
 
       - name: package and upload
         uses: softprops/action-gh-release@v1
@@ -31,3 +42,7 @@ jobs:
           prerelease: true
           tag_name: api
           draft: false
+
+      - name: Upload To Droplet
+        run: |
+          rsync -avz --delete --no-times --no-o --no-g --no-perms ./build/flucoma.api.json james@${{ secrets.DO_IP }}:/home/learn/www/
