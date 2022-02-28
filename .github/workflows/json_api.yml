@@ -1,0 +1,33 @@
+name: Dev API
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ dev, ci/** ]
+
+jobs:
+  macbuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: flucoma/actions/env@v4
+      - uses: flucoma/actions/docs@v4
+        with:
+          target: 'MAKE_RAW_REF'
+
+      - uses: dev-drprasad/delete-tag-and-release@v0.2.0
+        with:
+          delete_release: true # default: false
+          tag_name: api # tag name to delete
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: package and upload
+        uses: softprops/action-gh-release@v1
+        with:
+          name: FluCoMa Max Nightly Release
+          body: "This is a nightly build of the FluCoMa Max package. As such, be warned there may be bugs or other unexpected behaviour. The build hash is ${{ github.sha }}"
+          files: 'build/flucoma.api.json'
+          prerelease: false
+          tag_name: api
+          draft: false
