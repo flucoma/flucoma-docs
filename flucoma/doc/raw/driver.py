@@ -16,7 +16,7 @@ def write_index(idx,program_args):
     
     path = program_args.output_path 
     path.mkdir(exist_ok=True)
-    apifile = path / 'flucoma.api.json'
+    apifile = path / 'api.json'
     with open(apifile,'w') as f:
         json.dump(idx,f,sort_keys=True, indent=4)
     
