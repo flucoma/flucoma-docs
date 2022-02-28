@@ -6,7 +6,7 @@ on:
     branches: [ dev, ci/** ]
 
 jobs:
-  macbuild:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
