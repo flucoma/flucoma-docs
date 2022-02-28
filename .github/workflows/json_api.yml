@@ -25,9 +25,9 @@ jobs:
       - name: package and upload
         uses: softprops/action-gh-release@v1
         with:
-          name: FluCoMa Max Nightly Release
-          body: "This is a nightly build of the FluCoMa Max package. As such, be warned there may be bugs or other unexpected behaviour. The build hash is ${{ github.sha }}"
+          name: FluCoMa Docs API
+          body: "A JSON that can be accessed to derive parameters/args for objects. The build hash is ${{ github.sha }}"
           files: 'build/flucoma.api.json'
-          prerelease: false
+          prerelease: true
           tag_name: api
           draft: false
