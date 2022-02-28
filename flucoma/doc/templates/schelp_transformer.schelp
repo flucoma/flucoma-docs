@@ -4,5 +4,8 @@ CLASSMETHODS::
 
 METHOD:: ar
 
+ARGUMENT:: in
+The audio to be processed.
+
 {% include "schelp_controls.schelp" %}
 {% endblock %}

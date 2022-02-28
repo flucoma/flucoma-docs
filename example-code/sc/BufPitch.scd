@@ -1,114 +1,90 @@
 
 code::
-// create a buffer with a short clicking sinusoidal burst (220Hz) starting at frame 8192 for 1024 frames
 (
-b = Buffer.sendCollection(s, (Array.fill(8192,{0}) ++ (Signal.sineFill(1203,[0,0,0,0,0,1],[0,0,0,0,0,0.5pi]).takeThese({|x,i|i>1023})) ++ Array.fill(8192,{0})));
-c = Buffer.new(s);
+// load a sound file
+~scratchy = Buffer.read(s,FluidFilesPath("Tremblay-ASWINE-ScratchySynth-M.wav"));
+// and a buffer to write the FluidBufPitch features into
+~pitch_features_buf = Buffer.new(s);
+// specify some params for the analysis (these are the defaults, but we'll specify them here so we can use them later)
+~windowSize = 1024;
+~hopSize = 512;
 )
 
-// listen to the source and look at the buffer
-b.play; b.plot;
-
-// run the process with basic parameters
 (
-Routine{
-	t = Main.elapsedTime;
-	FluidBufPitch.process(s, b, features: c).wait;
-	(Main.elapsedTime - t).postln;
-}.play
+// run the analysis
+FluidBufPitch.processBlocking(s,~scratchy,features:~pitch_features_buf,windowSize:~windowSize,hopSize:~hopSize);
+~pitch_features_buf.loadToFloatArray(action:{
+	arg fa;
+	~pitch_features_array = fa.clump(2);
+});
 )
 
-// look at the analysis
-c.plot(separately:true)
+//look at the retrieved formatted array of [pitch,confidence] values
+~pitch_features_array.postln
 
-// The values are interleaved [pitch,confidence] in the buffer as they are on 2 channels: to get to the right frame, divide the SR of the input by the hopSize, then multiply by 2 because of the channel interleaving
-// here we are querying from one frame before (the signal starts at 8192, which is frame 16 (8192/512), therefore starting the query at frame 15, which is index 30.
-c.getn(30,10,{|x|x.postln})
+//iterate and make an array of the indices which are fitting the conditions
+(
+~selected_indices = List.new;
+~pitch_features_array.do({
+	arg val, i;
+	// if pitch is greater than 500Hz and confidence higher than 0.98, add the index to the list
+	if((val[0] > 500) && (val[1] > 0.98),{
+		~selected_indices.add(i);
+	});
+});
+~selected_indices.postln;
+)
 
-// observe that the first frame is silent, as expected. The next frame's confidence is low-ish, because the window is half full (window of 1024, overlap of 512). Then a full window is analysed, with strong confidence. Then another half full window, then silence, as expected.
+(
+// In order to granulate the frames, we need to convert our indices to centerPos.
+~selected_center_pos = ~selected_indices.collect({arg i; (i * ~hopSize) / ~scratchy.sampleRate});
+~selected_center_pos.postln;
+// Load this list of center positions into a buffer so we can look them up later on the server
+~center_pos_buf = Buffer.loadCollection(s,~selected_center_pos);
+)
+
+(
+// Randomly create indices for the buffer and use them to look up center positions for TGrains.ar
+{
+	var trig = Impulse.kr(s.sampleRate / ~hopSize);
+	var index = TIRand.kr(0,BufFrames.ir(~center_pos_buf)-1,trig);
+	var centerPos = Index.kr(~center_pos_buf,index);
+	var pan = TRand.kr(-1.0,1.0,trig);
+	var sig;
+	sig = TGrains.ar(2,trig,~scratchy,BufRateScale.ir(~scratchy),centerPos,~windowSize / BufSampleRate.ir(~scratchy),pan,0.5);
+	sig;
+}.play;
+)
 ::
 
 STRONG::A stereo buffer example.::
 CODE::
-
 // load two very different files
 (
-b = Buffer.read(s,File.realpath(FluidBufPitch.class.filenameSymbol).dirname.withTrailingSlash ++ "../AudioFiles/Tremblay-SA-UprightPianoPedalWide.wav");
-c = Buffer.read(s,File.realpath(FluidBufPitch.class.filenameSymbol).dirname.withTrailingSlash ++ "../AudioFiles/Tremblay-AaS-AcousticStrums-M.wav");
+~piano = Buffer.read(s,FluidFilesPath("Tremblay-SA-UprightPianoPedalWide.wav"));
+~guitar = Buffer.read(s,FluidFilesPath("Tremblay-AaS-AcousticStrums-M.wav"));
+~both = Buffer(s);
 )
 
 // composite one on left one on right as test signals
-FluidBufCompose.process(s, c, numFrames:b.numFrames, startFrame:555000,destStartChan:1, destination:b)
-b.play
+FluidBufCompose.processBlocking(s,~piano, destination:~both,action:{"done".postln});
+FluidBufCompose.processBlocking(s,~guitar,numFrames:~piano.numFrames,startFrame:555000,destStartChan:1,destination:~both,action:{"done".postln});
+
+// listen
+~both.play
 
 // create a buffer as destinations
-c = Buffer.new(s);
+~pitch_analysis = Buffer(s);
 
-//run the process on them, with limited bandwidth and units in MIDI notes
-(
-Routine{
-    t = Main.elapsedTime;
-    FluidBufPitch.process(s, b, features: c, minFreq:200, maxFreq:2000, unit:1).wait;
-    (Main.elapsedTime - t).postln;
-}.play
-)
+//run the process on them, with limited bandwidth
+FluidBufPitch.process(s, ~both, features: ~pitch_analysis, minFreq:60, maxFreq:4000,action:{"done".postln});
 
 // look at the buffer: [pitch,confidence] for left then [pitch,confidence] for right
-c.plot(separately:true)
-::
+FluidWaveform(~both,featureBuffer:~pitch_analysis,stackFeatures:true,bounds:Rect(0,0,1600,400));
 
-STRONG::A musical example.::
-code::
-// create some buffers
-(
-b = Buffer.read(s,File.realpath(FluidBufPitch.class.filenameSymbol).dirname.withTrailingSlash ++ "../AudioFiles/Tremblay-ASWINE-ScratchySynth-M.wav");
-c = Buffer.new(s);
-)
+// blue is piano pitch
+// orange is piano pitch confidence
+// green is guitar pitch
+// red is guitar pitch confidence
 
-// run the process with basic parameters and retrieve the array in the langage side
-(
-Routine{
-	t = Main.elapsedTime;
-	FluidBufPitch.process(s, b, features: c,action:{c.loadToFloatArray(action: {|x| d = x.reshape((x.size()/2).asInteger, 2)})}).wait;
-	(Main.elapsedTime - t).postln;
-}.play
-)
-
-//look at the retrieved formatted array of [pitch,confidence] values
-d.postln
-
-//iterate and make an array of the indices which are fitting the conditions
-(
-e = Array.new;
-d.do({
-	arg val, i;
-	if ((val[0] > 500) && (val[1] > 0.98)) {e = e.add(i)}; // if pitch is greater than 500Hz and confidence higher than 0.98, keep the index
-});
-)
-e.postln;
-
-//granulate only the frames that are in our buffer
-// We need to convert our indices to frame start. Their position was (index * hopSize) - (hopSize) in FluidBufPitch
-f = e.collect({arg i; (i * 512) - 512});
-
-// define a basic grain synth
-(
-SynthDef(\grain,
-    { arg out=0, buf =0 , ind = 0, pan = 0;
-        var env;
-		env = EnvGen.kr(Env.new([0,1,0],[512/s.sampleRate].dup,\sine), doneAction: Done.freeSelf);
-		Out.ar(out, Pan2.ar(PlayBuf.ar(1,buf,startPos:ind),pan));
-    }).add;
-)
-
-// start the sequence
-(
-a = Pxrand(f, inf).asStream;
-Routine({
-    loop({
-        Synth(\grain, [\buf, b, \ind, a.next, \pan, (2.0.rand - 1)]);
-		(256/s.sampleRate).wait;
-    })
-}).play;
-)
 ::

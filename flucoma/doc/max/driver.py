@@ -70,13 +70,12 @@ def write_max_indices(idx,program_args):
 
         maxname = max_object_namer(data)
         
-        if 'messages' in data: 
-            if 'dump' in data['messages']:
-                maxdb_objs['maxdb']['externals'][maxname]={
-                    'object':'fluid.libmanipulation',
-                    'package':'Fluid Corpus Manipulation'
-                }
-
+        if data.get('species','') == 'data':
+            maxdb_objs['maxdb']['externals'][maxname]={
+                'object':'fluid.libmanipulation',
+                'package':'Fluid Corpus Manipulation'
+            }
+        
         qlookup[maxname] = {
             'digest': data['digest'],'category':['Fluid Corpus Manuipulation']
         }
@@ -103,10 +102,10 @@ settings = {
                         max_depart_flucoma_reference),
     'topic_extension': 'maxvig.xml', 
     'topic_subdir': 'vignettes',
+    'client_subdir': '',
     'topic_template':'maxvig.xml',
     'transform': transform_data, 
     'post': write_max_indices, 
     'defaults': defaults, 
     'buffer-string':'<o>buffer~</o>'
 }
-     

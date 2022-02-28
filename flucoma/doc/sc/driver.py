@@ -58,6 +58,9 @@ def sc_transform_data(object_name,data):
     data['module'] = ''        
     data['discussion'] = data.pop('discussion','')             
 
+    if data['see-also'] ==  'None':
+        data['see-also'] = ''
+
     seealso = [f'Classes/Fluid{x}' for x in tidy_split(data.pop('see-also',''))]
     seealso.extend(tidy_split(data.pop('sc-related','')))
     data['seealso'] = ','.join(seealso)
@@ -70,6 +73,34 @@ def sc_transform_data(object_name,data):
     data['attributes'] = OrderedDict(
         (filter_fixed_controls(params,fixed=False))    
     )
+
+    fftSettings = data['attributes'].pop('fftSettings',None) 
+    if fftSettings: #only works because they're last in the list 
+        data['attributes'] = {
+            **data['attributes'],
+            'windowSize': fftSettings['win'], 
+            'hopSize': fftSettings['hop'], 
+            'fftSize':  fftSettings['fft']
+        }
+    
+    #HPSS horrors 
+    def spliceAttrs(key):
+        if key in data['attributes']:
+            idx = list(data['attributes'].keys()).index(key)
+            attrs = [(k,v) for (k,v) in data['attributes'].items()]
+            newAttrs = [(k,v) for (k,v) in defaults['controls'][key].items()]
+            data['attributes'] = dict(
+                attrs[0:idx] + newAttrs + attrs[idx+1:]        
+            )      
+    
+    spliceAttrs('harmThresh') 
+    spliceAttrs('percThresh') 
+
+    
+    # move 'padding to end'
+    padding = data['attributes'].pop('padding',None)    
+    if padding:
+        data['attributes'] = {**data['attributes'], 'padding': padding}
 
     data['arguments'] = OrderedDict(
         filter_fixed_controls(params,fixed=True) 
@@ -100,7 +131,8 @@ settings = {
     'writer': SCDocWriter, 
     'rst_render': rst_filter,
     'topic_extension': 'schelp', 
-    'topic_subdir': 'guides',
+    'topic_subdir': 'Guides',
+    'client_subdir': 'Classes',
     'topic_template':'schelp_topic.schelp',
     'transform': sc_transform_data, 
     'post': None, 

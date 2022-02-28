@@ -2,7 +2,7 @@
 code::
 s.reboot
 (
-b = Buffer.read(s,File.realpath(FluidBufSTFT.class.filenameSymbol).dirname.withTrailingSlash ++ "../AudioFiles/Nicol-LoopE-M.wav");
+b = Buffer.read(s,FluidFilesPath("Nicol-LoopE-M.wav"));
 m = Buffer.new;
 p = Buffer.new;
 r = Buffer.new;

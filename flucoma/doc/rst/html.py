@@ -74,9 +74,10 @@ def rst_filter(ctx,value):
     index =  ctx.parent['index']
     
     value += f"\n\n.. |buffer| replace:: {driver.get('buffer-string','buffer')}\n"
+        
     
     #stop docutils mirroing warnings to console, but we probably want to see errors
-    settings = {'report_level':Reporter.ERROR_LEVEL} 
+    settings = {'report_level':Reporter.ERROR_LEVEL,'flucoma-host':ctx['host']} 
     
     tre = publish_parts(source=value, 
                                 writer = FluidHTMLWriter(index, driver),  

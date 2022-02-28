@@ -15,12 +15,15 @@ from .common import LoggingDocutilsReader
 from docutils import nodes, writers, languages
 from collections.abc import Iterable
 from jinja2 import pass_context
-
+from docutils.transforms.references import Substitutions
 class SCDocWriter(writers.Writer):
     
     supported = ('schelp',)
     
     output = None
+    
+    def get_transforms(self):        
+        return super().get_transforms() + [Substitutions]
     
     def __init__(self, *args):
         writers.Writer.__init__(self)
@@ -316,12 +319,33 @@ class SCHelpTranslator(nodes.NodeVisitor):
     	pass    
         
     def visit_paragraph(self,node):
+        # print(node.astext())
         self.body.append('\n')
     
     def depart_paragraph(self, node):
         self.body.append('\n')
+        # pass
+    
+    def visit_block_quote(self,node):
         pass
-        
+        # print('blockquote',node.astext())
+        # raise nodes.SkipNode
+    
+    def depart_block_quote(self,node):
+        pass
+    
+    def visit_substitution_definition(self, node):
+        # print('subdef',node.astext())
+        raise nodes.SkipNode
+    
+    def visit_target(self,node):
+        # print('target',node.astext())
+        raise nodes.SkipNode
+    
+    def visit_title_reference(self,node):
+        # print('title_reference',node.astext())
+        raise nodes.SkipNode
+            
         
 rst_elements = ('abbreviation', 'acronym', 'address', 'admonition',
     'attention', 'attribution', 'author', 'authors', 'block_quote', 
@@ -368,10 +392,11 @@ def rst_filter(ctx,value):
         
 
     #stop docutils mirroing warnings to console, but we probably want to see errors
-    settings = {'report_level':Reporter.ERROR_LEVEL} 
-    return publish_parts(source=value, 
+    settings = {'report_level':Reporter.ERROR_LEVEL, 'flucoma-host':'sc'} 
+    ret=  publish_parts(source=value, 
                                 writer = SCDocWriter(),  
                                 reader = LoggingDocutilsReader(),
-                                settings_overrides=settings)['whole']
-
+                                settings_overrides=settings)
+    return ret['whole']
+                                
         

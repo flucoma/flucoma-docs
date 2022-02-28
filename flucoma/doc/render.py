@@ -14,7 +14,7 @@ from collections.abc import Callable
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from markupsafe import Markup
 
-from flucoma.doc.rst.docutils import register_custom_roles
+from flucoma.doc.rst.docutils import register_custom_roles, register_custom_directives
 from .logger import ContextView,add_context
 
 def type_map(x,namer):
@@ -25,11 +25,12 @@ def type_map(x,namer):
 
 def setup_docutils(client_index, args, driver):
     register_custom_roles()
+    register_custom_directives() 
 setup_docutils(None,None,None)
 
 def setup_jinja(client_index, args, driver):
     
-    examples_path = (args.yaml_path.resolve() / '../example-code' / args.host).resolve()
+    examples_path = (args.doc_path.resolve() / '../example-code' / args.host).resolve()
     e = Environment(
     loader = FileSystemLoader([args.template_path, examples_path]),
         autoescape=select_autoescape(['html','xml']),
@@ -58,12 +59,13 @@ def client(client, client_index, args, driver):
     outputdir = args.output_path
     client_data = client_index[client]
     
-    ofile = outputdir / f"{driver['namer'](client_data)}.{driver['extension']}"
+    ofile = outputdir / f"{Path(driver['client_subdir']) / driver['namer'](client_data)}.{driver['extension']}"
+
+    (outputdir / Path(driver['client_subdir'])).mkdir(exist_ok=True)
     
     env = setup_jinja(client_index, args, driver)    
     
     template_string = driver['template'](client_data) if isinstance(driver['template'],Callable) else driver['template']
-    
     
     template = env.get_template(template_string)
     logging.info(f'{client}: Making {ofile}')
@@ -76,7 +78,8 @@ def client(client, client_index, args, driver):
         with open(ofile,'w') as f:
             f.write(template.render(client_data, 
                                     index=client_index, 
-                                    driver = driver 
+                                    driver = driver, 
+                                    host=args.host
                                     )
                     )            
             
@@ -99,9 +102,8 @@ def topic(topic_data,client_index,args,driver):
             digest=topic_data['digest'],
             description=topic_data['description'],
             index=client_index, 
-            driver = driver 
+            driver = driver, 
+            host=args.host            
         ))
         
     return topic_data
-    
-    

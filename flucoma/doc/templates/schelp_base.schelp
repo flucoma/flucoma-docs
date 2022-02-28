@@ -2,11 +2,11 @@ TITLE:: {{ client_name | as_host_object_name }}
 SUMMARY:: {{ digest }}
 CATEGORIES:: Libraries>FluidCorpusManipulation
 RELATED:: {{ seealso }}
-DESCRIPTION:: 
+DESCRIPTION::
 
 {{ description | rst | indent(first=True) }}
 
-{{ discussion | rst | indent(first=True) }} 
+{{ discussion | rst | indent(first=True) }}
 
 {% block classmethods %}
 CLASSMETHODS::
@@ -25,11 +25,12 @@ ARGUMENT:: {{ argname }}
 
 {{ argdata['description'] | rst | indent(first=True) }}
 
+{% endfor %} {# arguments #}
+
 ARGUMENT:: action 
 
   A function to execute when the server has completed running {{ name }}
 
-{% endfor %} {# arguments #}  
 {% endfor %} {# messages #}
 
 EXAMPLES::

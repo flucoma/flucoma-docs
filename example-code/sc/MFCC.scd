@@ -46,7 +46,7 @@ x.set(\type, 0)
 x.free
 
 // load a more exciting one
-c = Buffer.read(s,File.realpath(FluidMFCC.class.filenameSymbol).dirname.withTrailingSlash ++ "../AudioFiles/Tremblay-AaS-SynthTwoVoices-M.wav");
+c = Buffer.read(s,FluidFilesPath("Tremblay-AaS-SynthTwoVoices-M.wav"));
 
 // analyse with parameters to be changed
 (
@@ -133,8 +133,7 @@ sliders = List.newClear(0);
 };
 
 //look in the directory for all .wav files
-paths = PathName(File.realpath(FluidMFCC.class.filenameSymbol)
-	.dirname.withTrailingSlash ++ "../AudioFiles/")
+paths = PathName(FluidFilesPath())
 .files.select({arg item; item.fullPath.contains(".wav")})
 .collect({arg item; item.fullPath});
 

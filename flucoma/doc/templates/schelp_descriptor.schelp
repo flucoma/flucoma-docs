@@ -2,11 +2,14 @@
 {% block classmethods %}
 CLASSMETHODS::
 
-METHOD:: kr 
+METHOD:: kr
 
 ARGUMENT:: in
 
   Audio-rate signal to analyze
-  
+
 {% include "schelp_controls.schelp" %}
+
+RETURNS:: {{ output | rst | indent(first=True) }}
+
 {% endblock %}

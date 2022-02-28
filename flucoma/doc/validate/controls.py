@@ -33,7 +33,7 @@ def render_constraints_markup(control):
     
     special_invariants = {
         'fftFrame': '``(FFT Size / 2) + 1`` (see fft settings)',
-        'maxFFTFrame': '(max FFFT Size / 2) + 1`` (see maxFFTSize)'
+        'maxFFTFrame': '``(max FFT Size / 2) + 1`` (see maxFFTSize)'
     } 
     
     resultStr = '\n**Constraints**\n\n'
@@ -44,8 +44,8 @@ def render_constraints_markup(control):
     upperLimits = [upperLimits] if not isinstance(upperLimits,list) else upperLimits
     lowerLimits = [lowerLimits] if not isinstance(lowerLimits,list) else lowerLimits
     
-    upperStrs = [special_invariants.get(c,f'``{c}``') for c in upperLimits]
-    lowerStrs = [special_invariants.get(c,f'``{c}``') for c in lowerLimits]
+    upperStrs = [special_invariants.get(c,f'{c}') for c in upperLimits]
+    lowerStrs = [special_invariants.get(c,f'{c}') for c in lowerLimits]
     
     if 'max' in constraints: upperStrs.append(str(constraints['max']))
     if 'min' in constraints: lowerStrs.append(str(constraints['min']))

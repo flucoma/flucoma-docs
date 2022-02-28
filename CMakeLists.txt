@@ -82,8 +82,8 @@ if(NOT PYTHON_3)
   message(FATAL_ERROR "Python 3 not found, won't be doing attempting to generate docs")
 endif()
 
-set(FLUID_JSON_DOC "${CMAKE_BINARY_DIR}/json")
-set(FLUID_YAML_DOC "${CMAKE_CURRENT_SOURCE_DIR}/doc")
+set(FLUID_GENERATED_DOC "${CMAKE_BINARY_DIR}/json")
+set(FLUID_HUMAN_DOC "${CMAKE_CURRENT_SOURCE_DIR}/doc")
 set(FLIUD_JINJA_TEMPLATES "${CMAKE_CURRENT_SOURCE_DIR}/flucoma/doc/templates")
 
 # Make sure to build targets from flucoma-core
@@ -127,7 +127,7 @@ macro(add_ref_target platform comment)
   
   add_custom_target(MAKE_${platform_uc}_REF
     COMMAND ${CMAKE_COMMAND} -E make_directory "${${platform_uc}_DOC_OUT}"
-  	COMMAND ${PYTHON_3} "-mflucoma.MakeRef" "${platform_lc}" ${FLUID_JSON_DOC} ${FLUID_YAML_DOC} "${${platform_uc}_DOC_OUT}" ${FLIUD_JINJA_TEMPLATES}
+  	COMMAND ${PYTHON_3} "-mflucoma.MakeRef" "${platform_lc}" ${FLUID_GENERATED_DOC} ${FLUID_HUMAN_DOC} "${${platform_uc}_DOC_OUT}" ${FLIUD_JINJA_TEMPLATES}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
   	COMMENT ${comment}
     DEPENDS ${json_files}

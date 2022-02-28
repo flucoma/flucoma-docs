@@ -51,7 +51,11 @@ def pd_depart_flucoma_reference(self, node, data):
 
 
 def pd_object_namer(data):    
-    tilde = '~' if not data['client_name'].startswith('Buf') else ''
+    tilde = (
+        '~' 
+        if not data['client_name'].startswith('Buf') and not data['species'] == 'data' 
+        else ''
+    )
     return f"fluid.{data['client_name'].lower()}{tilde}"    
 
 
@@ -93,6 +97,7 @@ settings = {
     'rst_render': rst_filter,
     'topic_extension': 'html', 
     'topic_subdir': '',
+    'client_subdir': '',
     'topic_template':'pd_htmltopic.html',
     'transform': transform_data, 
     'post': None, 

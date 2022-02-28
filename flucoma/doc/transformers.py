@@ -6,6 +6,8 @@
 # under the European Union’s Horizon 2020 research and innovation programme
 # (grant agreement No 725899).
 
+import logging
+from flucoma.doc import logger
 from collections import OrderedDict
 
 """
@@ -36,7 +38,14 @@ def default_transform(object_name, data):
     data['discussion'] = data.pop('discussion','') 
 
     data['seealso'] = [x for x in tidy_split(data.pop('see-also',''))]
-    
+
+    with logger.add_context([object_name]): 
+        for k in ['max-seealso', 'pd-seealso']:    
+            if k in data: 
+                data[k.replace('-', '_')] = [x.strip() for x in data.get(k, '').split(',')]
+            else:
+                logging.warning(f"No {k} entry")
+
     data['parameters'].append({
         'name':'warnings',
         'constraints': {'max': 1, 'min': 0},
