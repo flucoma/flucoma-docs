@@ -5,9 +5,9 @@
 :see-also: OnsetSlice, BufAmpSlice, BufNoveltySlice, BufTransientSlice
 :description: Implements a selection of spectrum-based onset slicers
 :discussion:
-   Performs segmentation based on the measured difference between spectral frames.
+   Performs segmentation based on the difference between spectral frames.
    
-   The metric for calculating difference can be modified from a curated selection, lending the algorithm toward slicing a broad range of musical materials.
+   The metric for calculating difference can be chosen from a curated selection, lending the algorithm toward slicing a broad range of musical materials.
 
 :process: This is the method that calls for the slicing to be calculated on a given source buffer.
 :output: Nothing, as the various destination buffers are declared in the function call.
