@@ -3,11 +3,11 @@
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulationToolkit
 :see-also: OnsetSlice, BufAmpSlice, BufNoveltySlice, BufTransientSlice
-:description: Implements a selection of spectral-based onset detection metrics
-:discussion: 
-   For an overview of onset detection metrics see (http://www.dafx.ca/proceedings/papers/p_133.pdf). Some are already available in SuperCollider's Onsets object, yet not as offline processes.
-
-   The process will return a buffer which contains indices (in samples) of estimated starting points of different slices.
+:description: Implements a selection of spectrum-based onset slicers
+:discussion:
+   Performs segmentation based on the measured difference between spectral frames.
+   
+   The metric for calculating difference can be modified from a curated selection, lending the algorithm toward slicing a broad range of musical materials.
 
 :process: This is the method that calls for the slicing to be calculated on a given source buffer.
 :output: Nothing, as the various destination buffers are declared in the function call.
