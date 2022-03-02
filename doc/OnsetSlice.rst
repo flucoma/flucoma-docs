@@ -5,9 +5,9 @@
 :see-also: BufOnsetSlice, AmpSlice, NoveltySlice, TransientSlice
 :description: Implements a selection of spectrum-based onset slicers
 :discussion:
-   Performs segmentation based on the measured difference between spectral frames.
+   Performs segmentation based on the difference between spectral frames.
    
-   The metric for calculating difference can be modified from a curated selection, lending the algorithm toward slicing a broad range of musical materials.
+   The metric for calculating difference can be chosen from a curated selection, lending the algorithm toward slicing a broad range of musical materials.
 
 :process: The audio rate version of the object.
 :output: An audio stream with impulses at detected transients. The latency between the input and the output is windowSize at maximum.
