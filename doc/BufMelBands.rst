@@ -11,6 +11,8 @@
   This implementation allows to select the range and number of bands dynamically. The ``numBands`` MelBands will be perceptually equally distributed between ``minFreq`` and ``maxFreq``.
 
   When using a high value for ``numBands``, you may end up with empty channels (filled with zeros) in the MelBands output. This is because there is not enough information in the FFT analysis to properly calculate values for every MelBand. Increasing the ``fftSize`` will ensure you have values for all the MelBands.
+  
+  Visit https://learn.flucoma.org/reference/melbands to learn more.
 
 :process: This is the method that calls for the analysis to be calculated on a given source buffer.
 

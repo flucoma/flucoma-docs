@@ -10,6 +10,8 @@
 
    When using a high value for ``numBands``, you may end up with empty channels (filled with zeros) in the MelBands output. This is because there is not enough information in the FFT analysis to properly calculate values for every MelBand. Increasing the ``fftSize`` will ensure you have values for all the MelBands.
    
+   Visit https://learn.flucoma.org/reference/melbands to learn more.
+   
 :process: The audio rate in, control rate out version of the object.
 :output: A KR signal of ``maxNumBands channels``, giving the measured magnitudes for each band. The latency is windowSize.
 
