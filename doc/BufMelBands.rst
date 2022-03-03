@@ -56,7 +56,7 @@
 
 :control normalize:
 
-   This flag causes the output to be scaled, preserving the energy of the window. It is on (1) by default.
+   This flag indicates whether to use normalized triangle filters, which account for the number of FFT magnitudes used to calculate the MelBands. When normalization is off (`normalize` = 0) the higher MelBands tend to be disproportionately large because they are summing more FFT magnitudes. The default is to have normalization on (`normalize` = 1).
 
 :control scale:
 
