@@ -1,13 +1,20 @@
-:digest: A Selection of Pitch Descriptors on a Buffer
+:digest: Pitch Descriptor
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulationToolkit, Classes/SpecCentroid, Classes/SpecFlatness, Classes/SpecCentroid, Classes/SpecPcile
 :see-also: Pitch, BufLoudness, BufMelBands, BufMFCC, BufSpectralShape, BufStats
-:description: Implements three pitch descriptors, computed as frequency and the confidence in its value.
-:discussion: The process will return a multichannel buffer with two channels per input channel, one for pitch and one for the pitch tracking confidence. A pitch of 0 Hz is yield (or -999.0 when the unit is in MIDI note) when the algorithm cannot find a fundamental at all. Each sample represents a value, which is every hopSize. Its sampling rate is sourceSR / hopSize.
-:process: This is the method that calls for the pitch descriptor to be calculated on a given source buffer.
-:output: Nothing, as the destination buffer is declared in the function call.
+:description: Three popular pitch descriptors, all of which compute frequency and the confidence that a pitch is present.
+:discussion: 
 
+  :fluid-obj:`Pitch` returns `pitch` and `confidence` values. When no pitch can be detected, a pitch of 0 Hz is returned (or -999.0 when the unit is in MIDI note mode).
+
+  For information about the pitch descriptor algorithms, see the `algorithm` parameter below.
+
+  The "confidence" output is a value between 0 and 1 indicating how confident the algorithm is *that there is* a pitch. In effect this can be an estimation of how "noisy" (closer to 0) or "harmonic" (closer to 1) the spectrum is.
+
+:process: This is the method that calls for the descriptor to be calculated on a given source buffer.
+
+:output: Nothing, as the destination buffer is declared in the function call.
 
 :control source:
 
@@ -15,23 +22,23 @@
 
 :control startFrame:
 
-   Where in the srcBuf should the process start, in sample.
+   Where in `source` to start the analysis, in samples. The default is 0.
 
 :control numFrames:
 
-   How many frames should be processed.
+   How many samples to analyse. The default of -1 indicates to analyse through to the end of the buffer.
 
 :control startChan:
 
-   For multichannel srcBuf, which channel should be processed first.
+   For multichannel `source`, from which channel to begin analysing. The default is 0.
 
 :control numChans:
 
-   For multichannel srcBuf, how many channel should be processed.
+   For multichannel `source`, how many channel should be processed. The default of -1 indicates to analyse through the last channel in the buffer.
 
 :control features:
 
-   The destination buffer for the pitch descriptors.
+   The destination buffer for the descriptors.
 
 :control algorithm:
 
@@ -50,11 +57,11 @@
 
 :control minFreq:
 
-   The minimum frequency that the algorithm will search for an estimated fundamental. This sets the lowest value that will be generated.
+   The minimum frequency that the algorithm will search for an estimated fundamental. This sets the lowest value that will be generated. The default is 20.
 
 :control maxFreq:
 
-   The maximum frequency that the algorithm will search for an estimated fundamental. This sets the highest value that will be generated.
+   The maximum frequency that the algorithm will search for an estimated fundamental. This sets the highest value that will be generated. The default is 10000.
 
 :control unit:
 
@@ -83,4 +90,3 @@
 :control action:
 
    A Function to be evaluated once the offline process has finished and all Buffer's instance variables have been updated on the client side. The function will be passed [features] as an argument.
-
