@@ -2,10 +2,15 @@
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition, UGens>Buffer
 :sc-related: Guides/FluidCorpusManipulationToolkit, Classes/Buffer
-:see-also: 
-:description: A flexible utility for combining the contents of buffers. It can be used for thing like mixing down multichannel buffers, or converting from left-right stereo to mid-side. It is used extensively in the example code of Fluid Decomposition.
-:discussion: It is important to understand the rules used for determining the final desintinaiton buffer dimensions to get the most out of this object. If needs be, the destination buffer will be resized to the maxima of the requsted source numFrames and numChannels. Frames will be written up to the limit of actually available samples (meaning you can create zero padding); channels  will be written modulo the available channels, taking into account the channel offsets, meaning you can have channels repeat or loop into the source buffer's channels. See the examples below.
+:see-also: BufSelect, BufSelectEvery
+:description: 
+   A utility for manipulating the contents of buffers.
+
+:discussion: 
+   This object is the swiss army knife for manipulating buffers and their contents. By specifing ranges of samples and channels to copy, as well as destination and source gains it can provide a powerful interface for performing actions such as a Left/Right to Mid/Side conversion and mixing down multichannel audio
+
 :process: This method triggers the compositing.
+
 :output: Nothing, as the destination buffer is declared in the function call.
 
 
