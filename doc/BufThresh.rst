@@ -2,39 +2,34 @@
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulationToolkit, Guides/FluidBufMultiThreading
-:see-also: 
+:see-also: BufCompose, Gain, Stats
 :description: 
-   This class implements a simple Buffer preprocessor, by replacing values under a threshold by 0s. It is part of the :fluid-topic:`CorpusManipulationToolkit`. For more explanations, learning material, and discussions on its musicianly uses, visit http://www.flucoma.org/
-
-   The process will return a buffer with the same size and shape than the requested range.
-
-
+   Replace all values under a threshold by 0.
 
 :control source:
 
-   The index of the buffer to use as the source material to be processed.
+   The buffer to process containing the values to compare against the threshold.
 
 :control startFrame:
 
-   The starting point (in samples) from which to copy in the source buffer.
+   The starting point (in samples) from which to process the ``source``.
 
 :control numFrames:
 
-   The duration (in samples) to copy from the source buffer. The default (-1) copies the full lenght of the buffer.
+   The duration (in samples) to process in the ``source``. The default (-1) indicates to process through the end of ``source``.
 
 :control startChan:
 
-   The first channel from which to copy in the source buffer.
+   The channel from which to begin the process in the ``source``.
 
 :control numChans:
 
-   The number of channels from which to copy in the source buffer. This parameter will wrap around the number of channels in the source buffer. The default (-1) copies all of the buffer's channel.
+   The number of channels to process in ``source``. The default of -1 indicates to process through the last channel in ``source``.
 
 :control destination:
 
-   The index of the buffer to use as the destination for the processed material.
+   The buffer to write the processed data into.
 
 :control threshold:
 
-   The threshold under which values will be zeroed
-
+   Any values in ``source`` will be written as 0 in ``destination``.
