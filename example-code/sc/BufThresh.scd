@@ -24,7 +24,7 @@ FluidBufStats.processBlocking(s,~pitch_analysis,numChans:1,stats:~pitch_stats);
 });
 )
 
-// hear does it match? (not great)
+// how does the pitch match? (not great)
 (
 ~scratchy.play;
 {SinOsc.ar(~median,0,0.01)}.play;
