@@ -32,4 +32,4 @@
 
 :control threshold:
 
-   Any values in ``source`` will be written as 0 in ``destination``.
+   Any values in ``source`` below this threshold will be written as 0 in ``destination``.
