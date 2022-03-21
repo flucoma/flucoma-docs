@@ -80,7 +80,7 @@ FluidBufCompose.processBlocking(s,~guitar,numFrames:~piano.numFrames,startFrame:
 FluidBufPitch.process(s, ~both, features: ~pitch_analysis, minFreq:60, maxFreq:4000,action:{"done".postln});
 
 // look at the buffer: [pitch,confidence] for left then [pitch,confidence] for right
-FluidWaveform(~both,featureBuffer:~pitch_analysis,stackFeatures:true,bounds:Rect(0,0,1600,400));
+FluidWaveform(~both,featuresBuffer:~pitch_analysis,stackFeatures:true,bounds:Rect(0,0,1600,400));
 
 // blue is piano pitch
 // orange is piano pitch confidence
