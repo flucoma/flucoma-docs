@@ -51,4 +51,14 @@
 
    :arg action: Run when done
 
-   Given a trained model, transform the data point in a |buffer| and write to an output buffer.
+   Given a trained model, transform the data point in ``sourceBuffer`` from the original dimensional space to ``numDimensions`` principal components and write into ``destBuffer``.
+
+:message inverseTransformPoint:
+
+  :arg sourceBuffer: Input data
+
+  :arg destBuffer: Output data
+
+  :arg action: Run when done
+
+  Given a trained model, transform the data point in ``sourceBuffer`` from being ``numDimensions`` principal components into the original dimensional space and write into ```destBuffer``.
