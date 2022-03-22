@@ -4,7 +4,8 @@
 :sc-related: Guides/FluidCorpusManipulationToolkit, Guides/FluidBufMultiThreading
 :see-also: BufCompose, Gain, Stats
 :description: 
-   Replace all values under a threshold by 0.
+
+   Replace all values of a buffer under the given threshold with 0 and copy the result to a destination buffer.
 
 :control source:
 
