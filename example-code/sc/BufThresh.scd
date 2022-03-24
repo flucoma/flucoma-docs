@@ -1,29 +1,89 @@
-
+strong::Use with the FluidBufStats `weights` argument.:: Using the pitch confidence value of the FluidBufPitch analysis to weight the statistical analysis of the pitch value can improve the estimation of pitch (as the mean or median). By using FluidBufThresh, we can ensure that any pitch confidence values below a specified threshold will be "zeroed out" so their weight will be zero when calculating FluidBufStats.
 code::
-// make a buffer of know qualities
-b = Buffer.sendCollection(s,0.0.series(0.1,1.0))
-// and a destination buffer
-c = Buffer(s)
-// play with the threshold
-FluidBufThresh.process(s, b, destination: c, threshold: 0.5)
-// retrieve the buffer and enjoy the results.
-c.getn(0,11,{|x|x.round(0.000001).postln;})
 
-// also works in multichannel - explore the following buffer
-b = Buffer.sendCollection(s,0.0.series(0.1,2.0).scramble,2)
-b.plot.plotMode_(\points)
-//process and keep just the top values
-FluidBufThresh.process(s, b, destination: c, threshold: 1.6)
-//enjoy
-c.plot.plotMode_(\points)
+~scratchy = Buffer.read(s,FluidFilesPath("Tremblay-ASWINE-ScratchySynth-M.wav"));
 
-//also works with a subset of the input, resizing the output
-b = Buffer.sendCollection(s,0.0.series(0.1,3.0).reshape(3,10).flop.flat,3)
-b.plot(separately: true).plotMode_(\points)
-//process and keep just the top values
-FluidBufThresh.process(s, b,startFrame: 3,numFrames: 4,startChan: 1,numChans: 1,destination: c, threshold: 1.6)
-//enjoy
-c.plot(separately: true).plotMode_(\points)
-c.query
-c.getn(0,4,{|x|x.round(0.000001).postln;})
+~scratchy.play;
+
+(
+~pitch_analysis = Buffer(s);
+FluidBufPitch.processBlocking(s,~scratchy,features:~pitch_analysis);
+)
+
+// look at the pitch analysis:
+FluidWaveform(~scratchy,featuresBuffer:~pitch_analysis,stackFeatures:true,bounds:Rect(0,0,1600,400));
+
+// get the median pitch
+(
+~pitch_stats = Buffer(s);
+FluidBufStats.processBlocking(s,~pitch_analysis,numChans:1,stats:~pitch_stats);
+~pitch_stats.loadToFloatArray(action:{
+	arg fa;
+	~median = fa[5];
+	~median.postln;
+});
+)
+
+// how does the pitch match? (not great)
+(
+~scratchy.play;
+{SinOsc.ar(~median,0,0.01)}.play;
+)
+
+// use buf thresh to zero out all confidence values below a threshold:
+(
+~threshed_conf = Buffer(s);
+FluidBufThresh.processBlocking(s,~pitch_analysis,startChan:1,destination:~threshed_conf,threshold:0.99);
+)
+
+// look at the thresholded values. (some will appear to not actually reach above the threshold...this is due to
+// the interpolation happening for the drawing)
+FluidWaveform(~scratchy,featuresBuffer:~threshed_conf,bounds:Rect(0,0,1600,400));
+
+// now that anything below the threshold has become a zero, this will be useful for weighting the BufStats analysis
+(
+~pitch_stats = Buffer(s);
+FluidBufStats.processBlocking(s,~pitch_analysis,numChans:1,stats:~pitch_stats,weights:~threshed_conf);
+~pitch_stats.loadToFloatArray(action:{
+	arg fa;
+	~median = fa[5];
+	~median.postln;
+});
+)
+
+// does it match better? (it does)
+(
+~scratchy.play;
+{SinOsc.ar(~median,0,0.01)}.play;
+)
+
+::
+strong::A basic example to look at the output::
+code::
+// make a buffer with some values roughly 0 to 5
+// and a buffer to write the output of FluidBufThresh into
+(
+~hundred = Buffer.loadCollection(s,(1..100).log);
+~threshed = Buffer(s);
+)
+
+// take a look at the values
+~hundred.plot;
+
+// apply a threshold of 3
+FluidBufThresh.processBlocking(s,~hundred,destination:~threshed,threshold:3);
+
+// take a look at the output
+~threshed.plot;
+
+// composite them together (for looking at later)
+(
+~together = Buffer(s);
+FluidBufCompose.processBlocking(s,~hundred,destination:~together);
+FluidBufCompose.processBlocking(s,~threshed,destination:~together,destStartChan:1);
+)
+
+// plot it
+FluidWaveform(featuresBuffer:~together,bounds:Rect(0,0,1600,400),lineWidth:2,normalizeFeaturesIndependently:false);
+
 ::
