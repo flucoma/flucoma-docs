@@ -70,7 +70,7 @@
 
 :control weights:
 
-   A buffer to provide relative weighting of each frame in the ``source`` buffer when computing the statistics. Not providing a ``weights`` buffer will cause all the frames to be considered equally. This may be useful for weighting certain descriptors by the loudness or pitch confidence of the sound in a buffer. The provided buffer has to satisfy all of the following conditions:
+   A buffer to provide relative weighting of each frame in the ``source`` buffer when computing the statistics. Not providing a ``weights`` buffer will cause all the frames to be considered equally. This may be useful for weighting certain descriptors by the value of other descriptors (such as the loudness or pitch confidence of the sound). The provided buffer has to satisfy all of the following conditions:
   
    * a single-channel
    * exactly the same amount of frames as ``source``
