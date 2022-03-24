@@ -8,7 +8,7 @@
 
   :fluid-obj:`Pitch` returns both ``pitch`` and ``confidence`` values. When no pitch can be detected, a pitch of 0 Hz is returned (or -999.0 when the unit is in MIDI note mode).
   
-  For information about the pitch descriptor algorithms, see the `algorithm` parameter below.
+  For information about the pitch descriptor algorithms, see the ``algorithm`` parameter below.
   
   The "confidence" output is a value between 0 and 1 indicating how confident the algorithm is in the pitch that it is reporting. In effect this can be an estimation of how "noisy" (closer to 0) or "harmonic" (closer to 1) the spectrum is. The confidence may also be low when a signal contains polyphony, as the algorithms are not intended for multiple pitch streams.
   

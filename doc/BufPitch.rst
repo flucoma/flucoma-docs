@@ -6,11 +6,15 @@
 :description: Three popular pitch descriptors, all of which compute frequency and the confidence that a pitch is present.
 :discussion: 
 
-  :fluid-obj:`Pitch` returns `pitch` and `confidence` values. When no pitch can be detected, a pitch of 0 Hz is returned (or -999.0 when the unit is in MIDI note mode).
+  :fluid-obj:`Pitch` returns both ``pitch`` and ``confidence`` values. When no pitch can be detected, a pitch of 0 Hz is returned (or -999.0 when the unit is in MIDI note mode).
 
-  For information about the pitch descriptor algorithms, see the `algorithm` parameter below.
+  For information about the pitch descriptor algorithms, see the ``algorithm`` parameter below.
 
-  The "confidence" output is a value between 0 and 1 indicating how confident the algorithm is *that there is* a pitch. In effect this can be an estimation of how "noisy" (closer to 0) or "harmonic" (closer to 1) the spectrum is.
+  The "confidence" output is a value between 0 and 1 indicating how confident the algorithm is in the pitch that it is reporting. In effect this can be an estimation of how "noisy" (closer to 0) or "harmonic" (closer to 1) the spectrum is. The confidence may also be low when a signal contains polyphony, as the algorithms are not intended for multiple pitch streams.
+
+  The ``unit`` argument indicates whether the pitch output should be in hertz (indicated by 0) or MIDI note numbers (indicated by 1). MIDI note numbers may be useful, not only because of their direct relationship to MIDI-based synthesis systems, but also because of the logarithmic relationship to hertz, making them perceptually evenly-spaced units (1 MIDI note = 1 semitone).
+
+  For more information visit https://learn.flucoma.org/reference/pitch/.
 
 :process: This is the method that calls for the descriptor to be calculated on a given source buffer.
 
@@ -22,7 +26,7 @@
 
 :control startFrame:
 
-   Where in `source` to start the analysis, in samples. The default is 0.
+   Where in ``source`` to start the analysis, in samples. The default is 0.
 
 :control numFrames:
 
@@ -30,11 +34,11 @@
 
 :control startChan:
 
-   For multichannel `source`, from which channel to begin analysing. The default is 0.
+   For multichannel ``source``, from which channel to begin analysing. The default is 0.
 
 :control numChans:
 
-   For multichannel `source`, how many channel should be processed. The default of -1 indicates to analyse through the last channel in the buffer.
+   For multichannel ``source``, how many channel should be processed. The default of -1 indicates to analyse through the last channel in the buffer.
 
 :control features:
 
