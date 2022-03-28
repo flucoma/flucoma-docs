@@ -2,10 +2,10 @@
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulationToolkit
-:see-also: AmpGate, BufAmpSlice, BufOnsetSlice, BufNoveltySlice, BufTransientSlice
-:description: Calculate the amplitude differential feature used by both :fluid-obj:`BufAmpSlice`.
+:see-also: BufAmpSlice, BufNoveltyFeature, BufAmpFeature, BufOnsetFeature
+:description: Calculate the amplitude differential feature used by :fluid-obj:`BufAmpSlice`.
 :discussion: 
-    :fluid-obj:`BufAmpSlice` uses the differential of a fast and a slow envelope follower to determine changes in amplitude. This object calculates the amplitude differential and copies to an output buffer.
+    :fluid-obj:`BufAmpSlice` uses the differential between a fast and a slow envelope follower to determine changes in amplitude. This object calculates the amplitude differential and copies it to an output buffer.
 
 :output: Nothing, as the destination buffer is declared in the function call.
 
