@@ -5,9 +5,11 @@
 :see-also: BufNoveltySlice, BufNoveltyFeature, BufAmpFeature, BufOnsetFeature
 :description: Calculates the novelty feature of audio stored in a buffer.
 :discussion:
-   Novelty is derived by running a kernel across the diagonal of the similarity matrix. It implements the seminal results published in  'Automatic Audio Segmentation Using a Measure of Audio Novelty' by J Foote.
-
-   The process will return a buffer containing a time series that describes the novelty feature changing over time in the source buffer.
+    Calculate novelty of audio stored in a buffer, the feature used by :fluid-obj:`BufNoveltySlice` to perform segmentation. 
+    
+    Novelty is derived by running a kernel across the diagonal of the similarity matrix. It implements the seminal results published in  'Automatic Audio Segmentation Using a Measure of Audio Novelty' by J Foote.
+    
+    The process will return a buffer containing a time series that describes the novelty feature changing over time in the source buffer.
 
 :process: This is the method that calls for the slicing to be calculated on a given source buffer.
 :output: Nothing, as the various destination buffers are declared in the function call.

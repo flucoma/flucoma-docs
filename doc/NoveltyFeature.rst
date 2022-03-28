@@ -3,9 +3,9 @@
 :sc-categories: Libraries>FluidDecomposition, UGens>Buffer
 :sc-related: Guides/FluidCorpusManipulationToolkit
 :see-also: NoveltySlice, AmpFeature, OnsetFeature
-:description: Calculates novelty of audio stored in a buffer. Used by :fluid-obj:`BufNoveltySlice`.
+:description: Calculates the novelty feature of audio in realtime.
 :discussion: 
-   Calculate novelty in realtime, the feature used by :fluid-obj:`NoveltySlice`. 
+   Calculate novelty in realtime, the feature used by :fluid-obj:`NoveltySlice` to perform segmentation. 
    
    Novelty derived by running a kernel across the diagonal of the similarity matrix. It implements the seminal results published in  'Automatic Audio Segmentation Using a Measure of Audio Novelty' by J Foote.
 
