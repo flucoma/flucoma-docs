@@ -1,5 +1,5 @@
 :digest: Realtime Amplitude Differential Feature
-:species: descriptor
+:species: transformer
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulationToolkit
 :see-also: AmpGate, AmpSlice, OnsetFeature, NoveltyFeature
