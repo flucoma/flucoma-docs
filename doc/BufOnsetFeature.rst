@@ -3,7 +3,7 @@
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulationToolkit
 :see-also: BufOnsetSlice, BufNoveltyFeature, BufAmpFeature, BufOnsetFeature
-:description: Calculate the spectral difference feature used by  :fluid-obj:`BufOnsetSlice`.
+:description: Calculate the spectral difference feature used by :fluid-obj:`BufOnsetSlice`.
 :discussion:
    Given a source buffer, calculates the feature used by :fluid-obj:`BufOnsetSlice` and copies it to another buffer.
    
