@@ -8,7 +8,7 @@
     :fluid-obj:`BufAmpSlice` uses the differential between a fast and a slow envelope follower to determine changes in amplitude. This object calculates the amplitude differential and copies it to an output buffer.
 
 :process: The audio rate in, control rate out version of the object.
-:output: The featurea as a signal.
+:output: A KR signal of the feature.
 
 :control in:
 
