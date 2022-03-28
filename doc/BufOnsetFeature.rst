@@ -1,4 +1,4 @@
-:digest:  Buffer-Based Spectral Difference Feature
+:digest: Buffer-Based Spectral Difference Feature
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulationToolkit
