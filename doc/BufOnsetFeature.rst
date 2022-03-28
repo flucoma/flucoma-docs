@@ -3,9 +3,9 @@
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulationToolkit
 :see-also: BufOnsetSlice, BufNoveltyFeature, BufAmpFeature, BufOnsetFeature
-:description: Calculate the spectral features used by  :fluid-obj:`BufOnsetSlice`.
+:description: Calculate the spectral difference feature used by  :fluid-obj:`BufOnsetSlice`.
 :discussion:
-   Calculates the feature used by :fluid-obj:`BufOnsetSlice` in its slicing and copies it to a buffer.
+   Given a source buffer, calculates the feature used by :fluid-obj:`BufOnsetSlice` and copies it to another buffer.
    
    The metric for calculating difference can be chosen from a curated selection, lending the algorithm toward slicing a broad range of musical materials.
 
