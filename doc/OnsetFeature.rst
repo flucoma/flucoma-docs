@@ -1,8 +1,8 @@
-:digest: Buffer-Based Spectral Difference Feature
+:digest: Realtime Spectral Difference Feature
 :species: descriptor
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulationToolkit
-:see-also: OnsetSlice, NoveltyFeature, AmpFeature, OnsetFeature
+:see-also: OnsetSlice, NoveltyFeature, AmpFeature
 :description: Calculate the spectral difference feature used by  :fluid-obj:`OnsetSlice`.
 :discussion:
    Calculates the feature used by :fluid-obj:`OnsetSlice` for slicing in realtime.

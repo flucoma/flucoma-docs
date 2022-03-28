@@ -36,7 +36,7 @@
 
    The index of the buffer where the novelty feature will be written.
 
-:control feature:
+:control algorithm:
 
    The feature on which novelty is computed.
 
