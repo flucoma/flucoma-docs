@@ -1,17 +1,16 @@
-:digest: Buffer-Based Novelty-Based Slicer
+:digest: Buffer-Based Novelty Feature
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition, UGens>Buffer
 :sc-related: Guides/FluidCorpusManipulationToolkit
-:see-also: NoveltySlice, BufAmpSlice, BufOnsetSlice, BufTransientSlice
-:description: A non-real-time slicer using an algorithm assessing novelty in the signal to estimate the slicing points.
+:see-also: BufNoveltySlice, BufNoveltyFeature, BufAmpFeature, BufOnsetFeature
+:description: A non-realtime that calculates novelty of audio stored in a buffer. Used by :fluid-obj:`BufNoveltySlice`.
 :discussion: 
-   A novelty curve is derived from running a kernel across the diagonal of the similarity matrix, and looking for peak of changes. It implements the seminal results published in  'Automatic Audio Segmentation Using a Measure of Audio Novelty' by J Foote.
+   Novelty is derived by running a kernel across the diagonal of the similarity matrix. It implements the seminal results published in  'Automatic Audio Segmentation Using a Measure of Audio Novelty' by J Foote.
 
-   The process will return a buffer which contains indices (in sample) of estimated starting points of different slices.
+   The process will return a buffer containing a time series that describes the novelty feature changing over time in the source buffer.
 
 :process: This is the method that calls for the slicing to be calculated on a given source buffer.
 :output: Nothing, as the various destination buffers are declared in the function call.
-
 
 :control source:
 
@@ -33,9 +32,9 @@
 
    For multichannel srcBuf, how many channel should be summed.
 
-:control indices:
+:control features:
 
-   The index of the buffer where the indices (in sample) of the estimated starting points of slices will be written. The first and last points are always the boundary points of the analysis.
+   The index of the buffer where the novelty feature will be written.
 
 :control feature:
 
@@ -62,21 +61,13 @@
 
    The granularity of the window in which the algorithm looks for change, in samples. A small number will be sensitive to short term changes, and a large number should look for long term changes.
 
-:control threshold:
-
-   The normalised threshold, between 0 an 1, on the novelty curve to consider it a segmentation point.
-
 :control filterSize:
 
    The size of a smoothing filter that is applied on the novelty curve. A larger filter filter size allows for cleaner cuts on very sharp changes.
 
-:control minSliceLength:
-
-   The minimum duration of a slice in number of hopSize.
-
 :control windowSize:
 
-   The window size. As novelty estimation relies on spectral frames, we need to decide what precision we give it spectrally and temporally, in line with Gabor Uncertainty principles. http://www.subsurfwiki.org/wiki/Gabor_uncertainty
+   The window size. As novelty estimation relies on spectral frames, we need to decide what precision we give it spectrally and temporally.
 
 :control hopSize:
 
