@@ -37,7 +37,7 @@
 
    The index of the buffer where the indices (in sample) of the estimated starting points of slices will be written. The first and last points are always the boundary points of the analysis.
 
-:control feature:
+:control algorithm:
 
    The feature on which novelty is computed.
 

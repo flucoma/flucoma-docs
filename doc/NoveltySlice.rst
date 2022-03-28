@@ -16,7 +16,7 @@
 
    The audio to be processed.
 
-:control feature:
+:control algorithm:
 
    The feature on which novelty is computed.
 
