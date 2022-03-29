@@ -5,7 +5,7 @@
 :see-also: AmpGate, AmpSlice, OnsetFeature, NoveltyFeature
 :description: Calculate the amplitude differential feature in realtime.
 :discussion: 
-    :fluid-obj:`BufAmpSlice` uses the differential between a fast and a slow envelope follower to determine changes in amplitude. This object calculates the amplitude differential and copies it to an output buffer.
+    :fluid-obj:`AmpSlice` uses the differential between a fast and a slow envelope follower to determine changes in amplitude. This object calculates the amplitude differential and copies it to an output buffer.
 
 :process: The audio rate in, control rate out version of the object.
 :output: A KR signal of the feature.
