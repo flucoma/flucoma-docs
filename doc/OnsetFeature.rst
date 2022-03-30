@@ -1,21 +1,16 @@
-:digest: Spectral Difference-Based Real-Time Audio Slicer
-:species: slicer
+:digest: Realtime Spectral Difference Feature
+:species: descriptor
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulationToolkit
-:see-also: BufOnsetSlice, AmpSlice, NoveltySlice, TransientSlice
-:description: Implements a selection of spectrum-based onset slicers
+:see-also: OnsetSlice, NoveltyFeature, AmpFeature
+:description: Calculate the spectral difference feature used by :fluid-obj:`OnsetSlice`.
 :discussion:
-   Performs segmentation based on the difference between spectral frames.
+   Calculates the feature used by :fluid-obj:`OnsetSlice` for slicing in realtime.
    
    The metric for calculating difference can be chosen from a curated selection, lending the algorithm toward slicing a broad range of musical materials.
 
 :process: The audio rate version of the object.
-:output: An audio stream with impulses at detected transients. The latency between the input and the output is windowSize at maximum.
-
-
-:control in:
-
-   The audio to be processed.
+:output: A KR signal of the feature.
 
 :control metric:
 
@@ -53,29 +48,21 @@
       :9:
          **RComplexDev** same as above, but rectified (like Onsets \rcomplex)
 
-:control threshold:
-
-   The thresholding of a new slice. Value ranges are different for each metric, from 0 upwards.
-
-:control minSliceLength:
-
-   The minimum duration of a slice in number of hopSize.
-
 :control filterSize:
 
    The size of a smoothing filter that is applied on the novelty curve. A larger filter filter size allows for cleaner cuts on very sharp changes.
 
 :control frameDelta:
 
-   For certain metrics (HFC, SpectralFlux, MKL, Cosine), the distance does not have to be computed between consecutive frames. By default (0) it is, otherwise this sets the distance between the comparison window in samples.
+   For certain metrics (HFC, SpectralFlux, MKL, Cosine), the distance does not have to be computed between consecutive frames. By default (0) it is, otherwise this sets the distane between the comparison window in samples.
 
 :control windowSize:
 
-   The window size. As sinusoidal estimation relies on spectral frames, we need to decide what precision we give it spectrally and temporally, in line with Gabor Uncertainty principles. http://www.subsurfwiki.org/wiki/Gabor_uncertainty
+   The window size. As spectral differencing relies on spectral frames, we need to decide what precision we give it spectrally and temporally, in line with Gabor Uncertainty principles. http://www.subsurfwiki.org/wiki/Gabor_uncertainty
 
 :control hopSize:
 
-   The window hop size. As sinusoidal estimation relies on spectral frames, we need to move the window forward. It can be any size but low overlap will create audible artefacts. The -1 default value will default to half of windowSize (overlap of 2).
+   The window hop size. As spectral differencing relies on spectral frames, we need to move the window forward. It can be any size but low overlap will create audible artefacts. The -1 default value will default to half of windowSize (overlap of 2).
 
 :control fftSize:
 
@@ -84,4 +71,3 @@
 :control maxFFTSize:
 
    How large can the FFT be, by allocating memory at instantiation time. This cannot be modulated.
-

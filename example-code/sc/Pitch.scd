@@ -24,7 +24,7 @@ code::
 // load some audio
 ~scratchy = Buffer.read(s,FluidFilesPath("Tremblay-ASWINE-ScratchySynth-M.wav"));
 
-// This synth sends the source sound to the delay only when the pitch confidence is above 0.95.
+// This synth sends the source sound to the delay only when the pitch confidence is above a threshold.
 // This way the scratchy, distorted parts of the sound file are not heard in the delay.
 (
 {
@@ -33,7 +33,7 @@ code::
 	var latency = windowSize / SampleRate.ir;
 	# freq, conf = FluidPitch.kr(src,windowSize:windowSize);
 	src = DelayN.ar(src,latency,latency);
-	sig = CombC.ar(src * (conf > 0.98).lag(0.01),0.5,0.1,3);
+	sig = CombC.ar(src * (conf > 0.99).lag(0.005),0.5,0.1,3);
 	[src,sig];
 }.play;
 )

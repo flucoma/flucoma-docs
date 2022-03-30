@@ -27,6 +27,7 @@ set(MAX_DOC_OUT "${CMAKE_BINARY_DIR}/max_ref" CACHE PATH "")
 set(PD_DOC_OUT  "${CMAKE_BINARY_DIR}/pd_ref" CACHE PATH "")
 set(CLI_DOC_OUT  "${CMAKE_BINARY_DIR}/cli_ref" CACHE PATH "") 
 set(SC_DOC_OUT  "${CMAKE_BINARY_DIR}/sc_ref" CACHE PATH "") 
+set(RAW_DOC_OUT  "${CMAKE_BINARY_DIR}" CACHE PATH "") 
 # option(TESTS,"Run tests?")
 include(FetchContent)
 
@@ -138,6 +139,7 @@ add_ref_target(max "Making Max ref")
 add_ref_target(pd "Making PD ref")
 add_ref_target(cli "Making CLI ref")
 add_ref_target(sc "Making SC ref")
+add_ref_target(raw "Making raw API JSON")
 
 enable_testing()
 

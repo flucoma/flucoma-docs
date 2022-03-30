@@ -1,11 +1,11 @@
-:digest: Spectral Difference-Based Audio Buffer Slicer
+:digest: Buffer-Based Spectral Difference Feature
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulationToolkit
-:see-also: OnsetSlice, BufAmpSlice, BufNoveltySlice, BufTransientSlice
-:description: Implements a selection of spectrum-based onset slicers
+:see-also: BufOnsetSlice, BufNoveltyFeature, BufAmpFeature, BufOnsetFeature
+:description: Calculate the spectral difference feature used by :fluid-obj:`BufOnsetSlice`.
 :discussion:
-   Performs segmentation based on the difference between spectral frames.
+   Given a source buffer, calculates the feature used by :fluid-obj:`BufOnsetSlice` and copies it to another buffer.
    
    The metric for calculating difference can be chosen from a curated selection, lending the algorithm toward slicing a broad range of musical materials.
 
@@ -32,9 +32,9 @@
 
    For multichannel sources, how many channel should be summed.
 
-:control indices:
+:control features:
 
-   The index of the buffer where the indices (in sample) of the estimated starting points of slices will be written. The first and last points are always the boundary points of the analysis.
+   The index of the buffer where the onset features will be written to.
 
 :control metric:
 
@@ -72,14 +72,6 @@
       :9:
          **RComplexDev** same as above, but rectified (like Onsets \rcomplex)
 
-:control threshold:
-
-   The thresholding of a new slice. Value ranges are different for each metric, from 0 upwards.
-
-:control minSliceLength:
-
-   The minimum duration of a slice in number of hopSize.
-
 :control filterSize:
 
    The size of a smoothing filter that is applied on the novelty curve. A larger filter filter size allows for cleaner cuts on very sharp changes.
@@ -103,6 +95,10 @@
 :control maxFFTSize:
 
    How large can the FFT be, by allocating memory at instantiation time. This cannot be modulated.
+
+:control padding:
+
+   Controls the zero-padding added to either end of the source buffer or segment. Possible values are 0 (no padding), 1 (default, half the window size), or 2 (window size - hop size). Padding ensures that all input samples are completely analysed: with no padding, the first analysis window starts at time 0, and the samples at either end will be tapered by the STFT windowing function. Mode 1 has the effect of centering the first sample in the analysis window and ensuring that the very start and end of the segment are accounted for in the analysis. Mode 2 can be useful when the overlap factor (window size / hop size) is greater than 2, to ensure that the input samples at either end of the segment are covered by the same number of analysis frames as the rest of the analysed material.
 
 :control action:
 
