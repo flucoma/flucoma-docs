@@ -4,7 +4,7 @@ code::
 (
 {
 	var sig = PlayBuf.ar(~src.numChannels,~src,BufRateScale.ir(~src),loop:1);
-	var feature = FluidNoveltyFeature.kr(sig,3,5,1); // feature is pitch and pich confidence
+	var feature = FluidNoveltyFeature.kr(sig,3,5,1); // feature is pitch and pitch confidence
 	SendReply.kr(Impulse.kr(30),"/feature",feature);
 	sig.dup;
 }.play;
