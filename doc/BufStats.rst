@@ -9,6 +9,14 @@
   :fluid-obj:`BufStats` statistically summarises a time-series (or any values) that is in a buffer, returning seven statistics for each channel: the buffer channel's mean, standard deviation, skewness, kurtosis, low, middle, and high values. See the ``low``, ``middle`` and ``high`` parameters below for more description on these values.
 
   The ``stats`` output buffer of :fluid-obj:`BufStats` will have the same number of channels as the input buffer, each one containing the statistics of it's corresponding channel in the input buffer. Because the dimension of time is summarised statistically, the frames in the ``stats`` buffer do not represent time as they normally would. The first seven frames in every channel of the ``stats`` buffer will have the seven statistics computed on the input buffer channel. After these first seven frames, there will be seven more frames for each derivative requested, each containing the seven statistical summaries for the corresponding derivative.
+  
+  For example if the input to :fluid-obj:`BufStats` is a three-channel buffer and ``numDerivs`` = 1 the output ``stats`` buffer would contain:
+   
+   ========= ============ ============= ============= ======== =========== ======== ================= ==================== ===================== ===================== ================ =================== ================
+   ch 0 mean ch 0 std dev ch 0 skewness ch 0 kurtosis ch 0 min ch 0 median ch 0 max ch 0 deriv 1 mean ch 0 deriv 1 std dev ch 0 deriv 1 skewness ch 0 deriv 1 kurtosis ch 0 deriv 1 min ch 0 deriv 1 median ch 0 deriv 1 max
+   ch 1 mean ch 1 std dev ch 1 skewness ch 1 kurtosis ch 1 min ch 1 median ch 1 max ch 1 deriv 1 mean ch 1 deriv 1 std dev ch 1 deriv 1 skewness ch 1 deriv 1 kurtosis ch 1 deriv 1 min ch 1 deriv 1 median ch 1 deriv 1 max
+   ch 2 mean ch 2 std dev ch 2 skewness ch 2 kurtosis ch 2 min ch 2 median ch 2 max ch 2 deriv 1 mean ch 2 deriv 1 std dev ch 2 deriv 1 skewness ch 2 deriv 1 kurtosis ch 2 deriv 1 min ch 2 deriv 1 median ch 2 deriv 1 max
+   ========= ============ ============= ============= ======== =========== ======== ================= ==================== ===================== ===================== ================ =================== ================    
 
 :process: This is the method that calls for the statistical analysis to be calculated on ``source``.
 
