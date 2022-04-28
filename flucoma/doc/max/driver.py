@@ -95,7 +95,7 @@ settings = {
     'types': max_type_map,
     'glob': '**/*.json', 
     'parameter_link': max_jinja_parameter_link, 
-    'code_block': '<m>{}</m>', 
+    'code_block': lambda p: f"<m>{p.lower()}</m>", 
     'writer': FluidHTMLWriter, 
     'rst_render': rst_filter,
     'write_cross_ref': (max_visit_flucoma_reference,    

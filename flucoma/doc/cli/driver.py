@@ -104,7 +104,7 @@ settings = {
     'glob_filter': lambda x: re.match('Buf(?!Compose).*',x.stem) is not None,
     'parameter_link': cli_jinja_parameter_link, 
     'write_cross_ref': (cli_visit_flucoma_reference,cli_depart_flucoma_reference),
-    'code_block': '<code>{}</code>', 
+    'code_block': lambda p: f'<code>{p.lower()}</code>', 
     'writer': FluidHTMLWriter, 
     'rst_render': rst_filter,
     'topic_extension':'html',
