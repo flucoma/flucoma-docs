@@ -10,6 +10,10 @@ cmake_minimum_required(VERSION 3.11)
 
 cmake_policy(SET CMP0074 NEW) 
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 if (APPLE)
   set(CMAKE_XCODE_GENERATE_SCHEME ON)
   set(CMAKE_OSX_DEPLOYMENT_TARGET 10.8)
@@ -107,10 +111,11 @@ foreach (project_dir ${PROJECT_DIRS})
     list(APPEND json_files "${CMAKE_BINARY_DIR}/json/${project_dir}.json")
     
     add_custom_command(OUTPUT "${CMAKE_BINARY_DIR}/json/${project_dir}.json"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/json/"
     		COMMAND $<TARGET_FILE:${project_dir}> ARGS "${CMAKE_BINARY_DIR}/json/"
     		COMMENT "Generating JSON for ${project_dir}"
-    )
-    
+        DEPENDS ${project_dir}
+    )    
 	endif ()  
 endforeach ()
 
