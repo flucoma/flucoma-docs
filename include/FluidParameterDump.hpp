@@ -76,6 +76,17 @@ struct Constraint<FFTParams::FFTSettingsConstraint<MaxFFT>>
   }
 };
 
+template <>
+struct Constraint<LongRuntimeMaxParam::RuntimeMaxConstraint>
+{
+  template <size_t Offset, typename Tuple>
+  static json::object_t::value_type
+  dump(const LongRuntimeMaxParam::RuntimeMaxConstraint&, Tuple&)
+  {
+    return {"runtimemax",-1};
+  }
+};
+
 template <typename C, typename AllParams>
 Constraint<C> makeConstraint(C c, AllParams& p)
 {
@@ -287,7 +298,12 @@ class ParameterDump
   {
     return p.defaultValue;
   }
-
+  
+  static index makeValue(const LongRuntimeMaxT& p)
+  {
+    return p.defaultValue();
+  }
+  
   template <typename Param>
   static std::enable_if_t<!isDetected<DefaultValue, Param>::value, std::string>
   makeValue(Param&)
@@ -376,6 +392,8 @@ public:
   static std::string getParamType(const FFTParamsT&) { return "fft"; }
   static std::string getParamType(const EnumT&) { return "enum"; }
   static std::string getParamType(const LongArrayT&) { return "long"; }
+  
+  static std::string getParamType(const LongRuntimeMaxT&) { return "long"; }
 
   static std::string
   getParamType(const SharedClientRef<dataset::DataSetClient>::ParamType&)
@@ -397,16 +415,22 @@ public:
   template <size_t Offset, typename P, typename Tuple, typename All>
   static json jsonify_param(P& p, Tuple& tuple, All& allParams)
   {
-    constexpr bool fixed = std::tuple_element<2, Tuple>::type::value;
-    json           j;
+    using fixed_el_type = std::decay_t<typename std::tuple_element<2, Tuple>::type>;
+    constexpr bool fixed = std::is_same<fixed_el_type, Fixed<true>>::value;
+    constexpr bool primary = std::is_same<fixed_el_type, Primary>::value;
+    
+    json j;
+    
     j["name"] = p.name;
     j["displayName"] = p.displayName;
-    //    j["default"] = p.defaultValue;
     j["default"] = makeValue(p);
     j["fixed"] = fixed;
     j["type"] = getParamType(p);
     j["size"] = p.fixedSize;
-
+    
+    j["runtimemax"] = std::is_same<P,const LongRuntimeMaxT>::value;
+    j["primary"] = primary;
+    
     // constraints
     auto& constraintsTuple = std::get<1>(tuple);
     using constraintsTupleType = std::decay_t<decltype(constraintsTuple)>;
@@ -437,6 +461,10 @@ public:
     std::copy(p.strings, p.strings + p.numOptions, strings.begin());
     j["values"] = strings;
     j["type"] = "enum";
+    
+    j["runtimemax"] = false;
+    j["primary"] = false;
+    
     return j;
   }
 
