@@ -7,6 +7,8 @@
 :discussion: 
 
   :fluid-obj:`BufStats` statistically summarises a time-series (or any values) that is in a buffer, returning seven statistics for each channel: the buffer channel's mean, standard deviation, skewness, kurtosis, low, middle, and high values. See the ``low``, ``middle`` and ``high`` parameters below for more description on these values.
+  
+  For a detailed explanation of :fluid-obj:`BufStats` features visit http://learn.flucoma.org/reference/bufstats.
 
   The ``stats`` output buffer of :fluid-obj:`BufStats` will have the same number of channels as the input buffer, each one containing the statistics of its corresponding channel in the input buffer. Because the dimension of time is summarised statistically, the frames in the ``stats`` buffer do not represent time as they normally would. The first seven frames in every channel of the ``stats`` buffer will have the seven statistics computed on the input buffer channel. After these first seven frames, there will be seven more frames for each derivative requested, each containing the seven statistical summaries for the corresponding derivative.
   
