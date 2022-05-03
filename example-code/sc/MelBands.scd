@@ -1,37 +1,104 @@
-
+STRONG::Use the magnitudes of the melbands analysis to drive a bank of sine oscillators to "resynthesize" the drum loop::
 code::
-//create a monitoring bus for the descriptors
-b = Bus.new(\control,0,40);
-
-//create a monitoring window for the values
+//load a source
+~drums = Buffer.read(s,FluidFilesPath("Nicol-LoopE-M.wav"));
 
 (
-w = Window("Mel Bands Monitor", Rect(10, 10, 620, 320)).front;
-a = MultiSliderView(w,Rect(10, 10, 600, 300)).elasticMode_(1).isFilled_(1);
+x = {
+	arg mix = 0.5;
+	var source = PlayBuf.ar(1,~drums,BufRateScale.ir(~drums),loop:1);
+	var numBands = 40;
+	var windowSize = 1024;
+	var hopSize = windowSize / 2;
+	var melBands = FluidMelBands.kr(
+		source,
+		numBands,
+		maxNumBands:numBands,
+		windowSize:windowSize,
+		hopSize:hopSize
+	);
+	var lowMel =  1127.010498 * ((20/700) + 1).log; // convert from hz to mels
+	var highMel = 1127.010498 * ((20000/700) + 1).log; // convert from hz to mels
+	var rangeMel = highMel - lowMel;
+	var stepMel = rangeMel / (numBands+1);
+	var freqMel = Array.fill(numBands,{arg i; (stepMel * (i+1)) + lowMel});
+	var freqHz = ((freqMel/ 1127.01048).exp - 1) * 700; // convert from mel to hz
+	var sines = SinOsc.ar(freqHz,0,melBands.lag(hopSize*SampleDur.ir)).sum;
+	var sig = [
+		DelayN.ar(source,delaytime:windowSize*SampleDur.ir), // compensate for latency
+		sines
+	];
+	sig = sig * [1-mix,mix];
+	sig;
+}.play;
 )
 
-//run the window updating routine.
+x.set(\mix,1);
+
+::
+STRONG::Use the mouse to select a different band of analysis::
+code::
+~drums = Buffer.read(s,FluidFilesPath("Nicol-LoopE-M.wav"));
+
 (
-~winRange = 0.1;
-r = Routine {
-    {
-        b.get({ arg val;
-            {
-                if(w.isClosed.not) {
-                    a.value = val/~winRange;
-                }
-            }.defer
-        });
-        0.01.wait;
-    }.loop
-}.play
+x = {
+	arg mix = 0.5;
+	var source = PlayBuf.ar(1,~drums,BufRateScale.ir(~drums),loop:1);
+	var numBands = 40;
+	var windowSize = 1024;
+	var hopSize = windowSize / 2;
+	var melBands = FluidMelBands.kr(
+		source,
+		numBands,
+		minFreq:MouseX.kr.exprange(20,600),
+		maxFreq:MouseY.kr.exprange(650,20000),
+		maxNumBands:numBands,
+		windowSize:windowSize,
+		hopSize:hopSize
+	);
+	var lowMel =  1127.010498 * ((20/700) + 1).log; // convert from hz to mels
+	var highMel = 1127.010498 * ((20000/700) + 1).log; // convert from hz to mels
+	var rangeMel = highMel - lowMel;
+	var stepMel = rangeMel / (numBands+1);
+	var freqMel = Array.fill(numBands,{arg i; (stepMel * (i+1)) + lowMel});
+	var freqHz = ((freqMel/ 1127.01048).exp - 1) * 700; // convert from mel to hz
+	var sines = SinOsc.ar(freqHz,0,melBands.lag(hopSize*SampleDur.ir)).sum;
+	var sig = [
+		DelayN.ar(source,delaytime:windowSize*SampleDur.ir), // compensate for latency
+		sines
+	];
+	sig = sig * [1-mix,mix];
+	sig;
+}.play;
+)
+
+x.set(\mix,1);
+::
+STRONG::Display a chart to see the MelBands::
+code::
+
+//create a monitoring window for the values
+(
+~win = Window("Mel Bands Monitor", Rect(10, 10, 620, 320)).front;
+~ms = MultiSliderView(~win,
+	Rect(0,0,~win.bounds.width,~win.bounds.height)
+).elasticMode_(1).isFilled_(1);
 )
 
 //play a simple sound to observe the values
 (
-x = 	{
+OSCdef(\melBands,{
+	arg msg;
+	var melBands, numBands = msg[3];
+	melBands = msg[4..(4+(numBands-1)).asInteger];
+	defer{~ms.value_(melBands)};
+},"/melBands");
+
+x = {
+	arg numBands = 40;
 	var source = SinOsc.ar(LFTri.kr(0.1).exprange(80,800),0,0.1);
-	Out.kr(b,FluidMelBands.kr(source,maxNumBands:40));
+	var melBands = FluidMelBands.kr(source,numBands:numBands,maxNumBands:40);
+	SendReply.kr(Impulse.kr(30),"/melBands",[numBands] ++ melBands);
 	source.dup;
 }.play;
 )
@@ -44,111 +111,37 @@ c = Buffer.read(s,FluidFilesPath("Tremblay-AaS-SynthTwoVoices-M.wav"));
 
 // analyse with parameters to be changed
 (
-x = 	{arg bands = 40, low = 20, high = 20000;
+OSCdef(\melBands,{
+	arg msg;
+	var melBands, numBands = msg[3];
+	melBands = msg[4..(4+(numBands-1)).asInteger];
+	defer{~ms.value_(melBands)};
+},"/melBands");
+
+x = {
+	arg numBands = 40, minFreq = 20, maxFreq = 20000;
 	var source = PlayBuf.ar(1,c,loop:1);
-	Out.kr(b,FluidMelBands.kr(source, bands, low, high, 40) / 10);
+	var melBands = FluidMelBands.kr(source,numBands,minFreq,maxFreq);
+	SendReply.kr(Impulse.kr(30),"/melBands",[numBands] ++ melBands);
 	source.dup;
 }.play;
 )
 
-//set the winRange to a more informative value
-~winRange = 0.05;
-
-// observe the number of bands. The unused ones at the top are not updated
-x.set(\bands,20)
+// observe the number of bands
+x.set(\numBands,10);
 
 // back to the full range
-x.set(\bands,40)
+x.set(\numBands,40);
 
-// focus all the bands on a mid range: nothing to see!
-x.set(\low,320, \high, 800)
+// focus all the bands on a mid range
+x.set(\minFreq,320, \maxFreq, 800);
 
 // focusing on the low end shows the fft resolution issue. One could restart the analysis with a larger fft to show more precision
-x.set(\low,20, \high, 160)
+x.set(\minFreq,20, \maxFreq, 160);
 
 // back to full range
-x.set(\low,20, \high, 20000)
+x.set(\minFreq,20, \maxFreq, 20000);
 
 // free everything
-x.free;b.free;c.free;r.stop;
-::
-
-STRONG::A musical example: a perceptually spread vocoder::
-
-CODE::
-//load a source and define control bus for the resynthesis cluster
-(
-b = Bus.control(s,40);
-c = Buffer.read(s,FluidFilesPath("Nicol-LoopE-M.wav"));
-d = Group.new;
-)
-
-//play the source and send the analysis on the
-(
-x = {
-	arg dry = 0.2;
-	var source = PlayBuf.ar(1,c,loop:1);
-	Out.kr(b,FluidMelBands.kr(source,maxNumBands:40));
-	Out.ar(0, DelayN.ar(source,delaytime:1024*SampleDur.ir,mul:dry));
-}.play;
-)
-
-// set the dry playback volume
-x.set(\dry, 0.5)
-
-// create a cluster of sines tuned on each MelBand center frequency, as a sort of vocoder.
-(
-var lowMel =  1127.010498 * ((20/700) + 1).log;
-var highMel = 1127.010498 * ((20000/700) + 1).log;
-var rangeMel = highMel - lowMel;
-var stepMel = rangeMel / 41;
-40.do({
-	arg i;
-	var freqMel = (stepMel * (i +1)) + lowMel;
-	var freq = ((freqMel/ 1127.01048).exp - 1 ) * 700;
-	{SinOsc.ar(freq,mul:Lag.kr(In.kr(b,40)[i],512*SampleDur.ir,0.5))}.play(d,1,addAction:\addToTail);
-});
-)
-
-// free all
-d.free; x.free; b.free; c.free;
-
-/////////////////////////////////////
-// instantiate a more dynamic vocoder:
-// MouseX defines the bottom frequency and MouseY define the top frequency, between which the 40 bands of analysis and synthesis are perceptually equally spred
-
-// the bus, source and group
-(
-b = Bus.control(s,40);
-c = Buffer.read(s,FluidFilesPath("Nicol-LoopE-M.wav"));
-d = Group.new;
-)
-
-// the modified source
-(
-x = {
-	arg dry = 0.2;
-	var source = PlayBuf.ar(1,c,loop:1);
-	Out.kr(b,FluidMelBands.kr(source,maxNumBands:40,minFreq:MouseX.kr().exprange(20,600),maxFreq:MouseY.kr().exprange(650,20000)));
-	Out.ar(0, DelayN.ar(source,delaytime:1024*SampleDur.ir,mul:dry));
-}.play;
-)
-
-// the modified vocoder
-(
-40.do({
-	arg i;
-	{
-		var lowMel =  1127.010498 * ((MouseX.kr().exprange(20,600)/700) + 1).log;
-		var highMel = 1127.010498 * ((MouseY.kr().exprange(650,20000)/700) + 1).log;
-		var rangeMel = highMel - lowMel;
-		var stepMel = rangeMel / 41;
-		var freqMel = (stepMel * (i +1)) + lowMel;
-		var freq = ((freqMel/ 1127.01048).exp - 1 ) * 700;
-		SinOsc.ar(freq,mul:Lag.kr(In.kr(b,40)[i],512*SampleDur.ir,0.5))}.play(d,1,addAction:\addToTail);
-});
-)
-
-// free all
-d.free; x.free; b.free; c.free;
+x.free; b.free; c.free; r.stop;
 ::

@@ -3,11 +3,11 @@
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulationToolkit
 :see-also: BufOnsetSlice, AmpSlice, NoveltySlice, TransientSlice
-:description: Real-time onset detection against a choice of metrics
-:discussion: 
-   See http://www.dafx.ca/proceedings/papers/p_133.pdf for an overview of onset detection metrics. Some are already available in SuperCollider's Onsets object.
-
-   The process will return an audio steam with sample-long impulses at estimated starting points of the different slices.
+:description: Implements a selection of spectrum-based onset slicers
+:discussion:
+   Performs segmentation based on the difference between spectral frames.
+   
+   The metric for calculating difference can be chosen from a curated selection, lending the algorithm toward slicing a broad range of musical materials.
 
 :process: The audio rate version of the object.
 :output: An audio stream with impulses at detected transients. The latency between the input and the output is windowSize at maximum.

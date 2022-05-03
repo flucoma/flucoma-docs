@@ -250,7 +250,18 @@ std::string getArgType(SharedClientRef<labelset::LabelSetClient>)
   return "LabelSet";
 }
 
-std::string getArgType(std::string) { return "string"; }
+
+std::string getArgType(SharedClientRef<const dataset::DataSetClient>&)
+{
+  return "Input DataSet";
+}
+
+std::string getArgType(SharedClientRef<const labelset::LabelSetClient>&)
+{
+  return "Input LabelSet";
+}
+
+std::string getArgType(std::string&) { return "string"; }
 
 template <typename T, size_t N>
 std::string getArgType(FluidTensor<T, N>)
