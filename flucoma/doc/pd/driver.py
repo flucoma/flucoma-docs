@@ -72,7 +72,8 @@ def pd_type_map(type):
         'enum':'int', 
         'fft': 'int',
         'dataset':'symbol',
-        'labelset':'symbol'
+        'labelset':'symbol', 
+        'choices':'symbol'
     }[type]
     
 def transform_data(client, data):

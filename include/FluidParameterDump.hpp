@@ -28,6 +28,7 @@ under the European Union’s Horizon 2020 research and innovation programme
 // for convenience
 using json = nlohmann::json;
 
+
 namespace fluid {
 namespace client {
 
@@ -240,6 +241,8 @@ std::string getArgType(BufferT::type) { return "buffer"; }
 
 std::string getArgType(InputBufferT::type) { return "buffer"; }
 
+std::string getArgType(ChoicesT::type&) { return "choices"; }
+
 std::string getArgType(SharedClientRef<dataset::DataSetClient>)
 {
   return "DataSet";
@@ -249,7 +252,6 @@ std::string getArgType(SharedClientRef<labelset::LabelSetClient>)
 {
   return "LabelSet";
 }
-
 
 std::string getArgType(SharedClientRef<const dataset::DataSetClient>&)
 {
@@ -293,7 +295,7 @@ class ParameterDump
   {
     return p.defaultValue;
   }
-
+  
   template <typename Param>
   static std::enable_if_t<!isDetected<DefaultValue, Param>::value, std::string>
   makeValue(Param&)
@@ -382,6 +384,7 @@ public:
   static std::string getParamType(const FFTParamsT&) { return "fft"; }
   static std::string getParamType(const EnumT&) { return "enum"; }
   static std::string getParamType(const LongArrayT&) { return "long"; }
+  static std::string getParamType(const ChoicesT&) { return "choices"; }
 
   static std::string
   getParamType(const SharedClientRef<dataset::DataSetClient>::ParamType&)
@@ -443,6 +446,24 @@ public:
     std::copy(p.strings, p.strings + p.numOptions, strings.begin());
     j["values"] = strings;
     j["type"] = "enum";
+    return j;
+  }
+
+  template <size_t Offset, typename Tuple, typename All>
+  static json jsonify_param(const ChoicesT& p, Tuple&, All&)
+  {
+    json j;
+    j["name"] = p.name;
+    j["displayName"] = p.displayName;
+    std::vector<std::string> strings(p.numOptions);
+    std::copy(p.strings, p.strings + p.numOptions, strings.begin());
+    j["default"] = strings;
+    j["fixed"] = false;
+    j["type"] = getParamType(p);
+    j["size"] = 1;
+
+    // j["values"] = strings;
+    j["type"] = "choices";
     return j;
   }
 
