@@ -11,6 +11,7 @@ from collections import OrderedDict
 from ..transformers import tidy_split, filter_fixed_controls
 from flucoma.doc.rst.scdoc import SCDocWriter,rst_filter
 from .defaults import defaults
+import copy
 
 def buffer_reference_role(role, rawtext, text, lineno, inliner,
                            options={}, content=[]):
@@ -72,8 +73,12 @@ def sc_transform_data(object_name,data):
     params = {x['name']:x for x in data.pop('parameters')}         
     
     data['attributes'] = OrderedDict(
-        (filter_fixed_controls(params,fixed=False))    
+        **filter_fixed_controls(params,fixed=False)    
     )
+
+
+    
+     # filter(lambda x: x['runtimemax'] == True, params)
 
     fftSettings = data['attributes'].pop('fftSettings',None) 
     if fftSettings: #only works because they're last in the list 
@@ -84,6 +89,29 @@ def sc_transform_data(object_name,data):
             'fftSize':  fftSettings['fft']
         }
     
+    
+    def maxParamName(pname):
+        return 'max' + pname[0].upper() + pname[1:]
+    
+    def maxParamDoc(v):
+        return {
+            'name': maxParamName(v['name']),
+            'constraints':{},
+            'default': -1,
+            'description': f"Manually sets a maximum value for ``{v['name']}``. Can only be set at object instantiation. Default value of -1 sets this to the initial value of ``{v['name']}``",
+            'displayName': f"Maximum {v['displayName']}",
+            'fixed':False, 
+            'size':1
+        }  
+    
+    if(object_name.startswith('Buf') == False):    
+        runtime_max_params = { maxParamName(name): maxParamDoc(data) for name, data in params.items() if data.get('runtimemax',False) == True}    
+        
+        data['attributes'] = {
+            **data['attributes'], 
+            **runtime_max_params
+        }
+        
     #HPSS horrors 
     def spliceAttrs(key):
         if key in data['attributes']:
@@ -104,7 +132,7 @@ def sc_transform_data(object_name,data):
         data['attributes'] = {**data['attributes'], 'padding': padding}
 
     data['arguments'] = OrderedDict(
-        filter_fixed_controls(params,fixed=True) 
+        **filter_fixed_controls(params,fixed=True) 
     )
     
     data['messages'] = {x['name']:x for x in data.pop('messages')}
@@ -128,7 +156,7 @@ settings = {
     'glob': '**/*.json', 
     'parameter_link': sc_jinja_parameter_link, 
     # 'write_cross_ref': (sc_visit_flucoma_reference,sc_depart_flucoma_reference),
-    'code_block': 'code::{}::', 
+    'code_block': lambda p: f'code::{p}::', 
     'writer': SCDocWriter, 
     'rst_render': rst_filter,
     'topic_extension': 'schelp', 

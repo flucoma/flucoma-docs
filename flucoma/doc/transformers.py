@@ -9,14 +9,28 @@
 import logging
 from flucoma.doc import logger
 from collections import OrderedDict
+import copy
 
 """
 takes a an nested dict of controls, each assumed to have a 'fixed' key, returns an iterator to fixed = True by default. If elements don't have a 'fixed' key then you'll get a KeyError
 
 returns an iterator 
 """
-def filter_fixed_controls(controls,fixed=True):
-    return filter(lambda x:  x[1]['fixed'] == fixed, controls.items())
+def filter_fixed_controls(controls,fixed=True):    
+    
+    # def fil(item):
+    #     return item[1].get('fixed',False) == fixed
+    
+    return { k: v for k,v in controls.items() if v.get('fixed',False)  == fixed}
+    # return [ (k,v) for k,v in controls.items() if v.get('fixed',False)  == True]
+    # return filter(lambda x:  x[1]['fixed'] == fixed, controls.items())
+
+def filter_primary_controls(controls):
+    # primaries = filter(lambda x: x[1].get('primary',False) == True, controls.items())
+    primaries = copy.deepcopy({ k: v for k,v in controls.items() if v.get('primary',False) ==  True})    
+    for n,v in primaries.items(): 
+        v['description'] = f"Shorthand argument for ``{n}``"
+    return primaries
 
 """
 given a [comma] separated string,break it up discarding empty items and trimming whitespace 
@@ -59,6 +73,21 @@ def default_transform(object_name, data):
         'type': 'long'
     })
     
+    runtime_max_params = filter(lambda x: x.get('runtimemax',False) ==True, data['parameters'])
+    
+    for r in runtime_max_params:
+        r['size'] = 1
+        data['parameters'].append({
+            'name': f"max{r['name']}",
+            'constraints':{},
+            'default': -1,
+            'description': f"Manually sets a maximum value for ``{r['name']}``. Can only be set at object instantiation. The default of -1 sets this equal to the initial value of ``{r['name']}``",
+            'displayName': f"Maximum {r['displayName']}",
+            'fixed':False, 
+            'size':1,
+            'type': r['type']
+        })
+    
     if(data['input_type'] == 'control'):
         data['parameters'].insert(0,{
             'name':'inputsize',
@@ -80,17 +109,18 @@ def default_transform(object_name, data):
             'size': 1,
             'type': 'long'
         })        
-        
+
     params = {x['name']:x for x in data.pop('parameters')} 
     
     data['attributes'] = OrderedDict(
-        sorted(filter_fixed_controls(params,fixed=False))    
+        sorted(filter_fixed_controls(params,fixed=False).items())    
     )
 
-    data['arguments'] = OrderedDict(
-        filter_fixed_controls(params,fixed=True) 
-    )
-    
+    data['arguments'] = {
+        **filter_primary_controls(params),
+        **filter_fixed_controls(params,fixed=True)
+    }
+        
     data['messages'] = {x['name']:x for x in data.pop('messages')}
     
     for n,m in data['messages'].items(): 
