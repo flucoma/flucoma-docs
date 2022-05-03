@@ -59,7 +59,7 @@ def default_transform(object_name, data):
                 data[k.replace('-', '_')] = [x.strip() for x in data.get(k, '').split(',')]
             else:
                 logging.warning(f"No {k} entry")
-
+                
     data['parameters'].append({
         'name':'warnings',
         'constraints': {'max': 1, 'min': 0},
@@ -88,6 +88,28 @@ def default_transform(object_name, data):
             'type': r['type']
         })
     
+    if(data['input_type'] == 'control'):
+        data['parameters'].insert(0,{
+            'name':'inputsize',
+            'constraints': {'min': 0},
+            'default': 32,
+            'description': 'number of items in the input list',
+            'displayName': 'Input List Size',
+            'fixed': True,
+            'size': 1,
+            'type': 'long'        
+        })
+        data['parameters'].append({
+            'name':'autosize',
+            'constraints': {'max': 1, 'min': 0},
+            'default': 1,
+            'description': 'If the input list is a different size to ``inputsize`` then automatically resize the internal data. If the object is triggered from the high priority thread and a resize is needed, then the call will be deferred to the low priority thread and a warning will be posted to the console.',
+            'displayName': 'Automatically resize input',
+            'fixed': False,
+            'size': 1,
+            'type': 'long'
+        })        
+
     params = {x['name']:x for x in data.pop('parameters')} 
     
     data['attributes'] = OrderedDict(
