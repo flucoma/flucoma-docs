@@ -2,7 +2,7 @@
 code::
 // load some buffers
 (
-b = Buffer.read(s,FluidFilesPath("Tremblay-AaS-AcousticStrums-M.wav");
+b = Buffer.read(s,FluidFilesPath("Tremblay-AaS-AcousticStrums-M.wav"));
 c = Buffer.new(s);
 )
 

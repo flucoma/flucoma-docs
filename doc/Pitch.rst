@@ -1,13 +1,24 @@
-:digest: A Selection of Pitch Descriptors in Real-Time
+:digest: Real-time Pitch Descriptor
 :species: descriptor
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulationToolkit, Classes/Pitch
 :see-also: BufPitch, MFCC, MelBands, Loudness, SpectralShape
-:description: Three popular pitch descriptors, computed as frequency and the confidence in its value.
-:discussion: The process will return a multichannel control steam with [pitch, confidence] values, which will be repeated if no change happens within the algorithm, i.e. when the hopSize is larger than the signal vector size. A pitch of 0 Hz is yield (or -999.0 when the unit is in MIDI note) when the algorithm cannot find a fundamental at all.
-:process: The audio rate in, control rate out version of the object.
-:output: A 2-channel KR signal with the [pitch, confidence] descriptors. The latency is windowSize.
+:description: Three popular monophonic pitch descriptors, all of which compute frequency and confidence.
+:discussion: 
 
+  :fluid-obj:`Pitch` returns both ``pitch`` and ``confidence`` values. When no pitch can be detected, a pitch of 0 Hz is returned (or -999.0 when the unit is in MIDI note mode).
+  
+  For information about the pitch descriptor algorithms, see the ``algorithm`` parameter below.
+  
+  The "confidence" output is a value between 0 and 1 indicating how confident the algorithm is in the pitch that it is reporting. In effect this can be an estimation of how "noisy" (closer to 0) or "harmonic" (closer to 1) the spectrum is. The confidence may also be low when a signal contains polyphony, as the algorithms are not intended for multiple pitch streams.
+  
+  The ``unit`` argument indicates whether the pitch output should be in hertz (indicated by 0) or MIDI note numbers (indicated by 1). MIDI note numbers may be useful, not only because of their direct relationship to MIDI-based synthesis systems, but also because of the logarithmic relationship to hertz, making them perceptually evenly-spaced units (1 MIDI note = 1 semitone).
+  
+  For more information visit https://learn.flucoma.org/reference/pitch/.
+  
+:process: The audio rate in, control rate out version of the object.
+
+:output: The two descriptors: [pitch, confidence]. The latency is windowSize.
 
 :control in:
 
@@ -15,12 +26,12 @@
 
 :control algorithm:
 
-   The algorithm to estimate the pitch. The options are:
+   The algorithm to estimate the pitch. (The default is 2.) The options are:
 
    :enum:
 
       :0:
-         Cepstrum: Returns a pitch estimate as the location of the second highest peak in the Cepstrum of the signal (after DC).
+         Cepstrum: Returns a pitch estimate as the location of the highest peak (not including DC) in the Cepstrum of the signal.
 
       :1:
          Harmonic Product Spectrum: Implements the Harmonic Product Spectrum algorithm for pitch detection . See e.g. A. Lerch, "An Introduction to Audio Content Analysis: Applications in Signal Processing and Music Informatics." John Wiley & Sons, 2012.https://onlinelibrary.wiley.com/doi/book/10.1002/9781118393550
@@ -30,15 +41,15 @@
 
 :control minFreq:
 
-   The minimum frequency that the algorithm will search for an estimated fundamental. This sets the lowest value that will be generated.
+   The minimum frequency that the algorithm will search for. This sets the lowest value that can be generated. The default is 20.
 
 :control maxFreq:
 
-   The maximum frequency that the algorithm will search for an estimated fundamental. This sets the highest value that will be generated.
+   The maximum frequency that the algorithm will search for. This sets the highest value that can be generated. The default is 10000.
 
 :control unit:
 
-   The unit of the estimated value. The default of 0 is in Hz. A value of 1 will convert to MIDI note values.
+   The unit of the pitch output. The default of 0 indicates to output in Hz. A value of 1 will output MIDI note values.
 
 :control windowSize:
 
@@ -55,4 +66,3 @@
 :control maxFFTSize:
 
    How large can the FFT be, by allocating memory at instantiation time. This cannot be modulated.
-

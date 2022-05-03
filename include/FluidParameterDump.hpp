@@ -220,48 +220,63 @@ struct is_tuple : is_tuple_impl<std::decay_t<T>>
 {};
 
 template <typename A>
-std::enable_if_t<is_tuple<A>::value, std::string> getArgType(A&)
+std::enable_if_t<is_tuple<A>::value, std::string> getArgType(A)
 {
   return "tuple";
 }
 
 template <typename A>
-std::enable_if_t<std::is_integral<A>::value, std::string> getArgType(A&)
+std::enable_if_t<std::is_integral<A>::value, std::string> getArgType(A)
 {
   return "integer";
 }
 
 template <typename A>
-std::enable_if_t<std::is_floating_point<A>::value, std::string> getArgType(A&)
+std::enable_if_t<std::is_floating_point<A>::value, std::string> getArgType(A)
 {
   return "float";
 }
 
-std::string getArgType(BufferT::type&) { return "buffer"; }
+std::string getArgType(BufferT::type) { return "buffer"; }
 
-std::string getArgType(InputBufferT::type&) { return "buffer"; }
+std::string getArgType(InputBufferT::type) { return "buffer"; }
 
 std::string getArgType(ChoicesT::type&) { return "choices"; }
 
-std::string getArgType(SharedClientRef<dataset::DataSetClient>&)
+std::string getArgType(SharedClientRef<dataset::DataSetClient>)
 {
   return "DataSet";
 }
 
-std::string getArgType(SharedClientRef<labelset::LabelSetClient>&)
+std::string getArgType(SharedClientRef<labelset::LabelSetClient>)
 {
   return "LabelSet";
+}
+
+std::string getArgType(SharedClientRef<const dataset::DataSetClient>&)
+{
+  return "Input DataSet";
+}
+
+std::string getArgType(SharedClientRef<const labelset::LabelSetClient>&)
+{
+  return "Input LabelSet";
 }
 
 std::string getArgType(std::string&) { return "string"; }
 
 template <typename T, size_t N>
-std::string getArgType(FluidTensor<T, N>&)
+std::string getArgType(FluidTensor<T, N>)
 {
   std::stringstream ss;
   T                 t{};
   ss << "list " << getArgType(t);
   return ss.str();
+}
+
+template<typename T> 
+std::string getArgType(Optional<T>){
+  return getArgType(T{}) + "(optional)"; 
 }
 
 template <typename>

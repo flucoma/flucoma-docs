@@ -7,7 +7,7 @@ b = Buffer.read(s,FluidFilesPath("Nicol-LoopE-M.wav"));
 {var sig = PlayBuf.ar(1,b,loop:1); [FluidNoveltySlice.ar(sig,0,11,0.33) * 0.5, DelayN.ar(sig, 1, (512 * (((11 + 1) / 2).asInteger + ((1 + 1) / 2).asInteger + 1)) / s.sampleRate, 0.2)]}.play
 
 // other parameters
-{var sig = PlayBuf.ar(1,b,loop:1); [FluidNoveltySlice.ar(sig, 1, 31, 0.0035, 4, 100, 128, 32) * 0.5, DelayN.ar(sig, 1, (32 * (((31 + 1)/2).asInteger + ((4 + 1) / 2).asInteger + 1))/ s.sampleRate,0.2)]}.play
+{var sig = PlayBuf.ar(1,b,loop:1); [FluidNoveltySlice.ar(sig, 1, 31, 0.009, 4, 100, 128, 32) * 0.5, DelayN.ar(sig, 1, (32 * (((31 + 1)/2).asInteger + ((4 + 1) / 2).asInteger + 1))/ s.sampleRate,0.2)]}.play
 
 // More musical, novelty-trigged autopan
 (

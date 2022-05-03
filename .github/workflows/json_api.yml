@@ -1,0 +1,48 @@
+name: Dev API
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ dev, ci/** ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: flucoma/actions/env@v4
+      - uses: flucoma/actions/docs@v4
+        with:
+          target: 'MAKE_RAW_REF'
+
+      - uses: dev-drprasad/delete-tag-and-release@v0.2.0
+        with:
+          delete_release: true # default: false
+          tag_name: api # tag name to delete
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Setup SSH
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH }}
+          known_hosts: 'placeholder'
+
+      - name: Adding Known Hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.DO_IP }} >> ~/.ssh/known_hosts
+
+      - name: package and upload
+        uses: softprops/action-gh-release@v1
+        with:
+          name: FluCoMa Docs API
+          body: "A JSON that can be accessed to derive parameters/args for objects. The build hash is ${{ github.sha }}"
+          files: 'build/flucoma.api.json'
+          prerelease: true
+          tag_name: api
+          draft: false
+
+      - name: Upload To Droplet
+        run: |
+          rsync -avz --delete --no-times --no-o --no-g --no-perms ./build/api.json james@${{ secrets.DO_IP }}:/home/learn/www/
