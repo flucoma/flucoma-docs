@@ -1,104 +1,141 @@
-
+strong::Real-Time Tweaking Parameters::
 code::
+
+s.boot;
+
+// some audio files to classify
 (
-~classifier=FluidMLPClassifier(s).hidden_([6]).activation_(FluidMLPClassifier.tanh).maxIter_(1000).learnRate_(0.1).momentum_(0.1).batchSize_(50).validation_(0);
-~sourcedata= FluidDataSet(s);
-~labels = FluidLabelSet(s);
-~testdata = FluidDataSet(s);
-~predictedlabels = FluidLabelSet(s);
+~tbone = Buffer.read(s,FluidFilesPath("Olencki-TenTromboneLongTones-M.wav"),27402,257199);
+~oboe = Buffer.read(s,FluidFilesPath("Harker-DS-TenOboeMultiphonics-M.wav"),27402,257199);
 )
-//Make some clumped 2D points and place into a DataSet
+
+// listen to these short bits
+~tbone.play;
+~oboe.play;
+
+// create a dataSet of pitch and pitch confidence analyses (and normalize them)
 (
-~centroids = [[0.5,0.5],[-0.5,0.5],[0.5,-0.5],[-0.5,-0.5]];
-~categories = [\red,\orange,\green,\blue];
-~trainingset = Dictionary();
-~labeldata = Dictionary();
-4.do{ |i|
-	64.do{ |j|
-		~trainingset.put("mlpclass"++i++\_++j, ~centroids[i].collect{|x| x.gauss(0.5/3)});
-		~labeldata.put("mlpclass"++i++\_++j,[~categories[i]]);
-	}
+~dataSet = FluidDataSet(s);
+~labelSet = FluidLabelSet(s);
+~pitch_features = Buffer(s);
+~point = Buffer(s);
+[~tbone,~oboe].do{
+	arg src, instr_id;
+	FluidBufPitch.processBlocking(s,src,features:~pitch_features,windowSize:2048);
+	252.do{ // I happen to know there are 252 frames in this buffer
+		arg idx;
+		var id = "slice-%".format((instr_id*252)+idx);
+		var label = ["trombone","oboe"][instr_id];
+		FluidBufFlatten.processBlocking(s,~pitch_features,idx,1,destination:~point);
+		~dataSet.addPoint(id,~point);
+		~labelSet.addLabel(id,label);
+	};
 };
-~sourcedata.load(Dictionary.with(*[\cols->2,\data->~trainingset]),action:{~sourcedata.print});
-~labels.load(Dictionary.with(*[\cols->1,\data->~labeldata]),action:{~labels.print});
+FluidNormalize(s).fitTransform(~dataSet,~dataSet);
+~dataSet.print;
+~labelSet.print;
 )
 
-//Fit the classifier to the example DataSet and labels, and then run prediction on the test data into our mapping label set
-~classifier.fit(~sourcedata,~labels,action:{|loss| ("Trained"+loss).postln});
-
-//make some test data
 (
-~testset = Dictionary();
-4.do{ |i|
-	64.do{ |j|
-		~testset.put("mlpclass_test"++i++\_++j, ~centroids[i].collect{|x| x.gauss(0.5/3)});
-	}
-};
-~testdata.load(Dictionary.with(*[\cols->2,\data->~testset]),action:{~testdata.print});
+// take a look if you want: quite clear separation for the neural network to learn (blue will be trombone and orange will be oboe)
+~dataSet.dump({
+	arg datadict;
+	~labelSet.dump({
+		arg labeldict;
+		defer{
+			FluidPlotter(dict:datadict).categories_(labeldict);
+		};
+	});
+});
 )
 
-//Run the test data through the network, into the predicted labelset
-~classifier.predict(~testdata,~predictedlabels,action:{"Test complete".postln});
-
-//get labels from server
-~predictedlabels.dump(action:{|d| ~labelsdict = d["data"]; ~labelsdict.postln});
-
-//Visualise: we're hoping to see colours neatly mapped to quandrants...
 (
-c = Dictionary();
-c.add("red"->Color.red);
-c.add("blue"->Color.blue);
-c.add("green"->Color.green);
-c.add("orange"->Color.new255(255, 127, 0));
-e = 200 * ((~centroids + 1) * 0.5).flatten(1).unlace;
-w = Window("scatter", Rect(128, 64, 200, 200));
-w.drawFunc = {
-    Pen.use {
-		~testset.keysValuesDo{|k,v|
-			var x = v[0].linlin(-1,1,200,0).asInteger;
-			var y = v[1].linlin(-1,1,200,0).asInteger;
-			var r = Rect(x,y,5,5);
-			Pen.fillColor = c.at(~labelsdict[k][0]);
-			Pen.fillOval(r);
-		}
-    }
+// make a neural network
+~mlp = FluidMLPClassifier(s,[3],activation:FluidMLPClassifier.sigmoid,maxIter:20,learnRate:0.01,batchSize:1,validation:0.1);
+
+// make a flag that can later be set to false
+~continuous_training = true;
+
+// a recursive function for training
+~train = {
+	~mlp.fit(~dataSet,~labelSet,{
+		arg error;
+		"current error: % ".format(error.asStringff(5)).post;
+		{"*".post;} ! (error*100).asInteger;
+		"".postln;
+		if(~continuous_training){~train.()}
+	});
 };
-w.refresh;
-w.front;
+
+// start training
+~train.();
 )
 
-// single point transform on arbitrary value
-~inbuf = Buffer.loadCollection(s,0.5.dup);
-~classifier.predictPoint(~inbuf,{|x|x.postln;});
+// you can make adjustments while it's recursively calling itself:
+~mlp.learnRate_(0.02);  // won't reset the neural network
+~mlp.batchSize_(2);     // won't reset the neural network
+~mlp.maxIter_(50);      // won't reset the neural network
+~mlp.validation_(0.05); // won't reset the neural network
+~mlp.momentum_(0.95);   // won't reset the neural network
+
+~mlp.hidden_([2]);                         // *will* reset the neural network
+~mlp.activation_(FluidMLPClassifier.tanh); // *will* reset the neural network
+
+// when the loss has decreased and then leveled out, stop the recursive training:
+~continuous_training = false;
+
+// make some predictions
+(
+~predictions = FluidLabelSet(s);
+~mlp.predict(~dataSet,~predictions);
+~predictions.dump({
+	arg predictions;
+	~labelSet.dump({
+		arg labels;
+		var wrong = 0;
+		var total = predictions["data"].size;
+		labels["data"].keysValuesDo{
+			arg k, v;
+			var label = v[0];
+			var prediction = predictions["data"][k][0];
+			"key: %\t\tlabel: %\t\tprediction: %".format(k,label.padRight(8),prediction.padRight(8)).post;
+			if(label != prediction){
+				wrong = wrong + 1;
+				"\t\t* wrong".post;
+			};
+			"".postln;
+		};
+
+		"\n% wrong / % total".format(wrong,total).postln;
+		"% percent correct".format(((1-(wrong/total)) * 100).round(0.01)).postln;
+		"of course it should get most all these correct, this is the data it trained on!".postln;
+	});
+});
+)
 ::
-subsection::Querying in a Synth
-This is the equivalent of code::predictPoint::, but wholly on the server
+strong::Predict classes entirely on the server::
 code::
-(
-{
-	var trig = Impulse.kr(5);
-	var point = WhiteNoise.kr(1.dup);
-    var inputPoint = LocalBuf(2);
-    var outputPoint = LocalBuf(1);
-	Poll.kr(trig, point, [\pointX,\pointY]);
-	point.collect{ |p,i| BufWr.kr([p],inputPoint,i)};
-    ~classifier.kr(trig,inputPoint,outputPoint);
-    Poll.kr(trig,BufRd.kr(1,outputPoint,0,interpolation:0),\cluster);
-    Silent.ar;
-}.play;
-)
+~mlp = FluidMLPClassifier(s);
 
-// to sonify the output, here are random values alternating quadrant.
+// load a model that has been pre-trained to classify between a tone and noise, simple, i know, but...
+~mlp.read(FluidFilesPath("../../Resources/bufToKrExample.json"));
+
+// can be used to demonstrate that...
 (
 {
-	var trig = Impulse.kr(MouseX.kr(0,1).exprange(0.5,ControlRate.ir /2).poll(trig: 2,label: "Query Frequency"));
-	var step = Stepper.kr(trig,max:3);
-	var point = TRand.kr(-0.1, [0.1, 0.1], trig) + [step.mod(2).linlin(0,1,-0.6,0.6),step.div(2).linlin(0,1,-0.6,0.6)] ;
-    var inputPoint = LocalBuf(2);
-    var outputPoint = LocalBuf(1);
-	point.collect{|p,i| BufWr.kr([p],inputPoint,i)};
-    ~classifier.kr(trig,inputPoint,outputPoint);
-    SinOsc.ar((BufRd.kr(1,outputPoint,0,interpolation:0) + 69).midicps,mul: 0.1)
+    var input_buf = LocalBuf(7);
+    var out_buf = LocalBuf(1);
+    var sig = Select.ar(ToggleFF.kr(Dust.kr(1)),[SinOsc.ar(440),PinkNoise.ar]);
+    var analysis = FluidSpectralShape.kr(sig);
+    FluidKrToBuf.kr(analysis,input_buf);
+
+    // the output prediction is written into a buffer
+    ~mlp.kr(Impulse.kr(30),input_buf,out_buf);
+
+    // and FluidBufToKr can be used to read the prediction out into a control rate stream
+    FluidBufToKr.kr(out_buf).poll;
+
+    sig.dup * -30.dbamp
 }.play;
 )
 ::
