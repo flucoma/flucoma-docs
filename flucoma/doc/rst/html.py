@@ -9,6 +9,7 @@
 
 from .common import LoggingDocutilsReader
 
+from docutils import nodes
 from docutils.utils import Reporter
 from docutils.core import publish_parts
 from docutils.writers import html4css1
@@ -35,6 +36,10 @@ class FlucomaCrossRefTranslator(html4css1.HTMLTranslator):
             self.depart_flucoma_reference(node)
         else: 
             super().depart_reference(node)
+            
+    
+    
+    
 
 class FluidHTMLWriter(html4css1.Writer):
     """docutils writer for Max ref
@@ -55,6 +60,12 @@ class FluidHTMLWriter(html4css1.Writer):
                  
             def depart_flucoma_reference(self,node):    
                 partial(driver['write_cross_ref'][1], data = index)(self,node)
+                
+            def visit_literal(self, node)    :
+                f = driver.get('code_block',lambda x: x) 
+                self.body.append(f(node.astext()))
+                raise nodes.SkipNode 
+                                
         
         self.translator_class = ConcreteTranslator
 

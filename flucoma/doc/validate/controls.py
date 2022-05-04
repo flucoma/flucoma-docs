@@ -32,15 +32,15 @@ def render_constraints_markup(control):
     }
     
     special_invariants = {
-        'fftFrame': '``(FFT Size / 2) + 1`` (see fft settings)',
-        'maxFFTFrame': '``(max FFT Size / 2) + 1`` (see maxFFTSize)'
+        'fftFrame': '(FFT Size / 2) + 1 (see fft settings)',
+        'maxFFTFrame': '(max FFT Size / 2) + 1 (see maxFFTSize)'
     } 
-    
+        
     resultStr = '\n**Constraints**\n\n'
     
     upperLimits = constraints.get('upper',[])
     lowerLimits = constraints.get('lower',[])
-    
+        
     upperLimits = [upperLimits] if not isinstance(upperLimits,list) else upperLimits
     lowerLimits = [lowerLimits] if not isinstance(lowerLimits,list) else lowerLimits
     
@@ -48,17 +48,19 @@ def render_constraints_markup(control):
     lowerStrs = [special_invariants.get(c,f'{c}') for c in lowerLimits]
     
     if 'max' in constraints: upperStrs.append(str(constraints['max']))
-    if 'min' in constraints: lowerStrs.append(str(constraints['min']))
+    if 'min' in constraints: lowerStrs.append(str(constraints['min']))    
+    if(control.get('runtimemax',False)):
+        upperStrs.append(f"max{control['name']}")
     
     if len(lowerStrs) > 1:
-        resultStr += f"* Minimum: MAX({', '.join(lowerStrs)})\n" 
+        resultStr += f"* Minimum: MAX(``{', '.join(lowerStrs)}``)\n" 
     elif len(lowerStrs) == 1: 
-        resultStr += f"* Minimum: {lowerStrs[0]}\n"
+        resultStr += f"* Minimum: ``{lowerStrs[0]}``\n"
 
     if len(upperStrs) > 1:        
-        resultStr += f"* Maximum: MIN({', '.join(upperStrs)})\n" 
+        resultStr += f"* Maximum: MIN(``{', '.join(upperStrs)}``)\n" 
     elif len(upperStrs) == 1: 
-        resultStr += f"* Maximum: {upperStrs[0]}\n"
+        resultStr += f"* Maximum: ``{upperStrs[0]}``\n"
 
     if 'snap' in constraints: 
         resultStr += f"* Snaps to {snaps[constraints['snap']]} \n"

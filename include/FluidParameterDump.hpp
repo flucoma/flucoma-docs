@@ -28,6 +28,7 @@ under the European Union’s Horizon 2020 research and innovation programme
 // for convenience
 using json = nlohmann::json;
 
+
 namespace fluid {
 namespace client {
 
@@ -73,6 +74,17 @@ struct Constraint<FFTParams::FFTSettingsConstraint<MaxFFT>>
   dump(const FFTParams::FFTSettingsConstraint<MaxFFT>&, Tuple&)
   {
     return {"MaxFFT", MaxFFT > -1};
+  }
+};
+
+template <>
+struct Constraint<LongRuntimeMaxParam::RuntimeMaxConstraint>
+{
+  template <size_t Offset, typename Tuple>
+  static json::object_t::value_type
+  dump(const LongRuntimeMaxParam::RuntimeMaxConstraint&, Tuple&)
+  {
+    return {"runtimemax",-1};
   }
 };
 
@@ -219,33 +231,35 @@ struct is_tuple : is_tuple_impl<std::decay_t<T>>
 {};
 
 template <typename A>
-std::enable_if_t<is_tuple<A>::value, std::string> getArgType(A&)
+std::enable_if_t<is_tuple<A>::value, std::string> getArgType(A)
 {
   return "tuple";
 }
 
 template <typename A>
-std::enable_if_t<std::is_integral<A>::value, std::string> getArgType(A&)
+std::enable_if_t<std::is_integral<A>::value, std::string> getArgType(A)
 {
   return "integer";
 }
 
 template <typename A>
-std::enable_if_t<std::is_floating_point<A>::value, std::string> getArgType(A&)
+std::enable_if_t<std::is_floating_point<A>::value, std::string> getArgType(A)
 {
   return "float";
 }
 
-std::string getArgType(BufferT::type&) { return "buffer"; }
+std::string getArgType(BufferT::type) { return "buffer"; }
 
-std::string getArgType(InputBufferT::type&) { return "buffer"; }
+std::string getArgType(InputBufferT::type) { return "buffer"; }
 
-std::string getArgType(SharedClientRef<dataset::DataSetClient>&)
+std::string getArgType(ChoicesT::type&) { return "choices"; }
+
+std::string getArgType(SharedClientRef<dataset::DataSetClient>)
 {
   return "DataSet";
 }
 
-std::string getArgType(SharedClientRef<labelset::LabelSetClient>&)
+std::string getArgType(SharedClientRef<labelset::LabelSetClient>)
 {
   return "LabelSet";
 }
@@ -263,12 +277,17 @@ std::string getArgType(SharedClientRef<const labelset::LabelSetClient>&)
 std::string getArgType(std::string&) { return "string"; }
 
 template <typename T, size_t N>
-std::string getArgType(FluidTensor<T, N>&)
+std::string getArgType(FluidTensor<T, N>)
 {
   std::stringstream ss;
   T                 t{};
   ss << "list " << getArgType(t);
   return ss.str();
+}
+
+template<typename T> 
+std::string getArgType(Optional<T>){
+  return getArgType(T{}) + "(optional)"; 
 }
 
 template <typename>
@@ -287,7 +306,12 @@ class ParameterDump
   {
     return p.defaultValue;
   }
-
+  
+  static index makeValue(const LongRuntimeMaxT& p)
+  {
+    return p.defaultValue();
+  }
+  
   template <typename Param>
   static std::enable_if_t<!isDetected<DefaultValue, Param>::value, std::string>
   makeValue(Param&)
@@ -376,6 +400,8 @@ public:
   static std::string getParamType(const FFTParamsT&) { return "fft"; }
   static std::string getParamType(const EnumT&) { return "enum"; }
   static std::string getParamType(const LongArrayT&) { return "long"; }
+  static std::string getParamType(const LongRuntimeMaxT&) { return "long"; }
+  static std::string getParamType(const ChoicesT&) { return "choices"; }
 
   static std::string
   getParamType(const SharedClientRef<dataset::DataSetClient>::ParamType&)
@@ -397,16 +423,22 @@ public:
   template <size_t Offset, typename P, typename Tuple, typename All>
   static json jsonify_param(P& p, Tuple& tuple, All& allParams)
   {
-    constexpr bool fixed = std::tuple_element<2, Tuple>::type::value;
-    json           j;
+    using fixed_el_type = std::decay_t<typename std::tuple_element<2, Tuple>::type>;
+    constexpr bool fixed = std::is_same<fixed_el_type, Fixed<true>>::value;
+    constexpr bool primary = std::is_same<fixed_el_type, Primary>::value;
+    
+    json j;
+    
     j["name"] = p.name;
     j["displayName"] = p.displayName;
-    //    j["default"] = p.defaultValue;
     j["default"] = makeValue(p);
     j["fixed"] = fixed;
     j["type"] = getParamType(p);
     j["size"] = p.fixedSize;
-
+    
+    j["runtimemax"] = std::is_same<P,const LongRuntimeMaxT>::value;
+    j["primary"] = primary;
+    
     // constraints
     auto& constraintsTuple = std::get<1>(tuple);
     using constraintsTupleType = std::decay_t<decltype(constraintsTuple)>;
@@ -437,6 +469,28 @@ public:
     std::copy(p.strings, p.strings + p.numOptions, strings.begin());
     j["values"] = strings;
     j["type"] = "enum";
+    
+    j["runtimemax"] = false;
+    j["primary"] = false;
+    
+    return j;
+  }
+
+  template <size_t Offset, typename Tuple, typename All>
+  static json jsonify_param(const ChoicesT& p, Tuple&, All&)
+  {
+    json j;
+    j["name"] = p.name;
+    j["displayName"] = p.displayName;
+    std::vector<std::string> strings(p.numOptions);
+    std::copy(p.strings, p.strings + p.numOptions, strings.begin());
+    j["default"] = strings;
+    j["fixed"] = false;
+    j["type"] = getParamType(p);
+    j["size"] = 1;
+
+    // j["values"] = strings;
+    j["type"] = "choices";
     return j;
   }
 
