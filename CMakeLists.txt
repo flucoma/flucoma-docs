@@ -149,7 +149,7 @@ add_ref_target(raw "Making raw API JSON")
 enable_testing()
 
 execute_process(
-  COMMAND "python" "list_python_tests.py" 
+  COMMAND ${PYTHON_3} "list_python_tests.py" 
   OUTPUT_VARIABLE FLUCOMA-DOC-PYTHON_TESTS
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
   OUTPUT_STRIP_TRAILING_WHITESPACE
