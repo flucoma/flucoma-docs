@@ -206,7 +206,6 @@ fork{
 ~mlp.fit(~trainingData,~trainingLabels,{
 	arg error;
 	"current error: % ".format(error).postln;
-	if(~continuous_training){~train.()}
 });
 )
 
