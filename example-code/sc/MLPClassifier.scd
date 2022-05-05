@@ -113,6 +113,47 @@ FluidNormalize(s).fitTransform(~dataSet,~dataSet);
 });
 )
 ::
+strong::Training-Testing Split::
+code::
+
+// two audio buffers to use as separate classes
+(
+~buffers = [
+	Buffer.readChannel(s,FluidFilesPath("Tremblay-AaS-AcBassGuit-Melo-M.wav"),channels:[0]),
+	Buffer.readChannel(s,FluidFilesPath("Tremblay-CEL-GlitchyMusicBoxMelo.wav"),channels:[0])
+];
+)
+
+// strip any silence
+(
+~buffers = ~buffers.collect{
+	arg src;
+	var indices = Buffer(s);
+	var temp = Buffer(s);
+	FluidBufAmpGate.processBlocking(s,src,indices:indices,onThreshold:-40,offThreshold:-45,minSliceLength:4410);
+	indices.loadToFloatArray(action:{
+		arg fa;
+		var curr = 0;
+		fa.clump(2).do{
+			arg arr;
+			var start = arr[0];
+			var num = arr[1] - start;
+			FluidBufCompose.processBlocking(s,src,start,num,destination:temp,destStartFrame:curr);
+			curr = curr + num;
+		};
+		indices.free;
+		src.free;
+	});
+	temp;
+};
+)
+
+// take a look to see that the silence is stripped
+(
+~win = Window(bounds:Rect(0,0,800,800));
+)
+
+::
 strong::Predict classes entirely on the server::
 code::
 ~mlp = FluidMLPClassifier(s);
