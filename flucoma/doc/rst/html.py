@@ -12,13 +12,15 @@ from .common import LoggingDocutilsReader
 from docutils import nodes
 from docutils.utils import Reporter
 from docutils.core import publish_parts
-from docutils.writers import html4css1
+from docutils.writers import html4css1, Writer
+  
 
 from functools import partial 
 from jinja2 import pass_context
 from markupsafe import Markup
 
 import logging
+import re
 
 class FlucomaCrossRefTranslator(html4css1.HTMLTranslator):
     """docutils translator for Max ref    
@@ -96,3 +98,50 @@ def rst_filter(ctx,value):
                                 settings_overrides=settings)
     
     return Markup(tre['fragment'])
+    
+    
+class RSTSripper(nodes.GenericNodeVisitor): 
+    
+    def __init__(self,document):
+        super(RSTSripper,self).__init__(document)
+        self.settings = settings = document.settings
+        self.body = []
+    
+    def astext(self):
+        return ''.join(self.body)
+    
+    def default_visit(self, node): 
+        self.body.append(node.astext())
+        raise nodes.SkipNode
+
+class NoRSTWriter(Writer):
+    def __init__(self):
+        super(NoRSTWriter,self).__init__()
+        self.translator_class = RSTSripper
+    
+    def translate(self):
+        self.visitor = visitor = self.translator_class(self.document)
+        self.document.walkabout(visitor)
+        self.output = visitor.astext()
+
+@pass_context
+def no_rst_filter(ctx, value):    
+    if value is None or len(value) == 0:
+         return ''
+    logging.debug('Parsing no-rst block')
+                 
+    driver = ctx.parent['driver']
+    index =  ctx.parent['index']
+    
+    value = re.sub(r'\|buffer\|','buffer~',value)
+    
+    #stop docutils mirroing warnings to console, but we probably want to see errors
+    settings = {'report_level':Reporter.ERROR_LEVEL,'flucoma-host':ctx['host']} 
+    
+    tre = publish_parts(source=value, 
+                                writer = NoRSTWriter(),  
+                                reader = LoggingDocutilsReader(),
+                                settings_overrides=settings)
+    return Markup(tre['whole'])
+        
+        
