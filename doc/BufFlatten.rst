@@ -6,6 +6,7 @@
 :description: 
    Flatten a multichannel |buffer| to a single channel. This can be useful to structure a buffer such that it can be added to a :fluid-obj:`DataSet`
 
+:discussion:
    The ``axis`` argument determines how the flattening is arranged. The default value, 1, flattens channel-wise (similar to how audio files are stored), such that (if we imagine channels are rows, time positions are columns):
 
     ===  ===  ===
