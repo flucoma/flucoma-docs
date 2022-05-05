@@ -15,6 +15,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from markupsafe import Markup
 
 from flucoma.doc.rst.docutils import register_custom_roles, register_custom_directives
+from flucoma.doc.rst.html import no_rst_filter
 from .logger import ContextView,add_context
 
 def type_map(x,namer):
@@ -41,6 +42,7 @@ def setup_jinja(client_index, args, driver):
     """
     # e.filters['rst'] = partial(rst_filter,data=client_index, driver=driver)
     e.filters['rst'] = driver['rst_render']
+    e.filters['striprst'] = no_rst_filter
     e.filters['as_host_object_name'] = lambda x: driver['namer'](client_index[x]) if x in client_index else f'Unresolved lookup ({x})'
     e.filters['typename'] = partial(type_map, namer=driver['types'])
     e.filters['constraints'] = lambda x,y,z: ''     
