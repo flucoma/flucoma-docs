@@ -1,0 +1,6 @@
+{%- if 'enum' in data -%}
+  table::{% for enumname,desc in data['enum'].items() -%}
+  ## {{ enumname }} || {{ desc|rst }} 
+{%- endfor %}
+::
+{%- endif -%}  
