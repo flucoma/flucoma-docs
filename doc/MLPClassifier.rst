@@ -7,13 +7,13 @@
 
   Perform classification between a :fluid-obj:`DataSet` and a :fluid-obj:`LabelSet` using a Multi-Layer Perception neural network.
   
-  For a thorough explanation of how this object works and more information on the parameters, visit [MLP Training](https://learn.flucoma.org/learn/mlp-training) and [MLP Parameters](https://learn.flucoma.org/learn/mlp-parameters).
+  For a thorough explanation of how this object works and more information on the parameters, visit the page on **MLP Training** (https://learn.flucoma.org/learn/mlp-training) and **MLP Parameters** (https://learn.flucoma.org/learn/mlp-parameters).
 
 :discussion:
 
 :control hidden:
 
-   An ``Classes/Array`` of numbers that specifies the internal structure of the neural network. Each number in the list represents one hidden layer of the neural network, the value of which is the number of neurons in that layer. Changing this will reset the neural network, clearing any learning that has happened.
+   An array of numbers that specifies the internal structure of the neural network. Each number in the list represents one hidden layer of the neural network, the value of which is the number of neurons in that layer. Changing this will reset the neural network, clearing any learning that has happened.
 
 :control activation:
 
@@ -35,7 +35,7 @@
 
 :control maxIter:
 
-   The number of epochs to train for when `fit` is called on the object. An epoch is consists of training on all the data points one time.
+   The number of epochs to train for when ``fit`` is called on the object. An epoch is consists of training on all the data points one time.
 
 :control learnRate:
 
@@ -51,7 +51,7 @@
 
 :control validation:
 
-   A percentage (represented as a decimal) of the data points to randomly select, set aside, and not use for training (this "validation set" is reselected on each ``fit``). Instead these points will be used after each epoch to check how the neural network is performing. If it is found to be no longer improving, training will stop, even if a ``fit`` has not reached its ```maxIter`` number of epochs.
+   A percentage (represented as a decimal) of the data points to randomly select, set aside, and not use for training (this "validation set" is reselected on each ``fit``). These points will be used after each epoch to check how the neural network is performing. If it is found to be no longer improving, training will stop, even if a ``fit`` has not reached its ```maxIter`` number of epochs.
 
 :message fit:
 
@@ -59,7 +59,7 @@
 
    :arg targetLabelSet: Target labels
 
-   :arg action: Function to run when training is complete. This function will be passed the current error as its only argument.
+   :arg action: Function to run when complete. This function will be passed the current error as its only argument.
    
    Train the network to map between a source :fluid-obj:`DataSet` and target :fluid-obj:`LabelSet`
 

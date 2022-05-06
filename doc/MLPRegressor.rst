@@ -7,11 +7,11 @@
 
   Perform regression between :fluid-obj:`DataSet`\s using a Multi-Layer Perception neural network.
     
-  For a thorough explanation of how this object works and more information on the parameters, visit [MLP Training](https://learn.flucoma.org/learn/mlp-training) and [MLP Parameters](https://learn.flucoma.org/learn/mlp-parameters).
+  For a thorough explanation of how this object works and more information on the parameters, visit the page on **MLP Training** (https://learn.flucoma.org/learn/mlp-training) and **MLP Parameters** (https://learn.flucoma.org/learn/mlp-parameters).
 
 :control hidden:
 
-   An ``Classes/Array`` of numbers that specifies the internal structure of the neural network. Each number in the list represents one hidden layer of the neural network, the value of which is the number of neurons in that layer. Changing this will reset the neural network, clearing any learning that has happened.
+   An array of numbers that specifies the internal structure of the neural network. Each number in the list represents one hidden layer of the neural network, the value of which is the number of neurons in that layer. Changing this will reset the neural network, clearing any learning that has happened.
 
 :control activation:
 
@@ -20,16 +20,16 @@
    :enum:
      
      :0: 
-      "identity" (the output range can be any value)
+      **identity** (the output range can be any value)
      
      :1: 
-      "sigmoid" (the output will always range be greater than 0 and less than 1)
+      **sigmoid** (the output will always range be greater than 0 and less than 1)
      
      :2: 
-      "relu" (the output will always be greater than or equal to 0)
+      **relu** (the output will always be greater than or equal to 0)
      
      :3: 
-      "tanh" (the output will always be greater than -1 and less than 1) 
+      **tanh** (the output will always be greater than -1 and less than 1) 
 
 :control outputActivation:
 
@@ -37,15 +37,15 @@
 
 :control tapIn:
 
-   The layer whose input is used to predict and predictPoint. It is 0 counting, where the default of 0 is the input layer, and 1 would be the first hidden layer, and so on.
+   The index of the layer to use as input to the neural network for ``predict`` and ``predictPoint`` (zero counting). The default of 0 is the first layer (the original input layer), 1 is the first hidden layer, etc. This can be used to access different parts of a trained neural network such as the encoder or decoder of an autoencoder (https://towardsdatascience.com/auto-encoder-what-is-it-and-what-is-it-used-for-part-1-3e5c6f017726).
 
 :control tapOut:
 
-   The layer whose output to return. It is counting from 0 as the input layer, and 1 would be the first hidden layer, and so on. The default of -1 is the last layer of the whole network.
+   The index of the layer to use as output of the neural network for ``predict`` and ``predictPoint`` (zero counting). The default of -1 is the last layer (the original output layer). This can be used to access different parts of a trained neural network such as the encoder or decoder of an autoencoder (https://towardsdatascience.com/auto-encoder-what-is-it-and-what-is-it-used-for-part-1-3e5c6f017726).
 
 :control maxIter:
 
-   The number of epochs to train for when `fit` is called on the object. An epoch is consists of training on all the data points one time.
+   The number of epochs to train for when ``fit`` is called on the object. An epoch is consists of training on all the data points one time.
 
 :control learnRate:
 
@@ -61,7 +61,7 @@
 
 :control validation:
 
-   A percentage (represented as a decimal) of the data points to randomly select, set aside, and not use for training (this "validation set" is reselected on each ``fit``). Instead these points will be used after each epoch to check how the neural network is performing. If it is found to be no longer improving, training will stop, even if a ``fit`` has not reached its ```maxIter`` number of epochs.
+   A percentage (represented as a decimal) of the data points to randomly select, set aside, and not use for training (this "validation set" is reselected on each ``fit``). These points will be used after each epoch to check how the neural network is performing. If it is found to be no longer improving, training will stop, even if a ``fit`` has not reached its ```maxIter`` number of epochs.
 
 :message fit:
 
@@ -69,7 +69,7 @@
 
    :arg targetDataSet: Target data
 
-   :arg action: Function to run when training is complete. This function will be passed the current error as its only argument.
+   :arg action: Function to run when complete. This function will be passed the current error as its only argument.
    
    Train the network to map between a source and target :fluid-obj:`DataSet`
 
