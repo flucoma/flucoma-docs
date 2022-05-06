@@ -16,7 +16,7 @@
 :control activation:
 
    An integer indicating which activation function each neuron in the hidden layer(s) will use. Changing this will reset the neural network, clearing any learning that has happened. The options are:
-   
+
    :enum:
 
       :0:
