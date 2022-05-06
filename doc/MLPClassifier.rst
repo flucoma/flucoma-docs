@@ -9,6 +9,8 @@
   
   For a thorough explanation of how this object works and more information on the parameters, visit [MLP Training](https://learn.flucoma.org/learn/mlp-training) and [MLP Parameters](https://learn.flucoma.org/learn/mlp-parameters).
 
+:discussion:
+
 :control hidden:
 
    An ``Classes/Array`` of numbers that specifies the internal structure of the neural network. Each number in the list represents one hidden layer of the neural network, the value of which is the number of neurons in that layer. Changing this will reset the neural network, clearing any learning that has happened.
@@ -22,13 +24,13 @@
       :0:
          **identity** (the output range can be any value)
 
-      :1: 
+      :1:
          **sigmoid** (the output will always range be greater than 0 and less than 1)
 
-      :2: 
+      :2:
          **relu** (the output will always be greater than or equal to 0)
 
-      :3: 
+      :3:
          **tanh** (the output will always be greater than -1 and less than 1) 
 
 :control maxIter:
