@@ -10,6 +10,7 @@ import logging
 from flucoma.doc import logger
 from collections import OrderedDict
 import copy
+from functools import reduce
 
 """
 takes a an nested dict of controls, each assumed to have a 'fixed' key, returns an iterator to fixed = True by default. If elements don't have a 'fixed' key then you'll get a KeyError
@@ -72,6 +73,21 @@ def default_transform(object_name, data):
         'size': 1,
         'type': 'long'
     })
+    
+    #any parameter is an FFT (conventionally just the one,mind)?
+    hasfft = reduce(lambda acc, x: acc or (x['type'] == 'fft'), data['parameters'],False)
+    
+    if hasfft: 
+        data['parameters'].append({
+            'name':'maxfftsize', 
+            'constraints': {}, 
+            'default': -1, 
+            'description': 'Set an explicit upper bound on the FFT size at object instantiation. The default of -1 sets this to whatever the initial FFT size is',
+            'displayName': 'Maximum FFT Size', 
+            'fixed': False, 
+            'size': 1, 
+            'type': 'long'
+        })
     
     runtime_max_params = filter(lambda x: x.get('runtimemax',False) ==True, data['parameters'])
     

@@ -76,8 +76,6 @@ def sc_transform_data(object_name,data):
         **filter_fixed_controls(params,fixed=False)    
     )
 
-
-    
      # filter(lambda x: x['runtimemax'] == True, params)
 
     fftSettings = data['attributes'].pop('fftSettings',None) 
@@ -86,10 +84,19 @@ def sc_transform_data(object_name,data):
             **data['attributes'],
             'windowSize': fftSettings['win'], 
             'hopSize': fftSettings['hop'], 
-            'fftSize':  fftSettings['fft']
+            'fftSize':  fftSettings['fft'], 
+            'maxFFTSize': {
+                'name':'maxFFTSize', 
+                'constraints': {}, 
+                'default': -1, 
+                'description': 'Set an explicit upper bound on the FFT size at object instantiation. The default of ``nil`` or -1 sets this to whatever the initial FFT size is',
+                'displayName': 'Maximum FFT Size', 
+                'fixed': False, 
+                'size': 1, 
+                'type': 'long'
+            }
         }
-    
-    
+        
     def maxParamName(pname):
         return 'max' + pname[0].upper() + pname[1:]
     

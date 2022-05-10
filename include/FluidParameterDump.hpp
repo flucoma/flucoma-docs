@@ -66,14 +66,14 @@ struct Constraint<EnumT::EnumConstraint>
   }
 };
 
-template <index MaxFFT>
-struct Constraint<FFTParams::FFTSettingsConstraint<MaxFFT>>
+template <>
+struct Constraint<FFTParams::FFTSettingsConstraint>
 {
   template <size_t Offset, typename Tuple>
   static json::object_t::value_type
-  dump(const FFTParams::FFTSettingsConstraint<MaxFFT>&, Tuple&)
+  dump(const FFTParams::FFTSettingsConstraint&, Tuple&)
   {
-    return {"MaxFFT", MaxFFT > -1};
+    return {"MaxFFT", true};
   }
 };
 
