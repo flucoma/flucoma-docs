@@ -47,6 +47,28 @@
 
    The high reference value of the output scaling range.
 
+:control convert:
+   Performs conversion on the buffer data prior to scaling.
+
+   :enum:
+      :0:
+         No conversion.
+      
+      :1:
+         Convert decibels to a linear value.
+
+      :2:
+         Convert linear values to decibels. Will clip at a minimum value of -157.226593.
+
+      :3:
+         Convert frequency in Hz to MIDI.
+
+      :4:
+         Convert MIDI to frequency in Hz.
+
+:control exponent:
+   Applies an exponent to the scaling. This must be a number greater than 1, with larger values leading to steeper exponential curves.
+
 :control clipping:
 
    Optional clipping of the input (and therefore of the output). 0 is none. 1 clips the lowest input at inputLow. 2 caps the highest input at inputHigh, 3 caps both input low and high value within the described range.
