@@ -32,15 +32,15 @@
    Given a trained model, apply the reduction to a source :fluid-obj:`DataSet` and write to a destination. Can be the same for both input and output (in-place). Returns the fraction of accounted variance, aka the fidelity of the new representation: a value near 1.0 means a higher fidelity to the original.
    
 
- :message inverseTransform:
+:message inverseTransform:
 
-    :arg sourceDataSet: Source data, or the DataSet name
+   :arg sourceDataSet: Source data, or the DataSet name
 
-    :arg destDataSet: Destination data, or the DataSet name
+   :arg destDataSet: Destination data, or the DataSet name
 
-    :arg action: Run when done
+   :arg action: Run when done
 
-    Given a trained model, invert a source :fluid-obj:`DataSet` containing dimensions that are principal components to a destination :fluid-obj:`DataSet` with the dimensionality of the data that was used to ``fit``. :fluid-obj:`DataSet` can be the same for both input and output (the operation will be performed in-place). 
+   Given a trained model, invert a source :fluid-obj:`DataSet` containing dimensions that are principal components to a destination :fluid-obj:`DataSet` with the dimensionality of the data that was used to ``fit``. :fluid-obj:`DataSet` can be the same for both input and output (the operation will be performed in-place). 
 
 :message fitTransform:
 
