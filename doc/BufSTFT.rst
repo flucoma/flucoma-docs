@@ -4,15 +4,16 @@
 :sc-related: Classes/Buffer
 :see-also: 
 :description: 
-   Performs either a forward or inverse Short-Time Fourier Transform (STFT) on a single channel source |buffer|. In the forward case, resulting magnitudes and phases can be written to output buffers. In the inverse case, these buffers can be used to reconstruct the original source into a new buffer.
 
-   The magntude and phase buffers are laid out as (number of hops, number of bins). The number of hops is a function of the source length and the hop size. The number of bins is (1 + (fft size / 2)).
+   Performs either a forward or inverse Short-Time Fourier Transform (STFT) on a single channel ``source`` |buffer|. In the forward case, resulting magnitudes and phases can be written to output buffers. In the inverse case, these buffers can be used to reconstruct the original ``source`` into a new buffer.
 
-   The object is restricted to analysing a single source channel, because the channel counts of the magntude and phase buffers would quickly get out of hand otherwise.
+   The ``magnitude`` and ``phase`` buffers are laid out so the frames are the number of analysis windows in the ``source`` buffer while the channels are the different bins. The number of hops is a function of the ``source`` length and the ``hopSize``. The number of bins is **(1 + (``fftSize`` / 2))**.
+
+   The object is restricted to analysing a single source channel, because the channel counts of the ``magnitude`` and ``phase`` buffers would quickly get out of hand otherwise.
 
    .. only_in:: sc
 
-      If using an fftSize > 1024 the number of channels in the magnitude and phase buffers will be > 1024, which is the maximum number of channels a buffer can have when using |buffer|'s instance method ``loadToFloatArray``. This means you won't be able to get the values from the buffer using ``loadToFloatArray``. Instead you can use |buffer|'s instance method ``getToFloatArray``.
+      If using an ``fftSize`` > 1024 the number of channels in the ``magnitude`` and ``phase`` buffers will be > 1024, which is the maximum number of channels a buffer can have when using |buffer|'s instance method ``loadToFloatArray``. This means you won't be able to get the values from the buffer using ``loadToFloatArray``. Instead you can use |buffer|'s instance method ``getToFloatArray``.
 
 :control source:
 
@@ -52,13 +53,12 @@
 
 :control hopSize:
 
-   How many samples there are in-between analysis windows. The -1 default value will default to half of windowSize (overlap of 2).
+   How many samples there are in-between the start position of the analysis windows. The -1 default value will default to half of windowSize (overlap of 2).
 
 :control fftSize:
 
-   The FFT/IFFT size. It should be at least 4 samples long, at least the size of the window, and a power of 2. Making it larger allows an oversampling of the spectral precision. The -1 default value will use the next power of 2 equal or above the windowSize. For this object it is effectively capped at 65536.
+   The FFT/IFFT size. It should be at least 4 samples long, at least the size of the window, and a power of 2. Making it larger allows an oversampling of the spectral precision. The -1 default value will use the next power of 2 equal to or above the windowSize. For this object it is effectively capped at 65536.
 
 :control padding:
 
    Controls the zero-padding added to either end of the source buffer or segment. Possible values are 0 (no padding), 1 (default, half the window size), or 2 (window size - hop size). Padding ensures that all input samples are completely analysed: with no padding, the first analysis window starts at time 0, and the samples at either end will be tapered by the STFT windowing function. Mode 1 has the effect of centering the first sample in the analysis window and ensuring that the very start and end of the segment are accounted for in the analysis. Mode 2 can be useful when the overlap factor (window size / hop size) is greater than 2, to ensure that the input samples at either end of the segment are covered by the same number of analysis frames as the rest of the analysed material.
-
