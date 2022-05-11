@@ -72,7 +72,8 @@ def pd_type_map(type):
         'enum':'int', 
         'fft': 'int',
         'dataset':'symbol',
-        'labelset':'symbol'
+        'labelset':'symbol', 
+        'choices':'symbol'
     }[type]
     
 def transform_data(client, data):
@@ -92,7 +93,7 @@ settings = {
     'glob': '**/*.json', 
     'parameter_link': pd_jinja_parameter_link, 
     'write_cross_ref': (pd_visit_flucoma_reference,pd_depart_flucoma_reference),
-    'code_block': '<m>{}</m>', 
+    'code_block': lambda p: f'<code>{p.lower()}</code>', 
     'writer': FluidHTMLWriter,
     'rst_render': rst_filter,
     'topic_extension': 'html', 

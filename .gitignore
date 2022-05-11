@@ -10,3 +10,4 @@ schelp
 *.pyc
 interfaces/*
 *.log
+**/.DS_Store
