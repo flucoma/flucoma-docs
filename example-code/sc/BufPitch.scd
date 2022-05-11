@@ -3,8 +3,10 @@ code::
 (
 // load a sound file
 ~scratchy = Buffer.read(s,FluidFilesPath("Tremblay-ASWINE-ScratchySynth-M.wav"));
+
 // and a buffer to write the FluidBufPitch features into
 ~pitch_features_buf = Buffer.new(s);
+
 // specify some params for the analysis (these are the defaults, but we'll specify them here so we can use them later)
 ~windowSize = 1024;
 ~hopSize = 512;
@@ -15,14 +17,17 @@ code::
 FluidBufPitch.processBlocking(s,~scratchy,features:~pitch_features_buf,windowSize:~windowSize,hopSize:~hopSize);
 ~pitch_features_buf.loadToFloatArray(action:{
 	arg fa;
-	~pitch_features_array = fa.clump(2);
+	~pitch_features_array = fa.clump(~pitch_features_buf.numChannels);
+	"done".postln;
 });
 )
 
 //look at the retrieved formatted array of [pitch,confidence] values
 ~pitch_features_array.postln
 
-//iterate and make an array of the indices which are fitting the conditions
+//iterate and make an array of the indices which are fitting the conditions:
+// - pitch > 500 hz
+// - confidence > 0.98
 (
 ~selected_indices = List.new;
 ~pitch_features_array.do({
@@ -36,7 +41,7 @@ FluidBufPitch.processBlocking(s,~scratchy,features:~pitch_features_buf,windowSiz
 )
 
 (
-// In order to granulate the frames, we need to convert our indices to centerPos.
+// In order to granulate the frames, we need to convert our indices to centerPos in seconds for TGrains to use.
 ~selected_center_pos = ~selected_indices.collect({arg i; (i * ~hopSize) / ~scratchy.sampleRate});
 ~selected_center_pos.postln;
 // Load this list of center positions into a buffer so we can look them up later on the server
@@ -67,8 +72,10 @@ CODE::
 )
 
 // composite one on left one on right as test signals
+(
 FluidBufCompose.processBlocking(s,~piano, destination:~both,action:{"done".postln});
 FluidBufCompose.processBlocking(s,~guitar,numFrames:~piano.numFrames,startFrame:555000,destStartChan:1,destination:~both,action:{"done".postln});
+)
 
 // listen
 ~both.play
@@ -77,7 +84,7 @@ FluidBufCompose.processBlocking(s,~guitar,numFrames:~piano.numFrames,startFrame:
 ~pitch_analysis = Buffer(s);
 
 //run the process on them, with limited bandwidth
-FluidBufPitch.process(s, ~both, features: ~pitch_analysis, minFreq:60, maxFreq:4000,action:{"done".postln});
+FluidBufPitch.processBlocking(s, ~both, features: ~pitch_analysis, minFreq:60, maxFreq:4000,action:{"done".postln});
 
 // look at the buffer: [pitch,confidence] for left then [pitch,confidence] for right
 FluidWaveform(~both,featuresBuffer:~pitch_analysis,stackFeatures:true,bounds:Rect(0,0,1600,400));

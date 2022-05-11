@@ -7,13 +7,6 @@
 # (grant agreement No 725899).
 
 
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
-
-set_target_properties(${PROJECT_NAME} PROPERTIES
-  CXX_STANDARD_REQUIRED ON
-  CXX_STANDARD 14
-  CXX_EXTENSIONS OFF
-)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
     FLUID_DECOMPOSITION FLUID_DUMP
