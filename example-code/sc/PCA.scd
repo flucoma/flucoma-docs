@@ -1,110 +1,55 @@
-
+strong::Dimensionality Reduction::
 code::
-s.reboot;
-//Preliminaries: we want some audio, a couple of FluidDataSets, some Buffers, a FluidStandardize and a FluidPCA
+
+s.boot;
+
+~src = Buffer.read(s,FluidFilesPath("Tremblay-ASWINE-ScratchySynth-M.wav"));
+
+// load MFCC analyses into a dataset
 (
-~audiofile = FluidFilesPath("Tremblay-ASWINE-ScratchySynth-M.wav");
-~raw = FluidDataSet(s);
-~standardized = FluidDataSet(s);
-~reduced = FluidDataSet(s);
-~audio = Buffer.read(s,~audiofile);
-~mfcc_feature = Buffer.new(s);
-~stats = Buffer.alloc(s, 7, 12);
-~datapoint = Buffer.alloc(s, 12);
-~standardizer  = FluidStandardize(s);
-~pca = FluidPCA(s,2);
+~mfcc_feature = Buffer(s);
+FluidBufMFCC.processBlocking(s,~src,startCoeff:1,features:~mfcc_feature);
+~ds = FluidDataSet(s).fromBuffer(~mfcc_feature);
+~ds.print;
 )
 
-
-// Load audio and run an mfcc analysis, which gives us 13 points (we'll throw the 0th away)
+// first standardize our DataSet, so that the MFCC dimensions are on comensurate scales
+// then apply the PCA in-place on the standardized data,
+// reducing the number of dimensions to the default of 2
+// lastly normalize it so it can be plotted in a normalized space
 (
-~audio = Buffer.read(s,~audiofile);
-FluidBufMFCC.process(s,~audio, features: ~mfcc_feature,action:{"Done MFCCs".postln});
-)
-
-// Divide the time series in 100, and take the mean of each segment and add this as a point to
-// the 'raw' FluidDataSet
-(
-{
-	var trig = LocalIn.kr(1, 1);
-	var buf =  LocalBuf(12, 1);
-    var count = PulseCount.kr(trig) - 1;
-	var chunkLen = (~mfcc_feature.numFrames / 100).asInteger;
-	var stats = FluidBufStats.kr(
-        source: ~mfcc_feature, startFrame: count * chunkLen,
-        startChan:1, numFrames: chunkLen, stats: ~stats,
-        trig: trig * (count < 100), blocking: 1
-	);
-	var rd = BufRd.kr(12, ~stats, DC.kr(0), 0, 1);
-	var bufWr, dsWr;
-	12.do{|i|
-		bufWr = BufWr.kr(rd[i], buf, DC.kr(i));
-	};
-	dsWr = FluidDataSetWr.kr(~raw, buf: buf, idNumber: count, trig: Done.kr(stats));
-	LocalOut.kr( Done.kr(dsWr));
-	FreeSelf.kr(count - 99);
-	Poll.kr(trig,(100 - count));
-}.play;
-)
-// wait for the count to reaches 0 in the post window.
-
-//First standardize our DataSet, so that the MFCC dimensions are on comensurate scales
-//Then apply the PCA in-place on the standardized data
-//Download the DataSet contents into an array for plotting
-(
-~reducedarray = Array.new(100);
-~standardizer.fitTransform(~raw, ~standardized);
-~pca.fitTransform(~standardized, ~reduced, action:{|x|
-	x.postln; //pass on the variance
-	~reduced.dump{|x| 100.do{|i|
-		~reducedarray.add(x["data"][i.asString])
-	}};
+~stand = FluidStandardize(s).fitTransform(~ds,~ds);
+~pca = FluidPCA(s).fitTransform(~ds,~ds);
+~norm = FluidNormalize(s).fitTransform(~ds,~ds);
+~ds.dump({
+	arg dict;
+	defer{FluidPlotter(dict:dict)};
 });
 )
-
-//Visualise the 2D projection of our original 12D data
-(
-d = ~reducedarray.flop.deepCollect(1, { |x| x.normalize});
-w = Window("scatter", Rect(128, 64, 200, 200));
-w.drawFunc = {
-    Pen.use {
-        d[0].size.do{|i|
-            var x = (d[0][i]*200);
-            var y = (d[1][i]*200);
-            var r = Rect(x,y,5,5);
-            Pen.fillColor = Color.blue;
-            Pen.fillOval(r);
-        }
-    }
-};
-w.refresh;
-w.front;
-)
-
-// transform a single point with arbitrary value
-~inbuf = Buffer.loadCollection(s,0.5.dup(12));
-~outbuf = Buffer.new(s);
-~pca.transformPoint(~inbuf,~outbuf,{|x|x.postln;x.getn(0,1,{|y|y.postln;};)});
 ::
-
-subsection:: Server Side Queries
-
-Let's map our learned PCA dimensions to the controls of a processor
-
+strong::Server-side queries::
 code::
 (
 {
-	var mapped;
-	var audio = BufRd.ar(1,~audio,LFSaw.ar(BufDur.ir(~audio).reciprocal).range(0, BufFrames.ir(~audio)));
-	var mfcc = FluidMFCC.kr(audio)[1..12];
-	var smoothed = LagUD.kr(mfcc,1*ControlDur.ir,500*ControlDur.ir);
-	var trig = Impulse.kr(ControlRate.ir / 2);
-    var inputPoint = LocalBuf(12);
+	var src = PlayBuf.ar(1,~src,BufRateScale.ir(~src),loop:1);
+	var mfccs = FluidMFCC.kr(src,startCoeff:1);
+	var trig = Impulse.kr(30);
+    var inputPoint = LocalBuf(13);
+	var standPoint = LocalBuf(13);
     var outputPoint = LocalBuf(2);
-	smoothed.collect{|coeff,i| BufWr.kr([coeff],inputPoint,i)};
-    ~pca.kr(trig, inputPoint, outputPoint, 2);
-	mapped = BufRd.kr(1,outputPoint, phase:[0,1]).linlin(-3,3,0,3);
-	CombC.ar(audio,3,mapped[0],mapped[1]*3)
+	var normPoint = LocalBuf(2);
+	var sig, pca1, pca2;
+
+	FluidKrToBuf.kr(mfccs,inputPoint);
+	~stand.kr(trig,inputPoint,standPoint);
+	~pca.kr(trig, standPoint, outputPoint,2);
+	~norm.kr(trig,outputPoint,normPoint);
+
+	# pca1, pca2 = FluidBufToKr.kr(normPoint).lag(0.01).poll;
+
+	sig = CombC.ar(src,0.05,[1-pca1,pca2].clip * 0.05,(1-pca1).clip * 3,-16.dbamp) + src;
+
+	sig;
 }.play;
 )
 ::
