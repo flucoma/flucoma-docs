@@ -6,10 +6,6 @@
 :description: 
    Standardize a :fluid-obj:`DataSet`. Rescale using its mean(s) and standard deviation(s) in each dimension, such that each dimension has a mean of 0 and a standard deviation of 1.
 
-:control invert:
-
-   Deprecated.
-
 :message fit:
 
    :arg dataSet: The :fluid-obj:`DataSet` to learn the statistics of (mean and standard deviation)
