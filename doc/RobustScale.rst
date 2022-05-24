@@ -4,11 +4,10 @@
 :sc-related: Classes/FluidStandardize, Classes/FluidNormalize, Classes/FluidDataSet
 :see-also: 
 :description: 
-   Scales the entries of a FluidDataSet, or scales a data point according to the learned values of a data set. It will centre the median of each dimension to 0, and will scale the data to +/- the provided centiles, by default providing the first and third qartile (25 and 75).
 
-   See https://scikit-learn.org/stable/auto_examples/preprocessing/plot_all_scaling.html#robustscaler
-
-
+   Standardize a :fluid-obj:`DataSet`. Rescale using its mean(s) and standard deviation(s) in each dimension, such that each dimension has a mean of 0 and a standard deviation of 1.
+  
+   Scale the entries of a DataSet, or scales a data point according to the learned values of a data set. It will centre the median of each dimension to 0, and will scale the data to +/- the provided centiles, by default providing the first and third qartile (25 and 75).
 
 :control low:
 
