@@ -5,19 +5,19 @@
 :see-also: 
 :description: 
 
-   Apply Robust Scaling to a :fluid-obj:`DataSet` based on statistics of the data such that each dimension has a median centred on 0 and a range of 1 from the ``low`` centile to the ``high`` centile.
+   Apply Robust Scaling to a :fluid-obj:`DataSet` based on statistics of the data such that each dimension has a median centred on 0 and a range of 1 from the ``low`` percentile to the ``high`` percentile.
    
    For example, using the default values for ``low`` (25) and ``high``, RobustScale will find the range between the 25th and 75th percentile for each dimension and then scale each dimension accordingly so the range between the 25th and 75th percentile the scaled data is 1. RobustScale also offsets each dimension so the median is centred on 0. 
    
-   Because RobustScale is based on centiles, it is less affected by extreme outliers than other scalers (such as Standardize and Normalize). This may help RobustScale position the majority of the data in a -1 to 1 -ish range better than other scalers
+   Because RobustScale is based on percentiles, it is less affected by extreme outliers than other scalers (such as Standardize and Normalize). This may help RobustScale position the majority of the data in a -1 to 1 -ish range better than other scalers.
 
 :control low:
 
-   The low centile boundary. The default is 25.
+   The low percentile boundary. The default is 25.
 
 :control high:
 
-   The high centile boundary. The default is 75.
+   The high percentile boundary. The default is 75.
 
 :message fit:
 
