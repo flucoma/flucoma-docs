@@ -6,6 +6,8 @@
 :description: 
 
    Apply Robust Scaling to a :fluid-obj:`DataSet` based on statistics of the data such that each dimension has a median centred on 0 and a range of 1 from the ``low`` percentile to the ``high`` percentile.
+
+:discussion:
    
    For example, using the default values for ``low`` (25) and ``high``, RobustScale will find the range between the 25th and 75th percentile for each dimension and then scale each dimension accordingly so the range between the 25th and 75th percentile the scaled data is 1. RobustScale also offsets each dimension so the median is centred on 0. 
    
