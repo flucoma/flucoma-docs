@@ -42,10 +42,34 @@ def tidy_split(string,separator=','):
     return map(lambda x: x.strip(),
         filter(lambda x: len(x), string.split(separator))
     )
+
+def derive_learn_link(object_name):
+    url_map = {
+        'bufampfeature' : 'ampfeature',
+        'bufnoveltyfeature' : 'noveltyfeature',
+        'bufonsetfeature' : 'onsetfeature',
+        'bufspectralshape' : 'spectralshape',
+        'bufchroma' : 'chroma',
+        'bufloudness' : 'loudness',
+        'bufmelbands' : 'melbands',
+        'bufmfcc' : 'mfcc',
+        'bufpitch' : 'pitch',
+        'bufhpss' : 'hpss',
+        'bufsines' : 'sines',
+        'buftransients' : 'transients',
+        'bufampgate' : 'ampgate',
+        'bufampslice' : 'ampslice',
+        'bufnoveltyslice' : 'noveltyslice',
+        'bufonsetslice' : 'onsetslice',
+        'buftransientslice' : 'transientslice',
+        'bufaudiotransport' : 'audiotransport'
+    }
+    return url_map.get(object_name.lower()) or object_name.lower()
  
 def default_transform(object_name, data):
     
     data['client_name'] = object_name 
+    data['learn_url'] = derive_learn_link(object_name)
     data['category'] = []
     data['keywords'] = []
     data['module'] = 'fluid decomposition'
