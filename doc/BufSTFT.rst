@@ -5,7 +5,11 @@
 :see-also: 
 :description: 
 
-   Performs either a forward or inverse Short-Time Fourier Transform (STFT) on a single channel ``source`` |buffer|. In the forward case, resulting magnitudes and phases can be written to output buffers. In the inverse case, these buffers can be used to reconstruct the original ``source`` into a new buffer.
+   Performs either a forward or inverse Short-Time Fourier Transform (STFT) on a single channel ``source`` |buffer|. 
+
+:discussion:
+
+   In the forward case, resulting magnitudes and phases can be written to output buffers. In the inverse case, these buffers can be used to reconstruct the original ``source`` into a new buffer.
 
    The ``magnitude`` and ``phase`` buffers are laid out so the frames are the number of analysis windows in the ``source`` buffer while the channels are the different bins. The number of hops is a function of the ``source`` length and the ``hopSize``. The number of bins is **(1 + (``fftSize`` / 2))**.
 
