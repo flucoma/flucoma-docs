@@ -1,10 +1,14 @@
-:digest: Dimensionality Reduction with Principal Component Analysis
+:digest: Principal Component Analysis
 :species: data
 :sc-categories: Dimensionality Reduction, Data Processing
 :sc-related: Classes/FluidMDS, Classes/FluidDataSet
 :see-also: 
 :description: 
-   Principal Components Analysis (PCA) of a :fluid-obj:`DataSet`. PCA fits to a DataSet to determine its principal components, each of which is a new axis through the data that maximises the variance, or “differences”, within the Data. PCA can then transform the original DataSet or individual points to position them in relation to the principal components (i.e., “new axes”) for better comparing how they differ from other points in the DataSet. PCA is often used for dimensionality reduction and is also useful for removing redundancy (i.e., correlation) and/or noise (i.e., dimensions that are uniformly distributed) from a DataSet.
+   Principal Components Analysis (PCA) of a :fluid-obj:`DataSet`. 
+  
+:discussion:
+
+   PCA fits to a DataSet to determine its principal components, each of which is a new axis through the data that maximises the variance, or “differences”, within the Data. PCA can then transform the original DataSet or individual points to position them in relation to the principal components (i.e., “new axes”) for better comparing how they differ from other points in the DataSet. PCA is often used for dimensionality reduction and is also useful for removing redundancy (i.e., correlation) and/or noise (i.e., dimensions that are uniformly distributed) from a DataSet.
 
 :control numDimensions:
 
