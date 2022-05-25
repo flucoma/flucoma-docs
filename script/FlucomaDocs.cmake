@@ -12,11 +12,8 @@ macro(add_ref_target platform comment)
   string(TOUPPER ${platform} platform_uc)
   string(TOLOWER ${platform} platform_lc)
     
-  get_directory_property(hasParent PARENT_DIRECTORY)
-  if(hasParent)
-    set(FLUID_${platform_uc}_REF_TARGET MAKE_${platform_uc}_REF PARENT_SCOPE)
-    set(FLUID_${platform_uc}_REF_PATH "${CMAKE_BINARY_DIR}/${platform_lc}_ref" PARENT_SCOPE)
-  endif()
+  set(FLUID_${platform_uc}_REF_TARGET MAKE_${platform_uc}_REF)
+  set(FLUID_${platform_uc}_REF_PATH "${CMAKE_BINARY_DIR}/${platform_lc}_ref")
   
   get_property(DOC_ROOT GLOBAL PROPERTY FLUID_DOCS_ROOT)
   
