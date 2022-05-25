@@ -9,6 +9,7 @@
 from docutils import nodes
 from collections import OrderedDict
 from ..transformers import tidy_split, filter_fixed_controls
+from flucoma.doc.learn import derive_learn_link
 from flucoma.doc.rst.scdoc import SCDocWriter,rst_filter
 from .defaults import defaults
 import copy
@@ -55,6 +56,7 @@ def sc_type_map(type):
 
 def sc_transform_data(object_name,data):
     data['client_name'] = object_name 
+    data['learn_url'] = 'https://learn.flucoma.org/reference/' + derive_learn_link(object_name)
     data['category'] = []
     data['keywords'] = []
     data['module'] = ''        
