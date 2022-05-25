@@ -176,7 +176,7 @@ fork{
 ~mlp.learnRate_(0.01);
 ~mlp.maxIter_(100);
 ~mlp.batchSize_(1);
-~mlp.hidden_([10,5]);
+~mlp.hiddenLayers_([10,5]);
 
 // once it levels out:
 ~continuously_train = false;

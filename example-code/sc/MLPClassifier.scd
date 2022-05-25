@@ -78,7 +78,7 @@ FluidNormalize(s).fitTransform(~dataSet,~dataSet);
 ~mlp.validation_(0.05); // won't reset the neural network
 ~mlp.momentum_(0.95);   // won't reset the neural network
 
-~mlp.hidden_([2]);                         // *will* reset the neural network
+~mlp.hiddenLayers_([2]);                         // *will* reset the neural network
 ~mlp.activation_(FluidMLPClassifier.tanh); // *will* reset the neural network
 
 // when the loss has decreased and then leveled out, stop the recursive training:
