@@ -59,6 +59,7 @@ if(NOT flucoma-core_POPULATED)
 FetchContent_Populate(flucoma-core)
 add_subdirectory(${flucoma-core_SOURCE_DIR} ${flucoma-core_BINARY_DIR})
 endif()
+list(APPEND CMAKE_MODULE_PATH "${flucoma-core_SOURCE_DIR}/script")
 
 if (NOT (EXISTS "${CMAKE_BINARY_DIR}/json/"))
 	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/json/")
