@@ -8,7 +8,7 @@
 
 cmake_minimum_required(VERSION 3.18)
 
-include(FLuidClientStub)
+include(FluidClientStub)
 
 function(add_doc_gen name source)
   
@@ -67,6 +67,7 @@ function(generate_doc_exe)
     list(GET ARG_CLIENTS 0 external_name)
   endif()
   
+  set(PREAMBLE  [=[if (!argc){ std::cerr << "Please pass a folder to write to"; return 1;}]=])    
   set(ENTRY_POINT "int main(int argc, char *argv[])")
   set(WRAPPER_TEMPLATE [=[ParameterDump<${class}>::dump("${external}", argv[1]);]=])
   set(CCE_WRAPPER "#include \"FluidParameterDump.hpp\"")
