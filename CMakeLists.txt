@@ -61,6 +61,9 @@ add_subdirectory(${flucoma-core_SOURCE_DIR} ${flucoma-core_BINARY_DIR})
 endif()
 list(APPEND CMAKE_MODULE_PATH "${flucoma-core_SOURCE_DIR}/script")
 
+file(GLOB CORE_SCRIPTS "${flucoma-core_SOURCE_DIR}/script/*")
+message(WARNING ${CORE_SCRIPTS})
+
 if (NOT (EXISTS "${CMAKE_BINARY_DIR}/json/"))
 	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/json/")
 endif()
