@@ -32,7 +32,7 @@ fork({
 	["Manhattan","Euclidean","Squared Euclidean","Minkowski Max","Minkowski Min","Symmetric Kullback Leibler","Cosine"].do{
 		arg name, dist_measure; //they're the same here
 		var ds_transformed = FluidDataSet(s);
-		"computing distance measure: %".format(dist_measure).postln;
+		"computing distance measure: % %".format(dist_measure, name).postln;
 		FluidMDS(s,2,dist_measure).fitTransform(~ds,ds_transformed);
 		FluidNormalize(s).fitTransform(ds_transformed,ds_transformed);
 		ds_transformed.dump({
@@ -41,6 +41,10 @@ fork({
 				var x = (dist_measure * 400) % win.bounds.width;
 				var y = (dist_measure / 4).floor * 400;
 				FluidPlotter(win,Rect(x + 5,y + 5,390,390),dict);
+				UserView(win,Rect(x + 5,y + 5,390,390))
+				.drawFunc_{
+					Pen.stringAtPoint(name + "Distance",Point(10,10),color:Color.red);
+				};
 			};
 		});
 		s.sync;
