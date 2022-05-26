@@ -59,10 +59,6 @@ if(NOT flucoma-core_POPULATED)
 FetchContent_Populate(flucoma-core)
 add_subdirectory(${flucoma-core_SOURCE_DIR} ${flucoma-core_BINARY_DIR})
 endif()
-list(APPEND CMAKE_MODULE_PATH "${flucoma-core_SOURCE_DIR}/script")
-
-file(GLOB CORE_SCRIPTS "${flucoma-core_SOURCE_DIR}/script/*")
-message(WARNING ${CORE_SCRIPTS})
 
 if (NOT (EXISTS "${CMAKE_BINARY_DIR}/json/"))
 	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/json/")
@@ -97,8 +93,6 @@ endif()
 set(FLUID_GENERATED_DOC "${CMAKE_BINARY_DIR}/json")
 set(FLUID_HUMAN_DOC "${CMAKE_CURRENT_SOURCE_DIR}/doc")
 set(FLIUD_JINJA_TEMPLATES "${CMAKE_CURRENT_SOURCE_DIR}/flucoma/doc/templates")
-
-message(WARNING "Cmake module path is ${CMAKE_MODULE_PATH}")
 
 include(MakeDocSource)
 

@@ -34,7 +34,7 @@ function(add_doc_gen name source)
   endif()
 
   if(MSVC)
-    target_compile_options(${name} PRIVATE /W3)
+    target_compile_options(${name} PRIVATE /external:W0 /W3 /bigobj)
   else()
     target_compile_options(${name} PRIVATE -Wall -Wextra -Wpedantic -Wno-return-type -Wno-c++11-narrowing)
   endif()
