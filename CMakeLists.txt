@@ -94,6 +94,8 @@ set(FLUID_GENERATED_DOC "${CMAKE_BINARY_DIR}/json")
 set(FLUID_HUMAN_DOC "${CMAKE_CURRENT_SOURCE_DIR}/doc")
 set(FLIUD_JINJA_TEMPLATES "${CMAKE_CURRENT_SOURCE_DIR}/flucoma/doc/templates")
 
+message(WARNING "Cmake module path is ${CMAKE_MODULE_PATH}")
+
 include(MakeDocSource)
 
 get_core_clients(client_list)
