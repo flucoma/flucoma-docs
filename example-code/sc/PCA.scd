@@ -13,7 +13,7 @@ FluidBufMFCC.processBlocking(s,~src,startCoeff:1,features:~mfcc_feature);
 ~ds.print;
 )
 
-// first standardize our DataSet, so that the MFCC dimensions are on comensurate scales
+// first standardize our DataSet, so that the MFCC dimensions are in similar ranges
 // then apply the PCA in-place on the standardized data,
 // reducing the number of dimensions to the default of 2
 // lastly normalize it so it can be plotted in a normalized space
