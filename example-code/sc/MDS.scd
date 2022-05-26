@@ -30,7 +30,7 @@ FluidBufMFCC.processBlocking(s,~src,features:~features,startCoeff:1);
 fork({
 	var win = Window("Comparing Distance Measures",Rect(0,0,1600,800));
 	["Manhattan","Euclidean","Squared Euclidean","Minkowski Max","Minkowski Min","Symmetric Kullback Leibler","Cosine"].do{
-		arg name, dist_measure; //they're the same here
+		arg name, dist_measure;
 		var ds_transformed = FluidDataSet(s);
 		"computing distance measure: % %".format(dist_measure, name).postln;
 		FluidMDS(s,2,dist_measure).fitTransform(~ds,ds_transformed);

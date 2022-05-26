@@ -5,11 +5,11 @@
 :see-also: 
 :description: 
 
-   Dimensionality Reduction of a :fluid-obj:`DataSet` using Multidimensional Scaling
+   Dimensionality Reduction of a :fluid-obj:`DataSet` Using Multidimensional Scaling
 
 :discussion:
 
-   Multidimensional scaling transforms a dataset to a lower number of dimensions while trying to preserve the distance relationships between the data points, so that even with fewer dimensions, the differences and similarities between points can still be observed and used effectively. 
+   Multidimensional Scaling transforms a dataset to a lower number of dimensions while trying to preserve the distance relationships between the data points, so that even with fewer dimensions, the differences and similarities between points can still be observed and used effectively. 
    
    First, MDS computes a distance matrix by calculating the distance between every pair of points in the dataset. It then positions all the points in the lower number of dimensions (specified by ``numDimensions``) and iteratively shifts them around until the distances between all the points in the lower number of dimensions is as close as possible to the distances in the original dimensional space.
    
