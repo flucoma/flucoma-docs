@@ -12,6 +12,8 @@ ARGUMENT:: {{ name }}
 
 {{ data['description'] | rst | indent(first=True) }}
 
+{% include "schelp_enum.schelp" %}
+
 {% endfor %} 
 {% for name, data in arguments.items()  %}
 {% if name != 'name' %} {# we hide the 'name' arg for these objects in SC  #}
