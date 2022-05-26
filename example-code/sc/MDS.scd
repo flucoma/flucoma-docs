@@ -28,7 +28,7 @@ FluidBufMFCC.processBlocking(s,~src,features:~features,startCoeff:1);
 ~ds = FluidDataSet(s).fromBuffer(~features);
 
 fork({
-	var win = Window("Comparing Distance Measures",Rect(0,0,1600,800));
+	var win = Window("Comparing Distance Measures",Rect(0,0,1200,800));
 	["Manhattan","Euclidean","Squared Euclidean","Minkowski Max","Minkowski Min","Symmetric Kullback Leibler"].do{
 		arg name, dist_measure;
 		var ds_transformed = FluidDataSet(s);
@@ -39,7 +39,7 @@ fork({
 			arg dict;
 			defer{
 				var x = (dist_measure * 400) % win.bounds.width;
-				var y = (dist_measure / 4).floor * 400;
+				var y = (dist_measure / 3).floor * 400;
 				FluidPlotter(win,Rect(x + 5,y + 5,390,390),dict);
 				UserView(win,Rect(x + 5,y + 5,390,390))
 				.drawFunc_{
