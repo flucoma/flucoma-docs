@@ -1,116 +1,94 @@
+CODE::
+~src = Buffer.read(s,FluidFilesPath("Constanzo-PreparedSnare-M.wav"));
 
+// detect gates and post some info
+(
+~indices = Buffer(s);
+FluidBufAmpGate.processBlocking(s,~src,indices:~indices,rampUp:110,rampDown:2205,onThreshold:-40, offThreshold:-41,minSilenceLength:1100,lookBack:441);
+~indices.loadToFloatArray(action:{
+	arg fa;
+	var events = (fa.size / 2).asInteger;
+	var avg = fa.clump(2).collect{arg arr; arr[1] - arr[0]}.mean / ~src.sampleRate;
+	"found % gate events averaging % seconds".format(events,avg).postln;
+});
+)
+
+//loops over a gate event from onset to offset using MouseX to choose which gate event
+(
+{
+	var gate_index = MouseX.kr(0,~indices.numFrames).poll(label:"gate index");
+	var start, end, phs;
+	# start, end = BufRd.kr(2,~indices,gate_index,1,1);
+	phs = Phasor.ar(0,BufRateScale.ir(~src),start,end);
+	BufRd.ar(1,~src,phs,1,4).dup;
+}.play;
+)
+::
+strong::Visualize it with FluidWaveform::
 code::
-// define a test signal and a destination buffer
+
+~src = Buffer.read(s,FluidFilesPath("Constanzo-PreparedSnare-M.wav"));
 (
-    b = Buffer.sendCollection(s, Array.fill(44100,{|i| sin(i*pi/ (44100/640)) * (sin(i*pi/ 22050)).abs}));
-    c = Buffer.new(s);
+~indices = Buffer(s);
+FluidBufAmpGate.processBlocking(s,~src,indices:~indices,rampUp:110,rampDown:2205,onThreshold:-40, offThreshold:-41,minSilenceLength:1100,lookBack:441);
+FluidWaveform(~src,~indices,bounds:Rect(0,0,1600,400));
 )
-b.play
-b.plot
-//basic tests: threshold sanity
-FluidBufAmpGate.process(s, b, indices:c, rampUp:5, rampDown:25, onThreshold:-12, offThreshold: -12)
-c.query
-c.getn(0,c.numFrames*2,{|item|item.postln;})
 
-//basic tests: threshold hysteresis
-FluidBufAmpGate.process(s, b, indices:c, rampUp:5, rampDown:25, onThreshold:-12, offThreshold: -16)
-c.query
-c.getn(0,c.numFrames*2,{|item|item.postln;})
+~src = Buffer.read(s,FluidFilesPath("Nicol-LoopE-M.wav"));
+(
+~indices = Buffer(s);
+FluidBufAmpGate.processBlocking(s,~src,indices:~indices,rampUp:110,rampDown:441,onThreshold:-20, offThreshold:-24,minSilenceLength:441,lookBack:441);
+FluidWaveform(~src,~indices,bounds:Rect(0,0,1600,400));
+)
 
-//basic tests: threshold min slice
-FluidBufAmpGate.process(s, b, indices:c, rampUp:5, rampDown:25, onThreshold:-12, offThreshold: -12, minSliceLength:441)
-c.query
-c.getn(0,c.numFrames*2,{|item|item.postln;})
-
-//basic tests: threshold min silence
-FluidBufAmpGate.process(s, b, indices:c, rampUp:5, rampDown:25, onThreshold:-12, offThreshold: -12, minSilenceLength:441)
-c.query
-c.getn(0,c.numFrames*2,{|item|item.postln;})
-
-//mid tests: threshold time hysteresis on
-FluidBufAmpGate.process(s, b, indices:c, rampUp:5, rampDown:25, onThreshold:-12, offThreshold: -12, minLengthAbove:441)
-c.query
-c.getn(0,c.numFrames*2,{|item|item.postln;})
-
-//mid tests: threshold time hysteresis off
-FluidBufAmpGate.process(s, b, indices:c, rampUp:5, rampDown:25, onThreshold:-12, offThreshold: -12, minLengthBelow:441)
-c.query
-c.getn(0,c.numFrames*2,{|item|item.postln;})
-
-//mid tests: threshold with lookBack
-FluidBufAmpGate.process(s, b, indices:c, rampUp:5, rampDown:25, onThreshold:-12, offThreshold: -12, lookBack:441)
-c.query
-c.getn(0,c.numFrames*2,{|item|item.postln;})
-
-//mid tests: threshold with lookAhead
-FluidBufAmpGate.process(s, b, indices:c, rampUp:5, rampDown:25, onThreshold:-12, offThreshold: -12, lookAhead:441)
-c.query
-c.getn(0,c.numFrames*2,{|item|item.postln;})
-
-//mid tests: threshold with asymetrical lookBack and lookAhead
-FluidBufAmpGate.process(s, b, indices:c, rampUp:5, rampDown:25, onThreshold:-12, offThreshold: -12, lookBack:221, lookAhead:441)
-c.query
-c.getn(0,c.numFrames*2,{|item|item.postln;})
 ::
+strong::Remove silence from a buffer::
+code::
 
-STRONG::A musical example.::
-CODE::
-//load a buffer
+~src = Buffer.read(s,FluidFilesPath("Olencki-TenTromboneLongTones-M.wav"));
+
 (
-    b = Buffer.read(s, FluidFilesPath("Nicol-LoopE-M.wav"));
-    c = Buffer.new(s);
+var concat_buf = Buffer(s);
+var indices = Buffer(s);
+var display_buffer = Buffer(s);
+FluidBufCompose.processBlocking(s,~src,destination:display_buffer);
+FluidBufAmpGate.processBlocking(s,display_buffer,indices:indices,onThreshold:-30,offThreshold:-40,minSliceLength:0.1*s.sampleRate,minSilenceLength:0.1*s.sampleRate,rampDown:0.01*s.sampleRate);
+indices.loadToFloatArray(action:{
+	arg fa;
+	var current_frame = 0;
+
+	// this array is initally flat, but is alternating [ onset0 , offset0 , onset1 , offset1 , onset2 ... ],
+	// so by using .clump(2) we clump each onset and offest together to get an array like this:
+	// [ [ onset0 , offset0 ] , [ onset1 , offset1 ] , [ onset2 , offset2 ] , ... ]
+	fa = fa.clump(2);
+
+	fa.do{
+		arg arr, i;
+		var startFrame = arr[0];
+		var numFrames = arr[1] - startFrame;
+		"%\tstart: %\tend: %".format(i,startFrame,numFrames).postln;
+		FluidBufCompose.processBlocking(s,display_buffer,startFrame,numFrames,destination:concat_buf,destStartFrame:current_frame);
+		current_frame = current_frame + numFrames;
+	};
+
+	FluidBufCompose.processBlocking(s,concat_buf,destination:display_buffer,destStartChan:1);
+
+	s.sync;
+
+	{
+		var win = Window(bounds:Rect(0,0,1600,400));
+		FluidWaveform(display_buffer,parent:win,bounds:win.bounds,standalone:false);
+		UserView(win,win.bounds)
+		.drawFunc_{
+			["original","with silence removed"].do{
+				arg txt, i;
+				var y_ = (win.bounds.height * 0.5 * i) + (win.bounds.height * 0.1);
+				Pen.stringAtPoint(txt,Point(10,y_),color:Color.red);
+			};
+		};
+		win.front;
+		display_buffer.play;
+	}.defer;
+});
 )
-
-// slice the samples
-(
-Routine{
-    FluidBufAmpGate.process(s, b, indices:c, rampUp:110, rampDown:2205, onThreshold:-27, offThreshold: -31, minSilenceLength:1100, lookBack:441, highPassFreq:40).wait;
-    c.query;
-    c.getn(0,c.numFrames*2,{|item|item.postln;});
-    //reformatting to read the onsets and offsets as pairs
-    c.getn(0,c.numFrames*2,{|items|items.reshape(c.numFrames,2).do({|x| x.postln});});
-}.play
-)
-//loops over a splice with the MouseX, taking the respective onset and offset of a given slice
-(
-    {
-        BufRd.ar(1, b,
-            Phasor.ar(0,1,
-                BufRd.kr(2, c,
-                    MouseX.kr(0, BufFrames.kr(c)), 0, 1)[0],
-                BufRd.kr(2, c,
-                    MouseX.kr(1, BufFrames.kr(c)), 0, 1)[1],
-                BufRd.kr(2,c,
-                    MouseX.kr(0, BufFrames.kr(c)), 0, 1)[0]
-        ), 0, 1);
-    }.play;
-)
-::
-
-STRONG::A stereo buffer example.::
-CODE::
-// make a stereo buffer
-b = Buffer.alloc(s,88200,2);
-
-// add some stereo clicks and listen to them
-((0..3)*22050+11025).do({|item,index| b.set(item+(index%2), 1.0)})
-b.play
-
-// create a new buffer as destinations
-c = Buffer.new(s);
-//run the process on them
-(
-    // with basic params
-    Routine{
-        var t = Main.elapsedTime;
-        var proc= FluidBufAmpGate.process(s, b, indices: c, rampUp:1, rampDown:10, onThreshold: -30);
-        proc.wait;
-        (Main.elapsedTime - t).postln;
-    }.play
-)
-
-// list the indicies of detected attacks - the two input channels have been summed. The two channels of the output, respectively onset and offset indices, are interleaved as this is the SuperCollider buffer data formatting
-c.getn(0,c.numFrames*2,{|item|(item*2).postln;})
-// a more readable version: deinterleave onsetand offset
-c.getn(0,c.numFrames*2,{|items|items.reshape(c.numFrames,2).do({|x| (x*2).postln});})
 ::
