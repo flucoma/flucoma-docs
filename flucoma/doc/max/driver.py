@@ -82,10 +82,10 @@ def write_max_indices(idx,program_args):
         }
     
     maxdbfile = path / 'max.db.json'
-    with open(maxdbfile,'w') as f:
+    with open(maxdbfile,'w', encoding='utf-8') as f:
         json.dump(maxdb_objs,f,sort_keys=True, indent=4)
     qlookup_file = path / 'flucoma-obj-qlookup.json'
-    with open(qlookup_file,'w') as f: 
+    with open(qlookup_file,'w', encoding='utf-8') as f: 
         json.dump(qlookup,f,sort_keys=True, indent=4)
 
 

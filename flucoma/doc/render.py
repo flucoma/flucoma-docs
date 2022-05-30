@@ -77,7 +77,7 @@ def client(client, client_index, args, driver):
     client_data['messages'] =  ContextView(client_data.pop('messages'))
     
     with add_context(client):
-        with open(ofile,'w') as f:
+        with open(ofile,'w',encoding='utf-8') as f:
             f.write(template.render(client_data, 
                                     index=client_index, 
                                     driver = driver, 
@@ -98,7 +98,7 @@ def topic(topic_data,client_index,args,driver):
     template = env.get_template(driver['topic_template'])
     logging.info(f"{topic_data['name']}: Making {ofile}")
     
-    with open(ofile,'w') as f:
+    with open(ofile,'w',encoding='utf-8') as f:
         f.write(template.render(
             title=topic_data['title'],
             digest=topic_data['digest'],
