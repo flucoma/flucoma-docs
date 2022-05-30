@@ -1,25 +1,14 @@
-def derive_learn_link(object_name):
-    m = re.search('(?:Buf)(?!NMF|Compose)(.+)', object_name)
-    return m.group(1).lower() or object_name.lower()
+import re
 
-    # url_map = {
-    #     'bufampfeature' : 'ampfeature',
-    #     'bufnoveltyfeature' : 'noveltyfeature',
-    #     'bufonsetfeature' : 'onsetfeature',
-    #     'bufspectralshape' : 'spectralshape',
-    #     'bufchroma' : 'chroma',
-    #     'bufloudness' : 'loudness',
-    #     'bufmelbands' : 'melbands',
-    #     'bufmfcc' : 'mfcc',
-    #     'bufpitch' : 'pitch',
-    #     'bufhpss' : 'hpss',
-    #     'bufsines' : 'sines',
-    #     'buftransients' : 'transients',
-    #     'bufampgate' : 'ampgate',
-    #     'bufampslice' : 'ampslice',
-    #     'bufnoveltyslice' : 'noveltyslice',
-    #     'bufonsetslice' : 'onsetslice',
-    #     'buftransientslice' : 'transientslice',
-    #     'bufaudiotransport' : 'audiotransport'
-    # }
-    # return url_map.get(object_name.lower()) or object_name.lower()
+def derive_learn_link(object_name):
+    """
+    Derive a url of the relevant reference in the learn platform from the object name.
+    Uses a regular expression to capture oddballs where you want to keep "Buf" as a prefix to the object name.
+    """
+
+    # If you need to add an edge case add another item to this regex
+    m = re.search('(?:Buf)(?!NMF|Compose|Flatten|Scale)(.+)', object_name)
+    if m:
+        return m.group(1).lower()
+    else:
+        return object_name.lower()
