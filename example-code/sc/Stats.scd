@@ -73,3 +73,28 @@ OSCdef(\stddevs,{
 },"/stddevs");
 )
 ::
+strong::Specifying "size" using seconds::
+
+Because the parameter size is specified in control rate frames, one might want to be able to specify in seconds and convert to control rate frames before sending the value to the object.
+code::
+
+(
+~synth = {
+	arg size_seconds = 1;
+	var sig = LFDNoise0.kr(20);
+
+	// the number of control frames to store and use for
+	// statistics = the number of seconds you want / the
+	// duration of one control cycle
+	var size = size_seconds / ControlDur.ir;
+
+	var stats = FluidStats.kr(sig,size);
+	var mean = stats[0][0];
+	[sig,mean]
+}.scope(zoom:0);
+)
+
+~synth.set(\size_seconds,0.01);
+~synth.set(\size_seconds,10);
+~synth.set(\size_seconds,1);
+::
