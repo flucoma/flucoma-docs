@@ -1,30 +1,29 @@
 :digest: Regression with K Nearest Neighbours
 :species: data
 :sc-categories: Regression
-:sc-related: Classes/FluidKNNClassifier, Classes/FluidDataSet, Classes/FluidMLPRegressor
+:sc-related: Classes/FluidKNNClassifier, Classes/FluidDataSet
 :see-also: 
 :description: 
-   A nearest-neighbour regressor: a continuous value is predicted as the (weighted) average value of its nearest neighbours.
+   A nearest-neighbour regressor. A continuous value is predicted for each point as the (weighted) average value of its nearest neighbours.
 
-:discussion:
+   https://scikit-learn.org/stable/modules/neighbors.html#regression
 
-  In order to make predictions, the KNNRegressor must first be ``fit`` with input-output example pairs, supplied by a :fluid-obj:`DataSet` of input data points and a :fluid-obj:`DataSet` of corresponding output data points. The input-output example pairs correspond in their respective :fluid-obj:`DataSet`s by means of a shared identifier.
 
-  To provide a regression prediction for an input point, ``numNeighbours`` neighbours are determined for the input point and a weighted average (based on distance) of those points is returned. (Weighting by distance can optionally be turned off, using the ``weight`` parameter.)
 
 :control numNeighbours:
 
-   Number of neighbours to consider when making predictions.
+   number of neigbours to consider in mapping, min 1
 
 :control weight:
 
-   Whether to weight neighbours by distance when producing new point. The default is 1 (true).
+   Whether to weight neighbours by distance when producing new point
+
 
 :message fit:
 
-   :arg sourceDataSet: :fluid-obj:`DataSet` containing input exmaples.
+   :arg sourceDataSet: Source data
 
-   :arg targetDataSet: :fluid-obj:`DataSet` containing output exmaples.
+   :arg targetDataSet: Target data
 
    :arg action: Run when done
 
