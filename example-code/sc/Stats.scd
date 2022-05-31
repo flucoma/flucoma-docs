@@ -72,6 +72,7 @@ OSCdef(\stddevs,{
 	"".postln;
 },"/stddevs");
 )
+
 ::
 strong::Specifying "size" using seconds::
 
@@ -97,4 +98,5 @@ code::
 ~synth.set(\size_seconds,0.01);
 ~synth.set(\size_seconds,10);
 ~synth.set(\size_seconds,1);
+
 ::
