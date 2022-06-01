@@ -3,7 +3,7 @@
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulationToolkit
 :see-also: BufMFCC, Pitch, MelBands, Loudness, SpectralShape
-:description: This class implements a classic spectral descriptor, the Mel-Frequency Cepstral Coefficients (MFCCs)
+:description: A classic timbral audio descriptor, the Mel-Frequency Cepstral Coefficients (MFCCs).
 :discussion: 
 
    MFCC stands for Mel-Frequency Cepstral Coefficients ("cepstral" is pronounced like "kepstral"). This analysis is often used for timbral description and timbral comparison. It compresses the overall spectrum into a smaller number of coefficients that, when taken together, describe the general contour the the spectrum.

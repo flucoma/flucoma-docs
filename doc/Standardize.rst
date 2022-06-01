@@ -4,20 +4,13 @@
 :sc-related: Classes/FluidDataSet, Classes/FluidStandardize
 :see-also: 
 :description: 
-   Standardize a :fluid-obj:`DataSet`, i.e. rescale using its mean(s) and standard deviation(s) in each dimension.
-
-   See http://www.faqs.org/faqs/ai-faq/neural-nets/part2/section-16.html
-
-
-
-:control invert:
-
-   The direction in which the standardization will occur for transform and transformpoint. The default 0 is taking in the range of the input used to fit and transforms it towards the standardized range. A value of 1 will expect an input of the standardized range to transform back to the original range.
-
+   Standardize a :fluid-obj:`DataSet`. Rescale using its mean(s) and standard deviation(s) in each dimension, such that each dimension has a mean of 0 and a standard deviation of 1.
+   
+:discussion:
 
 :message fit:
 
-   :arg dataSet: The :fluid-obj:`DataSet` to standardize
+   :arg dataSet: The :fluid-obj:`DataSet` to learn the statistics of (mean and standard deviation)
 
    :arg action: A function to run when processing is complete
 
@@ -27,7 +20,7 @@
 
    :arg sourceDataSet: The :fluid-obj:`DataSet` to standardize
 
-   :arg destDataSet: The :fluid-obj:`DataSet` to populate with standardized data
+   :arg destDataSet: The :fluid-obj:`DataSet` to write the standardized data into
 
    :arg action: A function to run when processing is complete
 
@@ -35,20 +28,40 @@
 
 :message fitTransform:
 
-   :arg sourceDataSet: The :fluid-obj:`DataSet` to standardize
+   :arg sourceDataSet: The :fluid-obj:`DataSet` to first ``fit`` to and then standardize
 
    :arg destDataSet: The :fluid-obj:`DataSet` to populate with standardized data
 
    :arg action: A function to run when processing is complete
 
-   Standardize a :fluid-obj:`DataSet` into another :fluid-obj:`DataSet`
+   ``fit`` the model to the ``sourceDataSet`` and then standardize the ``sourceDataSet`` and write into ``destDataSet``
 
-:message transformPoint:
+:message inverseTransform:
 
-   :arg sourceBuffer: A |buffer| with the new data point
+   :arg sourceDataSet: The :fluid-obj:`DataSet` to of data to transform from the standardized scale to the original scale.
 
-   :arg destBuffer: A |buffer| to contain the standardize value
+   :arg destDataSet: The :fluid-obj:`DataSet` to write the transformed data to.
 
    :arg action: A function to run when processing is complete
 
-   Standardize a new data point, using the learned statistics from a previous call to :fluid-obj:`Standardize#fit`
+   Un-standardize a :fluid-obj:`DataSet`, using the learned statistics from a previous call to :fluid-obj:`Standardize#fit`.
+
+:message transformPoint:
+
+   :arg sourceBuffer: A |buffer| with source data to standardize
+
+   :arg destBuffer: A |buffer| to write the standardized data into
+
+   :arg action: A function to run when processing is complete
+
+   Standardize a data point, using the learned statistics from a previous call to :fluid-obj:`Standardize#fit`
+   
+:message inverseTransformPoint:
+
+  :arg sourceBuffer: A |buffer| with the data in the stadardized range
+
+  :arg destBuffer: A |buffer| to write the output of the transformation to
+
+  :arg action: A function to run when processing is complete
+
+  Un-standardize a data point, using the learned statistics from a previous call to :fluid-obj:`Standardize#fit`

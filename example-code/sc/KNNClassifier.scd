@@ -1,133 +1,116 @@
-
+strong::Using MFCC analyses to classify between bells and piano::
 code::
 
-
-// Make:
-// - A KNN Classifier
-// - A DataSet of example points, and a LabelSet of corresponding labels
-// - A DataSet of test data and a LabelSet for predicted labels
-
 (
-~classifier = FluidKNNClassifier(s);
-~source= FluidDataSet(s);
-~labels = FluidLabelSet(s);
-~test = FluidDataSet(s);
-~mapping = FluidLabelSet(s);
+// source sounds
+~bells = Buffer.readChannel(s,FluidFilesPath("Tremblay-CF-ChurchBells.wav"),channels:[0]);
+~piano = Buffer.readChannel(s,FluidFilesPath("Tremblay-SA-UprightPianoPedalWide.wav"),channels:[0]);
+
+// split into a trainging set (~80% of the data) and testing set (~20% of the data)
+// for more info about the training-testing split, visit https://learn.flucoma.org/learn/training-testing-split
+~train_ds = FluidDataSet(s);
+~train_ls = FluidLabelSet(s);
+~test_ds = FluidDataSet(s);
+~test_ls = FluidLabelSet(s);
 )
 
-//Make some clumped 2D points and place into a DataSet
+// analyse
 (
-~examplepoints = [[0.5,0.5],[-0.5,0.5],[0.5,-0.5],[-0.5,-0.5]];
-~examplelabels = [\red,\orange,\green,\blue];
-d = Dictionary.new;
-d.add(\cols -> 2);
-d.add(\data -> Dictionary.newFrom(~examplepoints.collect{|x, i|[i.asString, x]}.flatten));
-~source.load(d);
-~examplelabels.collect{|x,i| ~labels.addLabel(i, x);};
-)
-
-//Make some random, but clustered test points
-(
-~testpoints = (4.collect{
-               64.collect{(1.sum3rand) + [1,-1].choose}.clump(2)
-           }).flatten(1) * 0.5;
-d = Dictionary.with(
-        *[\cols -> 2,\data -> Dictionary.newFrom(
-            ~testpoints.collect{|x, i| [i, x]}.flatten)]);
- ~test.load(d);
-
-)
-
-
-//Fit the classifier to the example DataSet and LabelSet, and then run prediction on the test data into our mapping LabelSet
-(
-~classifier.fit(~source,~labels);
-~classifier.predict(~test, ~mapping, 1);
-)
-
-//Return labels of clustered points - wait for the dump to be done
-(
-~assignments = Array.new(~testpoints.size);
 fork{
-    ~testpoints.do{|x,i|
-        ~mapping.getLabel(i, action:{|l|
-            ~assignments.add(l);
-        });
-        s.sync;
-        if(i==(~testpoints.size - 1)){"Got assignments".postln;}
-    };
-    ~assignments.postln;
+	var mfccbuf = Buffer(s);
+	var flatbuf = Buffer(s);
+	[~bells,~piano].do{
+		arg buf;
+		var label = PathName(buf.path).fileNameWithoutExtension;
+		FluidBufMFCC.processBlocking(s,buf,features:mfccbuf,startCoeff:1);
+		s.sync;
+		mfccbuf.numFrames.do{
+			arg i;
+			var id = "%-%".format(label,i);
+			FluidBufFlatten.processBlocking(s,mfccbuf,i,1,destination:flatbuf);
+
+			// about 80% of the data points will end up in the training data,
+			// about 20% of the data points will end up in the testing data
+			if(0.8.coin){
+				~train_ds.addPoint(id,flatbuf);
+				~train_ls.addLabel(id,label);
+			}{
+				~test_ds.addPoint(id,flatbuf);
+				~test_ls.addLabel(id,label);
+			};
+		};
+	};
+	mfccbuf.free;
+	flatbuf.free;
+	~train_ds.print;
+	~train_ls.print;
+	~test_ds.print;
+	~test_ls.print;
 }
 )
 
-//Visualise: we're hoping to see colours neatly mapped to quandrants...
+// fit the KNNClassifier and make predictions
 (
-c = IdentityDictionary();
-
-c.add(\red->Color.red);
-c.add(\blue->Color.blue);
-c.add(\green->Color.green);
-c.add(\orange-> Color.new255(255, 127, 0));
-
-e = 200 * ((~examplepoints + 1) * 0.5).flatten(1).unlace;
-d = ((~testpoints + 1) * 0.5).flatten(1).unlace;
-// d = [20.collect{1.0.rand}, 20.collect{1.0.rand}];
-w = Window("scatter", Rect(128, 64, 200, 200));
-~colours = [Color.blue,Color.red,Color.green,Color.magenta];
-w.drawFunc = {
-    Pen.use {
-        e[0].size.do{|i|
-            var r = Rect(e[0][i],e[1][i],10,10);
-            Pen.fillColor = c[~examplelabels[i]];
-            Pen.fillOval(r);
-        };
-        d[0].size.do{|i|
-            var x = (d[0][i]*200);
-            var y = (d[1][i]*200);
-            var r = Rect(x,y,5,5);
-            Pen.fillColor = c[~assignments[i].asSymbol].alpha_(0.3);
-            Pen.fillOval(r);
-        }
-    }
-};
-w.refresh;
-w.front;
+~classifier = FluidKNNClassifier(s).fit(~train_ds,~train_ls);
+~predictions_ls = FluidLabelSet(s);
+~classifier.predict(~test_ds,~predictions_ls);
+~test_ls.dump({
+	arg train_ls_dict;
+	~predictions_ls.dump({
+		arg pred_ls_dict;
+		var n_wrong = 0;
+		train_ls_dict["data"].keysValuesDo{
+			arg id, expect;
+			var pred = pred_ls_dict["data"][id][0][12..];
+			expect = expect[0][12..];
+			"id: %\nexpected : %\npredicted: %\n".format(id,expect,pred).postln;
+			if(expect != pred){n_wrong = n_wrong + 1};
+		};
+		"number wrong: %".format(n_wrong).postln;
+	});
+});
 )
 
-// single point prediction on arbitrary value
-~inbuf = Buffer.loadCollection(s,0.5.dup);
-~classifier.predictPoint(~inbuf,{|x|x.postln;});
 ::
-
-subsection::Server Side Queries
-This is the equivalent of predictPoint, but wholly on the server
+strong::Predict a single point in a buffer::
 code::
 
-//Generate a random point and sends a trigger to query, and return the class that point matches
+// analyse a random part of the bells and make a prediction
 (
-{
-	var trig = Impulse.kr(5);
-	var point = WhiteNoise.kr(1.dup);
-    var inputPoint = LocalBuf(2);
-    var outputPoint = LocalBuf(1);
-	Poll.kr(trig, point, [\pointX,\pointY]);
-	point.collect{ |p,i| BufWr.kr([p],inputPoint,i)};
-    ~classifier.kr(trig,inputPoint,outputPoint);
-	Poll.kr(trig,BufRd.kr(1,outputPoint,0,interpolation:0),\cluster);
-}.play;
+~features = Buffer(s);
+~flatbuf = Buffer(s);
+~pred_location = rrand(0,~bells.numFrames-1024);
+FluidBufMFCC.processBlocking(s,~bells,~pred_location,1024,features:~features,startCoeff:1);
+FluidBufFlatten.processBlocking(s,~features,1,1,destination:~flatbuf); // ~features has 3 frames, pull out the middle frame
+~classifier.predictPoint(~flatbuf,{
+	arg pred;
+	"prediction at location: %".format(~pred_location).postln;
+	pred.postln;
+	"".postln;
+});
 )
 
-// to sonify the output, here are random values alternating quadrant.
+::
+strong::Server Side Queries::
+This is the equivalent of predictPoint, but entirely on the server
+code::
+
+// Play the audio and make a prediction on the server
+// the integer reported as the predicted class corresponds to the order (zero-counting) in which the
+// labels were introduced to the training labelset. because we processed the bells first, the 0s here
+// indicate the prediction of the bells, while the 1s indicate piano.
 (
 {
-	var trig = Impulse.kr(MouseX.kr(0,1).exprange(0.5,ControlRate.ir /2).poll(trig:2, label: "Query Frequency"));
-	var step = Stepper.kr(trig,max:3);
-	var point = TRand.kr(-0.1, [0.1, 0.1], trig) + [step.mod(2).linlin(0,1,-0.6,0.6),step.div(2).linlin(0,1,-0.6,0.6)] ;
-    var inputPoint = LocalBuf(2);
-    var outputPoint = LocalBuf(1);
-	point.collect{|p,i| BufWr.kr([p],inputPoint,i)};
-    ~classifier.kr(trig,inputPoint,outputPoint);
-    SinOsc.ar((BufRd.kr(1,outputPoint,0,interpolation:0) + 69).midicps, mul: 0.1);
-}.play
+	var sig = PlayBuf.ar(1,[~bells,~piano],BufRateScale.ir([~bells,~piano]),loop:1);
+	var src = SelectX.ar(ToggleFF.kr(Dust.kr(2)).lag(0.03),sig);
+	var mfccs = FluidMFCC.kr(src,startCoeff:1);
+	var predict_trig = Impulse.kr(10);
+	var mfccbuf = LocalBuf(13);
+	var predbuf = LocalBuf(1);
+	FluidKrToBuf.kr(mfccs,mfccbuf);
+	~classifier.kr(predict_trig,mfccbuf,predbuf);
+	FluidBufToKr.kr(predbuf).poll(label:"prediction");
+	src.dup;
+}.play;
 )
 ::

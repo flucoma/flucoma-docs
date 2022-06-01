@@ -1,81 +1,90 @@
 
-code::
+STRONG::Mode 0::
+
+CODE::
+
 //load buffers
 (
-	b = Buffer.read(s,FluidFilesPath("Tremblay-AaS-SynthTwoVoices-M.wav"));
-	c = Buffer.new(s);
-	d = Buffer.new(s);
-	e = Buffer.new(s);
+~src = Buffer.read(s,FluidFilesPath("Nicol-LoopE-M.wav"));
+~harmonic = Buffer.new(s);
+~percussive = Buffer.new(s);
 )
 
 // run with basic parameters
-(
-	Routine{
-		t = Main.elapsedTime;
-		FluidBufHPSS.process(s, b, harmonic: c, percussive: d).wait;
-		(Main.elapsedTime - t).postln;
-	}.play
-)
-c.query
-d.query
-//play the harmonic
-c.play;
-//play the percussive
-d.play;
-
-//nullsumming tests
-{(PlayBuf.ar(1,c))+(PlayBuf.ar(1,d))+(-1*PlayBuf.ar(1,b,doneAction:2))}.play
-
-//more daring parameters, in mode 2
-(
-Routine{
-    t = Main.elapsedTime;
-    FluidBufHPSS.process(s, b, harmonic: c, percussive: d, residual:e, harmFilterSize:31, maskingMode:2, harmThreshFreq1: 0.005, harmThreshAmp1: 7.5, harmThreshFreq2: 0.168, harmThreshAmp2: 7.5, percThreshFreq1: 0.004, percThreshAmp1: 26.5, percThreshFreq2: 0.152, percThreshAmp2: 26.5,windowSize:4096,hopSize:512)
-    .wait;
-    (Main.elapsedTime - t).postln;
-}.play
-)
+FluidBufHPSS.processBlocking(s,~src,harmonic:~harmonic,percussive:~percussive,action:{"done".postln;});
 
 //play the harmonic
-c.play;
-//play the percussive
-d.play;
-//play the residual
-e.play;
+~harmonic.play;
 
-//still nullsumming
-{PlayBuf.ar(1,c) + PlayBuf.ar(1,d) + PlayBuf.ar(1,e) - PlayBuf.ar(1,b,doneAction:2)}.play;
+//play the percussive
+~percussive.play;
+
+(
+// See which parts of the Waveform are in which component
+// blue = harmonic, orange = percussive
+~fw = FluidWaveform(bounds:Rect(0,0,1600,400));
+~fw.addAudioLayer(~harmonic,FluidViewer.categoryColors[0].alpha_(0.5));
+~fw.addAudioLayer(~percussive,FluidViewer.categoryColors[1].alpha_(0.5));
+~fw.front;
+)
+
 ::
 
-STRONG::A stereo buffer example.::
+STRONG::Separating Components before Analysis (using Mode 1)::
+
 CODE::
 
-// load two very different files
+~src = Buffer.read(s,FluidFilesPath("Tremblay-AaS-SynthTwoVoices-M.wav"));
+
+// hear it
+~src.play;
+
+// let's look at some pitch analysis first
 (
-b = Buffer.read(s,FluidFilesPath("Tremblay-SA-UprightPianoPedalWide.wav"));
-c = Buffer.read(s,FluidFilesPath("Tremblay-AaS-AcousticStrums-M.wav"));
+~pitch_analysis = Buffer(s);
+FluidBufPitch.processBlocking(s,~src,features:~pitch_analysis,minFreq:40,maxFreq:500,windowSize:4096);
+FluidWaveform(~src,featuresBuffer:~pitch_analysis,bounds:Rect(0,400,1600,400),stackFeatures:true);
+)
+// it's getting the "pitch" of all the clicks (the peaky spikes in the blue pitch plot),
+// but perhaps I just want the pitch analysis of the bass line
+
+// now let's do the pitch analysis using just the harmonic component
+// because we're interested in strong separation and don't need to care about artefacts, maskingMode = 1
+(
+~harmonic = Buffer(s);
+FluidBufHPSS.processBlocking(s,~src,harmonic:~harmonic,harmFilterSize:17,percFilterSize:31,maskingMode:1);
+FluidBufPitch.processBlocking(s,~harmonic,features:~pitch_analysis,minFreq:40,maxFreq:500,windowSize:4096);
+FluidWaveform(~harmonic,featuresBuffer:~pitch_analysis,bounds:Rect(0,0,1600,400),stackFeatures:true);
+)
+// except for a few spikes at the end, this is much more usable for extracting the pitch of the bass notes.
+
+// take a listen to what it's analyzing
+~harmonic.play;
+
+::
+
+STRONG::Mode 2::
+
+CODE::
+
+(
+~src = Buffer.read(s,FluidFilesPath("Tremblay-CF-ChurchBells.wav"));
+~residual = Buffer.new(s);
+~harmonic = Buffer.new(s);
+~percussive = Buffer.new(s);
 )
 
-// composite one on left one on right as test signals
-(
-Routine{
-    FluidBufCompose.process(s, c, numFrames:b.numFrames, startFrame:555000,destStartChan:1, destination:b).wait;
-    b.play
-}.play
-)
-// create 2 new buffers as destinations
-d = Buffer.new(s); e = Buffer.new(s);
+// listen to the original;
+~src.play
 
-//run the process on them
 (
-Routine{
-    t = Main.elapsedTime;
-    FluidBufHPSS.process(s, b, harmonic: d, percussive:e).wait;
-    (Main.elapsedTime - t).postln;
-}.play
+// this will take a few seconds (wait for "done" to post):
+FluidBufHPSS.processBlocking(s,~src,harmonic:~harmonic,percussive:~percussive,residual:~residual,harmFilterSize:71,percFilterSize:31,maskingMode:2,harmThreshFreq1:0.005,harmThreshAmp1:3,harmThreshFreq2:0.2,harmThreshAmp2:6,percThreshFreq1:0.004,percThreshAmp1:3,percThreshFreq2:0.152,percThreshAmp2:3,windowSize:4096,hopSize:512,action:{"done".postln;})
 )
 
-//listen: stereo preserved!
-d.play
-e.play
+// listen to the different parts
+~harmonic.play; // some artefacts, but mostly the "harmonic" partials of the bells
+~percussive.play; // has most of the "noisy" content of the bell resonance
+~residual.play; // a bit of both, more of the attack
+
 ::

@@ -17,7 +17,7 @@ def write_index(idx,program_args):
     path = program_args.output_path 
     path.mkdir(exist_ok=True)
     apifile = path / 'api.json'
-    with open(apifile,'w') as f:
+    with open(apifile,'w', encoding='utf-8') as f:
         json.dump(idx,f,sort_keys=True, indent=0)
     
     maxdb_objs = {'maxdb':{'externals':{}}}
