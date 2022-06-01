@@ -92,3 +92,9 @@ indices.loadToFloatArray(action:{
 });
 )
 ::
+strong::Visualizing Parameters::
+code::
+
+~drum_hit =
+
+::
