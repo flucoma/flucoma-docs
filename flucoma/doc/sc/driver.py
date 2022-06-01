@@ -84,8 +84,11 @@ def sc_transform_data(object_name,data):
             **data['attributes'],
             'windowSize': fftSettings['win'], 
             'hopSize': fftSettings['hop'], 
-            'fftSize':  fftSettings['fft'], 
-            'maxFFTSize': {
+            'fftSize':  fftSettings['fft'] 
+        }
+        
+        if data['species'] != 'buffer-proc':
+            data['attributes']['maxFFTSize'] = {
                 'name':'maxFFTSize', 
                 'constraints': {}, 
                 'default': -1, 
@@ -95,8 +98,7 @@ def sc_transform_data(object_name,data):
                 'size': 1, 
                 'type': 'long'
             }
-        }
-        
+                
     def maxParamName(pname):
         return 'max' + pname[0].upper() + pname[1:]
     
