@@ -8,6 +8,8 @@ DESCRIPTION::
 
 {{ discussion | rst | indent(first=True) }}
 
+Read more about {{ client_name | as_host_object_name }} on the link::{{learn_url}}##learn platform::.
+
 {% block classmethods %}
 CLASSMETHODS::
 {% endblock %}

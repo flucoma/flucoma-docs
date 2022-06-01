@@ -14,10 +14,10 @@ under the European Union’s Horizon 2020 research and innovation programme
 	<digest>{{ digest }}</digest>
 	<description>{{ description | striprst }}</description>
   <discussion>
-      <h4><openfilelink filename="Fluid Corpus Manipulation Toolkit.maxpat">Open the Overview Patch</openfilelink></h4>
-        {{ discussion | rst | indent(8, first=True)}}
-
-		     {{ client_name | as_host_object_name }} is part of the Fluid Decomposition Toolkit of the FluCoMa project. For more explanations, learning material, and discussions on its musicianly uses, visit <a href="http://www.flucoma.org/">flucoma.org</a>.
+    <h4><openfilelink filename="Fluid Corpus Manipulation Toolkit.maxpat">Open the Overview Patch</openfilelink></h4>
+    {{ discussion | rst | indent(8, first=True)}}
+    <p>Read more about {{ client_name | as_host_object_name }} on the <a href='{{ learn_url | e }}'>learn platform</a>.</p>
+    <p>{{ client_name | as_host_object_name }} is part of the Fluid Decomposition Toolkit of the FluCoMa project. For more explanations, learning material, and discussions on its musicianly uses, visit <a href="http://www.flucoma.org/">flucoma.org</a>.</p>
   </discussion>
 	<!--METADATA-->
 	<metadatalist>
