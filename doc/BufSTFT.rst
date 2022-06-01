@@ -43,7 +43,7 @@
 
    The |buffer| to write phases to in the forward case, or read from in the inverse case. This is optional for the forward transform, mandatory for the inverse.
 
-:control resynthesis:
+:control resynth:
 
    The |buffer| to write re-synthesised data to in the inverse case. Ignored for the forward transform. Mandatory in the inverse case.
 
