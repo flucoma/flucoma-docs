@@ -36,15 +36,15 @@
 
    ``fit`` the model to the ``sourceDataSet`` and then standardize the ``sourceDataSet`` and write into ``destDataSet``
 
- :message inverseTransform:
+:message inverseTransform:
 
-    :arg sourceDataSet: The :fluid-obj:`DataSet` to of data to transform from the standardized scale to the original scale.
+   :arg sourceDataSet: The :fluid-obj:`DataSet` to of data to transform from the standardized scale to the original scale.
 
-    :arg destDataSet: The :fluid-obj:`DataSet` to write the transformed data to.
+   :arg destDataSet: The :fluid-obj:`DataSet` to write the transformed data to.
 
-    :arg action: A function to run when processing is complete
+   :arg action: A function to run when processing is complete
 
-    Un-standardize a :fluid-obj:`DataSet`, using the learned statistics from a previous call to :fluid-obj:`Standardize#fit`.
+   Un-standardize a :fluid-obj:`DataSet`, using the learned statistics from a previous call to :fluid-obj:`Standardize#fit`.
 
 :message transformPoint:
 
