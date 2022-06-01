@@ -95,6 +95,19 @@ indices.loadToFloatArray(action:{
 strong::Visualizing Parameters::
 code::
 
-~drum_hit =
+~drum_hit = Buffer.read(s,FluidFilesPath("Nicol-LoopE-M.wav"),350854,21023);
+
+(
+~drum_hit.play;
+FluidWaveform(~drum_hit);
+)
+
+(
+~indices = Buffer(s);
+FluidBufAmpGate.processBlocking(s,~drum_hit,indices:~indices,onThreshold:-20,offThreshold:-20
+FluidWaveform(~drum_hit);
+)
+
+
 
 ::
