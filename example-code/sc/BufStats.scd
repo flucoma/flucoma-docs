@@ -161,7 +161,7 @@ FluidBufStats.processBlocking(s,~pitch_analysis,stats:~stats,weights:~threshed);
 }.play;
 )
 ::
-STRONG::Outliers:
+STRONG::Outliers::
 CODE::
 
 // let's try to find the pitch of this trombone tone
