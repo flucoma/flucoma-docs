@@ -97,17 +97,25 @@ code::
 
 ~drum_hit = Buffer.read(s,FluidFilesPath("Nicol-LoopE-M.wav"),350854,21023);
 
+// we'll try to tweak some parameters to slice out this drum hit just how we want
 (
 ~drum_hit.play;
 FluidWaveform(~drum_hit);
 )
 
+// just putting in some thresholds probably won't provide what we're looking for
 (
 ~indices = Buffer(s);
-FluidBufAmpGate.processBlocking(s,~drum_hit,indices:~indices,onThreshold:-20,offThreshold:-20
-FluidWaveform(~drum_hit);
+FluidBufAmpGate.processBlocking(s,~drum_hit,indices:~indices,onThreshold:-20,offThreshold:-20);
+FluidWaveform(~drum_hit,~indices);
 )
 
+// adjusting the ramp times (units are in samples) will help smooth out the envelope follower
+(
+~indices = Buffer(s);
+FluidBufAmpGate.processBlocking(s,~drum_hit,indices:~indices,rampUp:441,rampDown:4410,onThreshold:-20,offThreshold:-20);
+FluidWaveform(~drum_hit,~indices);
+)
 
 
 ::
