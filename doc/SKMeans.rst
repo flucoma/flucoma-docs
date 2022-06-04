@@ -1,8 +1,8 @@
 :digest: Cluster data points with K-Means
 :species: data
 :sc-categories: FluidManipulation
-:sc-related: Classes/FluidDataSet, Classes/FluidLabelSet, Classes/FluidKNNClassifier, Classes/FluidKNNRegressor, Classes/FluidSKMeans
-:see-also: SKMeans, KNNClassifier, MLPClassifier, DataSet
+:sc-related: Classes/FluidDataSet, Classes/FluidLabelSet, Classes/FluidKNNClassifier, Classes/FluidKNNRegressor, Classes/FluidKMeans
+:see-also: KMeans, KNNClassifier, MLPClassifier, DataSet
 :description: 
 
    Uses the K-means algorithm to learn clusters from a :fluid-obj:`DataSet`.
