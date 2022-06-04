@@ -54,7 +54,7 @@
 
    The index of the buffer where the different reconstructed components will be reconstructed. The buffer will be resized to ``components * numChannelsProcessed`` channels and ``sourceDuration`` lenght. If ``nil`` is provided, the reconstruction will not happen.
 
-:control resynthmode:
+:control resynthMode:
 
    This flag determines if resynthesis from basis and activation is executed.
 
