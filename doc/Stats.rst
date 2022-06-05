@@ -15,7 +15,7 @@
 :output: The [means] and [standard deviations] for each element of the original.
 
 
-:control size:
+:control history:
 
    The size of the history window to use.
    
