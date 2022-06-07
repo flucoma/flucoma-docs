@@ -2,12 +2,12 @@
 :species: transformer[0]
 :sc-categories: FluidCorpusManipulation
 :sc-related: Classes/FluidAudioTransport, Classes/FluidBufNMFCross
-:see-also: 
+:see-also: BufNMF, NMFCross, AudioTransport, BufAudioTransport 
 :description: 
+   Perform cross-synthesis using Nonnegative Matrix Factorization (NMF) and Optimal Transport (OT). 
 
-   Perform cross-synthesis using Nonnegative Matrix Factorization (NMF) and Optimal Transport (OT). NMF analyses of ``source`` and ``target`` sounds decompose their material in to a selectable number of components, which are in turn represented by their *bases* (spectrum) and *activations* (temporal pattern of each component).
-
-   ``NMFMorph`` provides the ability to interpolate between ``source`` and ``target`` spectra bases using a technique called Optimal Transport, that provides richer results than a simple linear interpolation between spectral shapes. The resulting sound is built up using a buffer of temporal activations, then resynthesised using a phase estimate.
+:discussion:
+   The algorithm uses NMF analyses of the ``source`` and ``target`` sounds. It decomposes their material in to a selectable number of components, which are in turn represented by their *bases* (spectrum) and *activations* (temporal pattern of each component). ``NMFMorph`` provides the ability to interpolate between ``source`` and ``target`` bases using a technique called Optimal Transport, that provides richer results than a simple linear interpolation between spectral shapes. The resulting sound is built up using a buffer of temporal activations, then resynthesised using a phase estimate.
 
 :control source:
 
