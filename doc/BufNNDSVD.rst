@@ -3,10 +3,12 @@
 :sc-categories: FluidManipulation
 :sc-related: Classes/FluidBufNMF
 :see-also: 
-:description: 
-   Find Initial Bases and Activations for FluidBufNMF via Non-Negative Double Singular Value Decomposition .
+:description: Find Initial Bases and Activations for BufNMF
+:discussion:
 
-   See http://nimfa.biolab.si/nimfa.methods.seeding.nndsvd.html
+    BufNNDSVD can help 
+    
+    via Non-Negative Double Singular Value Decomposition .See http://nimfa.biolab.si/nimfa.methods.seeding.nndsvd.html
 
 
 
@@ -37,6 +39,20 @@
 :control method:
 
    The method used for the decomposition. Options are:
+   
+   :enum:
+    
+    :0: 
+      NMF-SVD
+      
+    :1: 
+      NNDSVDar
+    
+    :2: 
+      NNDSVDa 
+    
+    :3: 
+      NNDSVD
 
 :control windowSize:
 
@@ -49,4 +65,3 @@
 :control fftSize:
 
    The inner FFT/IFFT size. It should be at least 4 samples long, at least the size of the window, and a power of 2. Making it larger allows an oversampling of the spectral precision. The -1 default value will use the next power of 2 equal or above the highest of windowSize and (bandwidth - 1) * 2.
-
