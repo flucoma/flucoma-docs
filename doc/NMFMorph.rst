@@ -11,11 +11,11 @@
 
 :control source:
 
-   A |buffer| with the spectral bases for the source sound.
+   A |buffer| with the spectral bases for the source sound (must be the same number of spectral bases as ``target``).
 
 :control target:
 
-   A |buffer| with the spectral bases for the target sound.
+   A |buffer| with the spectral bases for the target sound (must be the same number of spectral bases as ``source``).
 
 :control activations:
 
