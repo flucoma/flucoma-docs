@@ -105,7 +105,7 @@ code::
 
 ::
 strong::single point transform on arbitrary value::
-
+code::
 ~inbuf = Buffer.loadCollection(s,[0.3]);
 
 ~regressor.predictPoint(~inbuf,{|x|x.postln;});
