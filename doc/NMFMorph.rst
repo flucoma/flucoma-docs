@@ -1,5 +1,5 @@
 :digest: Morph between sounds
-:species: transformer
+:species: transformer[0]
 :sc-categories: FluidCorpusManipulation
 :sc-related: Classes/FluidAudioTransport, Classes/FluidBufNMFCross
 :see-also: 

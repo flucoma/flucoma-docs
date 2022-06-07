@@ -13,10 +13,10 @@ code::
 ~src2Activations = Buffer(s);
 )
 
-//nmf analyses (wait for this to complete!)
+//nmf analyses -- must have the same number of components (wait for this to complete!)
 (
 FluidBufNMF.processBlocking(s,~src1,bases:~src1Bases,activations:~src1Activations,components:5, action:{"Analysed Source 1".postln});
-FluidBufNMF.processBlocking(s,~src2,bases:~src2Bases,activations:~src2Activations, components:4, action:{"Analysed Source 2".postln});
+FluidBufNMF.processBlocking(s,~src2,bases:~src2Bases,activations:~src2Activations, components:5, action:{"Analysed Source 2".postln});
 )
 
 (
