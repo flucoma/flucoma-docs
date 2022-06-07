@@ -3,7 +3,8 @@
 :sc-categories: Regression
 :sc-related: Classes/FluidKNNClassifier, Classes/FluidDataSet
 :see-also: 
-:description: 
+:description: Regression between DataSets using weighted average of neighbours
+:discussion:
    
    KNNRegressor is a supervised machine learning algorithm for regression. In order to make predictions, the KNNRegressor must first be ``fit`` with an input :fluid-obj:`DataSet` of data points, each of which is paired (by means of a shared identifier) with another data point in an output DataSet.
 
