@@ -4,11 +4,10 @@
 :sc-related: Classes/FluidAudioTransport, Classes/FluidBufNMFCross
 :see-also: 
 :description: 
+
    Perform cross-synthesis using Nonnegative Matrix Factorization (NMF) and Optimal Transport (OT). NMF analyses of ``source`` and ``target`` sounds decompose their material in to a selectable number of components, which are in turn represented by their *bases* (spectrum) and *activations* (temporal pattern of each component).
 
-   ``FluidNMFMorph`` provides the ability to interpolate between ``source`` and ``target`` spectra using a technique called Optimal Transport, that provides richer results than a simple linear interpolation between spectral shapes. The resulting sound is built up using a buffer of temporal activations, then resynthesised using a phase estimate.
-
-
+   ``NMFMorph`` provides the ability to interpolate between ``source`` and ``target`` spectra bases using a technique called Optimal Transport, that provides richer results than a simple linear interpolation between spectral shapes. The resulting sound is built up using a buffer of temporal activations, then resynthesised using a phase estimate.
 
 :control source:
 
@@ -45,4 +44,3 @@
 :control maxFFTSize:
 
    The maximum FFT size to allocate memory for
-
