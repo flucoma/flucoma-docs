@@ -6,21 +6,21 @@
 :description: Find Initial Bases and Activations for BufNMF
 :discussion:
 
-    BufNNDSVD uses Nonnegative Double Singular Value Decomposition which can help decide how to initialise BufNMF, by suggesting how many components to request (and what bases to seed) in order to account for a certain percentage of the variance in a buffer.
+    BufNNDSVD uses Nonnegative Double Singular Value Decomposition which can help decide how to initialise BufNMF, by suggesting how many components to request (and what bases and activations to seed) in order to account for a certain percentage of the variance in a buffer. In general, using this process to seed a BufNMF decomposition should substantially increase the speed with which BufNMF converges and avoid especially poor local minima.
     
     See http://nimfa.biolab.si/nimfa.methods.seeding.nndsvd.html and https://www.sciencedirect.com/science/article/abs/pii/S0031320307004359 for more info.
 
 :control source:
 
-   The index of the buffer to analyse and suggest a number of components for.
+   The buffer to analyse and suggest a number of components for.
 
 :control bases:
 
-   The index of the buffer where the bases will be written to. These will be the bases and are suggested seed for a BufNMF processes. The number of bases (i.e., channels) in this buffer when the process is complete is the number of components needed to cover the percentage of variance in the buffer.
+   The buffer where the bases will be written to. These are suggested seed for a BufNMF process. The number of bases (i.e., channels) in this buffer when the process is complete is the number of components needed to cover the requested percentage of variance in the buffer.
 
 :control activations:
 
-   Must be set as an empty buffer (of any size), however no information is returned in this buffer.
+   The buffer where the activations will be written to. These are suggested seed for a BufNMF process. The number of bases (i.e., channels) in this buffer when the process is complete is the number of components needed to cover the requested percentage of variance in the buffer.
 
 :control minComponents:
 
@@ -36,21 +36,21 @@
 
 :control method:
 
-   The method used for the decomposition. Options are:
+   The method used to account for certain values before processing. Zeros in the matrix will remain zero when "updated" because the updates are being multiplied by a scalar, therefore it may be useful to change any zeros to something else before the process. Options are:
    
    :enum:
     
     :0: 
-      **NMF-SVD:** Nonnegative Double Singular Value Decomposition
+      **NMF-SVD** Nonnegative Double Singular Value Decomposition where any negative values are first converted to their absolute value. This is likely to be quicker than the other options, but less rigorous.
       
     :1: 
-      **NNDSVDar:** Nonnegative Double Singular Value Decomposition where any elements that are zero are filled with a random value between 0 and the average * 0.01.
+      **NNDSVDar** Nonnegative Double Singular Value Decomposition where any elements that are zero are first filled with a random value between 0 and the ``average * 0.01`` (essentially small random values). This may be slightly faster but slightly less accurate than other options.
     
     :2: 
-      **NNDSVDa:** Nonnegative Double Singular Value Decomposition where any elements that are zero are filled with the average value.
+      **NNDSVDa** Nonnegative Double Singular Value Decomposition where any elements that are zero are first filled with the average value.
     
     :3: 
-      **NNDSVD:** Nonnegative Double Singular Value Decomposition
+      **NNDSVD** Nonnegative Double Singular Value Decomposition where values are not changed according to any criteria. This promotes sparse results from the subsequent NMF (because, with multiplicative updates, zeros remain zeros). This may or may not be desirable (not least because sparsity implies the need for more components, but also the specific domain might imply that reasonable decomposition just isn't going to be sparse). 
 
 :control windowSize:
 

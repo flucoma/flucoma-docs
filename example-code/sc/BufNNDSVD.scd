@@ -27,6 +27,9 @@ Routine{
 // peek at the bases
 ~bases.plot;
 
+// peek at the activations
+~activations.plot;
+
 //use the bases to run NMF on
 FluidBufNMF.process(s, ~src, resynth: ~resynth, resynthMode:1, bases: ~bases, basesMode:1, activations: ~activations, components: ~bases.numChannels, action: {"done".postln;})
 
