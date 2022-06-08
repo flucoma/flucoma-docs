@@ -61,3 +61,5 @@
    The window hop size. It can be any size but low overlap will create audible artefacts. The -1 default value will default to half of windowSize (overlap of 2).
 
 :control fftSize:
+
+  The inner FFT/IFFT size. It should be at least 4 samples long, at least the size of the window, and a power of 2. Making it larger allows an oversampling of the spectral precision. The -1 default value will use the next power of 2 equal or above the highest of windowSize and (bandwidth - 1) * 2.
