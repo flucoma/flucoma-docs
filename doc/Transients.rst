@@ -30,7 +30,7 @@
 
 :control padSize:
 
-   The size of the handles on each sides of the block simply used for analysis purpose and avoid boundary issues.
+   The size (in samples) of analysis on each side of `` blockSize`` used to avoid boundary issues.
 
 :control skew:
 
