@@ -1,64 +1,113 @@
 
 code::
 
-//Make a simple mapping between a ramp and a sine cycle, test with an exponentional ramp
+// Making an input dataset of a ramp from 0-1 and an output dataset of a sine wave
+// we'll have the KNNRegressor learn the relationship between the inputs and outputs
+// so that any input value provided will return where on the sine wave (what amplitude)
+// the output should be
 (
-~source = FluidDataSet(s);
-~target = FluidDataSet(s);
-~test = FluidDataSet(s);
-~output = FluidDataSet(s);
-~tmpbuf = Buffer.alloc(s,1);
-~regressor = FluidKNNRegressor(s);
+~size = 128;
+~ds_ramp = FluidDataSet(s).load(
+	Dictionary.newFrom([
+		\cols,1,
+		\data,Dictionary.newFrom(
+			~size.collect{arg i;
+				[i,i/~size]; // linear: 128 steps from 0 to (slightly less than) 1
+			}.flat
+		)
+	])
+);
+
+~ds_sine = FluidDataSet(s).load(
+	Dictionary.newFrom([
+		\cols,1,
+		\data,Dictionary.newFrom(
+			~size.collect{
+				arg i;
+				[i,sin(2pi*i/~size)]; // sine wave
+			}.flat;
+		)
+	])
+);
 )
 
-//Make source, target and test data
+// fit to make the KNNRegressor learn the relationship between inputs and outputs
 (
-~sourcedata = 128.collect{|i|i/128};
-~targetdata = 128.collect{|i| sin(2*pi*i/128) };
-~testdata = 128.collect{|i|(i/128)**2};
-
-~source.load(
-	Dictionary.with(
-        *[\cols -> 1,\data -> Dictionary.newFrom(
-			~sourcedata.collect{|x, i| [i.asString, [x]]}.flatten)])
-);
-
-~target.load(
-d = Dictionary.with(
-        *[\cols -> 1,\data -> Dictionary.newFrom(
-			~targetdata.collect{|x, i| [i.asString, [x]]}.flatten)]);
-);
-
-~test.load(
-	Dictionary.with(
-        *[\cols -> 1,\data -> Dictionary.newFrom(
-			~testdata.collect{|x, i| [i.asString, [x]]}.flatten)])
-);
-
-~targetdata.plot;
-~source.print;
-~target.print;
-~test.print;
-
+~regressor = FluidKNNRegressor(s).fit(~ds_ramp,~ds_sine);
 )
 
-// Now make a regressor and fit it to the source and target, and predict against test
-//grab the output data whilst we're at it, so we can inspect
+// predicting with input dataset should give us what we expect: something that
+// looks like a sine wave.
 (
-~outputdata = Array(128);
-~regressor.fit(~source, ~target);
-~regressor.predict(~test, ~output, 1, action:{
-		~output.dump{|x| 128.do{|i|
-		~outputdata.add(x["data"][i.asString][0])
-	}};
+~predictions = FluidDataSet(s);
+~regressor.predict(~ds_ramp,~predictions,{
+	~predictions.dump({
+		arg dict;
+		var array = Array.newClear(~size);
+		dict["data"].keysValuesDo{
+			arg id, v;
+			array[id.asInteger] = v[0];
+		};
+		{array.plot}.defer;
+	});
 });
 )
 
-//We should see a single cycle of a chirp
-~outputdata.plot;
+// now instead of using the linear ramp to derive the output, we'll use a warped ramp: an exponetial curve
+// make that dataset to use as input:
+(
+~ds_exponential = FluidDataSet(s).load(
+	Dictionary.newFrom([
+		\cols,1,
+		\data,Dictionary.newFrom(
+			~size.collect{arg i;
+				[i,(i/~size)**2];
+			}.flat;
+		)
+	])
+);
+)
 
-// single point transform on arbitrary value
-~inbuf = Buffer.loadCollection(s,[0.5]);
+// use the regressor to make predictions based on that input:
+(
+~regressor.predict(~ds_exponential,~predictions,{
+	~predictions.dump({
+		arg dict;
+		var array = Array.newClear(~size);
+		dict["data"].keysValuesDo{
+			arg id, v;
+			array[id.asInteger] = v[0];
+		};
+		array.postln;
+		{array.plot}.defer;
+	});
+});
+)
+
+// just for fun let's use the sine wave ds as input...
+// notice that all the negative values of the sine wave
+// (the second half) are going to have the same three nearest
+// neighbours and therefore the same value for their prediction!
+(
+~regressor.predict(~ds_sine,~predictions,{
+	~predictions.dump({
+		arg dict;
+		var array = Array.newClear(~size);
+		dict["data"].keysValuesDo{
+			arg id, v;
+			array[id.asInteger] = v[0];
+		};
+		array.postln;
+		{array.plot}.defer;
+	});
+});
+)
+
+::
+strong::single point transform on arbitrary value::
+code::
+~inbuf = Buffer.loadCollection(s,[0.3]);
+
 ~regressor.predictPoint(~inbuf,{|x|x.postln;});
 ::
 
@@ -70,11 +119,11 @@ code::
 {
 	var input = Saw.kr(2).linlin(-1,1,0,1);
 	var trig = Impulse.kr(ControlRate.ir/10);
-    var inputPoint = LocalBuf(1);
-    var outputPoint = LocalBuf(1);
+	var inputPoint = LocalBuf(1);
+	var outputPoint = LocalBuf(1);
 	BufWr.kr(input,inputPoint,0);
-    ~regressor.kr(trig,inputPoint,outputPoint);
-    BufRd.kr(1,outputPoint,0);
+	~regressor.kr(trig,inputPoint,outputPoint);
+	BufRd.kr(1,outputPoint,0);
 }.scope
 )
 
