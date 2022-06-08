@@ -12,23 +12,23 @@
 
 :control source:
 
-   The buffer to analyse and suggest a number of components for.
+   The |buffer| to analyse and suggest a number of components for.
 
 :control bases:
 
-   The buffer where the bases will be written to. These are suggested seed for a BufNMF process. The number of bases (i.e., channels) in this buffer when the process is complete is the number of components needed to cover the requested percentage of variance in the buffer.
+   The |buffer| where the bases will be written to. These are suggested seed for a BufNMF process. The number of bases (i.e., channels) in this buffer when the process is complete is the number of components needed to cover the requested percentage of variance in the buffer.
 
 :control activations:
 
-   The buffer where the activations will be written to. These are suggested seed for a BufNMF process. The number of bases (i.e., channels) in this buffer when the process is complete is the number of components needed to cover the requested percentage of variance in the buffer.
+   The |buffer| where the activations will be written to. These are suggested seed for a BufNMF process. The number of bases (i.e., channels) in this buffer when the process is complete is the number of components needed to cover the requested percentage of variance in the buffer.
 
 :control minComponents:
 
-   Minimum number of estimated components to return (minimum number of channels in ``bases`` buffer when the process is complete)
+   Minimum number of estimated components to return (minimum number of channels in ``bases`` |buffer| when the process is complete)
 
 :control maxComponents:
 
-   Maximum number of estimated components to return (maximum number of channels in ``bases`` buffer when the process is complete)
+   Maximum number of estimated components to return (maximum number of channels in ``bases`` |buffer| when the process is complete)
 
 :control coverage:
 
@@ -61,5 +61,3 @@
    The window hop size. It can be any size but low overlap will create audible artefacts. The -1 default value will default to half of windowSize (overlap of 2).
 
 :control fftSize:
-
-   The inner FFT/IFFT size. It should be at least 4 samples long, at least the size of the window, and a power of 2. Making it larger allows an oversampling of the spectral precision. The -1 default value will use the next power of 2 equal or above the highest of windowSize and (bandwidth - 1) * 2.
