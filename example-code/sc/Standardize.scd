@@ -9,7 +9,7 @@ s.boot;
 ~features = Buffer(s);
 FluidBufSpectralShape.processBlocking(s,~src,features:~features,select:~select);
 ~ds = FluidDataSet(s).fromBuffer(~features);
-"Firs the Raw Data, then the Standardized Data:".postln;
+"First the Raw Data, then the Standardized Data:".postln;
 ~ds.print;
 ~stand = FluidStandardize(s).fitTransform(~ds,~ds);
 ~ds.print;
@@ -17,6 +17,49 @@ FluidBufSpectralShape.processBlocking(s,~src,features:~features,select:~select);
 ~ds.dump({
 	arg dict;
 	defer{FluidPlotter(dict:dict)}
+});
+)
+
+::
+strong::Transforming a single point::
+code::
+
+~src = Buffer.read(s,FluidFilesPath("Tremblay-UW-ComplexDescent-M.wav"));
+
+// standardize a spectral analysis
+(
+~features = Buffer(s);
+FluidBufSpectralShape.processBlocking(s,~src,features:~features);
+~ds = FluidDataSet(s).fromBuffer(~features);
+"Firs the Raw Data, then the Standardized Data:".postln;
+~ds.print;
+~ds_stand = FluidDataSet(s);
+~stand = FluidStandardize(s).fitTransform(~ds,~ds_stand);
+~ds_stand.print;
+)
+
+~singlePoint = Buffer.alloc(s,7);
+
+// take a look at the original via a bar graph. see post window for extreme differences in scale
+(
+~ds.getPoint("0",~singlePoint);
+~singlePoint.loadToFloatArray(action:{
+	arg fa;
+	fa.postln;
+	defer{fa.plot.plotMode_(\bars)};
+});
+)
+
+~scaledPoint = Buffer.alloc(s,7);
+
+// now standardize it using the `fit` from above
+// see the post window to notice that the ranges are now all similar
+(
+~stand.transformPoint(~singlePoint,~scaledPoint);
+~scaledPoint.loadToFloatArray(action:{
+	arg fa;
+	fa.postln;
+	defer{fa.plot.plotMode_(\bars)};
 });
 )
 ::
