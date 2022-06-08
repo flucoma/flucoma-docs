@@ -5,11 +5,11 @@
 :see-also: BufTransients,Sines,HPSS
 :description: Separate transients from a signal.
 :discussion: 
-   This implements a "de-clicking" algorithm based on the assumption that a transient is a sample or series of samples that are anomalous when compared to surrounding material. It creates an autoregressive model of the samples' time series (no FFT processing is used), so that when a given sample doesn't fit the model (it's "error" or anomalous-ness) goes above ``threshFwd`` it is determined to be a transient. The series of samples determined to be a transient will continue until the error goes below ``threshBack``, indicating that the samples are again more in-line with the autoregressive model. The algorithm then estimates what should have happened during the transient period if the signal had followed its normal path, and resynthesises this estimate, removing the anomaly considered as the transient.
+   This implements a "de-clicking" algorithm based on the assumption that a transient is a sample or series of samples that are anomalous when compared to surrounding material. It creates an autoregressive model of the samples' time series, so that when a given sample doesn't fit the model (it's "error" or anomalous-ness) goes above ``threshFwd`` it is determined to be a transient. The series of samples determined to be a transient will continue until the error goes below ``threshBack``, indicating that the samples are again more in-line with the autoregressive model. The algorithm then estimates what should have happened during the transient period if the signal had followed its normal path, and resynthesises this estimate, removing the anomaly considered as the transient.
 
     The algorithm will take an audio in, and will divide it in two outputs:
-    	* the transients, estimated from the signal and extracted from it;
-    	* the remainder of the material, as estimated by the algorithm, with the click replaced with an estimate.
+    	* the transients, estimated from the signal and extracted from it
+    	* the residual of the material with the transients replaced with an estimate.
     
     The algorithm implemented is from chapter 5 of "Digital Audio Restoration" by Godsill, Simon J., Rayner, Peter J.W. with some bespoke improvements on the detection function tracking.
     
@@ -26,7 +26,7 @@
 
 :control blockSize:
 
-   The size of audio chunk (in samples) on which it the algorithm is operating. This determines the maximum duration (in samples) of a detected transient, which cannot be more than than half ``blockSize``. High values are more cpu intensive.
+   The size of audio chunk (in samples) on which the process is operating. This determines the maximum duration (in samples) of a detected transient, which cannot be more than than half ``blockSize``. High values are more cpu intensive.
 
 :control padSize:
 
@@ -50,4 +50,4 @@
 
 :control clumpLength:
 
-   The window size in sample within which positive detections will be clumped together to avoid overdetecting in time.
+   The window size in samples within which anomalous samples will be clumped together to avoid over detecting in time. This is like setting a minimum transient length.
