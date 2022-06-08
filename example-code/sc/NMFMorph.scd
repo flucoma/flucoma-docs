@@ -28,6 +28,8 @@ FluidBufNMF.processBlocking(s,~src2,bases:~src2Bases,activations:~src2Activation
 // Change the actvations
 // when changing the activations, one needs to change the 'autoassign' control to update the process
 ~synth.set(\activations, ~src2Activations, \autoassign,0);
+
+// change autoassign back to 1 to hear the difference
 ~synth.set(\autoassign,1);
 
 ::
