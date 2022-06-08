@@ -6,11 +6,11 @@
 :description: A real-time transient-based slice extractor
 :discussion: 
 
-  TransientSlice identifies slice points in a real time signal by implementing a "de-clicking" algorithm based on the assumption that a transient is a sample or series of samples that are anomalous when compared to surrounding material. It creates an autoregressive model of the samples' time series, so that when a given sample doesn't fit the model (it's "error" or anomalous-ness goes above ``threshFwd``) it is determined to be a transient and a slice point is identified. 
+  TransientSlice identifies slice points in a real time signal by implementing a "de-clicking" algorithm based on the assumption that a transient is a sample or series of samples that are anomalous when compared to surrounding samples. It creates an autoregressive model of the time series of samples, so that when a given sample doesn't fit the model (its "error" or anomalous-ness goes above ``threshFwd``) it is determined to be a transient and a slice point is identified. 
 
   The series of samples determined to be a transient will continue until the error goes below ``threshBack``, indicating that the samples are again more in-line with the autoregressive model.
 
-  The process will return an audio steam with sample-long impulses at estimated starting points of the different slices.
+  The process will return an audio steam with single sample impulses at estimated starting points of the different slices.
 
   The algorithm implemented is from chapter 5 of "Digital Audio Restoration" by Godsill, Simon J., Rayner, Peter J.W. with some bespoke improvements on the detection function tracking.
 
@@ -23,7 +23,7 @@
 
 :control order:
 
-  How many previous samples are used by the algorithm to create the autoregressive model of the signal within the ``blockSize`` window of analysis.. The higher the ``order``, the more accurate is its spectral definition, improving low frequency resolution (similar to an FFT but it differs in that it is not connected to temporal resolution). ``order`` must be less than ``blockSize``.
+  The number of previous samples used by the algorithm to create the autoregressive model of the signal within the ``blockSize`` window of analysis ``order`` must be less than ``blockSize``.
 
 :control blockSize:
 
@@ -39,11 +39,11 @@
 
 :control threshFwd:
 
-  The threshold applied to the smoothed error function for determining an onset. The units are roughly in standard deviations, thus can be considered how "deviant", or anomalous, the signal must be to be detected as a transient. It allows tight start of the identification of the anomaly as it proceeds forward.
+  The threshold applied to the smoothed forward prediction error for determining an onset. The units are roughly in standard deviations, thus can be considered how "deviant", or anomalous, the signal must be to be detected as a transient. It allows tight start of the identification of the anomaly as it proceeds forward.
 
 :control threshBack:
 
-  The threshold applied to the smoothed error function for determining an offset. The units are roughly in standard deviations, thus can be considered how "deviant", or anomalous, the signal must be to be considered transient. When the smoothed error function goes below ``threshBack`` an offset is identified. As it proceeds backwards in time, it allows tight ending of the identification of the anomaly.
+  The threshold applied to the smoothed backward prediction error for determining an offset. The units are roughly in standard deviations, thus can be considered how "deviant", or anomalous, the signal must be to be considered transient. When the smoothed error function goes below ``threshBack`` an offset is identified. As it proceeds backwards in time, it allows tight ending of the identification of the anomaly.
 
 :control windowSize:
 

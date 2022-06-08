@@ -7,7 +7,7 @@
 :discussion: 
    A novelty curve is derived from running a kernel across the diagonal of the similarity matrix, and looking for peak of changes. It implements the algorithm published in 'Automatic Audio Segmentation Using a Measure of Audio Novelty' by J Foote.
 
-   The process will return an audio steam with sample-long impulses at estimated starting points of the different slices.
+   The process will return an audio steam with single sample impulses at estimated starting points of the different slices.
 
 :output: An audio stream with impulses at detected transients. The latency between the input and the output is hopSize * (((kernelSize+1)/2).asInteger + ((filterSize + 1) / 2).asInteger + 1) samples at maximum.
 
