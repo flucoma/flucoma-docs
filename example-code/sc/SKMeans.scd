@@ -1,5 +1,4 @@
 code::
-// mels -> std -> whiten-pca(all-in) -> skmeans (sparse space 200 vs 40 mels)
 
 (
 //Make some clumped 2D points and place into a DataSet
@@ -17,7 +16,7 @@ fork{
 )
 
 
-// Create a KMeans instance and a LabelSet for the cluster labels in the server
+// Create an SKMeans instance and a LabelSet for the cluster labels in the server
 ~clusters = FluidLabelSet(s);
 ~skmeans = FluidSKMeans(s);
 
@@ -31,27 +30,13 @@ fork{
 	});
 )
 
-// Cols of kmeans should match DataSet, size is the number of clusters
+// Cols of SKMeans should match DataSet, size is the number of clusters
 
 ~skmeans.cols;
 ~skmeans.size;
 ~skmeans.dump;
 
-// Retrieve labels of clustered points
-(
-~assignments = Array.new(128);
-fork{
-    128.do{ |i|
-        ~clusters.getLabel(i,{|clusterID|
-            (i.asString+clusterID).postln;
-            ~assignments.add(clusterID)
-        });
-        s.sync;
-    }
-}
-)
-
-//or faster by sorting the IDs
+// Retrieve labels of clustered points by sorting the IDs
 ~clusters.dump{|x|~assignments = x.at("data").atAll(x.at("data").keys.asArray.sort{|a,b|a.asInteger < b.asInteger}).flatten.postln;}
 
 //Visualise: we're hoping to see colours neatly mapped to quandrants...
@@ -84,7 +69,7 @@ subsection:: Accessing the means
 We can get and set the means for each cluster, their centroid.
 
 code::
-// with the dataset and kmeans generated and trained in the code above
+// with the dataset and skmeans generated and trained in the code above
 ~centroids = FluidDataSet(s);
 ~skmeans.getMeans(~centroids, {~centroids.print});
 
@@ -102,10 +87,10 @@ code::
 
 subsection:: Cluster-distance Space
 
-We can get the euclidian distance of a given point to each cluster. This is often referred to as the cluster-distance space as it creates new dimensions for each given point, one distance per cluster.
+We can get the spherical distance of a given point to each cluster. SKMeans differ from KMeans as it takes the angular distance (cosine) of the vector. This is often referred to as the cluster-distance space as it creates new dimensions for each given point, one distance per cluster.
 
 code::
-// with the dataset and kmeans generated and trained in the code above
+// with the dataset and skmeans generated and trained in the code above
 b = Buffer.sendCollection(s,[0.5,0.5])
 c = Buffer(s)
 
