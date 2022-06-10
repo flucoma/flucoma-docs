@@ -1,15 +1,15 @@
-:digest: Cluster data points with K-Means
+:digest: K-Means with Spherical Distances
 :species: data
 :sc-categories: FluidManipulation
 :sc-related: Classes/FluidDataSet, Classes/FluidLabelSet, Classes/FluidKNNClassifier, Classes/FluidKNNRegressor, Classes/FluidKMeans
 :see-also: KMeans, KNNClassifier, MLPClassifier, DataSet
 :description: 
 
-   Uses the K-means algorithm to learn clusters from a :fluid-obj:`DataSet`.
+   Uses K-means algorithm with cosine similarity to learn clusters and features from a :fluid-obj:`DataSet`.
 
 :discussion:
 
-   :fluid-obj:`KMeans` facilitates learning of clusters from a :fluid-obj:`DataSet`. This allows you to assign each point in the data a discrete membership to a group or cluster. The algorithm works by paritioning points into discrete clumps that ideally have *equal variance*. See the scitkit-learn reference for a more technical explanation: https://scikit-learn.org/stable/modules/clustering.html#k-means
+   :fluid-obj:`SKMeans` is an implementation of :fluid-obj:`KMeans` based of cosine distances instead of euclidian ones, measuring the angles between the normalised vectors. It is generally used to learn of features from a :fluid-obj:`DataSet`. See this reference for a more technical explanation: https://machinelearningcatalogue.com/algorithm/alg_spherical-k-means.html
 
 :control numClusters:
 
