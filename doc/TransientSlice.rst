@@ -6,9 +6,9 @@
 :description: A real-time transient-based slice extractor
 :discussion: 
 
-  TransientSlice identifies slice points in a real time signal by implementing a "de-clicking" algorithm based on the assumption that a transient is a sample or series of samples that are anomalous when compared to surrounding samples. It creates an autoregressive model of the time series of samples, so that when a given sample doesn't fit the model (its "error" or anomalous-ness goes above ``threshFwd``) it is determined to be a transient and a slice point is identified. 
+  TransientSlice identifies slice points in a real time signal by implementing a "de-clicking" algorithm based on the assumption that a transient is a sample or series of samples that are anomalous when compared to surrounding samples. It creates a model of the time series of samples, so that when a given sample doesn't fit the model (its "error" or anomalous-ness goes above ``threshFwd``) it is determined to be a transient and a slice point is identified. 
 
-  The series of samples determined to be a transient will continue until the error goes below ``threshBack``, indicating that the samples are again more in-line with the autoregressive model.
+  The series of samples determined to be a transient will continue until the error goes below ``threshBack``, indicating that the samples are again more in-line with the model.
 
   The process will return an audio steam with single sample impulses at estimated starting points of the different slices.
 
@@ -23,7 +23,7 @@
 
 :control order:
 
-  The number of previous samples used by the algorithm to create the autoregressive model of the signal within the ``blockSize`` window of analysis ``order`` must be less than ``blockSize``.
+  The number of previous samples used by the algorithm to create the model of the signal within the ``blockSize`` window of analysis ``order`` must be less than ``blockSize``.
 
 :control blockSize:
 

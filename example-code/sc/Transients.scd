@@ -6,7 +6,7 @@ CODE::
 // hear the basic parameters: transients in the L channel, residual in the R channel
 (
 {
-	FluidTransients.ar(PlayBuf.ar(1, b, loop:1));
+	FluidTransients.ar(PlayBuf.ar(1, ~src, loop:1));
 }.play
 )
 
@@ -25,7 +25,7 @@ strong::adding some FX::
 code::
 (
 {
-	var sig = PlayBuf.ar(1, b, loop:1);
+	var sig = PlayBuf.ar(1, ~src, loop:1);
 	var transients, residual;
 	# transients, residual = FluidTransients.ar(sig);
 	transients = Pan2.ar(transients,TRand.ar(-1.0,1.0,transients),8.dbamp);
@@ -42,7 +42,7 @@ code::
 // this should be silent!
 (
 {
-	var sig = PlayBuf.ar(1, b, loop:1);
+	var sig = PlayBuf.ar(1, ~src, loop:1);
 	var transients, residual, summed;
 	var order = 20; // this is the default
 	var blockSize = 256; // this is the default
