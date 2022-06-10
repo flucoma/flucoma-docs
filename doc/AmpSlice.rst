@@ -7,7 +7,7 @@
 :discussion: 
    FluidAmpSlice is based on two envelop followers on a highpassed version of the signal: one slow that gives the trend, and one fast. Each have features that will interact. The example code below is unfolding the various possibilites in order of complexity.
 
-   The process will return an audio steam with sample-long impulses at estimated starting points of the different slices.
+   The process will return an audio steam with single sample impulses at estimated starting points of the different slices.
 
 :output: An audio stream with square envelopes around the slices. The latency between the input and the output is **max(minLengthAbove + lookBack, max(minLengthBelow,lookAhead))**.
 
