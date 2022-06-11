@@ -9,11 +9,16 @@
 
 :discussion:
 
-   :fluid-obj:`SKMeans` is an implementation of :fluid-obj:`KMeans` based of cosine distances instead of euclidian ones, measuring the angles between the normalised vectors. It is generally used to learn of features from a :fluid-obj:`DataSet`. See this reference for a more technical explanation: https://machinelearningcatalogue.com/algorithm/alg_spherical-k-means.html
+   :fluid-obj:`SKMeans` is an implementation of KMeans based on cosine distances instead of euclidian ones, measuring the angles between the normalised vectors. 
+   One common application of spherical KMeans is to try and learn features directly from input data (via a :fluid-obj:`DataSet`) without supervision. See this reference for a more technical explanation: https://machinelearningcatalogue.com/algorithm/alg_spherical-k-means.html and https://www-cs.stanford.edu/~acoates/papers/coatesng_nntot2012.pdf for feature extractions.
 
 :control numClusters:
 
-   The number of clusters to classify data into.
+   The number of clusters to partition data into.
+   
+:control encodingThreshold:
+
+   The encoding threshold (aka the alpha parameter). When used for feature learning, this can be used to produce sparser output features by setting the least active output dimensions to 0.
 
 :control maxIter:
 
@@ -59,35 +64,35 @@
 
    :arg srcDataSet: A :fluid-obj:`DataSet` containing the data to transform.
 
-   :arg dstDataSet: A :fluid-obj:`DataSet` to contain the new cluster-distance space.
+   :arg dstDataSet: A :fluid-obj:`DataSet` to contain the new cluster-activation space.
 
    :arg action: A function to run when the server responds.
 
-   Given a trained object, return for each item of a provided :fluid-obj:`DataSet` its distance to each cluster as an array, often reffered to as the cluster-distance space.
+   Given a trained object, return for each item of a provided :fluid-obj:`DataSet` its encoded activations to each cluster as an array, often referred to as the cluster-activation space.
 
 :message fitTransform:
 
    :arg srcDataSet: A :fluid-obj:`DataSet` containing the data to fit and transform.
 
-   :arg dstDataSet: A :fluid-obj:`DataSet` to contain the new cluster-distance space.
+   :arg dstDataSet: A :fluid-obj:`DataSet` to contain the new cluster-activation space.
 
    :arg action: A function to run when the server responds
 
-   Run :fluid-obj:`KMeans#*fit` and :fluid-obj:`KMeans#*transform` in a single pass: i.e. train the model on the incoming :fluid-obj:`DataSet` and then return its cluster-distance space in the destination :fluid-obj:`DataSet`
+   Run :fluid-obj:`SKMeans#*fit` and :fluid-obj:`SKMeans#*transform` in a single pass: i.e. train the model on the incoming :fluid-obj:`DataSet` and then return its encoded cluster-activation space in the destination :fluid-obj:`DataSet`
 
 :message transformPoint:
 
    :arg sourceBuffer: A |buffer| containing a data point.
 
-   :arg targetBuffer: A |buffer| to write in the distance to all the cluster centroids.
+   :arg targetBuffer: A |buffer| to write in the activation to all the cluster centroids.
 
    :arg action: A function to run when complete.
 
-   Given a trained object, return the distance of the provided point to each cluster centroid. Both points are handled as |buffer|
+   Given a trained object, return the encoded activation of the provided point to each cluster centroid. Both points are handled as |buffer|
 
 :message getMeans:
 
-   :arg dataSet: A :fluid-obj:`DataSet` of clusers with a mean per column.
+   :arg dataSet: A :fluid-obj:`DataSet` of clusters with a mean per column.
 
    :arg action: A function to run when complete.
 
@@ -95,7 +100,7 @@
 
 :message setMeans:
 
-   :arg dataSet: A :fluid-obj:`DataSet` of clusers with a mean per column.
+   :arg dataSet: A :fluid-obj:`DataSet` of clusters with a mean per column.
 
    :arg action: A function to run when complete.
 
