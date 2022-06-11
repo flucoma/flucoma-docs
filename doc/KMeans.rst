@@ -63,7 +63,7 @@
 
    :arg action: A function to run when the server responds.
 
-   Given a trained object, return for each item of a provided :fluid-obj:`DataSet` its distance to each cluster as an array, often reffered to as the cluster-distance space.
+   Given a trained object, return for each item of a provided :fluid-obj:`DataSet` its distance to each cluster as an array, often referred to as the cluster-distance space.
 
 :message fitTransform:
 
@@ -87,7 +87,7 @@
 
 :message getMeans:
 
-   :arg dataSet: A :fluid-obj:`DataSet` of clusers with a mean per column.
+   :arg dataSet: A :fluid-obj:`DataSet` of clusters with a mean per column.
 
    :arg action: A function to run when complete.
 
@@ -95,7 +95,7 @@
 
 :message setMeans:
 
-   :arg dataSet: A :fluid-obj:`DataSet` of clusers with a mean per column.
+   :arg dataSet: A :fluid-obj:`DataSet` of clusters with a mean per column.
 
    :arg action: A function to run when complete.
 
