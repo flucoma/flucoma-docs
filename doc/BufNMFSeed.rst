@@ -6,7 +6,7 @@
 :description: Find Initial Bases and Activations for BufNMF
 :discussion:
 
-    BufNNDSVD uses Nonnegative Double Singular Value Decomposition which can help decide how to initialise BufNMF, by suggesting how many components to request (and what bases and activations to seed) in order to account for a certain percentage of the variance in a buffer. In general, using this process to seed a BufNMF decomposition should substantially increase the speed with which BufNMF converges and avoid especially poor local minima.
+    BufNMFSeed uses Nonnegative Double Singular Value Decomposition which can help decide how to initialise BufNMF, by suggesting how many components to request (and what bases and activations to seed) in order to account for a certain percentage of the variance in a buffer. In general, using this process to seed a BufNMF decomposition should substantially increase the speed with which BufNMF converges and avoid especially poor local minima.
     
     See http://nimfa.biolab.si/nimfa.methods.seeding.nndsvd.html and https://www.sciencedirect.com/science/article/abs/pii/S0031320307004359 for more info.
 

@@ -11,7 +11,7 @@ code::
 //how many bases do I need to decompose the buffer while accounting for 90% of the variance?
 (
 Routine{
-    FluidBufNNDSVD.process(s, ~src, ~bases, ~activations, coverage: 0.9, method: 1).wait;
+    FluidBufNMFSeed.process(s, ~src, ~bases, ~activations, coverage: 0.9, method: 1).wait;
     "% bases".format(~bases.numChannels).postln;
 }.play;
 )
@@ -19,7 +19,7 @@ Routine{
 //try the same process with less of the variance preserved
 (
 Routine{
-    FluidBufNNDSVD.process(s, ~src, ~bases, ~activations, coverage: 0.5).wait;
+    FluidBufNMFSeed.process(s, ~src, ~bases, ~activations, coverage: 0.5).wait;
     "% bases".format(~bases.numChannels).postln;
 }.play
 )
