@@ -1,4 +1,4 @@
-:digest: Regression with K Nearest Neighbours
+:digest: Regression with K-Nearest Neighbours
 :species: data
 :sc-categories: Regression
 :sc-related: Classes/FluidKNNClassifier, Classes/FluidDataSet
