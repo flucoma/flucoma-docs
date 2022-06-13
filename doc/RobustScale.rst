@@ -35,7 +35,7 @@
 
    Scale a :fluid-obj:`DataSet` into another :fluid-obj:`DataSet`, using the learned statistics from the previous call to :fluid-obj:`RobustScale#fit`
 
- :message inverseTransform:
+:message inverseTransform:
 
     :arg sourceDataSet: The :fluid-obj:`DataSet` to inverse scale
 
@@ -59,7 +59,7 @@
 
    Scale a data point, using the learned statistics from the previous call to :fluid-obj:`RobustScale#fit`
    
- :message inverseTransformPoint:
+:message inverseTransformPoint:
 
     :arg sourceBuffer: A |buffer| with a data in the scaled range
 

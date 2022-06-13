@@ -12,9 +12,13 @@ fork({
 		};
 		0.2.wait;
 	};
+
 },AppClock);
 )
 
+
+// also check me!
+FluidManipulationClient
+
 // for testing individual docs later:
 SCDoc.indexAllDocuments(true);
-
