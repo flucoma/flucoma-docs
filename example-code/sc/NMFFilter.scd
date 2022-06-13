@@ -10,7 +10,7 @@ code::
 )
 
 // Process it:
-FluidBufNMF.processBlocking(s,~drums,resynth:~resynth,bases:~bases,components:~n_components,action:{"done".postln;});
+FluidBufNMF.processBlocking(s,~drums,resynth:~resynth,resynthMode:1,bases:~bases,components:~n_components,action:{"done".postln;});
 
 // Once it is done, let's hear what components it was able to decompose:
 // Play the separated components one by one (with a second of silence in between).
@@ -148,7 +148,7 @@ CODE::
 // what we're going to try to achieve here is to use FluidNMFFilter to separate out the pick from the strings and do fx processing on them separately.
 
 // train only 2 seconds, asking for 10 components
-FluidBufNMF.process(s,~guitar,0,88200,resynth:~resynth, bases:~bases, components:~n_components,fftSize:2048,action:{"done".postln;});
+FluidBufNMF.process(s,~guitar,0,88200,resynth:~resynth, resynthMode:1, bases:~bases, components:~n_components,fftSize:2048,action:{"done".postln;});
 
 // We're going to find the component that has the picking sound by doing a FluidSpectralShape analysis on each of the resynthesized components, then use FluidBufStats to get the median spectral centroid of each component.
 (
