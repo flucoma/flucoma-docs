@@ -70,4 +70,4 @@
 
   :arg action: Run when done
 
-  Given a trained model, transform the data point in ``sourceBuffer`` from being ``numDimensions`` in PCA-space into the original dimensional space and write into ```destBuffer``.
+  Given a trained model, transform the data point in ``sourceBuffer`` from being ``numDimensions`` in PCA-space into the original dimensional space and write into ``destBuffer``.

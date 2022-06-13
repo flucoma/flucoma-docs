@@ -39,6 +39,10 @@
 
    The destination buffer for the loudness descriptors.
 
+:control select:
+
+   An array of `symbols` indicating which analyses to return. The options are `loudness` and `peak`. If nothing is specified, the object will return all the analyses.
+
 :control kWeighting:
 
    A flag to switch the perceptual model of loudness. On by default, removing it makes the algorithm more CPU efficient by reverting to a simple RMS of the frame.
