@@ -76,6 +76,6 @@
    * exactly the same amount of frames as ``source``
    * all values must be positive (anything lower than 0 will be rejected)
 
-:control action:
+:control select:
 
-   A Function to be evaluated once the offline process has finished and all the |buffer| variables have been updated on the client side. The function will be passed ``stats`` as an argument.
+   An array of ``symbols`` indicating which statistics to return. The options are ``mean``, ``std``, ``skewness``, ``kurtosis``, ``low``, ``mid``, and ``high``. If nothing is specified, the object will return all the statistics. The statistics will always appear in their normal order, this argument just allows for a selection of them to be returned. Reordering the options in this argument will not reorder how the statistics are returned.

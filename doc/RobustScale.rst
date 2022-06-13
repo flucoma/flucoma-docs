@@ -25,8 +25,6 @@
 
    :arg dataSet: The :fluid-obj:`DataSet` to determine the statistics of.
 
-   :arg action: A function to run when processing is complete
-
    Compute the scaling factors from a :fluid-obj:`DataSet` for later.
 
 :message transform:
@@ -35,17 +33,13 @@
 
    :arg destDataSet: The :fluid-obj:`DataSet` to write the scaled data to.
 
-   :arg action: A function to run when processing is complete
-
    Scale a :fluid-obj:`DataSet` into another :fluid-obj:`DataSet`, using the learned statistics from the previous call to :fluid-obj:`RobustScale#fit`
 
- :message inverseTransform:
+:message inverseTransform:
 
     :arg sourceDataSet: The :fluid-obj:`DataSet` to inverse scale
 
     :arg destDataSet: The :fluid-obj:`DataSet` to write the scaled data to.
-
-    :arg action: A function to run when processing is complete
 
     Inverse scale a :fluid-obj:`DataSet` into another :fluid-obj:`DataSet`: going from the range of the scaled data back to the range of the data that was used in the previous call to :fluid-obj:`RobustScale#fit`
       
@@ -55,8 +49,6 @@
 
    :arg destDataSet: The :fluid-obj:`DataSet` to write the scaled data to.
 
-   :arg action: A function to run when processing is complete
-
    Scale a :fluid-obj:`DataSet`
 
 :message transformPoint:
@@ -65,16 +57,12 @@
 
    :arg destBuffer: A |buffer| to write the scaled values to
 
-   :arg action: A function to run when processing is complete
-
    Scale a data point, using the learned statistics from the previous call to :fluid-obj:`RobustScale#fit`
    
- :message inverseTransformPoint:
+:message inverseTransformPoint:
 
     :arg sourceBuffer: A |buffer| with a data in the scaled range
 
     :arg destBuffer: A |buffer| to write the un-scaled values in the original range to
-
-    :arg action: A function to run when processing is complete
 
     Inverse scale a data point, going from the range of the scaled data back to the range of the DataSet that was used for ``fit``.

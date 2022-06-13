@@ -1,9 +1,9 @@
-:digest: Classification with K Nearest Neighbours
+:digest: Classification with K-Nearest Neighbours
 :species: data
 :sc-categories: Classification, KNN
-:sc-related: Classes/FluidKNNRegressor, Classes/FluidDataSet, Classes/FluidLabelSet, Classes/MLPClassifier
+:sc-related: Classes/FluidKNNRegressor, Classes/FluidDataSet, Classes/FluidLabelSet, Classes/FluidMLPClassifier
 :see-also: 
-:description: A nearest-neighbour classifier using a :fluid-obj:`KDTree` .
+:description: A nearest neighbour classifier using a :fluid-obj:`KDTree` .
 
 :discussion:
   
@@ -31,9 +31,9 @@
 
 :message predict:
 
-   :arg dataSet: :fluid-obj:`DataSet` of data points to predict labels for
+   :arg dataSet: A :fluid-obj:`DataSet` of data points to predict labels for
 
-   :arg labelSet: :fluid-obj:`LabelSet` to write the predicted labels into
+   :arg labelSet: A :fluid-obj:`LabelSet` to write the predicted labels into
 
    :arg action: Run when done
 
@@ -41,8 +41,8 @@
 
 :message predictPoint:
 
-   :arg buffer: A data point
+   :arg buffer: A data point stored in a |buffer|
 
    :arg action: Run when done, passes predicted label as argument
 
-   Given a fitted model, predict a label for a data point in ``buffer`` and return to the caller
+   Given a fitted model, predict a label for a data point in |buffer| and return to the caller
