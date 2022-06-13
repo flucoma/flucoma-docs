@@ -14,6 +14,10 @@
 
    The number of dimensions (principal components) to keep after a ``transform``, using PCA for dimensionality reduction. 
 
+:control whiten:
+
+   A flag (0 or 1) indicating whether or not to perform "whitening" on the output of PCA. For more information on whitening, visit https://learn.flucoma.org/reference/pca
+
 :message fit:
 
    :arg dataSet: A :fluid-obj:`DataSet` to analyse
