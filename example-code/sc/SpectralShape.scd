@@ -235,7 +235,7 @@ b = Buffer.read(s,FluidFilesPath("Nicol-LoopE-M.wav"));
 			loudness[0].dbamp * 2
 		)
 		]
-}.scope;
+}.play;
 )
 
 //lincentroid version for comparison
@@ -254,6 +254,6 @@ b = Buffer.read(s,FluidFilesPath("Nicol-LoopE-M.wav"));
 			loudness[0].dbamp * 2
 	))
 		]
-}.scope;
+}.play;
 )
 ::

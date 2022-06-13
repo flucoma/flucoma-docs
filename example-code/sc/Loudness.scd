@@ -50,7 +50,7 @@ x.free
 x = {
 	arg freq=220, type = 1, noise = 0;
 	var source = PinkNoise.ar(noise) + Select.ar(type,[DC.ar(),SinOsc.ar(freq,mul:0.1), VarSaw.ar(freq,mul:0.1), Saw.ar(freq,0.1), Pulse.ar(freq,mul:0.1)]);
-	Out.kr(b, FluidLoudness.kr(source,windowSize:17640,hopSize:4410,maxwindowSize:17640));
+	Out.kr(b, FluidLoudness.kr(source,windowSize:17640,hopSize:4410,maxWindowSize:17640));
 	source.dup;
 }.play;
 )
