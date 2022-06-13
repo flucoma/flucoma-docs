@@ -34,7 +34,7 @@
 
    :arg buffer: A |buffer| containing a data point to match against. The number of frames in the buffer must match the dimensionality of the :fluid-obj:`DataSet` the tree was fitted to.
 
-   :arg action: A function that will run when the query returns, whose argument is an array of point identifiers from the tree's :fluid-obj:`DataSet`. The returned identifiers are always type symbol, therefore would need to be converted to a number type if intended to be used in that way.
+   :arg k: The number of nearest neighbours to return. The identifiers will be sorted, beginning with the nearest.
 
    Returns the identifiers of the ``k`` points nearest to the one passed.
 
