@@ -38,13 +38,13 @@ FluidBufTransients.processBlocking(s,~src,transients:~transients,residual:~resid
 strong::Comparing the source to the outputs::
 code::
 
-~src = Buffer.read(s,FluidFilesPath("Tremblay-AaS-SynthTwoVoices-M.wav"));
+~src = Buffer.read(s,FluidFilesPath("Tremblay-AaS-SynthTwoVoices-M.wav"),0,44100 * 2);
 
 (
 ~transients = Buffer(s);
 ~residual = Buffer(s);
 ~compare = Buffer(s);
-FluidBufTransients.processBlocking(s,~src,transients:~transients,residual:~residual,order:18,skew:10,threshFwd:1.1);
+FluidBufTransients.processBlocking(s,~src,transients:~transients,residual:~residual,order:30,threshFwd:1);
 FluidBufCompose.processBlocking(s,~src,destination:~compare,destStartChan:0);
 FluidBufCompose.processBlocking(s,~transients,destination:~compare,destStartChan:1);
 FluidBufCompose.processBlocking(s,~residual,destination:~compare,destStartChan:2);
