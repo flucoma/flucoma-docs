@@ -90,6 +90,6 @@
 
    How large can the FFT be, by allocating memory at instantiation time. This cannot be modulated.
 
-:control action:
+:control select:
 
-   A Function to be evaluated once the offline process has finished and all Buffer's instance variables have been updated on the client side. The function will be passed [features] as an argument.
+   An array of ``symbols`` indicating which analyses to return. The options are ``centroid``, ``spread``, ``skewness``, ``kurtosis``, ``rolloff``, ``flatness``, and ``crest``. If nothing is specified, the object will return all the analyses. The analyses will always appear in their normal order, this argument just allows for a selection of them to be returned. Reordering the options in this argument will not reorder how the analyses are returned.

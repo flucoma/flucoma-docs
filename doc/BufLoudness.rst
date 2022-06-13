@@ -41,7 +41,7 @@
 
 :control select:
 
-   An array of `symbols` indicating which analyses to return. The options are `loudness` and `peak`. If nothing is specified, the object will return all the analyses.
+   An array of ``symbols`` indicating which analyses to return. The options are ``loudness`` and ``peak``. If nothing is specified, the object will return all the analyses. The analyses will always appear in their normal order, this argument just allows for a selection of them to be returned. Reordering the options in this argument will not reorder how the analyses are returned.
 
 :control kWeighting:
 

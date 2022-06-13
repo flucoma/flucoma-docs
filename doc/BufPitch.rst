@@ -24,6 +24,10 @@
 
    The index of the buffer to use as the source material to be pitch-tracked. The different channels of multichannel buffers will be processing sequentially.
 
+:control select:
+
+   An array of ``symbols`` indicating which analyses to return. The options are ``pitch`` and ``confidence``. If nothing is specified, the object will return all the analyses. The analyses will always appear in their normal order, this argument just allows for a selection of them to be returned. Reordering the options in this argument will not reorder how the analyses are returned.
+
 :control startFrame:
 
    Where in ``source`` to start the analysis, in samples. The default is 0.
