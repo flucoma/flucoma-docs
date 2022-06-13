@@ -6,7 +6,7 @@
 :description: Magnitudes for a number of perceptually-evenly spaced bands.
 :discussion: 
 
-   :fluid-obj:`MelBands` returns a Mel-Frequency Spectrum comprised of the user-defined ``numBands``. The Mel-Frequency Spectrum is a histogram of FFT bins bundled according their relationship to the Mel scale (https://en.wikipedia.org/wiki/Mel_scale) which represents frequency space logarithmically, mimicking how humans perceive pitch distance. The name "Mel" derives from the word "melody". The Hz-to-Mel conversion used by :fluid-obj:`MelBands` is ``mel = 1127.01048 * log(hz / 700.0 + 1.0)``. This implementation allows to select the range and number of bands dynamically.
+   :fluid-obj:`MelBands` returns a Mel-Frequency Spectrum comprised of the user-defined ``numBands``. The Mel-Frequency Spectrum is a histogram of FFT bins bundled according their relationship to the Mel scale ( https://en.wikipedia.org/wiki/Mel_scale ) which represents frequency space logarithmically, mimicking how humans perceive pitch distance. The name "Mel" derives from the word "melody". The Hz-to-Mel conversion used by :fluid-obj:`MelBands` is ``mel = 1127.01048 * log(hz / 700.0 + 1.0)``. This implementation allows to select the range and number of bands dynamically.
 
    When using a high value for ``numBands``, you may end up with empty channels (filled with zeros) in the MelBands output. This is because there is not enough information in the FFT analysis to properly calculate values for every MelBand. Increasing the ``fftSize`` will ensure you have values for all the MelBands.
    

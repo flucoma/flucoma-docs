@@ -1,4 +1,3 @@
-STRONG::A didactic example::
 CODE::
 
 // =============== decompose some sounds ===============
@@ -16,7 +15,7 @@ CODE::
 ~n_components = 2;
 
 // process it:
-FluidBufNMF.processBlocking(s,~drums,resynth:~resynth,components:~n_components,action:{"done".postln;});
+FluidBufNMF.processBlocking(s,~drums,resynth:~resynth,components:~n_components,resynthMode:1,action:{"done".postln;});
 
 // once it is done, play the separated components one by one (with a second of silence in between)
 (
@@ -37,7 +36,7 @@ fork{
 
 ~n_components = 3;
 // process it:
-FluidBufNMF.processBlocking(s,~drums,resynth:~resynth,components:~n_components,action:{"done".postln;});
+FluidBufNMF.processBlocking(s,~drums,resynth:~resynth,resynthMode:1,components:~n_components,action:{"done".postln;});
 
 (
 fork{
@@ -64,16 +63,16 @@ fork{
 ~n_components = 2; // return to 2 components for this example
 
 // and we'll explicitly pass these into the process
-FluidBufNMF.processBlocking(s,~drums,bases:~bases,activations:~activations,resynth:~resynth,components:~n_components,action:{"done".postln;});
+FluidBufNMF.processBlocking(s,~drums,bases:~bases,activations:~activations,resynth:~resynth,resynthMode:1,components:~n_components,action:{"done".postln;});
 
 // now we can plot them (because this process starts from a stochastic state, your results may vary!):
-FluidWaveform(~drums,featureBuffer:~activations,bounds:Rect(0,0,1200,300));
+FluidWaveform(~drums,featuresBuffer:~activations,bounds:Rect(0,0,1200,300));
 // the bases are a like a spectral template that FluidBufNMF has found in the source buffer
 // in one you should see one spectrum that resembles a snare spectrum (the resonant tone of the snare
 // in the mid range) and another that resembles the kick + hihat we heard earlier (a large peak in the very
 // low register and some shimmery higher stuff)
 
-FluidWaveform(featureBuffer:~bases,bounds:Rect(0,0,1200,300));
+FluidWaveform(featuresBuffer:~bases,bounds:Rect(0,0,1200,300));
 // the activations are the corresponding loudness envelope of each base above. It should like an amplitude
 // envelope follower of the drum hits in the corresponding bases.
 
@@ -114,7 +113,7 @@ FluidWaveform(featureBuffer:~bases,bounds:Rect(0,0,1200,300));
 (
 {
 	var activation = PlayBuf.ar(2,~activations,BufRateScale.ir(~activations),doneAction:2);
-	var sig = WhiteNoise.ar(0.dbamp) * activation;
+	var sig = PinkNoise.ar(0.dbamp) * activation;
 	sig;
 }.play;
 )
@@ -130,11 +129,11 @@ FluidWaveform(featureBuffer:~bases,bounds:Rect(0,0,1200,300));
 // somewhat resembles both the spectral template and loudness envelope of the bases of the original
 // (of course it's also good to note that the combination of the *actual* bases and activations is how
 // FluidBufNMF creates the channels in the resynth buffer which will sound much better than this
-// filtered WhiteNoise version)
+// filtered PinkNoise version)
 (
 {
 	var activation = PlayBuf.ar(2,~activations,BufRateScale.ir(~activations),doneAction:2);
-	var sig = WhiteNoise.ar(0.dbamp);
+	var sig = PinkNoise.ar(0.dbamp);
 	sig = FluidNMFFilter.ar(sig,~bases,2) * activation;
 	sig;
 }.play;
@@ -164,7 +163,7 @@ b.play
 // train using the first 2 seconds of the sound file
 (
 Routine {
-	FluidBufNMF.process(s,b,0,44100*5,0,1, ~originalNMF, ~bases, components:10).wait;
+	FluidBufNMF.processBlocking(s,b,0,44100*5,0,1, ~originalNMF, resynthMode:1, bases:~bases, components:10).wait;
 	~originalNMF.query;
 }.play;
 )
@@ -173,6 +172,7 @@ Routine {
 {Splay.ar(PlayBuf.ar(10, ~originalNMF))}.play
 
 // plot the bases
+~bases.query
 ~bases.plot
 
 // find the component that has the picking sound by checking the median spectral centroid
@@ -204,12 +204,13 @@ z = (0..9);
 z.postln;
 z.do({|chan| FluidBufCompose.process(s, ~bases, startChan:chan, numChans: 1, destStartChan: 1, destination: ~trainedBases, destGain:1)});
 )
+
 ~trainedBases.plot
 
 //process the whole file, splitting it with the 2 trained bases
 (
 Routine{
-	FluidBufNMF.process(s, b, resynth: ~sortedNMF, bases: ~trainedBases, basesMode: 2, components:2).wait;
+	FluidBufNMF.process(s, b, resynth: ~sortedNMF, resynthMode:1, bases: ~trainedBases, basesMode: 2, components:2).wait;
 	~originalNMF.query;
 }.play;
 )
@@ -267,7 +268,7 @@ e.query
 (
 // use the seeding basis, without updating
 Routine {
-	FluidBufNMF.process(s, d, resynth:f, bases: e, basesMode: 2, activations:g, components:3).wait;
+	FluidBufNMF.process(s, d, resynth:f, resynthMode:1, bases: e, basesMode: 2, activations:g, components:3).wait;
 	e.query;
 	f.query;
 	g.query;
@@ -286,7 +287,7 @@ g.plot;
 (
 // use the seeding bases, with updating this time
 Routine {
-	FluidBufNMF.process(s, d, resynth:f, bases: e, basesMode: 1, activations:g, components:3).wait;
+	FluidBufNMF.process(s, d, resynth:f, resynthMode:1, bases: e, basesMode: 1, activations:g, components:3).wait;
 	e.query;
 	f.query;
 	g.query;
