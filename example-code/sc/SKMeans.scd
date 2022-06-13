@@ -59,7 +59,7 @@ w.refresh;
 w.front;
 )
 
-// single point transform on arbitrary value
+// single point query on arbitrary value
 ~inbuf = Buffer.loadCollection(s,0.5.dup);
 ~skmeans.predictPoint(~inbuf,{|x|x.postln;});
 ::
@@ -95,14 +95,14 @@ b = Buffer.sendCollection(s,[0.5,0.5])
 c = Buffer(s)
 
 // get the distance of our given point (b) to each cluster, thus giving us 4 dimensions in our cluster-distance space
-~skmeans.transformPoint(b,c,{|x|x.query;x.getn(0,x.numFrames,{|y|y.postln})})
+~skmeans.encodePoint(b,c,{|x|x.query;x.getn(0,x.numFrames,{|y|y.postln})})
 
-// we can also transform a full dataset
+// we can also encode a full dataset
 ~srcDS = FluidDataSet(s)
 ~cdspace = FluidDataSet(s)
 // make a new dataset with 4 points
 ~srcDS.load(Dictionary.newFrom([\cols, 2, \data, Dictionary.newFrom([\pp, [0.5,0.5], \np, [-0.5,0.5], \pn, [0.5,-0.5], \nn, [-0.5,-0.5]])]));
-~skmeans.transform(~srcDS, ~cdspace, {~cdspace.print})
+~skmeans.encode(~srcDS, ~cdspace, {~cdspace.print})
 ::
 
 subsection:: Queries in a Synth

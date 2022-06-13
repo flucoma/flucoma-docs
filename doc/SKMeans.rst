@@ -60,9 +60,9 @@
 
    Given a trained object, return the cluster ID for a data point in a |buffer|
 
-:message transform:
+:message encode:
 
-   :arg srcDataSet: A :fluid-obj:`DataSet` containing the data to transform.
+   :arg srcDataSet: A :fluid-obj:`DataSet` containing the data to encode.
 
    :arg dstDataSet: A :fluid-obj:`DataSet` to contain the new cluster-activation space.
 
@@ -70,17 +70,17 @@
 
    Given a trained object, return for each item of a provided :fluid-obj:`DataSet` its encoded activations to each cluster as an array, often referred to as the cluster-activation space.
 
-:message fitTransform:
+:message fitEncode:
 
-   :arg srcDataSet: A :fluid-obj:`DataSet` containing the data to fit and transform.
+   :arg srcDataSet: A :fluid-obj:`DataSet` containing the data to fit and encode.
 
    :arg dstDataSet: A :fluid-obj:`DataSet` to contain the new cluster-activation space.
 
    :arg action: A function to run when the server responds
 
-   Run :fluid-obj:`SKMeans#*fit` and :fluid-obj:`SKMeans#*transform` in a single pass: i.e. train the model on the incoming :fluid-obj:`DataSet` and then return its encoded cluster-activation space in the destination :fluid-obj:`DataSet`
+   Run :fluid-obj:`SKMeans#*fit` and :fluid-obj:`SKMeans#*encode` in a single pass: i.e. train the model on the incoming :fluid-obj:`DataSet` and then return its encoded cluster-activation space in the destination :fluid-obj:`DataSet`
 
-:message transformPoint:
+:message encodePoint:
 
    :arg sourceBuffer: A |buffer| containing a data point.
 
