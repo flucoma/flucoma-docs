@@ -17,6 +17,10 @@
 
    The number of neighbours to return.
 
+:control radius:
+
+   The maximum distance (in high dimensional space) that a returned point can be. Any points beyond ``radius`` will not be returned (even if they're within the nearest ``numNeighbours`` points). When ``radius`` is 0, it is no longer a constraint and the distance of a nearest neighbour is not taken into account.
+
 :control dataSet:
 
    An optional :fluid-obj:`DataSet` from which data points will be returned for realtime queries. This does not need to be the same DataSet that the tree was fitted against, but does need to have matching labels. Using this mechanism, we have a way to, e.g. associate labels with segments of playback buffers, without needing pass strings around.
