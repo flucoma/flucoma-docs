@@ -2,7 +2,7 @@
 :species: transformer[0]
 :sc-categories: FluidCorpusManipulation
 :sc-related: Classes/FluidAudioTransport, Classes/FluidBufNMFCross
-:see-also: BufNMF, NMFCross, AudioTransport, BufAudioTransport 
+:see-also: BufNMF, BufNMFCross, AudioTransport, BufAudioTransport 
 :description: 
    Perform cross-synthesis using Nonnegative Matrix Factorization (NMF) and Optimal Transport (OT). 
 
