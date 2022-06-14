@@ -80,3 +80,7 @@
 :control highPassFreq:
 
   The frequency of the fourth-order Linkwitz-Riley high-pass filter (https://en.wikipedia.org/wiki/Linkwitz%E2%80%93Riley_filter) applied to the signal signal to minimise low frequency intermodulation with very short ramp lengths. A frequency of 0 bypasses the filter.
+
+:control maxSize:
+
+  The amount of memory allocated at instantiation. It limits how other parameters can be modulated: ``minLengthBelow``, ``lookAhead``, and ``minLengthAbove + lookBack`` should not exceed ``maxSize``.
