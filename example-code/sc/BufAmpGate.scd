@@ -117,5 +117,57 @@ FluidBufAmpGate.processBlocking(s,~drum_hit,indices:~indices,rampUp:441,rampDown
 FluidWaveform(~drum_hit,~indices);
 )
 
+::
+strong::Basic Tests::
+code::
 
+(
+b = Buffer.sendCollection(s, Array.fill(44100,{|i| sin(i*pi/ (44100/640)) * (sin(i*pi/ 22050)).abs}));
+c = Buffer.new(s);
+)
+
+//basic tests: threshold sanity
+FluidBufAmpGate.process(s, b, indices:c, rampUp:5, rampDown:25, onThreshold:-12, offThreshold: -12)
+c.query
+c.getn(0,c.numFrames*2,{|item|item.postln;})
+
+//basic tests: threshold hysteresis
+FluidBufAmpGate.process(s, b, indices:c, rampUp:5, rampDown:25, onThreshold:-12, offThreshold: -16)
+c.query
+c.getn(0,c.numFrames*2,{|item|item.postln;})
+
+//basic tests: threshold min slice
+FluidBufAmpGate.process(s, b, indices:c, rampUp:5, rampDown:25, onThreshold:-12, offThreshold: -12, minSliceLength:441)
+c.query
+c.getn(0,c.numFrames*2,{|item|item.postln;})
+
+//basic tests: threshold min silence
+FluidBufAmpGate.process(s, b, indices:c, rampUp:5, rampDown:25, onThreshold:-12, offThreshold: -12, minSilenceLength:441)
+c.query
+c.getn(0,c.numFrames*2,{|item|item.postln;})
+
+//mid tests: threshold time hysteresis on
+FluidBufAmpGate.process(s, b, indices:c, rampUp:5, rampDown:25, onThreshold:-12, offThreshold: -12, minLengthAbove:441)
+c.query
+c.getn(0,c.numFrames*2,{|item|item.postln;})
+
+//mid tests: threshold time hysteresis off
+FluidBufAmpGate.process(s, b, indices:c, rampUp:5, rampDown:25, onThreshold:-12, offThreshold: -12, minLengthBelow:441)
+c.query
+c.getn(0,c.numFrames*2,{|item|item.postln;})
+
+//mid tests: threshold with lookBack
+FluidBufAmpGate.process(s, b, indices:c, rampUp:5, rampDown:25, onThreshold:-12, offThreshold: -12, lookBack:441)
+c.query
+c.getn(0,c.numFrames*2,{|item|item.postln;})
+
+//mid tests: threshold with lookAhead
+FluidBufAmpGate.process(s, b, indices:c, rampUp:5, rampDown:25, onThreshold:-12, offThreshold: -12, lookAhead:441)
+c.query
+c.getn(0,c.numFrames*2,{|item|item.postln;})
+
+//mid tests: threshold with asymetrical lookBack and lookAhead
+FluidBufAmpGate.process(s, b, indices:c, rampUp:5, rampDown:25, onThreshold:-12, offThreshold: -12, lookBack:221, lookAhead:441)
+c.query
+c.getn(0,c.numFrames*2,{|item|item.postln;})
 ::
