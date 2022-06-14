@@ -40,6 +40,16 @@
 
    Normalize a :fluid-obj:`DataSet` and copy the results to :fluid-obj:`DataSet`.
 
+:message inverseTransform:
+
+   :arg sourceDataSet: The :fluid-obj:`DataSet` to of data to transform from the normalized scale to the original scale.
+
+   :arg destDataSet: The :fluid-obj:`DataSet` to write the transformed data to.
+
+   :arg action: A function to run when processing is complete
+
+   Un-normalize :fluid-obj:`DataSet`, using the learned statistics from a previous call to :fluid-obj:`Normalize#fit`.
+
 :message transformPoint:
 
    :arg sourceBuffer: A |buffer| with the new data point
@@ -47,3 +57,13 @@
    :arg destBuffer: A |buffer| to contain the normalized value
 
    Normalize a single data point, using the learned extrema from a previous call to :fluid-obj:`Normalize#fit`
+
+:message inverseTransformPoint:
+
+  :arg sourceBuffer: A |buffer| with the data in the normalized range
+
+  :arg destBuffer: A |buffer| to write the output of the transformation to
+
+  :arg action: A function to run when processing is complete
+
+  Un-normalize a data point, using the learned statistics from a previous call to :fluid-obj:`Normalize#fit`

@@ -1,16 +1,16 @@
-:digest: Amplitude-based Gating Slicer
+:digest: Gate Detection on a Signal
 :species: slicer
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulationToolkit
 :see-also: BufAmpGate, AmpSlice, OnsetSlice, NoveltySlice, TransientSlice
-:description: This class implements an amplitude-based slicer, with various customisable options and conditions to detect absolute amplitude changes as onsets and offsets.
+:description: Absolute amplitude threshold gate detector on a real-time signal
+
 :discussion: 
-   FluidAmpSlice is based on an envelop follower on a highpassed version of the signal, which is then going through a Schmidt trigger and state-aware time contraints. The example code below is unfolding the various possibilites in order of complexity.
+   AmpGate outputs a audio-rate, single-channel signal that is either 0, indicating the gate is closed, or 1, indicating the gate is open. The gate detects an onset (opens) when the internal envelope follower (controlled by ``rampUp`` and ``rampDown``) goes above a specified ``onThreshold`` (in dB) for at least ``minLengthAbove`` samples. The gate will stay open until the envelope follower goes below ``offThreshold`` (in dB) for at least ``minLengthBelow`` samples, which triggers an offset.
 
-   The process will return an audio steam with square envelopes around detected slices the different slices, where 1s means in slice and 0s mean in silence.
+   The latency between the input and the output is **max(minLengthAbove + lookBack, max(minLengthBelow,lookAhead))**.
 
-:output: An audio stream with square envelopes around the slices. The latency between the input and the output is **max(minLengthAbove + lookBack, max(minLengthBelow,lookAhead))**.
-
+:output: An audio stream of gate information, always either 1, indicating the gate is open, or 0, indicating the gate is closed.
 
 :control rampUp:
 
@@ -22,41 +22,40 @@
 
 :control onThreshold:
 
-   The threshold in dB of the envelope follower to trigger an onset, aka to go ON when in OFF state.
+   The threshold in dB of the envelope follower to trigger an onset: go from 0 (closed) to 1 (open).
 
 :control offThreshold:
 
-   The threshold in dB of the envelope follower to trigger an offset, , aka to go ON when in OFF state.
+   The threshold in dB of the envelope follower to trigger an offset: go from 1 (open) to 0 (closed).
 
 :control minSliceLength:
 
-   The length in samples that the Slice will stay ON. Changes of states during that period will be ignored.
+   The minimum length in samples for which the gate will stay open. Changes of states during this period after an onset will be ignored.
 
 :control minSilenceLength:
 
-   The length in samples that the Slice will stay OFF. Changes of states during that period will be ignored.
+   The minimum length in samples for which the gate will stay closed. Changes of states during that period after an offset will be ignored.
 
 :control minLengthAbove:
 
-   The length in samples that the envelope have to be above the threshold to consider it a valid transition to ON. The Slice will start at the first sample when the condition is met. Therefore, this affects the latency.
+   The length in samples that the envelope must be above the threshold to consider it a valid transition to 1. The gate will change to 1 at the first sample when the condition is met. Therefore, this affects the latency (see latency equation in the description).
 
 :control minLengthBelow:
 
-   The length in samples that the envelope have to be below the threshold to consider it a valid transition to OFF. The Slice will end at the first sample when the condition is met. Therefore, this affects the latency.
+   The length in samples that the envelope must be below the threshold to consider it a valid transition to 0. The gate will change to 0 at the first sample when the condition is met. Therefore, this affects the latency (see latency equation in the description).
 
 :control lookBack:
 
-   The length of the buffer kept before an onset to allow the algorithm, once a new Slice is detected, to go back in time (up to that many samples) to find the minimum amplitude as the Slice onset point. This affects the latency of the algorithm.
+   When an onset is detected, the algorithm will look in the recent past (via an internal recorded buffer of this length in samples) for a minimum in the envelope follower to identify as the onset point. This affects the latency of the algorithm (see latency equation in the description).
 
 :control lookAhead:
 
-   The length of the buffer kept after an offset to allow the algorithm, once the Slice is considered finished, to wait further in time (up to that many samples) to find a minimum amplitude as the Slice offset point. This affects the latency of the algorithm.
-
+   When an offset is detected, the algorithm will wait this duration (in samples) to find a minimum in the envelope follower to identify as the offset point. This affects the latency of the algorithm (see latency equation in the description).
+   
 :control highPassFreq:
 
-   The frequency of the fourth-order Linkwitz-Riley high-pass filter (https://en.wikipedia.org/wiki/Linkwitz%E2%80%93Riley_filter). This is done first on the signal to minimise low frequency intermodulation with very fast ramp lengths. A frequency of 0 bypasses the filter.
+   The frequency of the fourth-order Linkwitz-Riley high-pass filter (https://en.wikipedia.org/wiki/Linkwitz%E2%80%93Riley_filter) applied to the input signal to minimise low frequency intermodulation with very short ramp lengths. A frequency of 0 bypasses the filter.
 
 :control maxSize:
 
-   How large can the buffer be for time-critical conditions, by allocating memory at instantiation time. This cannot be modulated.
-
+   The size of the buffer to allocate at instantiation time for keeping track of the time-critical conditions (``minSliceLength``, ``minSilenceLength``, ``minLengthAbove``, ``minLengthBelow``, ``lookBack``, and ``lookAhead``). This cannot be modulated.

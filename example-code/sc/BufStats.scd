@@ -137,7 +137,7 @@ FluidBufStats.processBlocking(s,~pitch_analysis,stats:~stats,numChans:1);
 FluidBufCompose.processBlocking(s,~pitch_analysis,startChan:1,numChans:1,destination:~conf);
 FluidBufStats.processBlocking(s,~pitch_analysis,stats:~stats,weights:~conf);
 {
-	var sig = SinOsc.ar(BufRd.kr(1,~stats,0),0,-20.dbamp);
+	var sig = SinOsc.ar(BufRd.kr(2,~stats,0)[0],0,-20.dbamp);
 	var srcsig = PlayBuf.ar(1,~src,BufRateScale.ir(~src));
 	var env = EnvGen.kr(Env([0,1,1,0],[0.03,~src.duration-0.06,0.03]),doneAction:2);
 	sig = sig + srcsig;
@@ -152,7 +152,7 @@ FluidBufStats.processBlocking(s,~pitch_analysis,stats:~stats,weights:~conf);
 FluidBufThresh.processBlocking(s,~conf,destination:~threshed,threshold:0.97);
 FluidBufStats.processBlocking(s,~pitch_analysis,stats:~stats,weights:~threshed);
 {
-	var sig = SinOsc.ar(BufRd.kr(1,~stats,0),0,-20.dbamp);
+	var sig = SinOsc.ar(BufRd.kr(2,~stats,0)[0],0,-20.dbamp);
 	var srcsig = PlayBuf.ar(1,~src,BufRateScale.ir(~src));
 	var env = EnvGen.kr(Env([0,1,1,0],[0.03,~src.duration-0.06,0.03]),doneAction:2);
 	sig = sig + srcsig;

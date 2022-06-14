@@ -2,7 +2,7 @@
 :species: transformer[0]
 :sc-categories: FluidCorpusManipulation
 :sc-related: Classes/FluidAudioTransport, Classes/FluidBufNMFCross
-:see-also: BufNMF, NMFCross, AudioTransport, BufAudioTransport 
+:see-also: BufNMF, BufNMFCross, AudioTransport, BufAudioTransport 
 :description: 
    Perform cross-synthesis using Nonnegative Matrix Factorization (NMF) and Optimal Transport (OT). 
 
@@ -25,7 +25,7 @@
 
    If set to ``1`` the algorithm will attempt to optimally match which NMF basis components from source and target best match each other, and will use this mapping as its basis for interpolation.
 
-:control interp:
+:control interpolation:
 
    Set the relative contributions of ``source`` and ``target`` between 0 and 1.
 

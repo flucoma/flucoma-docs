@@ -1,7 +1,7 @@
 :digest: Classification with K-Nearest Neighbours
 :species: data
 :sc-categories: Classification, KNN
-:sc-related: Classes/FluidKNNRegressor, Classes/FluidDataSet, Classes/FluidLabelSet, Classes/MLPClassifier
+:sc-related: Classes/FluidKNNRegressor, Classes/FluidDataSet, Classes/FluidLabelSet, Classes/FluidMLPClassifier
 :see-also: 
 :description: A nearest neighbour classifier using a :fluid-obj:`KDTree` .
 
