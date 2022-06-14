@@ -30,7 +30,7 @@ The output paths for the docs default to `build/<host>_ref` but can be overridde
 ### Python Herding
 On platforms with multiple Pythons installed (like Macs), CMake can sometimes need some heavy hints in order to avoid settling on system Python. If you get error messages about missing packages, it is likely that CMake has found the 'wrong' one. 
 
-For recent versions of CMake (>= 3.15?), adding `-DPYTHON_EXECUTABLE=<path to your python of choice>` is a blunt instrument, but normally works. You can find the path via `which python` in the terminal, if needed. Considerably more options can be found in the [documentation for CMake's `find_python` module](https://cmake.org/cmake/help/latest/module/FindPython.html). 
+For recent versions of CMake (>= 3.15?), adding `-DPython_EXECUTABLE=<path to your python of choice>` is a blunt instrument, but normally works. You can find the path via `which python` in the terminal, if needed. Considerably more options can be found in the [documentation for CMake's `find_python` module](https://cmake.org/cmake/help/latest/module/FindPython.html). 
 
 ## Documentation 
 

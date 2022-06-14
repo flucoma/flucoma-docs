@@ -3,16 +3,17 @@
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulationToolkit, Guides/FluidBufMultiThreading, Classes/FluidBufMelBands
 :see-also: 
-:description: 
+:description: A classic timbral spectral descriptor, the Mel-Frequency Cepstral Coefficients (MFCCs).
+:discussion:
     
-  MFCC stands for Mel-Frequency Cepstral Coefficients ("cepstral" is pronounced like "kepstral"). This analysis is often used for timbral description and timbral comparison. It compresses the overall spectrum into a smaller number of coefficients that, when taken together, describe the general contour the the spectrum.
+   MFCC stands for Mel-Frequency Cepstral Coefficients ("cepstral" is pronounced like "kepstral"). This analysis is often used for timbral description and timbral comparison. It compresses the overall spectrum into a smaller number of coefficients that, when taken together, describe the general contour the the spectrum.
 
-  The MFCC values are derived by first computing a mel-frequency spectrum, just as in :fluid-obj:`MelBands`. ``numCoeffs`` coefficients are then calculated by using that mel-frequency spectrum as input to the discrete cosine transform. This means that the shape of the mel-frequency spectrum is compared to a number of cosine wave shapes (different cosines shapes created from different different frequencies). Each MFCC value (i.e., "coefficient") represents how similar the mel-frequency spectrum is to one of these cosine shapes. 
+   The MFCC values are derived by first computing a mel-frequency spectrum, just as in :fluid-obj:`MelBands`. ``numCoeffs`` coefficients are then calculated by using that mel-frequency spectrum as input to the discrete cosine transform. This means that the shape of the mel-frequency spectrum is compared to a number of cosine wave shapes (different cosines shapes created from different different frequencies). Each MFCC value (i.e., "coefficient") represents how similar the mel-frequency spectrum is to one of these cosine shapes. 
 
-  Other that the 0th coefficient, MFCCs are unchanged by differences in the overall energy of the spectrum (which relates to how we perceive loudness). This means that timbres with similar spectral contours, but different volumes, will still have similar MFCC values, other than MFCC 0. To remove any indication of loudness but keep the information about timbre, we can ignore MFCC 0 by setting the parameter ``startCoeff`` to 1.
+   Other that the 0th coefficient, MFCCs are unchanged by differences in the overall energy of the spectrum (which relates to how we perceive loudness). This means that timbres with similar spectral contours, but different volumes, will still have similar MFCC values, other than MFCC 0. To remove any indication of loudness but keep the information about timbre, we can ignore MFCC 0 by setting the parameter ``startCoeff`` to 1.
 
    For more information visit https://learn.flucoma.org/reference/mfcc/.
-   
+
    For an interactive explanation of this relationship, visit https://learn.flucoma.org/reference/mfcc/explain.
    
 :control source:

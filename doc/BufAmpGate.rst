@@ -1,86 +1,86 @@
-:digest: Amplitude-based Gating Slicer for Buffers
+:digest: Gate Detection on a Bfufer
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulationToolkit
 :see-also: AmpGate, BufAmpSlice, BufOnsetSlice, BufNoveltySlice, BufTransientSlice
-:description: This class implements an amplitude-based slicer, with various customisable options and conditions to detect absolute amplitude changes as onsets and offsets.
-:discussion: 
-   FluidBufAmpGate is based on an envelop follower on a highpassed version of the signal, which is then going through a Schmidt trigger and state-aware time contraints. The example code below is unfolding the various possibilites in order of complexity.
+:description: Absolute amplitude threshold gate detector on audio in a buffer
 
-   The process will return a two-channel buffer with the addresses of the onset on the first channel, and the address of the offset on the second channel.
+:discussion: 
+
+   BufAmpGate outputs a two-channel buffer containing open and close positions of the gates. Each frame of the buffer contains an onset (opening) position on channel 0 and the corresponding offset (closing) position on channel 1 (both in samples). The buffer will have as many frames as gate events detected.
+   
+   The gate detects an onset (opens) when the internal envelope follower (controlled by ``rampUp`` and ``rampDown``) goes above a specified ``onThreshold`` (in dB) for at least ``minLengthAbove`` samples. The gate will stay open until the envelope follower goes below ``offThreshold`` (in dB) for at least ``minLengthBelow`` samples, which triggers an offset.
 
 :output: Nothing, as the destination buffer is declared in the function call.
 
-
 :control source:
 
-   The index of the buffer to use as the source material to be sliced through novelty identification. The different channels of multichannel buffers will be summed.
+   The buffer to analyse for gate information. Multichannel buffers will be summed to mono for analysis.
 
 :control startFrame:
 
-   Where in the srcBuf should the slicing process start, in sample.
+   Where in ``source`` to begin the analysis (in samples). The default is 0.
 
 :control numFrames:
 
-   How many frames should be processed.
+   How many frames (audio samples) to analyse. The default of -1 indicates to analyse through end of the buffer
 
 :control startChan:
 
-   For multichannel sources, which channel should be processed.
+   For multichannel sources, at which channel to begin the analysis. The default is 0.
 
 :control numChans:
 
-   For multichannel sources, how many channel should be summed.
+   For multichannel sources, how many channels should be included in the analysis (starting from ``startChan``). The default of -1 indicates to include all the channels from ``startChan`` through the rest of the buffer. If more than one channel is specified, the channels will be summed to mono for analysis.
 
 :control indices:
 
-   The index of the buffer where the indices (in sample) of the estimated starting points of slices will be written. The first and last points are always the boundary points of the analysis.
+   The buffer to write the gate information into. Buffer will be resized appropriately so each frame contains an onset (opening) position on channel 0 and the corresponding offset (closing) position on channel 1 (both in samples). The buffer will have as many frames as gate events detected.
 
 :control rampUp:
 
-   The number of samples the envelope follower will take to reach the next value when raising.
+  The number of samples the envelope follower will take to reach the next value when rising.
 
 :control rampDown:
 
-   The number of samples the envelope follower will take to reach the next value when falling.
+  The number of samples the envelope follower will take to reach the next value when falling.
 
 :control onThreshold:
 
-   The threshold in dB of the envelope follower to trigger an onset, aka to go ON when in OFF state.
+  The threshold in dB of the envelope follower to trigger an onset.
 
 :control offThreshold:
 
-   The threshold in dB of the envelope follower to trigger an offset, , aka to go ON when in OFF state.
+  The threshold in dB of the envelope follower to trigger an offset.
 
 :control minSliceLength:
 
-   The length in samples that the Slice will stay ON. Changes of states during that period will be ignored.
+  The minimum length in samples for which the gate will stay open. Changes of states during this period after an onset will be ignored.
 
 :control minSilenceLength:
 
-   The length in samples that the Slice will stay OFF. Changes of states during that period will be ignored.
+  The minimum length in samples for which the gate will stay closed. Changes of states during that period after an offset will be ignored.
 
 :control minLengthAbove:
 
-   The length in samples that the envelope have to be above the threshold to consider it a valid transition to ON. The Slice will start at the first sample when the condition is met. Therefore, this affects the latency.
+  The length in samples that the envelope must be above the threshold to consider it a valid onset. The onset will be triggered at the first sample when the condition is met.
 
 :control minLengthBelow:
 
-   The length in samples that the envelope have to be below the threshold to consider it a valid transition to OFF. The Slice will end at the first sample when the condition is met. Therefore, this affects the latency.
+  The length in samples that the envelope must be below the threshold to consider it a valid offset. The offset will be triggered at the first sample when the condition is met.
 
 :control lookBack:
 
-   The length of the buffer kept before an onset to allow the algorithm, once a new Slice is detected, to go back in time (up to that many samples) to find the minimum amplitude as the Slice onset point. This affects the latency of the algorithm.
+  When an onset is detected, the algorithm will look in the recent past (this length in samples) for a minimum in the envelope follower to identify as the onset point. 
 
 :control lookAhead:
 
-   The length of the buffer kept after an offset to allow the algorithm, once the Slice is considered finished, to wait further in time (up to that many samples) to find a minimum amplitude as the Slice offset point. This affects the latency of the algorithm.
-
+  When an offset is detected, the algorithm will wait this duration (in samples) to find a minimum in the envelope follower to identify as the offset point. 
+  
 :control highPassFreq:
 
-   The frequency of the fourth-order Linkwitz–Riley high-pass filter (https://en.wikipedia.org/wiki/Linkwitz%E2%80%93Riley_filter). This is done first on the signal to minimise low frequency intermodulation with very fast ramp lengths. A frequency of 0 bypasses the filter.
+  The frequency of the fourth-order Linkwitz-Riley high-pass filter (https://en.wikipedia.org/wiki/Linkwitz%E2%80%93Riley_filter) applied to the signal signal to minimise low frequency intermodulation with very short ramp lengths. A frequency of 0 bypasses the filter.
 
 :control maxSize:
 
-   How large can the buffer be for time-critical conditions, by allocating memory at instantiation time. This cannot be modulated.
-
+  The amount of memory allocated at instantiation. It limits how other parameters can be modulated: ``minLengthBelow``, ``lookAhead``, and ``minLengthAbove + lookBack`` should not exceed ``maxSize``.

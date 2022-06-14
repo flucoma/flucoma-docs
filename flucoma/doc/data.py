@@ -15,7 +15,7 @@ from . import logger
 def load_generated_data(client_file):
         logging.debug(f'opening {client_file}')
         
-        with open(client_file.resolve()) as f:
+        with open(client_file.resolve(), encoding="utf-8") as f:
             data = json.load(f)
             data['name'] = client_file.stem 
             return data 
@@ -25,7 +25,7 @@ def load_human_data(client_file,args):
     human_data_path = docs_dir / (client_file.stem + '.rst')    
     logging.debug(f'opening {human_data_path}')
     if(human_data_path.exists()):
-        with open(human_data_path.resolve()) as f:
+        with open(human_data_path.resolve(), encoding="utf-8") as f:
             with logger.add_context([human_data_path.name]):
                 return parse_object.parse(f.read())
     else:
@@ -35,7 +35,7 @@ def load_human_data(client_file,args):
 def load_topic_data(topic):
     logging.debug(f'opening {topic}')        
     if(topic.exists()):
-        with open(topic.resolve()) as f:
+        with open(topic.resolve(), encoding="utf-8") as f:
              data = yaml.load(f, Loader=yaml.FullLoader)
              data['name'] = topic.stem
              return data

@@ -48,7 +48,8 @@ def max_type_map(type):
         'enum':'int', 
         'fft': 'int',
         'dataset':'symbol',
-        'labelset':'symbol'
+        'labelset':'symbol',
+        'choices':'symbol'
     }[type]
 
 
@@ -81,10 +82,10 @@ def write_max_indices(idx,program_args):
         }
     
     maxdbfile = path / 'max.db.json'
-    with open(maxdbfile,'w') as f:
+    with open(maxdbfile,'w', encoding='utf-8') as f:
         json.dump(maxdb_objs,f,sort_keys=True, indent=4)
     qlookup_file = path / 'flucoma-obj-qlookup.json'
-    with open(qlookup_file,'w') as f: 
+    with open(qlookup_file,'w', encoding='utf-8') as f: 
         json.dump(qlookup,f,sort_keys=True, indent=4)
 
 
@@ -95,7 +96,7 @@ settings = {
     'types': max_type_map,
     'glob': '**/*.json', 
     'parameter_link': max_jinja_parameter_link, 
-    'code_block': '<m>{}</m>', 
+    'code_block': lambda p: f"<m>{p.lower()}</m>", 
     'writer': FluidHTMLWriter, 
     'rst_render': rst_filter,
     'write_cross_ref': (max_visit_flucoma_reference,    

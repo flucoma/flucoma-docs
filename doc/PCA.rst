@@ -1,19 +1,22 @@
-:digest: Dimensionality Reduction with Principal Component Analysis
+:digest: Principal Component Analysis
 :species: data
 :sc-categories: Dimensionality Reduction, Data Processing
 :sc-related: Classes/FluidMDS, Classes/FluidDataSet
 :see-also: 
 :description: 
-   Principal Components Analysis of a :fluid-obj:`DataSet`
+   Principal Components Analysis (PCA) of a :fluid-obj:`DataSet`. 
+  
+:discussion:
 
-   https://scikit-learn.org/stable/modules/decomposition.html#principal-component-analysis-pca
-
-
+   PCA fits to a DataSet to determine its principal components, each of which is a new axis through the data that maximises the variance, or “differences”, within the Data. PCA can then transform the original DataSet or individual points to position them in relation to the principal components (i.e., “new axes”) for better comparing how they differ from other points in the DataSet. PCA is often used for dimensionality reduction and is also useful for removing redundancy (i.e., correlation) and/or noise (i.e., dimensions that are uniformly distributed) from a DataSet.
 
 :control numDimensions:
 
-   The number of dimensions to reduce to
+   The number of dimensions (principal components) to keep after a ``transform``, using PCA for dimensionality reduction. 
 
+:control whiten:
+
+   A flag (0 or 1) indicating whether or not to perform "whitening" on the output of PCA. For more information on whitening, visit https://learn.flucoma.org/reference/pca
 
 :message fit:
 
@@ -21,27 +24,37 @@
 
    :arg action: Run when done
 
-   Train this model on a :fluid-obj:`DataSet` but don't transform the data
+   Train this model on a :fluid-obj:`DataSet` to determine the principal components, but don't transform any data.
 
 :message transform:
 
-   :arg sourceDataSet: Source data, or the DataSet name
+   :arg sourceDataSet: source DataSet
 
-   :arg destDataSet: Destination data, or the DataSet name
+   :arg destDataSet: destination DataSet
 
    :arg action: Run when done
 
-   Given a trained model, apply the reduction to a source :fluid-obj:`DataSet` and write to a destination. Can be the same for both input and output (in-place). Returns the fraction of accounted variance, aka the fidelity of the new representation: a value near 1.0 means a higher fidelity to the original.
+   Given a trained model, transform a source :fluid-obj:`DataSet` into the PCA-space and write to a destination DataSet. The DataSets can be the same for both input and output (performs the operation in-place). This process returns the fraction (between 0 and 1) of explained variance.
+   
+:message inverseTransform:
+
+   :arg sourceDataSet: source DataSet
+
+   :arg destDataSet: destination DataSet
+
+   :arg action: Run when done
+
+   Given a trained model, invert a source :fluid-obj:`DataSet` containing ``numDimensions`` dimensions that are in PCA-space to a destination :fluid-obj:`DataSet` with the dimensionality of the data that was used to ``fit``. :fluid-obj:`DataSet` can be the same for both input and output (the operation will be performed in-place). 
 
 :message fitTransform:
 
-   :arg sourceDataSet: Source data, or the DataSet name
+   :arg sourceDataSet: source DataSet
 
-   :arg destDataSet: Destination data, or the DataSet name
+   :arg destDataSet: destination DataSet
 
    :arg action: Run when done
 
-   :fluid-obj:`PCA#fit` and :fluid-obj:`PCA#transform` in a single pass. Returns the fraction of accounted variance, aka the fidelity of the new representation: a value near 1.0 means a higher fidelity to the original.
+   :fluid-obj:`PCA#fit` and :fluid-obj:`PCA#transform` in a single pass. Returns the fraction (between 0 and 1) of explained variance.
 
 :message transformPoint:
 
@@ -51,4 +64,14 @@
 
    :arg action: Run when done
 
-   Given a trained model, transform the data point in a |buffer| and write to an output buffer.
+   Given a trained model, transform the data point in ``sourceBuffer`` from the original dimensional space to ``numDimensions`` in PCA-space and write into ``destBuffer``.
+
+:message inverseTransformPoint:
+
+  :arg sourceBuffer: Input data
+
+  :arg destBuffer: Output data
+
+  :arg action: Run when done
+
+  Given a trained model, transform the data point in ``sourceBuffer`` from being ``numDimensions`` in PCA-space into the original dimensional space and write into ``destBuffer``.

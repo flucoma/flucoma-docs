@@ -11,3 +11,4 @@ schelp
 interfaces/*
 *.log
 **/.DS_Store
+.vscode

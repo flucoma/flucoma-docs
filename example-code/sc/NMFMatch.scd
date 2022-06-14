@@ -101,7 +101,7 @@ CODE::
 // what we're going to try to achieve here is to use FluidNMFFilter to separate out the pick from the strings and do fx processing on them separately.
 
 // train only 2 seconds, asking for 10 components
-FluidBufNMF.process(s,~guitar,0,88200,resynth:~resynth, bases:~bases, components:~n_components,fftSize:2048,action:{"done".postln;});
+FluidBufNMF.process(s,~guitar,0,88200,resynth:~resynth, resynthMode:1, bases:~bases, components:~n_components,fftSize:2048,action:{"done".postln;});
 
 // We're going to find the component that has the picking sound by doing a FluidSpectralShape analysis on each of the resynthesized components, then use FluidBufStats to get the median spectral centroid of each component.
 (
@@ -139,7 +139,7 @@ fork{
 
 ~trainedBases.plot;
 
-//using this trained basis we can see the envelop (activations) of each component
+//using this trained basis we can see the envelope (activations) of each component
 {FluidNMFMatch.kr(PlayBuf.ar(1,~guitar),~trainedBases,2,fftSize:2048)}.plot(1);
 // the left/top activations are before, the pick before the sustain.
 
@@ -193,7 +193,7 @@ CODE::
 )
 
 // train only 2 seconds
-FluidBufNMF.processBlocking(s,~guitar,0,88200,resynth:~resynth,bases:~bases, components:~n_components, hopSize:256, fftSize:2048,action:{"done".postln});
+FluidBufNMF.processBlocking(s,~guitar,0,88200,resynth:~resynth,resynthMode:1,bases:~bases, components:~n_components, hopSize:256, fftSize:2048,action:{"done".postln});
 
 // extract the spectral centroid of all ~n_components components
 (

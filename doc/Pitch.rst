@@ -47,6 +47,10 @@
 
    The maximum frequency that the algorithm will search for. This sets the highest value that can be generated. The default is 10000.
 
+:control select:
+
+   An array of ``symbols`` indicating which analyses to return. The options are ``pitch`` and ``confidence``. If nothing is specified, the object will return all the analyses. The analyses will always appear in their normal order, this argument just allows for a selection of them to be returned. Reordering the options in this argument will not reorder how the analyses are returned.
+
 :control unit:
 
    The unit of the pitch output. The default of 0 indicates to output in Hz. A value of 1 will output MIDI note values.

@@ -16,5 +16,8 @@
 
 :control indices:
 
-   A 0-based list of channel numbers to recover. Default is [-1], meaning all frames
+   A 0-based list of frame numbers to copy. Default is [-1], meaning all frames
 
+:control channels:
+
+   A 0-based list of channel numbers to copy. Default is [-1], meaning all channels

@@ -18,7 +18,7 @@
    * the flatness (6) in dB. This is the ratio of geometric mean of the magnitude, over the arithmetic mean of the magnitudes. It yields a very approximate measure on how noisy a signal is.
    * the crest (7) in dB. This is the ratio of the loudest magnitude over the RMS of the whole frame. A high number is an indication of a loud peak poking out from the overal spectral curve.
 
-   The drawings in Peeters 2003 (http://recherche.ircam.fr/anasyn/peeters/ARTICLES/Peeters_2003_cuidadoaudiofeatures.pdf) are useful, as are the commented examples below. For the mathematically-inclined reader, the tutorials and code offered here (https://www.audiocontentanalysis.org/) are interesting to further the understanding. For examples of the impact of computing the moments in power magnitudes, and/or in exponential frequency scale, please refer to the :fluid-obj:`SpectralShape` helpfile.
+   The drawings in Peeters 2003 ( http://recherche.ircam.fr/anasyn/peeters/ARTICLES/Peeters_2003_cuidadoaudiofeatures.pdf ) are useful, as are the commented examples below. For the mathematically-inclined reader, the tutorials and code offered here ( https://www.audiocontentanalysis.org/ ) are interesting to further the understanding. For examples of the impact of computing the moments in power magnitudes, and/or in exponential frequency scale, please refer to the :fluid-obj:`SpectralShape` helpfile.
 
    The process will return a multichannel buffer with the seven channels per input channel, each containing the 7 shapes. Each sample represents a value, which is every hopSize.
 
@@ -90,6 +90,6 @@
 
    How large can the FFT be, by allocating memory at instantiation time. This cannot be modulated.
 
-:control action:
+:control select:
 
-   A Function to be evaluated once the offline process has finished and all Buffer's instance variables have been updated on the client side. The function will be passed [features] as an argument.
+   An array of ``symbols`` indicating which analyses to return. The options are ``centroid``, ``spread``, ``skewness``, ``kurtosis``, ``rolloff``, ``flatness``, and ``crest``. If nothing is specified, the object will return all the analyses. The analyses will always appear in their normal order, this argument just allows for a selection of them to be returned. Reordering the options in this argument will not reorder how the analyses are returned.

@@ -7,7 +7,7 @@
 :discussion: 
    Computes the true peak of the signal as well as applying the filters proposed by broadcasting standards to emulate the perception of amplitude.
 
-   The process will return a multichannel control steam with [loudness, truepeak] values, both in dBFS, which will be repeated if no change happens within the algorithm, i.e. when the hopSize is larger than the signal vector size. More information on broadcasting standardisation of loudness measurement is available at the reference page (https://tech.ebu.ch/docs/tech/tech3341.pdf) and in more musician-friendly explantions here (http://designingsound.org/2013/02/06/loudness-and-metering-part-1/).
+   The process will return a multichannel control steam with [loudness, truepeak] values, both in dBFS, which will be repeated if no change happens within the algorithm, i.e. when the hopSize is larger than the signal vector size. More information on broadcasting standardisation of loudness measurement is available at the reference page ( https://tech.ebu.ch/docs/tech/tech3341.pdf ) and in more musician-friendly explantions here (http://designingsound.org/2013/02/06/loudness-and-metering-part-1/).
 
 :process: The audio rate in, control rate out version of the object.
 :output: A 2-channel KR signal with the [pitch, confidence] descriptors. The latency is windowSize.
@@ -16,6 +16,10 @@
 :control in:
 
    The audio to be processed.
+
+:control select:
+
+   An array of ``symbols`` indicating which analyses to return. The options are ``loudness`` and ``peak``. If nothing is specified, the object will return all the analyses. The analyses will always appear in their normal order, this argument just allows for a selection of them to be returned. Reordering the options in this argument will not reorder how the analyses are returned.
 
 :control kWeighting:
 
