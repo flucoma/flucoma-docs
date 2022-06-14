@@ -25,7 +25,7 @@
 
    If set to ``1`` the algorithm will attempt to optimally match which NMF basis components from source and target best match each other, and will use this mapping as its basis for interpolation.
 
-:control interp:
+:control interpolation:
 
    Set the relative contributions of ``source`` and ``target`` between 0 and 1.
 
