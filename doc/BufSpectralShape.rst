@@ -1,7 +1,7 @@
 :digest: Seven Spectral Shape Descriptors on a Buffer
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulationToolkit, Classes/SpecCentroid, Classes/SpecFlatness, Classes/SpecCentroid, Classes/SpecPcile
+:sc-related: Guides/FluidCorpusManipulation, Classes/SpecCentroid, Classes/SpecFlatness, Classes/SpecCentroid, Classes/SpecPcile
 :see-also: SpectralShape, BufPitch, BufMelBands, BufMFCC, BufLoudness, BufStats
 :description: Seven of the spectral shape descriptors, computed on a linear scale for both amplitude and frequency.
 :discussion: 

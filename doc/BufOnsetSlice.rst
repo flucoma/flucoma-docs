@@ -1,7 +1,7 @@
 :digest: Spectral Difference-Based Audio Buffer Slicer
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulationToolkit
+:sc-related: Guides/FluidCorpusManipulation
 :see-also: OnsetSlice, BufAmpSlice, BufNoveltySlice, BufTransientSlice
 :description: Implements a selection of spectrum-based onset slicers
 :discussion:

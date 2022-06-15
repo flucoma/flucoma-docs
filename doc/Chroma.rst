@@ -1,7 +1,7 @@
 :digest: A histogram of pitch classes in Real-Time
 :species: descriptor
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulationToolkit, Classes/FluidMFCC
+:sc-related: Guides/FluidCorpusManipulation, Classes/FluidMFCC
 :see-also: BufChroma, Pitch, Loudness, MFCC, SpectralShape
 :description: This class computes a histogram of the energy contained for each pitch class across the analysis frequency range.
 :discussion: 

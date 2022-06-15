@@ -1,7 +1,7 @@
 :digest: Buffer-Based Harmonic-Percussive Source Separation Using Median Filtering
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition, UGens>Buffer
-:sc-related: Guides/FluidCorpusManipulationToolkit
+:sc-related: Guides/FluidCorpusManipulation
 :see-also: HPSS, BufSines, BufTransients
 :description: FluidBufHPSS performs Harmonic-Percussive Source Separation (HPSS) on the contents of a Buffer.
 :discussion: 

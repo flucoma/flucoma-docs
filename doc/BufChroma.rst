@@ -1,7 +1,7 @@
 :digest: A histogram of pitch classes on a Buffer
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulationToolkit, Classes/FluidBufMFCC
+:sc-related: Guides/FluidCorpusManipulation, Classes/FluidBufMFCC
 :see-also: Chroma, BufPitch, BufLoudness, BufMFCC, BufSpectralShape, BufStats
 :description: This class computes a histogram of the energy contained for each pitch class across the analysis frequency range.
 :discussion: 
