@@ -1,7 +1,7 @@
 :digest: Realtime Spectral Difference Feature
 :species: descriptor
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulationToolkit
+:sc-related: Guides/FluidCorpusManipulation
 :see-also: OnsetSlice, NoveltyFeature, AmpFeature
 :description: Calculate the spectral difference feature used by :fluid-obj:`OnsetSlice`.
 :discussion:

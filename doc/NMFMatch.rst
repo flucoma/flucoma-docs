@@ -1,7 +1,7 @@
 :digest: Real-Time Non-Negative Matrix Factorisation with Fixed Bases
 :species: descriptor
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulationToolkit
+:sc-related: Guides/FluidCorpusManipulation
 :see-also: NMFFilter, BufNMF
 :description: Matches an incoming audio signal against a set of spectral templates
 :discussion: 

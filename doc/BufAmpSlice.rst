@@ -1,7 +1,7 @@
 :digest: Amplitude-based Detrending Slicer for Buffers
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulationToolkit
+:sc-related: Guides/FluidCorpusManipulation
 :see-also: AmpSlice, BufAmpGate, BufOnsetSlice, BufNoveltySlice, BufTransientSlice
 :description: This class implements an amplitude-based slicer,with various customisable options and conditions to detect relative amplitude changes as onsets.
 :discussion: 

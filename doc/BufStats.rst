@@ -1,7 +1,7 @@
 :digest: Statistically summarise a time series in a Buffer
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition, UGens>Buffer
-:sc-related: Guides/FluidCorpusManipulationToolkit
+:sc-related: Guides/FluidCorpusManipulation
 :see-also: BufLoudness, BufPitch, BufMelBands, BufMFCC, BufSpectralShape
 :description: Statistical analysis on buffer channels.
 :discussion: 

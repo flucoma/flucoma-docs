@@ -1,7 +1,7 @@
 :digest: A Perceptually Spread Spectral Contour Descriptor
 :species: descriptor
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulationToolkit, Classes/FluidMFCC
+:sc-related: Guides/FluidCorpusManipulation, Classes/FluidMFCC
 :see-also: BufMelBands, Pitch, Loudness, MFCC, SpectralShape
 :description: Magnitudes for a number of perceptually-evenly spaced bands.
 :discussion: 

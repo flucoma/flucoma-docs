@@ -1,7 +1,7 @@
 :digest: Real-Time Transient Modeller and Extractor
 :species: transformer
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulationToolkit
+:sc-related: Guides/FluidCorpusManipulation
 :see-also: BufTransients,Sines,HPSS
 :description: Separate transients from a signal.
 :discussion: 

@@ -1,7 +1,7 @@
 :digest: Seven Spectral Shape Descriptors in Real-Time
 :species: descriptor
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulationToolkit, Classes/SpecCentroid, Classes/SpecFlatness, Classes/SpecCentroid, Classes/SpecPcile
+:sc-related: Guides/FluidCorpusManipulation, Classes/SpecCentroid, Classes/SpecFlatness, Classes/SpecCentroid, Classes/SpecPcile
 :see-also: BufSpectralShape, Pitch, MelBands, Loudness, MFCC
 :description: Seven of the  spectral shape descriptors, computed on a linear scale for both amplitude and frequency.
 :discussion: 

@@ -1,7 +1,7 @@
 :digest: A Gate Processor for Buffers
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulationToolkit, Guides/FluidBufMultiThreading
+:sc-related: Guides/FluidCorpusManipulation, Guides/FluidBufMultiThreading
 :see-also: BufCompose, Gain, Stats
 :description: 
 

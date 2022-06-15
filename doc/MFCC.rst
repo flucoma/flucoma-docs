@@ -1,7 +1,7 @@
 :digest: Mel-Frequency Cepstral Coefficients as Spectral Descriptors in Real-Time
 :species: descriptor
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulationToolkit
+:sc-related: Guides/FluidCorpusManipulation
 :see-also: BufMFCC, Pitch, MelBands, Loudness, SpectralShape
 :description: A classic timbral audio descriptor, the Mel-Frequency Cepstral Coefficients (MFCCs).
 :discussion: 

@@ -1,7 +1,7 @@
 :digest: Buffer-Based Amplitude Differential Feature
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulationToolkit
+:sc-related: Guides/FluidCorpusManipulation
 :see-also: BufAmpSlice, BufNoveltyFeature, BufAmpFeature, BufOnsetFeature
 :description: Calculate the amplitude differential feature used by :fluid-obj:`BufAmpSlice`.
 :discussion: 
