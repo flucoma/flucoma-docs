@@ -545,7 +545,7 @@ def process_template(template_path,outputdir,client_data,host):
     
     template = env.get_template(host['template'])
     
-    with open(ofile,'w') as f:
+    with open(ofile,'w', newline='\n') as f:
         f.write(template.render(client_data))
             # arguments=client_data['arguments'],
             # attributes=client_data['attributes'],
@@ -585,7 +585,7 @@ def process_topic(topic_file,template_path,outputdir,host):
     else: 
         raise NameError('{} not found'.format(topic_file))
     
-    with open(ofile,'w') as f:
+    with open(ofile,'w', newline='\n') as f:
         f.write(template.render(
             title=topic_data['title'],
             digest=topic_data['digest'],
