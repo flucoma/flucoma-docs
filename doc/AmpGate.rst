@@ -1,7 +1,7 @@
 :digest: Gate Detection on a Signal
 :species: slicer
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulationToolkit
+:sc-related: Guides/FluidCorpusManipulation
 :see-also: BufAmpGate, AmpSlice, OnsetSlice, NoveltySlice, TransientSlice
 :description: Absolute amplitude threshold gate detector on a real-time signal
 

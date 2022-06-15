@@ -1,7 +1,7 @@
 :digest: Realtime Amplitude Differential Feature
 :species: transformer
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulationToolkit
+:sc-related: Guides/FluidCorpusManipulation
 :see-also: AmpGate, AmpSlice, OnsetFeature, NoveltyFeature
 :description: Calculate the amplitude differential feature in realtime.
 :discussion: 

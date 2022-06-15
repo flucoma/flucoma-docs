@@ -1,7 +1,7 @@
 :digest: Amplitude-based Detrending Slicer
 :species: slicer
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulationToolkit
+:sc-related: Guides/FluidCorpusManipulation
 :see-also: BufAmpSlice, AmpGate, OnsetSlice, NoveltySlice, TransientSlice
 :description: This class implements an amplitude-based slicer, with various customisable options and conditions to detect relative amplitude changes as onsets.
 :discussion: 

@@ -1,7 +1,7 @@
 :digest: Buffer-Based Novelty Feature
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition, UGens>Buffer
-:sc-related: Guides/FluidCorpusManipulationToolkit
+:sc-related: Guides/FluidCorpusManipulation
 :see-also: BufNoveltySlice, BufNoveltyFeature, BufAmpFeature, BufOnsetFeature
 :description: Calculates the novelty feature of audio stored in a buffer.
 :discussion:

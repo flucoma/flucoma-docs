@@ -1,7 +1,7 @@
 :digest: Gate Detection on a Bfufer
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulationToolkit
+:sc-related: Guides/FluidCorpusManipulation
 :see-also: AmpGate, BufAmpSlice, BufOnsetSlice, BufNoveltySlice, BufTransientSlice
 :description: Absolute amplitude threshold gate detector on audio in a buffer
 

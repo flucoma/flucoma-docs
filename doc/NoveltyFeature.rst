@@ -1,7 +1,7 @@
 :digest: Realtime Novelty Feature
 :species: descriptor
 :sc-categories: Libraries>FluidDecomposition, UGens>Buffer
-:sc-related: Guides/FluidCorpusManipulationToolkit
+:sc-related: Guides/FluidCorpusManipulation
 :see-also: NoveltySlice, AmpFeature, OnsetFeature
 :description: Calculates the novelty feature of audio in realtime.
 :discussion: 

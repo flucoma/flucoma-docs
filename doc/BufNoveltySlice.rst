@@ -1,7 +1,7 @@
 :digest: Buffer-Based Novelty-Based Slicer
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition, UGens>Buffer
-:sc-related: Guides/FluidCorpusManipulationToolkit
+:sc-related: Guides/FluidCorpusManipulation
 :see-also: NoveltySlice, BufAmpSlice, BufOnsetSlice, BufTransientSlice
 :description: A non-real-time slicer using an algorithm assessing novelty in the signal to estimate the slicing points.
 :discussion: 

@@ -1,7 +1,7 @@
 :digest: Buffer Compositing Utility
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition, UGens>Buffer
-:sc-related: Guides/FluidCorpusManipulationToolkit, Classes/Buffer
+:sc-related: Guides/FluidCorpusManipulation, Classes/Buffer
 :see-also: BufSelect, BufSelectEvery
 :description: 
    A utility for manipulating the contents of buffers.

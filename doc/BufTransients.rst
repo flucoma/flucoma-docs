@@ -1,7 +1,7 @@
 :digest: Buffer-Based Transient Extractor
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition, UGens>Buffer
-:sc-related: Guides/FluidCorpusManipulationToolkit
+:sc-related: Guides/FluidCorpusManipulation
 :see-also: Transients, BufHPSS, BufSines
 :description: Separate Transients from a Signal in a Buffer
 :discussion: 
