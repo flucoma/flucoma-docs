@@ -106,7 +106,7 @@ fork{
 // If we play a different source through FluidNMFFilter, it will try to decompose that real-time signal according to the bases
 // it is given (in our case the bases from the drum loop)
 
-~song = Buffer.readChannel(s,FluidFilesPath("Tremblay-beatRemember.wav"),channels:[0]);
+~song = Buffer.readChannel(s,FluidFilesPath("Tremblay-BeatRemember.wav"),channels:[0]);
 
 (
 fork{
