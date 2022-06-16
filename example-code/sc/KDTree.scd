@@ -26,7 +26,7 @@ fork{
 (
 ~p = [ 1.0.linrand,1.0.linrand ];
 ~tmpbuf = Buffer.loadCollection(s, ~p, 1, {
-	~tree.kNearest(~tmpbuf,{ |a|a.postln;~nearest = a;})
+	~tree.kNearest(~tmpbuf, action:{ |a|a.postln;~nearest = a;})
 });
 )
 
@@ -40,21 +40,21 @@ fork{
 }
 )
 // Distances of the nearest points
-~tree.kNearestDist(~tmpbuf, { |a| a.postln });
+~tree.kNearestDist(~tmpbuf, action:{ |a| a.postln });
 
 // Explore changing the number of neighbourgs
 ~tree.numNeighbours = 11; // note that this value needs to be sent to the server
-~tree.kNearest(~tmpbuf,{ |a|a.postln;});
+~tree.kNearest(~tmpbuf, action:{ |a|a.postln;});
 ~tree.numNeighbours = 0; // 0 will return all items in order of distance
-~tree.kNearest(~tmpbuf,{ |a|a.postln;});
+~tree.kNearest(~tmpbuf, action:{ |a|a.postln;});
 
 // Limit the search to an acceptable distance in a radius
 // Define a point, and observe typical distance values
 ~p = [ 0.4,0.4];
 (
 ~tmpbuf = Buffer.loadCollection(s, ~p, 1, {
-	~tree.kNearest(~tmpbuf,{ |a|a.postln;});
-	~tree.kNearestDist(~tmpbuf,{ |a|a.postln;});
+	~tree.kNearest(~tmpbuf, action:{ |a|a.postln;});
+	~tree.kNearestDist(~tmpbuf, action:{ |a|a.postln;});
 });
 )
 
@@ -63,7 +63,7 @@ fork{
 // FluidKDTree will return only values that are within that radius, up to numNeighbours values
 (
 ~tmpbuf = Buffer.loadCollection(s, ~p, 1, {
-	~tree.kNearest(~tmpbuf,{ |a|a.postln;});
+	~tree.kNearest(~tmpbuf, action:{ |a|a.postln;});
 });
 )
 ::
