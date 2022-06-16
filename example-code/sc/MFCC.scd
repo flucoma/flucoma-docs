@@ -147,8 +147,10 @@ CODE::
 		arg key;
 		labels["data"][key] = [key[0..2]];
 	};
-	~plotter = FluidPlotter(bounds:Rect(0,0,800,800),dict:dict); // plot it: bass analyses will be one color, boxes will be another
-	~plotter.categories_(labels);
+	{
+		~plotter = FluidPlotter(bounds:Rect(0,0,800,800),dict:dict); // plot it: bass analyses will be one color, boxes will be another
+		~plotter.categories_(labels);
+	}.defer;
 });
 )
 
