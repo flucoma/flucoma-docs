@@ -34,7 +34,7 @@ def setup_jinja(client_index, args, driver):
     examples_path = (args.doc_path.resolve() / '../example-code' / args.host).resolve()
     e = Environment(
     loader = FileSystemLoader([args.template_path, examples_path]),
-        autoescape=select_autoescape(['html','xml']),
+        autoescape=select_autoescape(disabled_extensions=('html','xml','schelp')),
         trim_blocks=True, lstrip_blocks=True
     )
     """

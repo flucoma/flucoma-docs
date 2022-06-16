@@ -30,6 +30,8 @@ class FlucomaCrossRefTranslator(html4css1.HTMLTranslator):
             self.visit_flucoma_reference(node)
         elif 'flucoma-topic' in node:
             self.visit_flucoma_topic(node)
+        elif 'object-link' in node: 
+            self.visit_object_link(node)
         else:
             super().visit_reference(node)
     
@@ -59,7 +61,12 @@ class FluidHTMLWriter(html4css1.Writer):
                  f = partial(driver['write_cross_ref'][0], 
                              data = index, transform_name = False)
                  f(self,node)
-                 
+            
+            def visit_object_link(self,node):
+                f = driver['write_object_ref']
+                f(self,node)
+                raise nodes.SkipNode; 
+
             def depart_flucoma_reference(self,node):    
                 partial(driver['write_cross_ref'][1], data = index)(self,node)
                 
@@ -86,9 +93,15 @@ def rst_filter(ctx,value):
     driver = ctx.parent['driver']
     index =  ctx.parent['index']
     
+    raw_role="""
+.. role:: raw-html(raw)
+   :format: html\n
+"""
+    # value = raw_role + value
     value += f"\n\n.. |buffer| replace:: {driver.get('buffer-string','buffer')}\n"
         
-    
+    # logging.warn(value)
+
     #stop docutils mirroing warnings to console, but we probably want to see errors
     settings = {'report_level':Reporter.ERROR_LEVEL,'flucoma-host':ctx['host']} 
     
@@ -96,7 +109,7 @@ def rst_filter(ctx,value):
                                 writer = FluidHTMLWriter(index, driver),  
                                 reader = LoggingDocutilsReader(),
                                 settings_overrides=settings)
-    
+    # logging.warn(tre['fragment'])
     return Markup(tre['fragment'])
     
     
