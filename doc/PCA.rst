@@ -54,7 +54,7 @@
 
    :arg action: Run when done
 
-   :fluid-obj:`PCA#fit` and :fluid-obj:`PCA#transform` in a single pass. Returns the fraction (between 0 and 1) of explained variance.
+   ``fit`` and ``transform`` in a single pass. Returns the fraction (between 0 and 1) of explained variance.
 
 :message transformPoint:
 

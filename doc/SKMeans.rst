@@ -50,7 +50,7 @@
 
    :arg action: A function to run when the server responds
 
-   Run :fluid-obj:`KMeans#*fit` and :fluid-obj:`KMeans#*predict` in a single pass: i.e. train the model on the incoming :fluid-obj:`DataSet` and then return the learned clustering to the passed :fluid-obj:`LabelSet`
+   Run ``fit`` and ``predict`` in a single pass: i.e. train the model on the incoming :fluid-obj:`DataSet` and then return the learned clustering to the passed :fluid-obj:`LabelSet`
 
 :message predictPoint:
 
@@ -78,7 +78,7 @@
 
    :arg action: A function to run when the server responds
 
-   Run :fluid-obj:`SKMeans#*fit` and :fluid-obj:`SKMeans#*encode` in a single pass: i.e. train the model on the incoming :fluid-obj:`DataSet` and then return its encoded cluster-activation space in the destination :fluid-obj:`DataSet`
+   Run ``fit`` and ``encode`` in a single pass: i.e. train the model on the incoming :fluid-obj:`DataSet` and then return its encoded cluster-activation space in the destination :fluid-obj:`DataSet`
 
 :message encodePoint:
 
