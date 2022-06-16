@@ -1,95 +1,65 @@
 
 code::
-//create a monitoring bus for the descriptors
-b = Bus.new(\control,0,24);
+
+~src = Buffer.readChannel(s,FluidFilesPath("Tremblay-SA-UprightPianoPedalWide.wav"),channels:[0]);
+
+(
+~synth = {
+	var sig = PlayBuf.ar(1,~src,BufRateScale.ir(~src),loop:1);
+	var chroma = FluidChroma.kr(sig,normalize:1); // normalize = 1 makes the output invariant to the signal loudness
+	var sines;
+	chroma = FluidStats.kr(chroma,40)[0]; // index 0 to get just the means
+	SendReply.kr(Impulse.kr(30),"/chroma",chroma);
+	sines = SinOsc.ar((69..80).midicps,0,chroma * -5.dbamp);
+	sines = Splay.ar(sines);
+	sig.dup + sines;
+}.play;
 
 //create a monitoring window for the values
 
-(
-w = Window("Chroma Bins Monitor", Rect(10, 10, 620, 320)).front;
-a = MultiSliderView(w,Rect(10, 10, 600, 300)).elasticMode_(1).isFilled_(1);
+~win = Window("Chroma Monitor", Rect(10, 10, 620, 320)).front;
+~ms = MultiSliderView(~win,Rect(10, 10, 600, 300)).elasticMode_(1).isFilled_(1);
+
+OSCdef(\chroma,{
+	arg msg;
+	defer{
+		~ms.value_(msg[3..]);
+	};
+},"/chroma");
 )
 
-//run the window updating routine.
-(
-~winRange = 0.1;
-r = Routine {
-    {
-        b.get({ arg val;
-            {
-                if(w.isClosed.not) {
-                    a.value = val/~winRange;
-                }
-            }.defer
-        });
-        0.01.wait;
-    }.loop
-}.play
-)
-
-//play a simple sound to observe the values
-(
-x = 	{
-	var source = SinOsc.ar(LFTri.kr(0.1).exprange(80,800),0,0.1);
-	Out.kr(b,FluidChroma.kr(source, numChroma: 24, maxNumChroma:24));
-	source.dup;
-}.play;
-)
-
-//we can observe that in the low end, the precision of the fft is not good enough to give a sharp pitch centre. We still can observe the octaviation quantized in quarter tones.
-
-// free this source
-x.free
-
-// load a more exciting one
-c = Buffer.read(s,FluidFilesPath("Tremblay-SlideChoirAdd-M.wav"));
-
-// analyse with parameters to be changed
-(
-x = 	{arg chroma = 24, low = 20, high = 20000, norm=1, t_cue, sel=0;
-	var source = Select.ar(sel, [
-		PlayBuf.ar(1,c,loop:1),
-		Saw.ar(TIRand.kr(60.dup(3),96,t_cue).poll(t_cue).midicps,0.05).sum;
-	]);
-	Out.kr(b,FluidChroma.kr(source ,numChroma: chroma, minFreq: low, maxFreq: high, normalize: norm, maxNumChroma: 24, windowSize: 4096) / 10);
-	source.dup;
-}.play;
-)
-
-//set the winRange to a more informative value
-~winRange = 0.03;
-
-//instead, let's normalise each frame independently
-~winRange = 0.12;
-x.set(\norm, 2);
-
-// observe the number of chroma. The unused ones at the top are not updated
-x.set(\chroma,12)
-
-// back to the full range
-x.set(\chroma,24)
-
-// change the source to random three-note chords
-x.set(\sel, 1)
-
-// trigger new chords and observe the chroma contour
-x.set(\t_cue, 1)
-
-// focus all the chroma bin on a low mid range (there might be nothing!)
-x.set(\low,320, \high, 800)
-
-// or on a specific octave
-x.set(\low, 60.midicps, \high, 72.midicps)
-
-// back to full range
-x.set(\low,20, \high, 20000)
-
-// free everything
-x.free;b.free;c.free;r.stop;
 ::
+strong::More than 12 pitch classes::
+code::
 
-STRONG::A musical example::
+// dividing the octave (and therefore chroma into 19 equal divisions of the octave:
 
-CODE::
-//something will happen here.
+~src = Buffer.readChannel(s,FluidFilesPath("Tremblay-SA-UprightPianoPedalWide.wav"),channels:[0]);
+
+(
+~synth = {
+	var sig = PlayBuf.ar(1,~src,BufRateScale.ir(~src),loop:1);
+	var chroma = FluidChroma.kr(sig,normalize:1,numChroma:19); // normalize = 1 makes the output invariant to the signal loudness
+	var freqs, sines;
+	chroma = FluidStats.kr(chroma,40)[0]; // index 0 to get just the means
+	SendReply.kr(Impulse.kr(30),"/chroma",chroma);
+	freqs = chroma.numChannels.collect{arg i; 440 * 2.pow(i/chroma.numChannels)};
+	sines = SinOsc.ar(freqs,0,chroma * -5.dbamp);
+	sines = Splay.ar(sines);
+	sig.dup + sines;
+}.play;
+
+//create a monitoring window for the values
+
+~win = Window("Chroma Monitor", Rect(10, 10, 620, 320)).front;
+~ms = MultiSliderView(~win,Rect(10, 10, 600, 300)).elasticMode_(1).isFilled_(1);
+
+OSCdef(\chroma,{
+	arg msg;
+	defer{
+		~ms.value_(msg[3..]);
+	};
+},"/chroma");
+)
+
 ::

@@ -1,50 +1,97 @@
-
+strong::Basic Copy::
 code::
-// load some buffers
+~src = Buffer.read(s,FluidFilesPath("Tremblay-FMTriDist-M.wav"));
+
 (
-b = Buffer.read(s,FluidFilesPath("Tremblay-AaS-SynthTwoVoices-M.wav"));
-c = Buffer.read(s,FluidFilesPath("Tremblay-SA-UprightPianoPedalWide.wav"));
-d = Buffer.new(s);
+~destination = Buffer(s);
+FluidBufCompose.processBlocking(s,~src,destination:~destination,action:{
+	defer{
+		~src.plot;
+		~destination.plot;
+	};
+});
+)
+::
+strong::Mixing::
+code::
+(
+~srcA = Buffer.read(s,FluidFilesPath("Tremblay-AaS-AcBassGuit-Melo-M.wav"));
+~srcB = Buffer.read(s,FluidFilesPath("Tremblay-AaS-VoiceQC-B2K-M.wav"));
 )
 
-// with basic params (basic summing of each full buffer in all dimensions)
+// listen separately if you want
+~srcA.play;
+~srcB.play;
+
 (
-Routine{
-    FluidBufCompose.process(s, source: b,  destination: d);
-    FluidBufCompose.process(s, source: c,  destination: d, destGain: 1.0);
+fork{
+	~destination = Buffer(s);
+	[~srcA,~srcB].do{
+		arg src;
+		FluidBufCompose.processBlocking(s,src,destination:~destination,destGain:1,gain:-6.dbamp);
+	};
 	s.sync;
-    d.query;
-    d.play;
-}.play;
+	~destination.play;
+}
 )
-//constructing a mono buffer, with a quiet punch from the synth, with a choked piano resonance from the left channel
+::
+strong::Subsections::
+code::
 (
-Routine{
-    d.free; d = Buffer.new(s);
-    FluidBufCompose.process(s, source: b, numFrames: 9000, gain: 0.5, destination: d);
-    FluidBufCompose.process(s, source: c, startFrame:30000, numFrames:44100, numChans:1, gain:0.9, destination: d, destGain: 1.0).wait;
-    d.query;
-    d.play;
-}.play
+~srcA = Buffer.read(s,FluidFilesPath("Tremblay-SlideChoirAdd-M.wav"));
+~srcB = Buffer.read(s,FluidFilesPath("Tremblay-AaS-SynthTwoVoices-M.wav"));
 )
-//constructing a stereo buffer, with the end of the mono synth in both channels, with a piano resonance in swapped stereo
+
+// listen separately if you want
+~srcA.play;
+~srcB.play;
+
 (
-Routine{
-    d.free; d = Buffer.new(s);
-    FluidBufCompose.process(s, source: b, startFrame: 441000, numChans: 2, gain: 0.6, destination: d);
-    FluidBufCompose.process(s, source: c, numFrames: 78000, startChan: 1, numChans: 2, gain: 0.5, destStartFrame: 22050, destination: d,  destGain: 1.0).wait;
-    d.query;
-    d.play;
-}.play
+fork{
+	~destination = Buffer(s);
+
+	// starting at frame 30000, copy 1 second of ~srcB
+	FluidBufCompose.processBlocking(s,~srcB,startFrame:30000,numFrames:44100,destination:~destination,destGain:1,gain:-6.dbamp);
+	// copy 9000 frames of ~srcA
+	FluidBufCompose.processBlocking(s,~srcA,numFrames:9000,destination:~destination,destGain:1,gain:-6.dbamp);
+
+	s.sync;
+	~destination.play;
+}
 )
-//constructing a one second buffer: the first second of each buffer, the mono synth on the right, the piano on the left
+::
+strong::Multichannel::
+code::
+
 (
-Routine{
-    d.free; d = Buffer.new(s);
-    FluidBufCompose.process(s, source: b, numFrames: 44100, numChans: 1, destStartChan: 1, destination: d);
-    FluidBufCompose.process(s, source: c, numFrames:44100, numChans:1, destination: d,  destGain: 1.0).wait;
-    d.query;
-    d.play;
-}.play
+~stereoPiano = Buffer.read(s,FluidFilesPath("Tremblay-SA-UprightPianoPedalWide.wav"));
+~synthSounds = Buffer.read(s,FluidFilesPath("Tremblay-AaS-SynthTwoVoices-M.wav"));
+)
+
+// copy the mono synth sounds into the R channel of the stereo piano buffer using destStartChan:1
+(
+FluidBufCompose.processBlocking(s,~synthSounds,destination:~stereoPiano,destGain:1,destStartChan:1,action:{
+	~stereoPiano.play;
+});
+)
+
+// copy just the L channel of the piano into the R channel of the synth sounds
+// (because it doesn't have an R channel yet, BufCompose will create one)
+(
+FluidBufCompose.processBlocking(s,~stereoPiano,destination:~synthSounds,numChans:1,destGain:1,destStartChan:1,action:{
+	~synthSounds.play;
+});
+)
+
+// if numChans is greater than the available channels it will wrap around to the beginning channels, so we can reverse the channels like this:
+
+// original
+~stereoPiano.play;
+
+(
+~reversed = Buffer(s);
+FluidBufCompose.processBlocking(s,~stereoPiano,startChan:1,numChans:2,destination:~reversed,action:{
+	~reversed.play;
+});
 )
 ::

@@ -1,50 +1,82 @@
 
 code::
-// create some buffers
+
+~src = Buffer.read(s,FluidFilesPath("Harker-DS-TenOboeMultiphonics-M.wav"));
+
+// listen if you want
+~src.play;
+
 (
-b = Buffer.read(s,FluidFilesPath("Tremblay-SlideChoirAdd-M.wav"));
-c = Buffer.new(s);
+fork({
+	var win, synth;
+	var chroma = Buffer(s);
+
+	FluidBufChroma.processBlocking(s,~src,features:chroma);
+
+	s.sync;
+
+	synth = {
+		arg index = 0;
+		var chromaVector = BufRd.kr(12,chroma,index,1,1);
+		var freqs = 440 * 12.collect{arg i; 2.pow(i/12)};
+		var sig = SinOsc.ar(freqs,0,chromaVector);
+		Splay.ar(sig);
+	}.play;
+
+	win = Window("FluidChroma: click me to hear sines of the chroma analysis",Rect(0,0,1600,400));
+
+	FluidWaveform(~src,featuresBuffer:chroma,parent:win,bounds:win.bounds,stackFeatures:true,standalone:false);
+
+	UserView(win,win.bounds).mouseDownAction_{
+		arg view, x, y;
+		var index = x.linlin(0,view.bounds.width,0,chroma.numFrames-1).asInteger;
+		synth.set(\index,index);
+	};
+
+	win.front;
+},AppClock)
 )
 
-// run the process with basic parameters
-(
-Routine{
-	t = Main.elapsedTime;
-	FluidBufChroma.process(s, b, features: c, windowSize: 4096).wait;
-	(Main.elapsedTime - t).postln;
-}.play
-)
-
-// listen to the source and look at the buffer
-b.play;
-c.plot
 ::
+strong::Dividing the octave into more than 12 divisions::
+code::
 
-STRONG::A stereo buffer example.::
-CODE::
+// doing a chroma analysis dividing the octvae into 19 equal divisions:
 
-// load two very different files
+~src = Buffer.read(s,FluidFilesPath("Harker-DS-TenOboeMultiphonics-M.wav"));
+
+// listen if you want
+~src.play;
+
 (
-b = Buffer.read(s,FluidFilesPath("Tremblay-SA-UprightPianoPedalWide.wav"));
-c = Buffer.read(s,FluidFilesPath("Tremblay-AaS-AcousticStrums-M.wav"));
+fork({
+	var win, synth;
+	var chroma = Buffer(s);
+
+	FluidBufChroma.processBlocking(s,~src,features:chroma,numChroma:19);
+
+	s.sync;
+
+	synth = {
+		arg index = 0;
+		var chromaVector = BufRd.kr(chroma.numChannels,chroma,index,1,1);
+		var freqs = 440 * chroma.numChannels.collect{arg i; 2.pow(i/chroma.numChannels)};
+		var sig = SinOsc.ar(freqs,0,chromaVector);
+		Splay.ar(sig);
+	}.play;
+
+	win = Window("FluidChroma: click me to hear sines of the chroma analysis",Rect(0,0,1600,400));
+
+	FluidWaveform(~src,featuresBuffer:chroma,parent:win,bounds:win.bounds,stackFeatures:true,standalone:false);
+
+	UserView(win,win.bounds).mouseDownAction_{
+		arg view, x, y;
+		var index = x.linlin(0,view.bounds.width,0,chroma.numFrames-1).asInteger;
+		synth.set(\index,index);
+	};
+
+	win.front;
+},AppClock)
 )
 
-// composite one on left one on right as test signals
-FluidBufCompose.process(s, c, numFrames:b.numFrames, startFrame:555000,destStartChan:1, destination:b)
-b.play
-
-// create a buffer as destinations
-c = Buffer.new(s);
-
-//run the process on them
-(
-Routine{
-    t = Main.elapsedTime;
-	FluidBufChroma.process(s, b, features: c, windowSize: 4096).wait;
-    (Main.elapsedTime - t).postln;
-}.play
-)
-
-// look at the buffer: 12 chroma bins for left, then 12 chroma bins for right
-c.plot(separately:true)
 ::
