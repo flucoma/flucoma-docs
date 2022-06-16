@@ -1,7 +1,7 @@
 :digest: Real-Time Non-Negative Matrix Factorisation with Fixed Bases
 :species: transformer
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulationToolkit
+:sc-related: Guides/FluidCorpusManipulation
 :see-also: NMFMatch, BufNMF
 :description: Decomposes and resynthesises a signal against a set of spectral templates
 :discussion: 

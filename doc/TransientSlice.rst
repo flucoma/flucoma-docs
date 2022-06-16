@@ -1,7 +1,7 @@
 :digest: Transient-Based Real-Time Audio Slicer
 :species: slicer
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulationToolkit
+:sc-related: Guides/FluidCorpusManipulation
 :see-also: BufTransientSlice, AmpSlice, NoveltySlice, OnsetSlice
 :description: A real-time transient-based slice extractor
 :discussion: 

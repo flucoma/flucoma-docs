@@ -1,7 +1,7 @@
 :digest: Real-Time Novelty-Based Slicer
 :species: slicer
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulationToolkit
+:sc-related: Guides/FluidCorpusManipulation
 :see-also: BufNoveltySlice, OnsetSlice, AmpSlice, TransientSlice
 :description: A real-time slicer using an algorithm assessing novelty in the signal to estimate the slicing points.
 :discussion: 

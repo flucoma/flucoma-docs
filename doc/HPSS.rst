@@ -1,7 +1,7 @@
 :digest: Harmonic-Percussive Source Separation Using Median Filtering
 :species: transformer
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulationToolkit
+:sc-related: Guides/FluidCorpusManipulation
 :see-also: BufHPSS, Sines, Transients
 :description: Harmonic-Percussive Source Separation (HPSS) on an audio input.
 :discussion: 
