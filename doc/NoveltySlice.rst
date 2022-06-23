@@ -23,19 +23,19 @@
    :enum:
 
       :0:
-         Spectrum – The magnitude of the full spectrum.
+         Spectrum - The magnitude of the full spectrum.
 
       :1:
-         MFCC – 13 Mel-Frequency Cepstrum Coefficients.
+         MFCC - 13 Mel-Frequency Cepstrum Coefficients.
 
       :2:
          Chroma - The contour of a 12-band chromagram.
 
       :3:
-         Pitch – The pitch and its confidence.
+         Pitch - The pitch and its confidence.
 
       :4:
-         Loudness – The true peak and loudness.
+         Loudness - The true peak and loudness.
 
 :control kernelSize:
 
