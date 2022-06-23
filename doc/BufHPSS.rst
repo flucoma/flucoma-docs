@@ -9,7 +9,7 @@
     HPSS takes in audio and divides it into two or three outputs, depending on the ``maskingMode``
       * an harmonic component
       * a percussive component
-      * a residual of the previous two if ``maskingMode`` is set to 2 (inter-dependant thresholds). See below.
+      * a residual of the previous two if ``maskingMode`` is set to 2 (interdependant thresholds). See below.
 
     HPSS works by using median filters on the magnitudes of a spectrogram. It makes certain assumptions about what it is looking for in a sound: that in a spectrogram “percussive” elements tend to form vertical “ridges” (tall in frequency band, narrow in time), while stable “harmonic” elements tend to form horizontal “ridges” (narrow in frequency band, long in time). By using median filters across time and frequency respectively, we get initial estimates of the "harmonic-ness" and "percussive-ness" for every spectral bin of every spectral frame in the spectrogram. These are then combined into 'masks' that are applied to the original spectrogram in order to produce a harmonic and percussive output (and residual if ``maskingMode`` = 2).
 
