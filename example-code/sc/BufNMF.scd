@@ -84,7 +84,7 @@ FluidWaveform(featuresBuffer:~bases,bounds:Rect(0,0,1200,300));
 ~resynth.play;
 
 // ======== to further understand NMF's bases and activations, consider one more object: FluidNMFFilter ==========
-// FluidNMFFilter will use the bases (spectral templates) of a FluidBufNMF analysis to filter (i.e., decompose) real-time audio
+// FluidNMFFilter will use the bases (spectral templates) of a FluidBufNMF analysis to filter (i.e., decompose) realtime audio
 
 // for example, if we use the bases from the ~drums analysis above, it will separate the snare from the kick & hi hat like before
 // this time you'll hear one in each stereo channel (again, results may vary)
@@ -97,7 +97,7 @@ FluidWaveform(featuresBuffer:~bases,bounds:Rect(0,0,1200,300));
 }.play;
 )
 
-// if we play a different source through FluidNMFFilter, it will try to decompose that real-time signal according to the bases
+// if we play a different source through FluidNMFFilter, it will try to decompose that realtime signal according to the bases
 // it is given (in our case the bases from the drum loop)
 ~song = Buffer.readChannel(s,FluidFilesPath("Tremblay-BeatRemember.wav"),channels:[0]);
 
