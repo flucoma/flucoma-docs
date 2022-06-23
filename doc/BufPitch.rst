@@ -3,6 +3,7 @@
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulation, Classes/SpecCentroid, Classes/SpecFlatness, Classes/SpecCentroid, Classes/SpecPcile
 :see-also: Pitch, BufLoudness, BufMelBands, BufMFCC, BufSpectralShape, BufStats
+:max-seealso: fzero~, retune~
 :description: Three popular pitch descriptors, all of which compute frequency and the confidence that a pitch is present.
 :discussion: 
 

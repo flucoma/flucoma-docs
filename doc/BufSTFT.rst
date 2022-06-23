@@ -2,7 +2,8 @@
 :species: buffer-proc
 :sc-categories: FluidCorpusManipulation
 :sc-related: Classes/Buffer
-:see-also: 
+:see-also:
+:max-seealso: pfft~
 :description: 
 
    Performs either a forward or inverse Short-Time Fourier Transform (STFT) on a single channel ``source`` |buffer|. 

@@ -3,6 +3,7 @@
 :sc-categories: FluidCorpusManipulation
 :sc-related: Classes/Buffer
 :see-also: BufSelect
+:max-seealso: poke~, peek~, index~, buffer~
 :description: Pick every N frames and / or channels from a buffer, described in terms of independent hop sizes for frames and channels
 
 

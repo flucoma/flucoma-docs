@@ -2,7 +2,8 @@
 :species: data
 :sc-categories: UGens>FluidManipulation
 :sc-related: Classes/FluidLabelSet, Classes/FluidKDTree, Classes/FluidKNNClassifier, Classes/FluidKNNRegressor, Classes/FluidKMeans
-:see-also: 
+:see-also: LabelSet, DataSetQuery
+:max-seealso: coll, dict
 :description: FluidDataSet is a container associating data points with identifiers.
 
 

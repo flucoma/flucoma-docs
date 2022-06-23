@@ -2,7 +2,7 @@
 :species: data
 :sc-categories: Regression
 :sc-related: Classes/FluidKNNClassifier, Classes/FluidDataSet
-:see-also: 
+:see-also: KNNClassifier, DataSet, MLPRegressor
 :description: Regression between DataSets using weighted average of neighbours
 :discussion:
    

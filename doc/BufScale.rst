@@ -3,6 +3,7 @@
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulation, Guides/FluidBufMultiThreading
 :see-also: BufThresh, BufCompose, BufFlatten
+:max-seealso: poke~, peek~, index~, buffer~
 :description: Scale |buffer| values from an input range to an output range.
 :discussion: This object is for scaling |buffer| values. It copies data from a source |buffer| to a destination |buffer|, scaling the source from an input range to an output range.
 

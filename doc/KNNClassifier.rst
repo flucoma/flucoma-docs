@@ -2,7 +2,7 @@
 :species: data
 :sc-categories: Classification, KNN
 :sc-related: Classes/FluidKNNRegressor, Classes/FluidDataSet, Classes/FluidLabelSet, Classes/FluidMLPClassifier
-:see-also: 
+:see-also: KNNRegressor, DataSet, MLPClassifier
 :description: A nearest neighbour classifier using a :fluid-obj:`KDTree` .
 
 :discussion:

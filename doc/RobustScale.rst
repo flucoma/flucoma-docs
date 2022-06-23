@@ -2,7 +2,7 @@
 :species: data
 :sc-categories: FluidManipulation
 :sc-related: Classes/FluidStandardize, Classes/FluidNormalize, Classes/FluidDataSet
-:see-also: 
+:see-also: Normalize, Standardize 
 :description: 
 
    Apply Robust Scaling to a :fluid-obj:`DataSet` based on statistics of the data such that each dimension has a median centred on 0 and a range of 1 from the ``low`` percentile to the ``high`` percentile.

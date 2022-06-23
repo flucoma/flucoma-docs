@@ -3,6 +3,7 @@
 :sc-categories: Libraries>FluidDecomposition, UGens>Buffer
 :sc-related: Guides/FluidCorpusManipulation, Classes/Buffer
 :see-also: BufSelect, BufSelectEvery
+:max-seealso: poke~, peek~, index~, buffer~
 :description: 
    A utility for manipulating the contents of buffers.
 
