@@ -168,7 +168,7 @@ under the European Union’s Horizon 2020 research and innovation programme
     <seealso name='{{ s }}' /> 
     {% endfor %}
     {%- if client_name.startswith('Buf')  -%}
-    <seealso module='flucoma' type='vignette' name="" />
+    <seealso module='flucoma' type='vignette' name="Automatic buffer~ and fluid.dataset~ management" />
     {%- endif -%}
 	</seealsolist>
 </c74object>
