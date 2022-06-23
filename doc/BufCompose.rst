@@ -16,7 +16,7 @@
 
 :control source:
 
-   The bufNum of the source buffer.
+   The name of the source buffer.
 
 :control startFrame:
 
@@ -40,7 +40,7 @@
 
 :control destination:
 
-   The bufNum of the destination buffer.
+   The name of the destination buffer.
 
 :control destStartFrame:
 
