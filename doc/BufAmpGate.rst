@@ -1,4 +1,4 @@
-:digest: Gate Detection on a Bfufer
+:digest: Gate Detection on a Buffer
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulation
@@ -79,7 +79,7 @@
   
 :control highPassFreq:
 
-  The frequency of the fourth-order Linkwitz-Riley high-pass filter (https://en.wikipedia.org/wiki/Linkwitz%E2%80%93Riley_filter) applied to the signal signal to minimise low frequency intermodulation with very short ramp lengths. A frequency of 0 bypasses the filter.
+  The frequency of the fourth-order Linkwitz-Riley high-pass filter (https://en.wikipedia.org/wiki/Linkwitz%E2%80%93Riley_filter) applied to the signal to minimise low frequency intermodulation with very short ramp lengths. A frequency of 0 bypasses the filter.
 
 :control maxSize:
 

@@ -17,7 +17,7 @@
 
 :control source:
 
-   The index of the buffer to use as the source material to be described. The different channels of multichannel buffers will be processing sequentially.
+   The index of the buffer to use as the source material to be described. The different channels of multichannel buffers will be processed sequentially.
 
 :control startFrame:
 
@@ -33,7 +33,7 @@
 
 :control numChans:
 
-   For multichannel srcBuf, how many channel should be processed.
+   For multichannel srcBuf, how many channels should be processed.
 
 :control features:
 

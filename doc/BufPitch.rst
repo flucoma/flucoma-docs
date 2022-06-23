@@ -22,7 +22,7 @@
 
 :control source:
 
-   The index of the buffer to use as the source material to be pitch-tracked. The different channels of multichannel buffers will be processing sequentially.
+   The index of the buffer to use as the source material to be pitch-tracked. The different channels of multichannel buffers will be processed sequentially.
 
 :control select:
 
@@ -42,7 +42,7 @@
 
 :control numChans:
 
-   For multichannel ``source``, how many channel should be processed. The default of -1 indicates to analyse through the last channel in the buffer.
+   For multichannel ``source``, how many channels should be processed. The default of -1 indicates to analyse through the last channel in the buffer.
 
 :control features:
 
@@ -65,11 +65,11 @@
 
 :control minFreq:
 
-   The minimum frequency that the algorithm will search for an estimated fundamental. This sets the lowest value that will be generated. The default is 20.
+   The minimum fundamental frequency that the algorithm withh search for. This sets the lowest value that will be generated. The default is 20.
 
 :control maxFreq:
 
-   The maximum frequency that the algorithm will search for an estimated fundamental. This sets the highest value that will be generated. The default is 10000.
+   The maximum fundamental frequency that the algorithm withh search for. This sets the highest value that will be generated. The default is 10000.
 
 :control unit:
 

@@ -9,7 +9,7 @@
 
 :discussion:
 
-   ``KMeans`` facilitates learning of clusters from a :fluid-obj:`DataSet`. This allows you to assign each point in the data a discrete membership to a group or cluster. The algorithm works by paritioning points into discrete clumps that ideally have *equal variance*. See the scitkit-learn reference for a more technical explanation: https://scikit-learn.org/stable/modules/clustering.html#k-means
+   ``KMeans`` facilitates learning of clusters from a :fluid-obj:`DataSet`. This allows you to assign each point in the data a discrete membership to a group or cluster. The algorithm works by partitioning points into discrete clumps that ideally have *equal variance*. See the Scitkit-learn reference for a more technical explanation: https://scikit-learn.org/stable/modules/clustering.html#k-means
 
 :control numClusters:
 

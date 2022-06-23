@@ -18,7 +18,7 @@
 
 :control weight:
 
-   Whether to weight neighbours by distance when producing new point. The default is 1 (true).
+   Whether to weight neighbours by distance when predicting new points. The default is 1 (true).
 
 :message fit:
 

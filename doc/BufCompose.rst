@@ -7,7 +7,7 @@
    A utility for manipulating the contents of buffers.
 
 :discussion: 
-   This object is the swiss army knife for manipulating buffers and their contents. By specifing ranges of samples and channels to copy, as well as destination and source gains it can provide a powerful interface for performing actions such as a Left/Right to Mid/Side conversion and mixing down multichannel audio
+   This object is the swiss army knife for manipulating buffers and their contents. By specifying ranges of samples and channels to copy, as well as destination and source gains it can provide a powerful interface for performing actions such as a Left/Right to Mid/Side conversion and mixing down multichannel audio
 
 :process: This method triggers the compositing.
 
@@ -24,7 +24,7 @@
 
 :control numFrames:
 
-   The duration (in samples) to copy from the source buffer. The default (-1) copies the full lenght of the buffer.
+   The duration (in samples) to copy from the source buffer. The default (-1) copies the full length of the buffer.
 
 :control startChan:
 
@@ -32,7 +32,7 @@
 
 :control numChans:
 
-   The number of channels from which to copy in the source buffer. This parameter will wrap around the number of channels in the source buffer. The default (-1) copies all of the buffer's channel.
+   The number of channels from which to copy in the source buffer. This parameter will wrap around the number of channels in the source buffer. The default (-1) copies all of the buffer's channels.
 
 :control gain:
 
@@ -48,7 +48,7 @@
 
 :control destStartChan:
 
-   The channel offest in the destination buffer to start writing the source at. The destination buffer will be resized if the number of channels to copy is overflowing.
+   The channel offset in the destination buffer to start writing the source at. The destination buffer will be resized if the number of channels to copy is overflowing.
 
 :control destGain:
 

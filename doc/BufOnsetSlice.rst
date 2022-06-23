@@ -30,7 +30,7 @@
 
 :control numChans:
 
-   For multichannel sources, how many channel should be summed.
+   For multichannel sources, how many channels should be summed.
 
 :control indices:
 
@@ -49,7 +49,7 @@
          **HFC** thresholds on (sum of (squared magnitudes * binNum) / nBins)
 
       :2:
-         **SpectralFlux** thresholds on (diffence in magnitude between consecutive frames, half rectified)
+         **SpectralFlux** thresholds on (difference in magnitude between consecutive frames, half rectified)
 
       :3:
          **MKL** thresholds on (sum of log of magnitude ratio per bin) (or equivalently, sum of difference of the log magnitude per bin) (like Onsets mkl)
@@ -82,11 +82,11 @@
 
 :control filterSize:
 
-   The size of a smoothing filter that is applied on the novelty curve. A larger filter filter size allows for cleaner cuts on very sharp changes.
+   The size of a smoothing filter that is applied on the novelty curve. A larger filter size allows for cleaner cuts on very sharp changes.
 
 :control frameDelta:
 
-   For certain metrics (HFC, SpectralFlux, MKL, Cosine), the distance does not have to be computed between consecutive frames. By default (0) it is, otherwise this sets the distane between the comparison window in samples.
+   For certain metrics (HFC, SpectralFlux, MKL, Cosine), the distance does not have to be computed between consecutive frames. By default (0) it is, otherwise this sets the distance between the comparison window in samples.
 
 :control windowSize:
 

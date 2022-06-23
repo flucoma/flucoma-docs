@@ -10,7 +10,7 @@
    * the four first statistical moments (https://en.wikipedia.org/wiki/Moment_(mathematics) ):
   
      * the spectral centroid (1) in Hertz. This is the point that splits the spectrum in 2 halves of equal energy. It is the weighted average of the magnitude spectrum.
-     * the spectral spread (2) in Hertz. This is the standard deviation of the spectrum envelop, or the average of the distance to the centroid.
+     * the spectral spread (2) in Hertz. This is the standard deviation of the spectrum envelope, or the average of the distance to the centroid.
      * the normalised skewness (3) as ratio. This indicates how tilted is the spectral curve in relation to the middle of the spectral frame, i.e. half of the Nyquist frequency. If it is below the frequency of the magnitude spectrum, it is positive.
      * the normalised kurtosis (4) as ratio. This indicates how focused is the spectral curve. If it is peaky, it is high.
   
@@ -28,7 +28,7 @@
 
 :control source:
 
-   The index of the buffer to use as the source material to be described through the various descriptors. The different channels of multichannel buffers will be processing sequentially.
+   The index of the buffer to use as the source material to be described through the various descriptors. The different channels of multichannel buffers will be processed sequentially.
 
 :control startFrame:
 
@@ -44,7 +44,7 @@
 
 :control numChans:
 
-   For multichannel srcBuf, how many channel should be processed.
+   For multichannel srcBuf, how many channels should be processed.
 
 :control features:
 

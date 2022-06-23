@@ -1,7 +1,7 @@
 
 code::
 
-// a window to watch the MFCC analyses in real-time
+// a window to watch the MFCC analyses in realtime
 (
 ~win = Window("MFCCs Monitor",Rect(0,0,800,400)).front;
 ~ms = MultiSliderView(~win,Rect(0,0,~win.bounds.width,~win.bounds.height)).elasticMode_(1).isFilled_(1);
@@ -71,7 +71,7 @@ OSCdef(\mfccs,{
 )
 
 ::
-STRONG::Comparing MFCC Analyses in real-time::
+STRONG::Comparing MFCC Analyses in realtime::
 CODE::
 
 // we'll compare trombone to trombone (but at different playback rates to fake 2 different players

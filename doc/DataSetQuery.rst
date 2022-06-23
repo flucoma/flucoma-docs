@@ -3,9 +3,7 @@
 :sc-categories: UGens>FluidManipulation
 :sc-related: Classes/FluidDataSet
 :see-also: 
-:description: A selection of columns and a set of conditions that match rows of a FluidDataSet. Use to filter and search in a database of descriptors.
-
-
+:description: A selection of columns and a set of conditions that match rows of a FluidDataSet. Used to filter and search in a database of descriptors.
 
 :message addColumn:
 
@@ -73,7 +71,7 @@
 
    :arg action: Run when done
 
-   Clear the query, remove all columns, filters and limit.
+   Clear the query, remove all columns, filters and limits.
 
 :message transform:
 

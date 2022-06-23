@@ -50,7 +50,7 @@
 
 :control numDerivs:
 
-   The number of derivatives of the original time-series to compute statistics on. The default of 0 will compute statistics on no derivates, only the original time-series itself. Setting this parameter > 0 (maximum of 2) will return the same seven statistics computed on consecutive derivatives of the channel's time-series. (``numDerivs`` = 1 will return the channel's statistics and the statistics of the first derivative, ``numDerivs`` = 2 will return the channel's statistics and the statistics of the first and second derivatives.) The derivative statistics are useful to describe the rate of change of the time series.
+   The number of derivatives of the original time-series to compute statistics on. The default of 0 will compute statistics on no derivatives, only the original time-series itself. Setting this parameter > 0 (maximum of 2) will return the same seven statistics computed on consecutive derivatives of the channel's time-series. (``numDerivs`` = 1 will return the channel's statistics and the statistics of the first derivative, ``numDerivs`` = 2 will return the channel's statistics and the statistics of the first and second derivatives.) The derivative statistics are useful to describe the rate of change of the time series.
 
 :control low:
 
