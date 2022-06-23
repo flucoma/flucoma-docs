@@ -64,7 +64,7 @@
 
    :arg action: Run when done
 
-   Given a trained model, transform the data point in ``sourceBuffer`` from the original dimensional space to ``numDimensions`` in PCA-space and write into ``destBuffer``.
+   Given a trained model, transform the data point in ``sourceBuffer`` from the original dimensional space to ``numDimensions`` in PCA-space and write the result into ``destBuffer``.
 
 :message inverseTransformPoint:
 

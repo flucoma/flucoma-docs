@@ -39,7 +39,7 @@
 
 :control minTrackLen:
 
-   The minimum duration, in spectral frames, for a sinusoidal track to be accepted as a partial. It allows to remove bubbly pitchy artefactss, but is more CPU intensive and might reject quick pitch material.
+   The minimum duration, in spectral frames, for a sinusoidal track to be accepted as a partial. It allows to remove bubbly pitchy artefacts, but is more CPU intensive and might reject quick pitch material.
 
 :control trackingMethod:
 

@@ -49,7 +49,7 @@
          **HFC** thresholds on (sum of (squared magnitudes * binNum) / nBins)
 
       :2:
-         **SpectralFlux** thresholds on (diffence in magnitude between consecutive frames, half rectified)
+         **SpectralFlux** thresholds on (difference in magnitude between consecutive frames, half rectified)
 
       :3:
          **MKL** thresholds on (sum of log of magnitude ratio per bin) (or equivalently, sum of difference of the log magnitude per bin) (like Onsets mkl)

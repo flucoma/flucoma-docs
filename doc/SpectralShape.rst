@@ -1,4 +1,4 @@
-:digest: Seven Spectral Shape Descriptors in Real-Time
+:digest: Seven Spectral Shape Descriptors in Realtime
 :species: descriptor
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulation, Classes/SpecCentroid, Classes/SpecFlatness, Classes/SpecCentroid, Classes/SpecPcile
@@ -12,16 +12,16 @@
      * the spectral centroid (1) in Hertz. This is the point that splits the spectrum in 2 halves of equal energy. It is the weighted average of the magnitude spectrum.
      * the spectral spread (2) in Hertz. This is the standard deviation of the spectrum envelope, or the average of the distance to the centroid.
      * the normalised skewness (3) as ratio. This indicates how tilted is the spectral curve in relation to the middle of the spectral frame, i.e. half of the Nyquist frequency. If it is below the frequency of the magnitude spectrum, it is positive.
-     * the normalised kurtosis (4) as ratio. This indicates how focused is the spectral curve. If it is peaky, it is high.
+     * the normalised kurtosis (4) as ratio. This indicates how focused the spectral curve is. If it is peaky, the value is high.
     
    * the rolloff (5) in Hertz. This indicates the frequency under which 95% of the energy is included.
-   * the flatness (6) in dB. This is the ratio of geometric mean of the magnitude, over the arithmetic mean of the magnitudes. It yields a very approximate measure on how noisy a signal is.
-   * the crest (7) in dB. This is the ratio of the loudest magnitude over the RMS of the whole frame. A high number is an indication of a loud peak poking out from the overal spectral curve.
+   * the flatness (6) in dB. This is the ratio of geometric mean to the magnitude, over the arithmetic mean of the magnitudes. It yields a very approximate measure on how noisy a signal is.
+   * the crest (7) in dB. This is the ratio of the loudest magnitude over the RMS of the whole frame. A high number is an indication of a loud peak poking out from the overall spectral curve.
 
    The drawings in Peeters 2003 ( http://recherche.ircam.fr/anasyn/peeters/ARTICLES/Peeters_2003_cuidadoaudiofeatures.pdf ) are useful, as are the commented examples below. For the mathematically-inclined reader, the tutorials and code offered here  
    ( https://www.audiocontentanalysis.org/ ) are interesting to further the understanding. For examples of the impact of computing the moments in power magnitudes, and/or in exponential frequency scale, please refer to the helpfile.
 
-   The process will return a multichannel control steam with the seven values, which will be repeated if no change happens within the algorithm, i.e. when the hopSize is larger than the signal vector size.
+   The process will return a multichannel control stream with the seven values, which will be repeated if no change happens within the algorithm, i.e. when the hopSize is larger than the signal vector size.
 
 :process: The audio rate in, control rate out version of the object.
 :output: A 7-channel KR signal with the seven spectral shape descriptors. The latency is windowSize.

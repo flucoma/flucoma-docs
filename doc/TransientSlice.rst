@@ -1,16 +1,16 @@
-:digest: Transient-Based Real-Time Audio Slicer
+:digest: Transient-Based Realtime Audio Slicer
 :species: slicer
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulation
 :see-also: BufTransientSlice, AmpSlice, NoveltySlice, OnsetSlice
-:description: A real-time transient-based slice extractor
+:description: A realtime transient-based slice extractor
 :discussion: 
 
   TransientSlice identifies slice points in a real time signal by implementing a "de-clicking" algorithm based on the assumption that a transient is a sample or series of samples that are anomalous when compared to surrounding samples. It creates a model of the time series of samples, so that when a given sample doesn't fit the model (its "error" or anomalous-ness goes above ``threshFwd``) it is determined to be a transient and a slice point is identified. 
 
   The series of samples determined to be a transient will continue until the error goes below ``threshBack``, indicating that the samples are again more in-line with the model.
 
-  The process will return an audio steam with single sample impulses at estimated starting points of the different slices.
+  The process will return an audio stream with single sample impulses at estimated starting points of the different slices.
 
   The algorithm implemented is from chapter 5 of "Digital Audio Restoration" by Godsill, Simon J., Rayner, Peter J.W. with some bespoke improvements on the detection function tracking.
 
@@ -27,7 +27,7 @@
 
 :control blockSize:
 
-  The size of audio chunk (in samples) on which the process is operating. This determines the maximum duration (in samples) of a detected transient, which cannot be more than half of ``blockSize - order``. High values are more cpu intensive.
+  The size of audio block (in samples) on which the process is operating. This determines the maximum duration (in samples) of a detected transient, which cannot be more than half of ``blockSize - order``. High values are more cpu intensive.
 
 :control padSize:
 
@@ -39,11 +39,11 @@
 
 :control threshFwd:
 
-  The threshold applied to the smoothed forward prediction error for determining an onset. The units are roughly in standard deviations, thus can be considered how "deviant", or anomalous, the signal must be to be detected as a transient. It allows tight start of the identification of the anomaly as it proceeds forward.
+  The threshold applied to the smoothed forward prediction error for determining an onset. The units are roughly in standard deviations, thus can be considered how "deviant", or anomalous, the signal must be to be detected as a transient. It allows tight identification of the start of the anomaly as it proceeds forward.
 
 :control threshBack:
 
-  The threshold applied to the smoothed backward prediction error for determining an offset. The units are roughly in standard deviations, thus can be considered how "deviant", or anomalous, the signal must be to be considered transient. When the smoothed error function goes below ``threshBack`` an offset is identified. As it proceeds backwards in time, it allows tight ending of the identification of the anomaly.
+  The threshold applied to the smoothed backward prediction error for determining an offset. The units are roughly in standard deviations, thus can be considered how "deviant", or anomalous, the signal must be to be considered transient. When the smoothed error function goes below ``threshBack`` an offset is identified. As it proceeds backwards in time, it allows tight identification of the end of the anomaly.
 
 :control windowSize:
 
@@ -51,7 +51,7 @@
 
 :control clumpLength:
 
-  The window size in samples within which anomalous samples will be clumped together to avoid over detecting in time. This is similar to setting a minimum slice length.
+  The window size in samples within which anomalous samples will be clumped together to avoid over-detecting in time. This is similar to setting a minimum slice length.
 
 :control minSliceLength:
 

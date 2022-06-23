@@ -1,4 +1,4 @@
-:digest: Gate Detection on a Bfufer
+:digest: Gate Detection on a Buffer
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulation

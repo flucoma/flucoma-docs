@@ -80,7 +80,7 @@
         Binary masks provide better separation, but with more artefacts. The harmonic mask is constructed using a binary decision, based on whether a threshold is exceeded for every magnitude in the spectrogram (these are set using ``harmThreshFreq1``, ``harmThreshAmp1``, ``harmThreshFreq2``, ``harmThreshAmp2``, see below). The percussive mask is then formed as the inverse of the harmonic one, meaning that as above, the two components will sum to the original sound.
 
      :2:
-        Soft masks (with a third stream containing a residual component). First, binary masks are made separately for the harmonic and percussive components using different thresholds (set with the respective ``harmThresh-`` and ``percThresh-`` parameters below). Because these masks aren't guaranteed to represent the entire spectrogram, any residual energy is considered as a third output.  The independently created binary masks are converted to soft masks at the end of the process so that everything null sums. 
+        Soft masks (with a third stream containing a residual component). First, binary masks are made separately for the harmonic and percussive components using different thresholds (set with the respective ``harmThresh-`` and ``percThresh-`` parameters below). Because these masks aren't guaranteed to represent the entire spectrogram, any residual energy is considered as a third output.  The independently created binary masks are converted to soft masks at the end of the process so that everything null-sums. 
 
 :control harmThresh:
 

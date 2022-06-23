@@ -9,7 +9,7 @@
 
 :discussion:
 
-   :fluid-obj:`SKMeans` is an implementation of KMeans based on cosine distances instead of euclidian ones, measuring the angles between the normalised vectors. 
+   :fluid-obj:`SKMeans` is an implementation of KMeans based on cosine distances instead of euclidean ones, measuring the angles between the normalised vectors. 
    One common application of spherical KMeans is to try and learn features directly from input data (via a :fluid-obj:`DataSet`) without supervision. See this reference for a more technical explanation: https://machinelearningcatalogue.com/algorithm/alg_spherical-k-means.html and https://www-cs.stanford.edu/~acoates/papers/coatesng_nntot2012.pdf for feature extractions.
 
 :control numClusters:
@@ -104,7 +104,7 @@
 
    :arg action: A function to run when complete.
 
-   Overwrites the means (centroids) of each cluster, and declare the object trained.
+   Overwrites the means (centroids) of each cluster, and declares the object trained.
 
 :message clear:
 

@@ -5,7 +5,7 @@
 :see-also: 
 :description: 
 
-  Perform classification between a :fluid-obj:`DataSet` and a :fluid-obj:`LabelSet` using a Multi-Layer Perception neural network.
+  Perform classification between a :fluid-obj:`DataSet` and a :fluid-obj:`LabelSet` using a Multi-Layer Perceptron neural network.
 
 :discussion:  
 

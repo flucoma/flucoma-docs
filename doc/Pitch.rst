@@ -53,7 +53,7 @@
 
 :control unit:
 
-   The unit of the pitch output. The default of 0 indicates to output in Hz. A value of 1 will output MIDI note values.
+   The unit of the pitch output. The default of 0 indicates output in Hz. A value of 1 will output MIDI note values.
 
 :control windowSize:
 

@@ -5,7 +5,7 @@
 :see-also: 
 :description: 
 
-  Perform regression between :fluid-obj:`DataSet`\s using a Multi-Layer Perception neural network.
+  Perform regression between :fluid-obj:`DataSet`\s using a Multi-Layer Perceptron neural network.
 
 :discussion:
 

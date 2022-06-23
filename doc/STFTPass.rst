@@ -1,9 +1,9 @@
-:digest: Real-Time FFT/IFFT return trip.
+:digest: Realtime FFT/IFFT return trip.
 :species: transformer
 :sc-categories: UGens>Algebraic, Libraries>FluidDecomposition, UGens>Buffer
 :sc-related: Guides/FluidCorpusManipulation,Classes/UnaryOpFunction
 :see-also: 
-:description: This class implements a sanity test for the FluCoMa Real-Time Client FFT/IFFT Wrapper.
+:description: This class implements a sanity test for the FluCoMa Realtime Client FFT/IFFT Wrapper.
 :discussion: 
 :process: The audio rate version of the object.
 :output: Same as input, delayed by the windowSize.

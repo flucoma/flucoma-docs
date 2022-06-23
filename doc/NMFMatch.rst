@@ -1,19 +1,19 @@
-:digest: Real-Time Non-Negative Matrix Factorisation with Fixed Bases
+:digest: Realtime Non-Negative Matrix Factorisation with Fixed Bases
 :species: descriptor
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulation
 :see-also: NMFFilter, BufNMF
 :description: Matches an incoming audio signal against a set of spectral templates
 :discussion: 
-   This uses an slimmed-down version of Nonnegative Matrix Factorisation (NMF, Lee, Daniel D., and H. Sebastian Seung. 1999. ‘Learning the Parts of Objects by Non-Negative Matrix Factorization’. Nature 401 (6755): 788–91. https://doi.org/10.1038/44565.)
+   This uses a slimmed-down version of Nonnegative Matrix Factorisation (NMF, Lee, Daniel D., and H. Sebastian Seung. 1999. ‘Learning the Parts of Objects by Non-Negative Matrix Factorization’. Nature 401 (6755): 788–91. https://doi.org/10.1038/44565.)
 
-   It outputs at kr the degree of detected match for each template (the activation amount, in NMF-terms). The spectral templates are presumed to have been produced by the offline NMF process (BufNMF), and must be the correct size with respect to the FFT settings being used (FFT size / 2 + 1 frames long). The components of the decomposition is determined by the number of channels in the supplied buffer of templates, up to a maximum set by the maxComponents parameter.
+   It outputs at kr the degree of detected match for each template (the activation amount, in NMF-terms). The spectral templates are presumed to have been produced by the offline NMF process (BufNMF), and must be the correct size with respect to the FFT settings being used (FFT size / 2 + 1 frames long). The components of the decomposition are determined by the number of channels in the supplied buffer of templates, up to a maximum set by the maxComponents parameter.
 
    NMF has been a popular technique in signal processing research for things like source separation and transcription (see e.g Smaragdis and Brown, Non-Negative Matrix Factorization for Polyphonic Music Transcription.), although its creative potential is so far relatively unexplored. It works iteratively, by trying to find a combination of amplitudes ('activations') that yield the original magnitude spectrogram of the audio input when added together. By and large, there is no unique answer to this question (i.e. there are different ways of accounting for an evolving spectrum in terms of some set of templates and envelopes). In its basic form, NMF is a form of unsupervised learning: it starts with some random data and then converges towards something that minimizes the distance between its generated data and the original:it tends to converge very quickly at first and then level out. Fewer iterations mean less processing, but also less predictable results.
 
    The whole process can be related to a channel vocoder where, instead of fixed bandpass filters, we get more complex filter shapes and the activations correspond to channel envelopes.
 
-:process: The real-time processing method. It takes an audio or control input, and will yield a control stream in the form of a multichannel array of size maxComponents . If the bases buffer has fewer than maxComponents channels, the remaining outputs will be zeroed.
+:process: The realtime processing method. It takes an audio or control input, and will yield a control stream in the form of a multichannel array of size maxComponents . If the bases buffer has fewer than maxComponents channels, the remaining outputs will be zeroed.
 :output: A multichannel kr output, giving for each basis component the activation amount.
 
 
@@ -27,7 +27,7 @@
 
 :control maxComponents:
 
-   The maximum number of elements the NMF algorithm will try to divide the spectrogram of the source in. This dictates the number of output channelsfor the ugen. This cannot be modulated.
+   The maximum number of elements the NMF algorithm will try to divide the spectrogram of the source in. This dictates the number of output channels. This cannot be modulated.
 
 :control iterations:
 
@@ -35,7 +35,7 @@
 
 :control windowSize:
 
-   The number of samples that are analysed at a time. A lower number yields greater temporal resolution, at the expense of spectral resoultion, and vice-versa.
+   The number of samples that are analysed at a time. A lower number yields greater temporal resolution, at the expense of spectral resolution, and vice-versa.
 
 :control hopSize:
 
