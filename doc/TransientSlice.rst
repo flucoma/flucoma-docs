@@ -27,7 +27,7 @@
 
 :control blockSize:
 
-  The size of audio chunk (in samples) on which the process is operating. This determines the maximum duration (in samples) of a detected transient, which cannot be more than than half of ``blockSize - order``. High values are more cpu intensive.
+  The size of audio chunk (in samples) on which the process is operating. This determines the maximum duration (in samples) of a detected transient, which cannot be more than half of ``blockSize - order``. High values are more cpu intensive.
 
 :control padSize:
 

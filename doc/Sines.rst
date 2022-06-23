@@ -23,7 +23,7 @@
 
 :control bandwidth:
 
-   The number of bins used to resynthesises a peak. It has an effect on CPU cost: the widest is more accurate but more computationally expensive. It is capped at (fftSize / 2) + 1.
+   The number of bins used to resynthesise a peak. It has an effect on CPU cost: the widest is more accurate but more computationally expensive. It is capped at (fftSize / 2) + 1.
 
 :control detectionThreshold:
 

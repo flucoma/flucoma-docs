@@ -42,7 +42,7 @@
 
 :control numChans:
 
-   For multichannel ``source``, how many channel should be processed. The default of -1 indicates to analyse through the last channel in the buffer.
+   For multichannel ``source``, how many channels should be processed. The default of -1 indicates to analyse through the last channel in the buffer.
 
 :control features:
 

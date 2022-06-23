@@ -30,7 +30,7 @@
 
 :control numChans:
 
-   For multichannel sources, how many channel should be summed.
+   For multichannel sources, how many channels should be summed.
 
 :control indices:
 
@@ -82,7 +82,7 @@
 
 :control filterSize:
 
-   The size of a smoothing filter that is applied on the novelty curve. A larger filter filter size allows for cleaner cuts on very sharp changes.
+   The size of a smoothing filter that is applied on the novelty curve. A larger filter size allows for cleaner cuts on very sharp changes.
 
 :control frameDelta:
 

@@ -36,7 +36,7 @@
 
 :control numChans:
 
-   For multichannel srcBuf, how many channel should be processed.
+   For multichannel srcBuf, how many channels should be processed.
 
 :control sines:
 

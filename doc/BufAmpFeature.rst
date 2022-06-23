@@ -28,7 +28,7 @@
 
 :control numChans:
 
-   For multichannel sources, how many channel should be summed.
+   For multichannel sources, how many channels should be summed.
 
 :control features:
 

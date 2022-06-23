@@ -34,7 +34,7 @@
 
 :control offThreshold:
 
-   The threshold in dB of the relative envelope follower to reset, aka to allow the differential envelop to trigger again.
+   The threshold in dB of the relative envelope follower to reset, aka to allow the differential envelope to trigger again.
 
 :control floor:
 

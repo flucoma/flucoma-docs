@@ -42,7 +42,7 @@
 
 :control startChan:
 
-   For multichannel ``source`` buffers, which which channel to begin the processing. The default is 0.
+   For multichannel ``source`` buffers, which channel to begin the processing. The default is 0.
 
 :control numChans:
 

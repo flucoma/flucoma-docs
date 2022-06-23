@@ -47,7 +47,7 @@
 
 :control maxIter:
 
-   The number of epochs to train for when ``fit`` is called on the object. An epoch is consists of training on all the data points one time.
+   The number of epochs to train for when ``fit`` is called on the object. An epoch consists of training on all the data points one time.
 
 :control learnRate:
 
