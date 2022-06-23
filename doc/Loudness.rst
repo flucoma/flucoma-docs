@@ -3,6 +3,7 @@
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulation
 :see-also: BufLoudness, Pitch, MelBands, MFCC, SpectralShape
+:max-seealso: peakamp~, meter~
 :description: Two loudness descriptors, with a ITU BS 1770 mode
 :discussion: 
    Computes the true peak of the signal as well as applying the filters proposed by broadcasting standards to emulate the perception of amplitude.

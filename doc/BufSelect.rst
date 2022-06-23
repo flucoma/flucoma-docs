@@ -3,6 +3,7 @@
 :sc-categories: FluidCorpusManipulation
 :sc-related: Classes/Buffer
 :see-also: BufSelectEvery
+:max-seealso: poke~, peek~, index~, buffer~
 :description: Copies sets of values from a buffer, described in terms of a list of frame indices and channel numbers.
 
 

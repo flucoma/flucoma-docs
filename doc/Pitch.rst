@@ -3,6 +3,7 @@
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulation, Classes/Pitch
 :see-also: BufPitch, MFCC, MelBands, Loudness, SpectralShape
+:max-seealso: fzero~, retune~
 :description: Three popular monophonic pitch descriptors, all of which compute frequency and confidence.
 :discussion: 
 

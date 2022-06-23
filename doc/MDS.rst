@@ -2,7 +2,7 @@
 :species: data
 :sc-categories: Dimensionality Reduction, Data Processing
 :sc-related: Classes/FluidMDS, Classes/FluidDataSet
-:see-also: 
+:see-also: UMAP, PCA, DataSet
 :description: 
 
    Dimensionality Reduction of a :fluid-obj:`DataSet` Using Multidimensional Scaling

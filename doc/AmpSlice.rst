@@ -3,6 +3,7 @@
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulation
 :see-also: BufAmpSlice, AmpGate, OnsetSlice, NoveltySlice, TransientSlice
+:max-seealso: peakamp~, meter~, snapshot~, slide~
 :description: Implements an amplitude-based slicer, with various customisable options and conditions to detect relative amplitude changes as onsets.
 :discussion: 
    FluidAmpSlice is based on two envelope followers on a high-passed version of the signal: one slow that gives the trend, and one fast. Each has features that will interact. The example code below is unfolding the various possibilities in order of complexity.

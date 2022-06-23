@@ -2,7 +2,7 @@
 :species: data
 :sc-categories: Machine learning
 :sc-related: Classes/FluidMLPRegressor, Classes/FluidDataSet, Classes/FluidLabelSet
-:see-also: 
+:see-also: MLPRegressor, KNNClassifier, DataSet, LabelSet
 :description: 
 
   Perform classification between a :fluid-obj:`DataSet` and a :fluid-obj:`LabelSet` using a Multi-Layer Perceptron neural network.

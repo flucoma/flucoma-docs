@@ -3,6 +3,7 @@
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulation
 :see-also: Loudness, BufPitch, BufMelBands, BufMFCC, BufSpectralShape, BufStats
+:max-seealso: peakamp~, meter~
 :description: Two loudness descriptors, computing the true peak of the signal as well as applying the filters proposed by broadcasting standards to emulate the perception of amplitude.
 :discussion: 
    The process will return a multichannel buffer with two channels per input channel, one for loudness and one for the true peak value of the frame, both in dBfs.

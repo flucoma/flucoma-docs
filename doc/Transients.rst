@@ -2,7 +2,7 @@
 :species: transformer
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulation
-:see-also: BufTransients,Sines,HPSS
+:see-also: BufTransients, Sines, HPSS
 :description: Separate transients from a signal.
 :discussion: 
 
