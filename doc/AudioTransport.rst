@@ -8,7 +8,7 @@
 
 :discussion:
    Interpolates between the spectra of two sounds using the optimal transport algorithm. This enables morphing and hybridisation of the perceptual qualities of each source linearly.
-   See Henderson and Solomonm (2019) AUDIO TRANSPORT: A GENERALIZED PORTAMENTO VIA OPTIMAL TRANSPORT, DaFx
+   See Henderson and Solomon (2019) AUDIO TRANSPORT: A GENERALIZED PORTAMENTO VIA OPTIMAL TRANSPORT, DaFx
 
    https://arxiv.org/abs/1906.06763
 

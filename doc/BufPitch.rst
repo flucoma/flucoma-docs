@@ -3,6 +3,7 @@
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulation, Classes/SpecCentroid, Classes/SpecFlatness, Classes/SpecCentroid, Classes/SpecPcile
 :see-also: Pitch, BufLoudness, BufMelBands, BufMFCC, BufSpectralShape, BufStats
+:max-seealso: fzero~, retune~
 :description: Three popular pitch descriptors, all of which compute frequency and the confidence that a pitch is present.
 :discussion: 
 
@@ -22,7 +23,7 @@
 
 :control source:
 
-   The index of the buffer to use as the source material to be pitch-tracked. The different channels of multichannel buffers will be processing sequentially.
+   The index of the buffer to use as the source material to be pitch-tracked. The different channels of multichannel buffers will be processed sequentially.
 
 :control select:
 
@@ -42,7 +43,7 @@
 
 :control numChans:
 
-   For multichannel ``source``, how many channel should be processed. The default of -1 indicates to analyse through the last channel in the buffer.
+   For multichannel ``source``, how many channels should be processed. The default of -1 indicates to analyse through the last channel in the buffer.
 
 :control features:
 
@@ -65,11 +66,11 @@
 
 :control minFreq:
 
-   The minimum frequency that the algorithm will search for an estimated fundamental. This sets the lowest value that will be generated. The default is 20.
+   The minimum fundamental frequency that the algorithm withh search for. This sets the lowest value that will be generated. The default is 20.
 
 :control maxFreq:
 
-   The maximum frequency that the algorithm will search for an estimated fundamental. This sets the highest value that will be generated. The default is 10000.
+   The maximum fundamental frequency that the algorithm withh search for. This sets the highest value that will be generated. The default is 10000.
 
 :control unit:
 
@@ -89,7 +90,18 @@
 
 :control padding:
 
-   Controls the zero-padding added to either end of the source buffer or segment. Possible values are 0 (no padding), 1 (default, half the window size), or 2 (window size - hop size). Padding ensures that all input samples are completely analysed: with no padding, the first analysis window starts at time 0, and the samples at either end will be tapered by the STFT windowing function. Mode 1 has the effect of centering the first sample in the analysis window and ensuring that the very start and end of the segment are accounted for in the analysis. Mode 2 can be useful when the overlap factor (window size / hop size) is greater than 2, to ensure that the input samples at either end of the segment are covered by the same number of analysis frames as the rest of the analysed material.
+   Controls the zero-padding added to either end of the source buffer or segment. Padding ensures all values are analysed. Possible values are:
+   
+   :enum:
+
+      :0:
+         No padding - The first analysis window starts at time 0, and the samples at either end will be tapered by the STFT windowing function.
+   
+      :1: 
+         Half the window size - The first sample is centred in the analysis window ensuring that the start and end of the segment are accounted for in the analysis.
+   
+      :2: 
+         Window size minus the hop size - Mode 2 can be useful when the overlap factor (window size / hop size) is greater than 2, to ensure that the input samples at either end of the segment are covered by the same number of analysis frames as the rest of the analysed material.
 
 :control maxFFTSize:
 

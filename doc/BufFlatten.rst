@@ -3,6 +3,7 @@
 :sc-categories: FluidCorpusManipulation
 :sc-related: Classes/Buffer
 :see-also: BufCompose, BufStats
+:max-seealso: poke~, peek~, index~, buffer~
 :description: 
    Flatten a multichannel |buffer| to a single channel. This can be useful to structure a buffer such that it can be added to a :fluid-obj:`DataSet`
 :discussion:
@@ -42,7 +43,7 @@
 
 :control startChan:
 
-   For multichannel ``source`` buffers, which which channel to begin the processing. The default is 0.
+   For multichannel ``source`` buffers, which channel to begin the processing. The default is 0.
 
 :control numChans:
 

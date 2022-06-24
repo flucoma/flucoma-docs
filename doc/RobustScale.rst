@@ -2,7 +2,7 @@
 :species: data
 :sc-categories: FluidManipulation
 :sc-related: Classes/FluidStandardize, Classes/FluidNormalize, Classes/FluidDataSet
-:see-also: 
+:see-also: Normalize, Standardize 
 :description: 
 
    Apply Robust Scaling to a :fluid-obj:`DataSet` based on statistics of the data such that each dimension has a median centred on 0 and a range of 1 from the ``low`` percentile to the ``high`` percentile.
@@ -33,7 +33,7 @@
 
    :arg destDataSet: The :fluid-obj:`DataSet` to write the scaled data to.
 
-   Scale a :fluid-obj:`DataSet` into another :fluid-obj:`DataSet`, using the learned statistics from the previous call to :fluid-obj:`RobustScale#fit`
+   Scale a :fluid-obj:`DataSet` into another :fluid-obj:`DataSet`, using the learned statistics from the previous call to ``fit``
 
 :message inverseTransform:
 
@@ -41,7 +41,7 @@
 
     :arg destDataSet: The :fluid-obj:`DataSet` to write the scaled data to.
 
-    Inverse scale a :fluid-obj:`DataSet` into another :fluid-obj:`DataSet`: going from the range of the scaled data back to the range of the data that was used in the previous call to :fluid-obj:`RobustScale#fit`
+    Inverse scale a :fluid-obj:`DataSet` into another :fluid-obj:`DataSet`: going from the range of the scaled data back to the range of the data that was used in the previous call to ``fit``
       
 :message fitTransform:
 
@@ -57,7 +57,7 @@
 
    :arg destBuffer: A |buffer| to write the scaled values to
 
-   Scale a data point, using the learned statistics from the previous call to :fluid-obj:`RobustScale#fit`
+   Scale a data point, using the learned statistics from the previous call to ``fit``
    
 :message inverseTransformPoint:
 

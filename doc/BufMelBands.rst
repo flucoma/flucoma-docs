@@ -6,9 +6,9 @@
 :description: Magnitudes for a number of perceptually-evenly spaced bands.
 :discussion: 
 
-  :fluid-obj:`BufMelBands` returns a Mel-Frequency Spectrum comprised of the user-defined ``numBands``. The Mel-Frequency Spectrum is a histogram of FFT bins bundled according their relationship to the Mel scale ( https://en.wikipedia.org/wiki/Mel_scale ) which represents frequency space logarithmically, mimicking how humans perceive pitch distance. The name "Mel" derives from the word "melody". The Hz-to-Mel conversion used by :fluid-obj:`BufMelBands` is ``mel = 1127.01048 * log(hz / 700.0 + 1.0)``. 
+  :fluid-obj:`BufMelBands` returns a Mel-Frequency Spectrum containing the user-defined ``numBands``. The Mel-Frequency Spectrum is a histogram of FFT bins bundled according to their relationship to the Mel scale ( https://en.wikipedia.org/wiki/Mel_scale ) which represents frequency space logarithmically, mimicking how humans perceive pitch distance. The name "Mel" derives from the word "melody". The Hz-to-Mel conversion used by :fluid-obj:`BufMelBands` is ``mel = 1127.01048 * log(hz / 700.0 + 1.0)``. 
   
-  This implementation allows to select the range and number of bands dynamically. The ``numBands`` MelBands will be perceptually equally distributed between ``minFreq`` and ``maxFreq``.
+  This implementation allows selection of the range and number of bands dynamically. The ``numBands`` MelBands will be perceptually equally distributed between ``minFreq`` and ``maxFreq``.
 
   When using a high value for ``numBands``, you may end up with empty channels (filled with zeros) in the MelBands output. This is because there is not enough information in the FFT analysis to properly calculate values for every MelBand. Increasing the ``fftSize`` will ensure you have values for all the MelBands.
   
@@ -20,7 +20,7 @@
 
 :control source:
 
-   The index of the buffer to use as the source material to be analysed. The different channels of multichannel buffers will be processing sequentially.
+   The index of the buffer to use as the source material to be analysed. The different channels of multichannel buffers will be processed sequentially.
 
 :control startFrame:
 
@@ -76,7 +76,18 @@
 
 :control padding:
 
-   Controls the zero-padding added to either end of the source buffer or segment. Possible values are 0 (no padding), 1 (default, half the window size), or 2 (window size - hop size). Padding ensures that all input samples are completely analysed: with no padding, the first analysis window starts at time 0, and the samples at either end will be tapered by the STFT windowing function. Mode 1 has the effect of centring the first sample in the analysis window and ensuring that the very start and end of the segment are accounted for in the analysis. Mode 2 can be useful when the overlap factor (window size / hop size) is greater than 2, to ensure that the input samples at either end of the segment are covered by the same number of analysis frames as the rest of the analysed material.
+   Controls the zero-padding added to either end of the source buffer or segment. Padding ensures all values are analysed. Possible values are:
+   
+   :enum:
+
+      :0:
+         No padding - The first analysis window starts at time 0, and the samples at either end will be tapered by the STFT windowing function.
+   
+      :1: 
+         Half the window size - The first sample is centred in the analysis window ensuring that the start and end of the segment are accounted for in the analysis.
+   
+      :2: 
+         Window size minus the hop size - Mode 2 can be useful when the overlap factor (window size / hop size) is greater than 2, to ensure that the input samples at either end of the segment are covered by the same number of analysis frames as the rest of the analysed material.
 
 :control action:
 

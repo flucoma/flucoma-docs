@@ -30,7 +30,7 @@
 
    :arg destDataSet: The :fluid-obj:`DataSet` to populate with normalized data
 
-   Transform a :fluid-obj:`DataSet` using learned extrema from :fluid-obj:`Normalize#fit` and copy the results to the destination :fluid-obj:`DataSet`.
+   Transform a :fluid-obj:`DataSet` using learned extrema from ``fit`` and copy the results to the destination :fluid-obj:`DataSet`.
 
 :message fitTransform:
 
@@ -48,7 +48,7 @@
 
    :arg action: A function to run when processing is complete
 
-   Un-normalize :fluid-obj:`DataSet`, using the learned statistics from a previous call to :fluid-obj:`Normalize#fit`.
+   Un-normalize :fluid-obj:`DataSet`, using the learned statistics from a previous call to ``fit``.
 
 :message transformPoint:
 
@@ -56,7 +56,7 @@
 
    :arg destBuffer: A |buffer| to contain the normalized value
 
-   Normalize a single data point, using the learned extrema from a previous call to :fluid-obj:`Normalize#fit`
+   Normalize a single data point, using the learned extrema from a previous call to ``fit``
 
 :message inverseTransformPoint:
 
@@ -66,4 +66,4 @@
 
   :arg action: A function to run when processing is complete
 
-  Un-normalize a data point, using the learned statistics from a previous call to :fluid-obj:`Normalize#fit`
+  Un-normalize a data point, using the learned statistics from a previous call to ``fit``

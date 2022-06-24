@@ -2,7 +2,7 @@
 :species: descriptor
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulation
-:see-also: BufStats, Standardize
+:see-also: BufStats, Standardize, Normalize, RobustScale
 :description: Computes the rolling mean and sample standard deviation over a given window for multichannel control inputs.
 :discussion: 
 

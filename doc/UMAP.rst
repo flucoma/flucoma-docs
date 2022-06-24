@@ -2,7 +2,7 @@
 :species: data
 :sc-categories: Dimensionality Reduction, Data Processing
 :sc-related: Classes/FluidMDS, Classes/FluidDataSet
-:see-also: 
+:see-also: MDS, PCA, DataSet 
 :description: Reduce the dimensions of a :fluid-obj:`DataSet` using the Uniform Manifold Approximation and Projection (UMAP) algorithm.
 :discussion: 
    Performs dimensionality reduction of a :fluid-obj:`DataSet` using Uniform Manifold Approximation and Projection (UMAP)
@@ -21,7 +21,7 @@
 
 :control numNeighbours:
 
-   The number of neighbours considered by the algorithm to balance local vs global structures to conserve. Low values will prioritise preserving local structure, high values will help preserving the global structure.
+   The number of neighbours considered by the algorithm to balance local vs global structures to conserve. Low values will prioritise preservation of the local structure while high values will prioritise preservation of the global structure.
 
 :control minDist:
 

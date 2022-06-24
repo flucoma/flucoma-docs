@@ -10,7 +10,7 @@
    * the four first statistical moments (https://en.wikipedia.org/wiki/Moment_(mathematics) ):
   
      * the spectral centroid (1) in Hertz. This is the point that splits the spectrum in 2 halves of equal energy. It is the weighted average of the magnitude spectrum.
-     * the spectral spread (2) in Hertz. This is the standard deviation of the spectrum envelop, or the average of the distance to the centroid.
+     * the spectral spread (2) in Hertz. This is the standard deviation of the spectrum envelope, or the average of the distance to the centroid.
      * the normalised skewness (3) as ratio. This indicates how tilted is the spectral curve in relation to the middle of the spectral frame, i.e. half of the Nyquist frequency. If it is below the frequency of the magnitude spectrum, it is positive.
      * the normalised kurtosis (4) as ratio. This indicates how focused is the spectral curve. If it is peaky, it is high.
   
@@ -28,7 +28,7 @@
 
 :control source:
 
-   The index of the buffer to use as the source material to be described through the various descriptors. The different channels of multichannel buffers will be processing sequentially.
+   The index of the buffer to use as the source material to be described through the various descriptors. The different channels of multichannel buffers will be processed sequentially.
 
 :control startFrame:
 
@@ -44,7 +44,7 @@
 
 :control numChans:
 
-   For multichannel srcBuf, how many channel should be processed.
+   For multichannel srcBuf, how many channels should be processed.
 
 :control features:
 
@@ -84,7 +84,18 @@
 
 :control padding:
 
-   Controls the zero-padding added to either end of the source buffer or segment. Possible values are 0 (no padding), 1 (default, half the window size), or 2 (window size - hop size). Padding ensures that all input samples are completely analysed: with no padding, the first analysis window starts at time 0, and the samples at either end will be tapered by the STFT windowing function. Mode 1 has the effect of centering the first sample in the analysis window and ensuring that the very start and end of the segment are accounted for in the analysis. Mode 2 can be useful when the overlap factor (window size / hop size) is greater than 2, to ensure that the input samples at either end of the segment are covered by the same number of analysis frames as the rest of the analysed material.
+   Controls the zero-padding added to either end of the source buffer or segment. Padding ensures all values are analysed. Possible values are:
+   
+   :enum:
+
+      :0:
+         No padding - The first analysis window starts at time 0, and the samples at either end will be tapered by the STFT windowing function.
+   
+      :1: 
+         Half the window size - The first sample is centred in the analysis window ensuring that the start and end of the segment are accounted for in the analysis.
+   
+      :2: 
+         Window size minus the hop size - Mode 2 can be useful when the overlap factor (window size / hop size) is greater than 2, to ensure that the input samples at either end of the segment are covered by the same number of analysis frames as the rest of the analysed material.
 
 :control maxFFTSize:
 

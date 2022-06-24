@@ -2,7 +2,7 @@
 :species: data
 :sc-categories: Dimensionality Reduction, Data Processing
 :sc-related: Classes/FluidMDS, Classes/FluidDataSet
-:see-also: 
+:see-also: UMAP, PCA, DataSet
 :description: 
 
    Dimensionality Reduction of a :fluid-obj:`DataSet` Using Multidimensional Scaling
@@ -29,7 +29,7 @@
    
    **Symmetric Kullback Leibler Divergence:** Because the first part of this computation uses the logarithm of the values, using the Symmetric Kullback Leibler Divergence only makes sense with non-negative data. https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Symmetrised_divergence
    
-   .. **Cosine Distance:** Cosine Distance considers each data point a vector in Cartesian space and computes the angle between the two points. It first normalizes these vectors so they both sit on the unit circle and then finds the dot product of the two vectors which returns a calculation of the angle. Therefore this measure does not consider the magnitudes of the vectors when computing distance. https://en.wikipedia.org/wiki/Cosine_similarity (This article describes the cosine _similarity_, as opposed to distance, however since the cosine similarity is always between -1 and 1, the distance is computed as 1 - cosine similarity, which will always range from a minimum distance of 0 to a maximum distance of 2.)
+   .. **Cosine Distance:** Cosine Distance considers each data point a vector in Cartesian space and computes the angle between the two points. It first normalises these vectors so they both sit on the unit circle and then finds the dot product of the two vectors which returns a calculation of the angle. Therefore this measure does not consider the magnitudes of the vectors when computing distance. https://en.wikipedia.org/wiki/Cosine_similarity (This article describes the cosine _similarity_, as opposed to distance, however since the cosine similarity is always between -1 and 1, the distance is computed as 1 - cosine similarity, which will always range from a minimum distance of 0 to a maximum distance of 2.)
 
 :control numDimensions:
 
@@ -57,7 +57,7 @@
       Minkowski Min Distance
 
     :5: 
-      Symmetric Kullback Leibler Divergance
+      Symmetric Kullback Leibler Divergence
 
     .. :6: 
     ..   Cosine Distance

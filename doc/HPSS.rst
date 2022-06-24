@@ -14,7 +14,7 @@
 
    The maskingMode parameter provides different approaches to combining estimates and producing masks. Some settings (especially in modes 1 & 2) will provide better separation but with more artefacts.
    
-   Driedger (2014) suggests that the size of the median filters don't affect the outcome as much as the ``fftSize``. with large FFT sizes, short percussive sounds have less representation, therefore the harmonic component is more strongly represented. The result is that many of the percussive sounds leak into the harmonic component. Small FFT sizes have less resolution in the frequency domain and often lead to a blurring of horizontal structures, therefore harmonic sounds tend to leak into the percussive component. As with all FFT based-processes, finding an FFT size that balances spectral and temporal resolution for a given source sound will benefit the use of this object.
+   Driedger (2014) suggests that the size of the median filters don't affect the outcome as much as the ``fftSize``. With large FFT sizes, short percussive sounds have less representation, therefore the harmonic component is more strongly represented. The result is that many of the percussive sounds leak into the harmonic component. Small FFT sizes have less resolution in the frequency domain and often lead to a blurring of horizontal structures, therefore harmonic sounds tend to leak into the percussive component. As with all FFT based-processes, finding an FFT size that balances spectral and temporal resolution for a given source sound will benefit the use of this object.
 
    For more details visit https://learn.flucoma.org/reference/hpss
    
@@ -50,7 +50,7 @@
          Binary masks provide better separation, but with more artefacts. The harmonic mask is constructed using a binary decision, based on whether a threshold is exceeded for every magnitude in the spectrogram (these are set using ``harmThreshFreq1``, ``harmThreshAmp1``, ``harmThreshFreq2``, ``harmThreshAmp2``, see below). The percussive mask is then formed as the inverse of the harmonic one, meaning that as above, the two components will sum to the original sound.
 
       :2:
-         Soft masks (with a third stream containing a residual component). First, binary masks are made separately for the harmonic and percussive components using different thresholds (set with the respective ``harmThresh-`` and ``percThresh-`` parameters below). Because these masks aren't guaranteed to represent the entire spectrogram, any residual energy is considered as a third output.  The independently created binary masks are converted to soft masks at the end of the process so that everything null sums. 
+         Soft masks (with a third stream containing a residual component). First, binary masks are made separately for the harmonic and percussive components using different thresholds (set with the respective ``harmThresh-`` and ``percThresh-`` parameters below). Because these masks aren't guaranteed to represent the entire spectrogram, any residual energy is considered as a third output.  The independently created binary masks are converted to soft masks at the end of the process so that everything null-sums. 
 
 :control harmThresh:
 

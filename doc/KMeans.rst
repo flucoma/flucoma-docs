@@ -2,14 +2,14 @@
 :species: data
 :sc-categories: FluidManipulation
 :sc-related: Classes/FluidDataSet, Classes/FluidLabelSet, Classes/FluidKNNClassifier, Classes/FluidKNNRegressor, Classes/FluidSKMeans
-:see-also: SKMeans, KNNClassifier, MLPClassifier, DataSet
+:see-also: SKMeans, KNNClassifier, MLPClassifier, DataSet, LabelSet
 :description: 
 
    Uses the K-means algorithm to learn clusters from a :fluid-obj:`DataSet`.
 
 :discussion:
 
-   :fluid-obj:`KMeans` facilitates learning of clusters from a :fluid-obj:`DataSet`. This allows you to assign each point in the data a discrete membership to a group or cluster. The algorithm works by paritioning points into discrete clumps that ideally have *equal variance*. See the scitkit-learn reference for a more technical explanation: https://scikit-learn.org/stable/modules/clustering.html#k-means
+   ``KMeans`` facilitates learning of clusters from a :fluid-obj:`DataSet`. This allows you to assign each point in the data a discrete membership to a group or cluster. The algorithm works by partitioning points into discrete clumps that ideally have *equal variance*. See the Scitkit-learn reference for a more technical explanation: https://scikit-learn.org/stable/modules/clustering.html#k-means
 
 :control numClusters:
 
@@ -45,7 +45,7 @@
 
    :arg action: A function to run when the server responds
 
-   Run :fluid-obj:`KMeans#*fit` and :fluid-obj:`KMeans#*predict` in a single pass: i.e. train the model on the incoming :fluid-obj:`DataSet` and then return the learned clustering to the passed :fluid-obj:`LabelSet`
+   Run ``fit`` and ``predict`` in a single pass: i.e. train the model on the incoming :fluid-obj:`DataSet` and then return the learned clustering to the passed :fluid-obj:`LabelSet`
 
 :message predictPoint:
 
@@ -73,7 +73,7 @@
 
    :arg action: A function to run when the server responds
 
-   Run :fluid-obj:`KMeans#*fit` and :fluid-obj:`KMeans#*transform` in a single pass: i.e. train the model on the incoming :fluid-obj:`DataSet` and then return its cluster-distance space in the destination :fluid-obj:`DataSet`
+   Run ``fit`` and ``transform`` in a single pass: i.e. train the model on the incoming :fluid-obj:`DataSet` and then return its cluster-distance space in the destination :fluid-obj:`DataSet`
 
 :message transformPoint:
 

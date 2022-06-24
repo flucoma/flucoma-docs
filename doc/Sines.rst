@@ -23,7 +23,7 @@
 
 :control bandwidth:
 
-   The number of bins used to resynthesises a peak. It has an effect on CPU cost: the widest is more accurate but more computationally expensive. It is capped at (fftSize / 2) + 1.
+   The number of bins used to resynthesise a peak. It has an effect on CPU cost: the widest is more accurate but more computationally expensive. It is capped at (fftSize / 2) + 1.
 
 :control detectionThreshold:
 
@@ -39,7 +39,7 @@
 
 :control minTrackLen:
 
-   The minimum duration, in spectral frames, for a sinusoidal track to be accepted as a partial. It allows to remove bubbly pitchy artefactss, but is more CPU intensive and might reject quick pitch material.
+   The minimum duration, in spectral frames, for a sinusoidal track to be accepted as a partial. It allows to remove bubbly pitchy artefacts, but is more CPU intensive and might reject quick pitch material.
 
 :control trackingMethod:
 

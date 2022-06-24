@@ -16,7 +16,7 @@ b.play
 c.play
 d.play
 
-// note that the process is quantized by the spectral bins. For an example of the pros and cons of these settings on this given process, please see the real-time FluidAudioTransport helpfile.
+// note that the process is quantized by the spectral bins. For an example of the pros and cons of these settings on this given process, please see the realtime FluidAudioTransport helpfile.
 
 // more interesting sources: two cardboard bowing gestures
 (

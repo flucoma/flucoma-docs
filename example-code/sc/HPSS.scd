@@ -54,7 +54,7 @@ STRONG::Masking Modes::
 CODE::
 
 //load a soundfile to play
-~buf = Buffer.readChannel(s,FluidFilesPath("Tremblay-beatRemember.wav"),channels:[0]);
+~buf = Buffer.readChannel(s,FluidFilesPath("Tremblay-BeatRemember.wav"),channels:[0]);
 
 // ==================== masking mode = 0: soft mask =======================
 // masking mode 0 uses a soft mask to separate the two components
@@ -115,7 +115,7 @@ STRONG::Latency and Null-Sum Test::
 
 CODE::
 
-~buf = Buffer.readChannel(s,FluidFilesPath("Tremblay-beatRemember.wav"),channels:[0]);
+~buf = Buffer.readChannel(s,FluidFilesPath("Tremblay-BeatRemember.wav"),channels:[0]);
 
 // add a latency to the processed signal of (((harmFilterSize - 1) * hopSize) + windowSize) samples
 // this should output silence (because the null-summing is working)!
