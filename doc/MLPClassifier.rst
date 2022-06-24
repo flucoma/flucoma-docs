@@ -11,6 +11,8 @@
 
   For a thorough explanation of how this object works and more information on the parameters, visit the page on **MLP Training** (https://learn.flucoma.org/learn/mlp-training) and **MLP Parameters** (https://learn.flucoma.org/learn/mlp-parameters).
 
+  Also visit the classification tutorial: (https://learn.flucoma.org/learn/classification-neural-network/)
+
 :control hiddenLayers:
 
    An array of numbers that specifies the internal structure of the neural network. Each number in the list represents one hidden layer of the neural network, the value of which is the number of neurons in that layer. Changing this will reset the neural network, clearing any learning that has happened.
