@@ -2,7 +2,7 @@
 :species: data
 :sc-categories: FluidManipulation
 :sc-related: Classes/FluidDataSet, Classes/FluidStandardize
-:see-also: 
+:see-also: Normalize, RobustScale
 :description: 
    Standardize a :fluid-obj:`DataSet`. Rescale using its mean(s) and standard deviation(s) in each dimension, such that each dimension has a mean of 0 and a standard deviation of 1.
    
@@ -24,7 +24,7 @@
 
    :arg action: A function to run when processing is complete
 
-   Standardize a :fluid-obj:`DataSet`, using the learned statistics from a previous call to :fluid-obj:`Standardize#fit`
+   Standardize a :fluid-obj:`DataSet`, using the learned statistics from a previous call to ``fit``
 
 :message fitTransform:
 
@@ -44,7 +44,7 @@
 
    :arg action: A function to run when processing is complete
 
-   Un-standardize a :fluid-obj:`DataSet`, using the learned statistics from a previous call to :fluid-obj:`Standardize#fit`.
+   Un-standardize a :fluid-obj:`DataSet`, using the learned statistics from a previous call to ``fit``.
 
 :message transformPoint:
 
@@ -54,7 +54,7 @@
 
    :arg action: A function to run when processing is complete
 
-   Standardize a data point, using the learned statistics from a previous call to :fluid-obj:`Standardize#fit`
+   Standardize a data point, using the learned statistics from a previous call to ``fit``
    
 :message inverseTransformPoint:
 
@@ -64,4 +64,4 @@
 
   :arg action: A function to run when processing is complete
 
-  Un-standardize a data point, using the learned statistics from a previous call to :fluid-obj:`Standardize#fit`
+  Un-standardize a data point, using the learned statistics from a previous call to ``fit``

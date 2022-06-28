@@ -21,7 +21,7 @@
 
 :control source:
 
-   The |buffer| to use as the source material to detect transients in. The different channels of multichannel buffers will be processing sequentially.
+   The |buffer| to use as the source material to detect transients in. The different channels of multichannel buffers will be processed sequentially.
 
 :control startFrame:
 
@@ -49,15 +49,15 @@
 
 :control order:
 
-   The number of previous samples used by the algorithm to create the model of the signal within the ``blockSize`` window of analysis ``order`` must be less than ``blockSize``.
+   The number of previous samples used by the algorithm to create the model of the signal within the ``blockSize`` window of analysis. ``order`` must be less than ``blockSize``.
 
 :control blockSize:
 
-   The size of audio chunk (in samples) on which the process is operating. This determines the maximum duration (in samples) of a detected transient, which cannot be more than than half of ``blockSize - order``.
+   The size of the audio block (in samples) on which the process is operating. This determines the maximum duration (in samples) of a detected transient, which cannot be more than half of ``blockSize - order``.
 
 :control padSize:
 
-   The size (in samples) of analysis on each side of ``blockSize`` used to provide some historical context for analysis so that each ``blockSize`` isn't modelled completely independently of its predecessor.
+   The size (in samples) of analysis on each side of ``blockSize`` used to provide some historical context for analysis, so that each ``blockSize`` isn't modelled completely independently of its predecessor.
 
 :control skew:
 
@@ -65,11 +65,11 @@
 
 :control threshFwd:
 
-  The threshold applied to the smoothed forward prediction error for determining an onset. The units are roughly in standard deviations, thus can be considered how "deviant", or anomalous, the signal must be to be detected as a transient. It allows tight start of the identification of the anomaly as it proceeds forward.
+  The threshold applied to the smoothed forward prediction error for determining an onset. The units are roughly in standard deviations, thus can be considered how "deviant", or anomalous, the signal must be to be detected as a transient. It allows tight identification of the start of the anomaly as it proceeds forward.
 
 :control threshBack:
 
-  The threshold applied to the smoothed backward prediction error for determining an offset. The units are roughly in standard deviations, thus can be considered how "deviant", or anomalous, the signal must be to be considered transient. When the smoothed error function goes below ``threshBack`` an offset is identified. As it proceeds backwards in time, it allows tight ending of the identification of the anomaly.
+  The threshold applied to the smoothed backward prediction error for determining an offset. The units are roughly in standard deviations, thus can be considered how "deviant", or anomalous, the signal must be to be considered transient. When the smoothed error function goes below ``threshBack`` an offset is identified. As it proceeds backwards in time, it allows tight identification of the end of the anomaly.
 
 :control windowSize:
 
@@ -77,4 +77,4 @@
 
 :control clumpLength:
 
-  The window size in samples within which anomalous samples will be clumped together to avoid over detecting in time. This is like setting a minimum transient length.
+  The window size in samples within which anomalous samples will be clumped together to avoid over-detecting in time. This is like setting a minimum transient length.

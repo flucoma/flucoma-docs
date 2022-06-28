@@ -14,11 +14,11 @@
   
   For example if the input to :fluid-obj:`BufStats` is a three-channel buffer and ``numDerivs`` = 1 the output ``stats`` buffer would contain:
    
-   ========= ============ ============= ============= ======== =========== ======== ================= ==================== ===================== ===================== ================ =================== ================
-   ch 0 mean ch 0 std dev ch 0 skewness ch 0 kurtosis ch 0 min ch 0 median ch 0 max ch 0 deriv 1 mean ch 0 deriv 1 std dev ch 0 deriv 1 skewness ch 0 deriv 1 kurtosis ch 0 deriv 1 min ch 0 deriv 1 median ch 0 deriv 1 max
-   ch 1 mean ch 1 std dev ch 1 skewness ch 1 kurtosis ch 1 min ch 1 median ch 1 max ch 1 deriv 1 mean ch 1 deriv 1 std dev ch 1 deriv 1 skewness ch 1 deriv 1 kurtosis ch 1 deriv 1 min ch 1 deriv 1 median ch 1 deriv 1 max
-   ch 2 mean ch 2 std dev ch 2 skewness ch 2 kurtosis ch 2 min ch 2 median ch 2 max ch 2 deriv 1 mean ch 2 deriv 1 std dev ch 2 deriv 1 skewness ch 2 deriv 1 kurtosis ch 2 deriv 1 min ch 2 deriv 1 median ch 2 deriv 1 max
-   ========= ============ ============= ============= ======== =========== ======== ================= ==================== ===================== ===================== ================ =================== ================    
+   ========= ============ ============= ============= ======== =========== ========= ================= ==================== ===================== ===================== ================ =================== =================
+   ch 0 mean ch 0 std dev ch 0 skewness ch 0 kurtosis ch 0 low ch 0 middle ch 0 high ch 0 deriv 1 mean ch 0 deriv 1 std dev ch 0 deriv 1 skewness ch 0 deriv 1 kurtosis ch 0 deriv 1 low ch 0 deriv 1 middle ch 0 deriv 1 high
+   ch 1 mean ch 1 std dev ch 1 skewness ch 1 kurtosis ch 1 low ch 1 middle ch 1 high ch 1 deriv 1 mean ch 1 deriv 1 std dev ch 1 deriv 1 skewness ch 1 deriv 1 kurtosis ch 1 deriv 1 low ch 1 deriv 1 middle ch 1 deriv 1 high
+   ch 2 mean ch 2 std dev ch 2 skewness ch 2 kurtosis ch 2 low ch 2 middle ch 2 high ch 2 deriv 1 mean ch 2 deriv 1 std dev ch 2 deriv 1 skewness ch 2 deriv 1 kurtosis ch 2 deriv 1 low ch 2 deriv 1 middle ch 2 deriv 1 high
+   ========= ============ ============= ============= ======== =========== ========= ================= ==================== ===================== ===================== ================ =================== =================   
 
 :process: This is the method that calls for the statistical analysis to be calculated on ``source``.
 
@@ -50,7 +50,7 @@
 
 :control numDerivs:
 
-   The number of derivatives of the original time-series to compute statistics on. The default of 0 will compute statistics on no derivates, only the original time-series itself. Setting this parameter > 0 (maximum of 2) will return the same seven statistics computed on consecutive derivatives of the channel's time-series. (``numDerivs`` = 1 will return the channel's statistics and the statistics of the first derivative, ``numDerivs`` = 2 will return the channel's statistics and the statistics of the first and second derivatives.) The derivative statistics are useful to describe the rate of change of the time series.
+   The number of derivatives of the original time-series to compute statistics on. The default of 0 will compute statistics on no derivatives, only the original time-series itself. Setting this parameter > 0 (maximum of 2) will return the same seven statistics computed on consecutive derivatives of the channel's time-series. (``numDerivs`` = 1 will return the channel's statistics and the statistics of the first derivative, ``numDerivs`` = 2 will return the channel's statistics and the statistics of the first and second derivatives.) The derivative statistics are useful to describe the rate of change of the time series.
 
 :control low:
 

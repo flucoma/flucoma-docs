@@ -30,13 +30,13 @@ fork{
 // If the process did not separate out the kick drum, hi hat, and snare drum (in any order) very well, try it again until it does.
 // It will be useful going forward to have bases that pretty well represent these drum instruments.
 
-// FluidNMFFilter will use the bases (spectral templates) of a FluidBufNMF analysis to filter (i.e., decompose) real-time audio
+// FluidNMFFilter will use the bases (spectral templates) of a FluidBufNMF analysis to filter (i.e., decompose) realtime audio
 // First, we'll just send the same drum loop through FluidNMFFilter to hear it in action:
 (
 fork{
 	~n_components.do{
 		arg i;
-		"decomposed part #% filtered in real-time using FluidNMFFilter".format(i+1).postln;
+		"decomposed part #% filtered in realtime using FluidNMFFilter".format(i+1).postln;
 		{
 			var src = PlayBuf.ar(1,~drums,BufRateScale.ir(~drums),doneAction:2);
 			var sig = FluidNMFFilter.ar(src,~bases,~n_components)[i];
@@ -48,7 +48,7 @@ fork{
 )
 
 /* It is seprating the drum instrument components just like it did with FluidBufNMF--the difference here is that it is
-happening in real-time. */
+happening in realtime. */
 
 // This means one could different FX to each instrument:
 
@@ -69,7 +69,7 @@ happening in real-time. */
 )
 
 /* This also means that one could send a live input audio signal through FluidNMFFilter and get these
-drum instruments similarly decomposed into separate audio streams in *real-time*. */
+drum instruments similarly decomposed into separate audio streams in *realtime*. */
 
 /* To test an idea like this, we could train it on just the first few seconds of this drum loop (like a training set when using
 a neural network) and then see how it peforms on audio it hasn't seen before: the rest of the drum loop (similar to using
@@ -92,7 +92,7 @@ FluidBufNMF.processBlocking(s,~drums_training,bases:~bases_from_training,compone
 fork{
 	3.do{
 		arg i;
-		"decomposed part #% filtered in real-time using FluidNMFFilter\n\tIt has never heard this part of the drum loop!\n".format(i+1).postln;
+		"decomposed part #% filtered in realtime using FluidNMFFilter\n\tIt has never heard this part of the drum loop!\n".format(i+1).postln;
 		{
 			var src = PlayBuf.ar(1,~drums_testing,BufRateScale.ir(~drums_testing),doneAction:2);
 			var sig = FluidNMFFilter.ar(src,~bases_from_training,3)[i];
@@ -103,16 +103,16 @@ fork{
 };
 )
 
-// If we play a different source through FluidNMFFilter, it will try to decompose that real-time signal according to the bases
+// If we play a different source through FluidNMFFilter, it will try to decompose that realtime signal according to the bases
 // it is given (in our case the bases from the drum loop)
 
-~song = Buffer.readChannel(s,FluidFilesPath("Tremblay-beatRemember.wav"),channels:[0]);
+~song = Buffer.readChannel(s,FluidFilesPath("Tremblay-BeatRemember.wav"),channels:[0]);
 
 (
 fork{
 	~n_components.do{
 		arg i;
-		"decomposed part #% filtered in real-time using FluidNMFFilter".format(i+1).postln;
+		"decomposed part #% filtered in realtime using FluidNMFFilter".format(i+1).postln;
 		{
 			var src = PlayBuf.ar(1,~song,BufRateScale.ir(~song),doneAction:2);
 			var sig = FluidNMFFilter.ar(src,~bases,~n_components)[i];

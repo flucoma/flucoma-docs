@@ -2,7 +2,8 @@
 :species: data
 :sc-categories: UGens>FluidManipulation
 :sc-related: Classes/FluidLabelSet, Classes/FluidKDTree, Classes/FluidKNNClassifier, Classes/FluidKNNRegressor, Classes/FluidKMeans
-:see-also: 
+:see-also: LabelSet, DataSetQuery
+:max-seealso: coll, dict
 :description: FluidDataSet is a container associating data points with identifiers.
 
 
@@ -62,7 +63,7 @@
 
    :arg labelSet: The FluidLabelSet in which to dump the point's IDs associated with their reference frame number (or channel number if transposed).
 
-   Dump the content of the dataset to a |buffer|, with optional transposition, and a map of frames/channel to the original IDs as a FluidLabelSet.
+   Dump the content of the dataset to a |buffer|, with optional transposition, and a map of frames/channels to the original IDs as a FluidLabelSet.
 
 :message fromBuffer:
 
@@ -78,7 +79,7 @@
 
    :arg labelSet: The FluidLabelSet to export to. Its content will be replaced.
 
-   Export to the dataset identifier to a FluidLabelSet.
+   Export the dataset identifier to a FluidLabelSet.
 
 :message merge:
 

@@ -5,7 +5,7 @@
 :see-also: UMAP, MDS, PCA, DataSet
 :description: Maps a set of 2D points in a :fluid-obj:`DataSet` to a rectangular grid.
 :discussion: 
-   :fluid-obj:`Grid` transforms a two-dimensional dataset into a grid using a variant of the Jonker-Volgenant algorithm (https://www.gwern.net/docs/statistics/decision/1987-jonker.pdf). This can be useful to generate compact grid layouts from the output of dimensionality reduction algorithms such as :fluid-obj:`UMAP`, :fluid-obj:`PCA` or :fluid-obj:`MDS` and for making uniformally distributed spaces out of any two-dimensional dataset.
+   :fluid-obj:`Grid` transforms a two-dimensional dataset into a grid using a variant of the Jonker-Volgenant algorithm (https://www.gwern.net/docs/statistics/decision/1987-jonker.pdf). This can be useful to generate compact grid layouts from the output of dimensionality reduction algorithms such as :fluid-obj:`UMAP`, :fluid-obj:`PCA` or :fluid-obj:`MDS` and for making uniformly distributed spaces out of any two-dimensional dataset.
 
    This approach is similar to projects like CloudToGrid ( https://github.com/kylemcdonald/CloudToGrid/ ), RasterFairy ( https://github.com/Quasimondo/RasterFairy ) or IsoMatch ( https://github.com/ohadf/isomatch ).
 

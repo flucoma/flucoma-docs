@@ -3,11 +3,12 @@
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulation
 :see-also: BufAmpSlice, AmpGate, OnsetSlice, NoveltySlice, TransientSlice
-:description: This class implements an amplitude-based slicer, with various customisable options and conditions to detect relative amplitude changes as onsets.
+:max-seealso: peakamp~, meter~, snapshot~, slide~
+:description: Implements an amplitude-based slicer, with various customisable options and conditions to detect relative amplitude changes as onsets.
 :discussion: 
-   FluidAmpSlice is based on two envelop followers on a highpassed version of the signal: one slow that gives the trend, and one fast. Each have features that will interact. The example code below is unfolding the various possibilites in order of complexity.
+   FluidAmpSlice is based on two envelope followers on a high-passed version of the signal: one slow that gives the trend, and one fast. Each has features that will interact. The example code below is unfolding the various possibilities in order of complexity.
 
-   The process will return an audio steam with single sample impulses at estimated starting points of the different slices.
+   The process will return an audio stream with single sample impulses at estimated starting points of the different slices.
 
 :output: An audio stream with square envelopes around the slices. The latency between the input and the output is **max(minLengthAbove + lookBack, max(minLengthBelow,lookAhead))**.
 
@@ -34,7 +35,7 @@
 
 :control offThreshold:
 
-   The threshold in dB of the relative envelope follower to reset, aka to allow the differential envelop to trigger again.
+   The threshold in dB of the relative envelope follower to reset, aka to allow the differential envelope to trigger again.
 
 :control floor:
 

@@ -1,4 +1,4 @@
-:digest: A histogram of pitch classes in Real-Time
+:digest: A histogram of pitch classes in Realtime
 :species: descriptor
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulation, Classes/FluidMFCC
@@ -7,7 +7,7 @@
 :discussion: 
    Also known as a chromagram, this typically allows you to get a contour of how much each semitone is represented in the spectrum over time. The number of chroma bins (and, thus, pitch classes) and the central reference frequency can be adjusted.
 
-   The process will return a multichannel control steam of size maxNumChroma, which will be repeated if no change happens within the algorithm, i.e. when the hopSize is larger than the signal vector size.
+   The process will return a multichannel control stream of size maxNumChroma, which will be repeated if no change happens within the algorithm, i.e. when the hopSize is larger than the signal vector size.
 
 :process: The audio rate in, control rate out version of the object.
 :output: A  KR signal of maxNumChroma channels, giving the measure amplitudes for each chroma bin. The latency is windowSize.

@@ -7,14 +7,14 @@
 :discussion: 
    NMF has been a popular technique in signal processing research for things like source separation and transcription (see Smaragdis and Brown, Non-Negative Matrix Factorization for Polyphonic Music Transcription.), although its creative potential is so far relatively  unexplored.
 
-   The algorithm takes a buffer in and divides it into a number of components, determined by the components argument. It works iteratively, by trying to find a combination of spectral templates ('bases') and envelopes ('activations') that yield the original magnitude spectrogram when added together. By and large, there is no unique answer to this question (i.e. there are different ways of accounting for an evolving spectrum in terms of some set of templates and envelopes). In its basic form, NMF is a form of unsupervised learning: it starts with some random data and then converges towards something that minimizes the distance between its generated data and the original:it tends to converge very quickly at first and then level out. Fewer iterations mean less processing, but also less predictable results.
+   The algorithm takes a buffer in and divides it into a number of components, determined by the components argument. It works iteratively, by trying to find a combination of spectral templates ('bases') and envelopes ('activations') that yield the original magnitude spectrogram when added together. By and large, there is no unique answer to this question (i.e. there are different ways of accounting for an evolving spectrum in terms of some set of templates and envelopes). In its basic form, NMF is a form of unsupervised learning: it starts with some random data and then converges towards something that minimises the distance between its generated data and the original:it tends to converge very quickly at first and then level out. Fewer iterations mean less processing, but also less predictable results.
 
    The object can return either or all of the following:
    	* a spectral contour of each component in the form of a magnitude spectrogram (called a basis in NMF lingo);
    	* an amplitude envelope of each component in the form of gains for each consecutive frame of the underlying spectrogram (called an activation in NMF lingo);
-   	* an audio reconstruction of each components in the time domain.
+   	* an audio reconstruction of each component in the time domain.
 
-   The bases and activations can be used to make a kind of vocoder based on what NMF has 'learned' from the original data. Alternatively, taking the matrix product of a basis and an activation will yield a synthetic magnitude spectrogram of a component (which could be reconsructed, given some phase informaiton from somewhere).
+   The bases and activations can be used to make a kind of vocoder based on what NMF has 'learned' from the original data. Alternatively, taking the matrix product of a basis and an activation will yield a synthetic magnitude spectrogram of a component (which could be reconstructed, given some phase information from somewhere).
 
    Some additional options and flexibility can be found through combinations of the basesMode and actMode arguments. If these flags are set to 1, the object expects to be supplied with pre-formed spectra (or envelopes) that will be used as seeds for the decomposition, providing more guided results. When set to 2, the supplied buffers won't be updated, so become templates to match against instead. Note that having both bases and activations set to 2 doesn't make sense, so the object will complain.
 
@@ -32,7 +32,7 @@
 
 :control source:
 
-   The index of the buffer to use as the source material to be decomposed through the NMF process. The different channels of multichannel buffers will be processing sequentially.
+   The index of the buffer to use as the source material to be decomposed through the NMF process. The different channels of multichannel buffers will be processed sequentially.
 
 :control startFrame:
 
@@ -48,11 +48,11 @@
 
 :control numChans:
 
-   For multichannel srcBuf, how many channel should be processed.
+   For multichannel srcBuf, how many channels should be processed.
 
 :control resynth:
 
-   The index of the buffer where the different reconstructed components will be reconstructed. The buffer will be resized to ``components * numChannelsProcessed`` channels and ``sourceDuration`` lenght. If ``nil`` is provided, the reconstruction will not happen.
+   The index of the buffer where the different reconstructed components will be reconstructed. The buffer will be resized to ``components * numChannelsProcessed`` channels and ``sourceDuration`` length. If ``nil`` is provided, the reconstruction will not happen.
 
 :control resynthMode:
 
@@ -64,12 +64,12 @@
 
 :control basesMode:
 
-   This flag decides of how the basis buffer passed as the previous argument is treated.
+   This flag decides how the basis buffer passed as the previous argument is treated.
 
    :enum:
 
       :0:
-         The bases are seeded randomly, and the resulting ones will be written after the process in the passed buffer. The buffer is resized to ``components * numChannelsProcessed`` channels and ``(fftSize / 2 + 1)`` lenght.
+         The bases are seeded randomly, and the resulting ones will be written after the process in the passed buffer. The buffer is resized to ``components * numChannelsProcessed`` channels and ``(fftSize / 2 + 1)`` length.
 
       :1:
          The passed buffer is considered as seed for the bases. Its dimensions should match the values above. The resulting bases will replace the seed ones.
@@ -83,12 +83,12 @@
 
 :control actMode:
 
-   This flag decides of how the activation buffer passed as the previous argument is treated.
+   This flag decides how the activation buffer passed as the previous argument is treated.
 
    :enum:
 
       :0:
-         The activations are seeded randomly, and the resulting ones will be written after the process in the passed buffer. The buffer is resized to ``components * numChannelsProcessed`` channels and ``(sourceDuration / hopsize + 1)`` lenght.
+         The activations are seeded randomly, and the resulting ones will be written after the process in the passed buffer. The buffer is resized to ``components * numChannelsProcessed`` channels and ``(sourceDuration / hopsize + 1)`` length.
 
       :1:
          The passed buffer is considered as seed for the activations. Its dimensions should match the values above. The resulting activations will replace the seed ones.

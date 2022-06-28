@@ -9,7 +9,7 @@
 import json
 
 from docutils import nodes
-
+import logging
 from flucoma.doc.rst.html import FluidHTMLWriter, rst_filter
 from .. transformers import default_transform
 from .defaults import defaults
@@ -18,12 +18,19 @@ def buffer_reference_role(role, rawtext, text, lineno, inliner,
                            options={}, content=[]):
     return 'buffer~'
 
+def visit_object_reference(self, node):
+    # node[:] = [nodes.raw('',node.astext(), format='html')]
+    # self.body.append(self.starttag(node, 'o'))
+    # self.body.append('</o>')
+    self.body.append(f'<o>{node.astext()}</o>')
+
 def max_visit_flucoma_reference(self, node, data, transform_name):
     if transform_name:
         if(node.astext()) in data:
             name = max_object_namer(data[node.astext()]) 
-        else: 
+        else:             
             name = f'Unresolved lookup ({node.astext()})'
+            logging.warn(name)
     else: 
         name = node.astext()
     
@@ -101,6 +108,7 @@ settings = {
     'rst_render': rst_filter,
     'write_cross_ref': (max_visit_flucoma_reference,    
                         max_depart_flucoma_reference),
+    'write_object_ref': visit_object_reference,                     
     'topic_extension': 'maxvig.xml', 
     'topic_subdir': 'vignettes',
     'client_subdir': '',
@@ -108,5 +116,5 @@ settings = {
     'transform': transform_data, 
     'post': write_max_indices, 
     'defaults': defaults, 
-    'buffer-string':'<o>buffer~</o>'
+    'buffer-string':':object-link:`buffer~`'
 }

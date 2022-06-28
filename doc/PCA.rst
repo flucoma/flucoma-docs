@@ -2,7 +2,7 @@
 :species: data
 :sc-categories: Dimensionality Reduction, Data Processing
 :sc-related: Classes/FluidMDS, Classes/FluidDataSet
-:see-also: 
+:see-also: UMAP, MDS, DataSet
 :description: 
    Principal Components Analysis (PCA) of a :fluid-obj:`DataSet`. 
   
@@ -54,7 +54,7 @@
 
    :arg action: Run when done
 
-   :fluid-obj:`PCA#fit` and :fluid-obj:`PCA#transform` in a single pass. Returns the fraction (between 0 and 1) of explained variance.
+   ``fit`` and ``transform`` in a single pass. Returns the fraction (between 0 and 1) of explained variance.
 
 :message transformPoint:
 
@@ -64,7 +64,7 @@
 
    :arg action: Run when done
 
-   Given a trained model, transform the data point in ``sourceBuffer`` from the original dimensional space to ``numDimensions`` in PCA-space and write into ``destBuffer``.
+   Given a trained model, transform the data point in ``sourceBuffer`` from the original dimensional space to ``numDimensions`` in PCA-space and write the result into ``destBuffer``.
 
 :message inverseTransformPoint:
 

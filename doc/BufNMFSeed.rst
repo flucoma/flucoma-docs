@@ -16,11 +16,11 @@
 
 :control bases:
 
-   The |buffer| where the bases will be written to. These are suggested seed for a BufNMF process. The number of bases (i.e., channels) in this buffer when the process is complete is the number of components needed to cover the requested percentage of variance in the buffer.
+   The |buffer| where the bases will be written to. These bases are suggested seeds for a BufNMF process. The number of bases (i.e., channels) in this buffer when the process is complete is the number of components needed to cover the requested percentage of variance in the buffer.
 
 :control activations:
 
-   The |buffer| where the activations will be written to. These are suggested seed for a BufNMF process. The number of bases (i.e., channels) in this buffer when the process is complete is the number of components needed to cover the requested percentage of variance in the buffer.
+   The |buffer| where the activations will be written to. These bases are suggested seeds for a BufNMF process. The number of bases (i.e., channels) in this buffer when the process is complete is the number of components needed to cover the requested percentage of variance in the buffer.
 
 :control minComponents:
 

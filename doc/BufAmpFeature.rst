@@ -3,6 +3,7 @@
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulation
 :see-also: BufAmpSlice, BufNoveltyFeature, BufAmpFeature, BufOnsetFeature
+:max-seealso: peakamp~, meter~, snapshot~, slide~
 :description: Calculate the amplitude differential feature used by :fluid-obj:`BufAmpSlice`.
 :discussion: 
     :fluid-obj:`BufAmpSlice` uses the differential between a fast and a slow envelope follower to determine changes in amplitude. This object calculates the amplitude differential and copies it to an output buffer.
@@ -28,7 +29,7 @@
 
 :control numChans:
 
-   For multichannel sources, how many channel should be summed.
+   For multichannel sources, how many channels should be summed.
 
 :control features:
 
@@ -60,7 +61,18 @@
 
 :control padding:
 
-   Controls the zero-padding added to either end of the source buffer or segment. Possible values are 0 (no padding), 1 (default, half the window size), or 2 (window size - hop size). Padding ensures that all input samples are completely analysed: with no padding, the first analysis window starts at time 0, and the samples at either end will be tapered by the STFT windowing function. Mode 1 has the effect of centering the first sample in the analysis window and ensuring that the very start and end of the segment are accounted for in the analysis. Mode 2 can be useful when the overlap factor (window size / hop size) is greater than 2, to ensure that the input samples at either end of the segment are covered by the same number of analysis frames as the rest of the analysed material.
+   Controls the zero-padding added to either end of the source buffer or segment. Padding ensures all values are analysed. Possible values are:
+   
+   :enum:
+
+      :0:
+         No padding - The first analysis window starts at time 0, and the samples at either end will be tapered by the STFT windowing function.
+   
+      :1: 
+         Half the window size - The first sample is centred in the analysis window ensuring that the start and end of the segment are accounted for in the analysis.
+   
+      :2: 
+         Window size minus the hop size - Mode 2 can be useful when the overlap factor (window size / hop size) is greater than 2, to ensure that the input samples at either end of the segment are covered by the same number of analysis frames as the rest of the analysed material.
 
 :control action:
 

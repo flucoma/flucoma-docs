@@ -34,7 +34,7 @@
 
 :control continuity:
 
-   Promote the use of N successive source frames, giving greater continuity in the result. This can not be bigger than the sizes of the ``source`` buffer, but useful values tend to be much lower (in the tens). The default is 7.
+   Promote the use of N successive source frames, giving greater continuity in the result. This can not be bigger than the size of the ``source`` buffer, but useful values tend to be much lower (in the tens). The default is 7.
 
 :control iterations:
 
@@ -50,4 +50,4 @@
 
 :control fftSize:
 
-   The analsyis FFT size in samples The default of -1 indicates ``fftSize`` = ``windowSize``
+   The analysis FFT size in samples The default of -1 indicates ``fftSize`` = ``windowSize``

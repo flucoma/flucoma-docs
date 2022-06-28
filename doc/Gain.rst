@@ -1,8 +1,8 @@
-:digest: Real-Time Buffered Gain Changer
+:digest: Realtime Buffered Gain Changer
 :species: transformer
 :sc-categories: UGens>Algebraic, Libraries>FluidDecomposition, UGens>Buffer
 :sc-related: Guides/FluidCorpusManipulation,Classes/UnaryOpFunction
-:description: This class implements a sanity test for the FluCoMa Real-Time Client Wrapper.
+:description: This class implements a sanity test for the FluCoMa Realtime Client Wrapper.
 :see-also: 
 :discussion: 
 :process: The audio rate version of the object.

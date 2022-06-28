@@ -3,6 +3,7 @@
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulation
 :see-also: AmpGate, AmpSlice, OnsetFeature, NoveltyFeature
+:max-seealso: peakamp~, meter~, snapshot~, slide~
 :description: Calculate the amplitude differential feature in realtime.
 :discussion: 
     :fluid-obj:`AmpSlice` uses the differential between a fast and a slow envelope follower to determine changes in amplitude. This object calculates the amplitude differential and copies it to an output buffer.

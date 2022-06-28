@@ -2,14 +2,16 @@
 :species: data
 :sc-categories: Machine learning
 :sc-related: Classes/FluidMLPClassifier, Classes/FluidDataSet
-:see-also: 
+:see-also: KNNRegressor, DataSet, MLPClassifier
 :description: 
 
-  Perform regression between :fluid-obj:`DataSet`\s using a Multi-Layer Perception neural network.
+  Perform regression between :fluid-obj:`DataSet`\s using a Multi-Layer Perceptron neural network.
 
 :discussion:
 
   For a thorough explanation of how this object works and more information on the parameters, visit the page on **MLP Training** (https://learn.flucoma.org/learn/mlp-training) and **MLP Parameters** (https://learn.flucoma.org/learn/mlp-parameters).
+
+  Also visit the regression tutorial: (https://learn.flucoma.org/learn/classification-neural-network/)
 
 :control hiddenLayers:
 
@@ -47,7 +49,7 @@
 
 :control maxIter:
 
-   The number of epochs to train for when ``fit`` is called on the object. An epoch is consists of training on all the data points one time.
+   The number of epochs to train for when ``fit`` is called on the object. An epoch consists of training on all the data points one time.
 
 :control learnRate:
 

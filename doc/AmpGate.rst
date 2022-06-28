@@ -3,7 +3,8 @@
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulation
 :see-also: BufAmpGate, AmpSlice, OnsetSlice, NoveltySlice, TransientSlice
-:description: Absolute amplitude threshold gate detector on a real-time signal
+:max-seealso: peakamp~, meter~, snapshot~, slide~
+:description: Absolute amplitude threshold gate detector on a realtime signal
 
 :discussion: 
    AmpGate outputs a audio-rate, single-channel signal that is either 0, indicating the gate is closed, or 1, indicating the gate is open. The gate detects an onset (opens) when the internal envelope follower (controlled by ``rampUp`` and ``rampDown``) goes above a specified ``onThreshold`` (in dB) for at least ``minLengthAbove`` samples. The gate will stay open until the envelope follower goes below ``offThreshold`` (in dB) for at least ``minLengthBelow`` samples, which triggers an offset.
