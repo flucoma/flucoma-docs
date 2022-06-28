@@ -126,7 +126,6 @@ code::
 
 		OSCdef(\xy,{
 			arg msg;
-			msg.postln;
 			defer{
 				~fp.setPoint_("current",msg[3],msg[4],Color.red,2); // shows where the current mfcc analysis would be
 			};
