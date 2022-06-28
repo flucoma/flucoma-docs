@@ -1,189 +1,138 @@
-
 code::
 
-//Preliminaries: we want some points, a couple of FluidDataSets, a FluidStandardize and a FluidUMAP
+// Using UMAP we'll reduce this dataset from 26 dimensions (26 MFCC values) down to 2 dimensions so we can plot it
 (
-~raw = FluidDataSet(s);
-~standardized = FluidDataSet(s);
+~loader = FluidLoadFolder(FluidFilesPath()).play; // load the audio (all the files in the FluCoMa audio files folder!)
+~slicePoints = Buffer.read(s,FluidFilesPath("../Data/flucoma_corpus_slices.wav")); // load the slice positions of the audio
+~ds_mfcc = FluidDataSet(s).read(FluidFilesPath("../Data/flucoma_corpus_mfcc.json")); // load the pre-analyzed dataset
+)
+
+// reduce and plot
+// try changing the numNeighbours and minDist to see how it affects the plot.
+(
+var reduced = FluidDataSet(s);
+var tree;
+FluidUMAP(s,2,numNeighbours:15,minDist:0.1).fitTransform(~ds_mfcc,reduced);
+FluidNormalize(s).fitTransform(reduced,reduced);// normalize so it's easier to plot
+tree = FluidKDTree(s).fit(reduced); // use a kdtree to find the point nearest to the mouse position
+reduced.dump({
+	arg dict;
+	var xybuf = Buffer.alloc(s,2);
+	defer{
+		FluidPlotter(dict:dict,mouseMoveAction:{
+			arg view, x, y;
+			xybuf.setn(0,[x,y]);
+			tree.kNearest(xybuf,1,{
+				arg id;
+				var index = id.asInteger;
+				defer{
+					view.highlight_(id);
+				};
+
+				{
+					var start = Index.kr(~slicePoints,index);
+					var end = Index.kr(~slicePoints,index+1);
+					var sig = PlayBuf.ar(2,~loader.buffer,BufRateScale.ir(~loader.buffer),1,start)[0];
+					var dur_sec = min((end-start) / SampleRate.ir,1);
+					var env = EnvGen.kr(Env([0,1,1,0],[0.03,dur_sec-0.06,0.03]),doneAction:2);
+					sig.dup * env;
+				}.play;
+			});
+		});
+	};
+});
+)
+
+::
+strong::Reducing a 3 dimensional colour space to 2 dimensional space::
+code::
+
+// make a dataset of 100 random 3 dimensional points (that will later be RGB values)
+(
+~ds_rgb = FluidDataSet(s).load(
+	Dictionary.newFrom([
+		"cols",3,
+		"data",Dictionary.newFrom(
+			100.collect{
+				arg i;
+				[i,{rrand(0.0,1.0)} ! 3]
+			}.flatten;
+		)
+	])
+);
+~ds_rgb.print;
+)
+
+// rather than trying to plot these points in 3 dimensional space,
+// we'll reduce it to 2 dimensional space so it looks better on a screen
+// again play around with the arguments numNeighbours and minDist to see
+// how they affect he spread of the points
+(
+var reduced = FluidDataSet(s);
+FluidUMAP(s,2,numNeighbours:15,minDist:0.6).fitTransform(~ds_rgb,reduced);
+FluidNormalize(s).fitTransform(reduced,reduced);
+~ds_rgb.dump{
+	arg rgb;
+	reduced.dump{
+		arg xy;
+		defer{
+			var fp = FluidPlotter(dict:xy).pointSizeScale_(2);
+			rgb["data"].keysValuesDo{
+				arg k, v;
+				fp.pointColor_(k,Color(*v));
+			};
+		};
+	};
+};
+)
+
+::
+strong::Retrieving values on the server::
+code::
+
+// Using UMAP we'll reduce this dataset from 26 dimensions (26 MFCC values) down to 2 dimensions
+// wait for it to finish
+(
+~loader = FluidLoadFolder(FluidFilesPath()).play; // load the audio (all the files in the FluCoMa audio files folder!)
+~slicePoints = Buffer.read(s,FluidFilesPath("../Data/flucoma_corpus_slices.wav")); // load the slice positions of the audio
+~ds_mfcc = FluidDataSet(s).read(FluidFilesPath("../Data/flucoma_corpus_mfcc.json")); // load the pre-analyzed dataset
 ~reduced = FluidDataSet(s);
-~normalized = FluidDataSet(s);
-~standardizer  = FluidStandardize(s);
-~normalizer = FluidNormalize(s, 0.05, 0.95);
-~umap = FluidUMAP(s).numDimensions_(2).numNeighbours_(5).minDist_(0.2).iterations_(50).learnRate_(0.2);
+~umap = FluidUMAP(s,2,15,0.1).fitTransform(~ds_mfcc,~reduced);
+~normalizer = FluidNormalize(s).fitTransform(~reduced,~reduced,action:{"done".postln;});
 )
 
-
-// build a dataset of 400 points in 3D (colour in RGB)
-~colours = Dictionary.newFrom(400.collect{|i|[("entry"++i).asSymbol, 3.collect{1.0.rand}]}.flatten(1));
-~raw.load(Dictionary.newFrom([\cols, 3, \data, ~colours]));
-
-// check the entries
-~raw.print;
-
-//First standardize our DataSet, then apply the UMAP to get 2 dimensions, then normalise these 2 for drawing in the full window size
 (
-~standardizer.fitTransform(~raw,~standardized,action:{"Standardized".postln});
-~umap.fitTransform(~standardized,~reduced,action:{"Finished UMAP".postln});
-~normalizer.fitTransform(~reduced,~normalized,action:{"Normalized Output".postln});
-)
-//we recover the reduced dataset
-~normalized.dump{|x| ~normalizedDict = x["data"]};
+~reduced.dump{
+	arg dict;
+	defer{
+		~fp = FluidPlotter(dict:dict).addPoint_("current",0.5,0.5,Color.red,2);
 
-~normalized.print
-~normalizedDict.postln
+		{
+			// play the original buffer back, but backwardsa and a little faster for some variety
+			var sig = PlayBuf.ar(2,~loader.buffer,-1.3,1,rrand(0,~loader.buffer.numFrames-1),1)[0];
+			var mfccs = FluidMFCC.kr(sig,26,startCoeff:1); // get mfcc analyses
+			var mfccbuf = LocalBuf(mfccs.numChannels);
+			var reducedbuf = LocalBuf(2);
+			var normbuf = LocalBuf(2);
+			var trig = Impulse.kr(30);
+			var xy;
+			FluidKrToBuf.kr(mfccs,mfccbuf);
+			~umap.kr(trig,mfccbuf,reducedbuf); // project the mfcc analyses into the umap space
+			~normalizer.kr(trig,reducedbuf,normbuf); // make sure it's in the normalized space
+			xy = FluidBufToKr.kr(normbuf);
+			SendReply.kr(trig,"/xy",xy); // send back to the language for plotting
+			sig;
+		}.play;
 
-//Visualise the 2D projection of our original 4D data
-(
-w = Window("a perspective", Rect(128, 64, 200, 200));
-w.drawFunc = {
-	Pen.use {
-		~normalizedDict.keysValuesDo{|key, val|
-			Pen.fillColor = Color.new(~colours[key.asSymbol][0], ~colours[key.asSymbol][1],~colours[key.asSymbol][2]);
-			Pen.fillOval(Rect((val[0] * 200), (val[1] * 200), 5, 5));
-			~colours[key.asSymbol].flat;
-		}
+		OSCdef(\xy,{
+			arg msg;
+			msg.postln;
+			defer{
+				~fp.setPoint_("current",msg[3],msg[4],Color.red,2); // shows where the current mfcc analysis would be
+			};
+		},"/xy");
 	}
 };
-w.refresh;
-w.front;
-)
-
-//play with parameters
-~umap.numNeighbours_(10).minDist_(0.5).iterations_(100).learnRate_(0.1);
-
-//rerun the UMAP
-~umap.fitTransform(~standardized,~reduced,action:{"Finished UMAP".postln});
-
-//draw to compare
-(
-~normalizer.fitTransform(~reduced,~normalized,action:{
-	"Normalized Output".postln;
-	~normalized.dump{|x|
-		~normalizedDict = x["data"];
-
-		{
-			u = Window("another perspective", Rect(328, 64, 200, 200));
-			u.drawFunc = {
-				Pen.use {
-					~normalizedDict.keysValuesDo{|key, val|
-						Pen.fillColor = Color.new(~colours[key.asSymbol][0], ~colours[key.asSymbol][1],~colours[key.asSymbol][2]);
-						Pen.fillOval(Rect((val[0] * 200), (val[1] * 200), 5, 5));
-						~colours[key.asSymbol].flat;
-					};
-				};
-			};
-			u.refresh;
-			u.front;
-
-		}.defer;
-
-	};
-});
-)
-
-// now run new random points on the same training material. Colours should be scattered around the same space
-
-~newDS = FluidDataSet(s);
-~colours2 = Dictionary.newFrom(400.collect{|i|[("entry"++i).asSymbol, 3.collect{1.0.rand}]}.flatten(1));
-~newDS.load(Dictionary.newFrom([\cols, 3, \data, ~colours2]));
-
-//we need to standardize to the same space
-~newDSstan = FluidDataSet(s);
-~standardizer.transform(~newDS, ~newDSstan);
-
-//then we can run the umap
-~newDSmap = FluidDataSet(s);
-~umap.transform(~newDSstan, ~newDSmap);
-
-//then we can draw and look
-(
-~normalizer.transform(~newDSmap,~normalized,action:{
-	"Normalized Output".postln;
-	~normalized.dump{|x|
-		~normalizedDict = x["data"];
-		{
-			t = Window("new material", Rect(528, 64, 200, 200));
-			t.drawFunc = {
-				Pen.use {
-					~normalizedDict.keysValuesDo{|key, val|
-						Pen.fillColor = Color.new(~colours2[key.asSymbol][0], ~colours2[key.asSymbol][1],~colours2[key.asSymbol][2]);
-						Pen.fillOval(Rect((val[0] * 200), (val[1] * 200), 5, 5));
-						~colours2[key.asSymbol].flat;
-					};
-				};
-			};
-			t.refresh;
-			t.front;
-		}.defer;
-	};
-});
-)
-
-//if we process the original dataset, we will see small differences in positions
-~reduced2 = FluidDataSet(s);
-~umap.transform(~standardized, ~reduced2, action: {\done.postln;});
-
-//then we can draw and look
-(
-~normalizer.transform(~reduced2,~normalized,action:{
-	"Normalized Output".postln;
-	~normalized.dump{|x|
-		~normalizedDict = x["data"];
-		{
-			z = Window("old material", Rect(728, 64, 200, 200));
-			z.drawFunc = {
-				Pen.use {
-					~normalizedDict.keysValuesDo{|key, val|
-						Pen.fillColor = Color.new(~colours[key.asSymbol][0], ~colours[key.asSymbol][1],~colours[key.asSymbol][2]);
-						Pen.fillOval(Rect((val[0] * 200), (val[1] * 200), 5, 5));
-						~colours[key.asSymbol].flat;
-					};
-				};
-			};
-			z.refresh;
-			z.front;
-		}.defer;
-	};
-});
-)
-
-//this is because the fitTransform method has the advantage of being certain that the data it transforms is the one that has been used to fit the model. This allows for more accurate distance measurement.
-
-//to check, let's retrieve a single point and predict its position
-(
-~sourcePoint = Buffer(s);
-~original = Buffer(s);
-~standed = Buffer(s);
-~umaped = Buffer(s);
-)
-
-//retrieve the 3D original
-~raw.getPoint("entry49",~sourcePoint)
-//retrieve the fitTransformed point as the most accurate point
-~reduced.getPoint("entry49",~original, {~original.getn(0,2,{|x|x.postln})})
-//retreive the transformed point, via the standardizer
-~standardizer.transformPoint(~sourcePoint,~standed);
-~umap.transformPoint(~standed, ~umaped, {~umaped.getn(0,2,{|x|x.postln})})
-
-// one can also retrieve in control rate with Server Side Queries
-// Let's map our learned UMAP dimensions to the controls of a processor
-
-(
-{
-    var trig = Impulse.kr(1);
-	var point = WhiteNoise.kr(1.dup(3));
-    var inputPoint = LocalBuf(3);
-    var standPoint = LocalBuf(3);
-	var outputPoint = LocalBuf(2);
-	var cue1, cue2;
-	Poll.kr(trig, point, [\pointX,\pointY,\pointZ]);
-	point.collect{ |p,i| BufWr.kr([p],inputPoint,i)};
-	cue1 = ~standardizer.kr(trig,inputPoint,standPoint);
-	Poll.kr(cue1,BufRd.kr(1,standPoint,(0..2),interpolation:0),[\stdX,\stdY, \stdZ]);
-	cue2 = ~umap.kr(cue1, standPoint, outputPoint);
-	Poll.kr(cue2,BufRd.kr(1,outputPoint,[0,1],interpolation:0),[\newDimA,\newDimB]);
-    Silent.ar;
-}.play;
 )
 
 ::
