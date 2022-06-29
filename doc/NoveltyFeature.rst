@@ -9,6 +9,10 @@
    
    Novelty derived by running a kernel across the diagonal of the similarity matrix. It implements the seminal results published in  'Automatic Audio Segmentation Using a Measure of Audio Novelty' by J Foote.
 
+   .. only_in:: sc
+
+      The argument for ``algorithm`` can be passed as an integer (see table below) which is modulatable, or as one of the following symbols: ``\spectrum``, ``\mfcc``, ``\chroma``, ``\pitch``, or ``\loudness``. 
+
 :process: The audio rate version of the object.
 :output: A KR signal of the feature.
 

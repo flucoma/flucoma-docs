@@ -9,6 +9,10 @@
    
    The metric for calculating difference can be chosen from a curated selection, lending the algorithm toward slicing a broad range of musical materials.
 
+   .. only_in:: sc
+
+      The argument for ``metric`` can be passed as an integer (see table below) which is modulatable, or as one of the following symbols: ``\power``, ``\hfc``, ``\flux``,	``\mkl``, ``\is``, ``\cosine``, ``\phase``, ``\wphase``, ``\complex``, or ``\rcomplex``. 
+
 :process: The audio rate version of the object.
 :output: An audio stream with impulses at detected transients. The latency between the input and the output is windowSize at maximum.
 

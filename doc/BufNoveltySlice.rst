@@ -9,6 +9,10 @@
 
    The process will return a buffer which contains indices (in sample) of estimated starting points of different slices.
 
+   .. only_in:: sc
+
+      The argument for ``algorithm`` can be passed as an integer (see table below), or as one of the following symbols: ``\spectrum``, ``\mfcc``, ``\chroma``, ``\pitch``, or ``\loudness``. 
+
 :process: This is the method that calls for the slicing to be calculated on a given source buffer.
 :output: Nothing, as the various destination buffers are declared in the function call.
 

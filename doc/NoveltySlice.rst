@@ -9,6 +9,10 @@
 
    The process will return an audio stream with single sample impulses at estimated starting points of the different slices.
 
+   .. only_in:: sc
+
+      The argument for ``algorithm`` can be passed as an integer (see table below) which is modulatable, or as one of the following symbols: ``\spectrum``, ``\mfcc``, ``\chroma``, ``\pitch``, or ``\loudness``. 
+
 :output: An audio stream with impulses at detected transients. The latency between the input and the output is hopSize * (((kernelSize+1)/2).asInteger + ((filterSize + 1) / 2).asInteger + 1) samples at maximum.
 
 
