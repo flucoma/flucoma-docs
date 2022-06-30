@@ -1,158 +1,263 @@
-
-STRONG::A didactic example::
-
 code::
 
-/// make a simple grid of numbers
-~simple = Dictionary.newFrom(36.collect{|i|[i.asSymbol, [i.mod(9), i.div(9)]]}.flatten(1));
-
-//look at it
 (
-w = Window("the source", Rect(128, 64, 230, 100));
-w.drawFunc = {
-	Pen.use {
-		~simple.keysValuesDo{|key, val|
-			Pen.stringCenteredIn(key, Rect((val[0] * 25), (val[1] * 25), 25, 25), Font( "Helvetica", 12 ), Color.black)
-		}
-	}
-};
-w.refresh;
-w.front;
+// peek at a didactic dataset (color is just to track better where the points end up)
+~ds = FluidDataSet(s).read(FluidFilesPath("../Data/moon.json"));
+~colors = Dictionary.new;
+~ds.dump({
+	arg dict;
+	dict["data"].keysValuesDo{
+		arg k, v;
+		var hsl = Color.hsv(v[0],1,0.5);
+		~colors[k] = Color(v[0],v[1],hsl.red);
+	};
+
+	defer{
+		var fp = FluidPlotter(dict:dict);
+		~colors.keysValuesDo{
+			arg k, v;
+			fp.pointColor_(k,v);
+		};
+		fp.pointSizeScale_(3);
+	};
+});
 )
 
-
-//load it in a dataset
-~raw = FluidDataSet(s);
-~raw.load(Dictionary.newFrom([\cols, 2, \data, ~simple]));
-
-// make a grid out of it
-~grid = FluidGrid(s);
-~gridified = FluidDataSet(s);
-~grid.fitTransform(~raw, ~gridified, action:{~gridified.dump{|x| ~gridifiedDict = x["data"]; \gridded.postln;}})
-
-// watch the grid
+// now gridify it
 (
-w = Window("a perspective", Rect(358, 64, 350, 230));
-w.drawFunc = {
-	Pen.use {
-		~gridifiedDict.keysValuesDo{|key, val|
-			Pen.stringCenteredIn(key, Rect((val[0] * 25), (val[1] * 25), 25, 25), Font( "Helvetica", 12 ), Color.black)
-		}
-	}
-};
-w.refresh;
-w.front;
+~ds_gridded = FluidDataSet(s);
+~grid = FluidGrid(s).fitTransform(~ds,~ds_gridded);
+
+// by default it is not normalized, so we'll do that before
+// sending it to plotter
+FluidNormalize(s).fitTransform(~ds_gridded,~ds_gridded);
+
+~ds.dump({
+	arg original;
+	~ds_gridded.dump({
+		arg gridded;
+		defer{
+			var win = Window(bounds:Rect(0,0,1000,500));
+			var fps = [original,gridded].collect{
+				arg dict;
+				var fp = FluidPlotter(dict:dict,standalone:false);
+				~colors.keysValuesDo{
+					arg k, v;
+					fp.pointColor_(k,v);
+				};
+				fp.pointSizeScale_(3);
+				fp;
+			};
+			win.layout_(HLayout(*fps));
+			win.front;
+		};
+	});
+});
 )
+::
+strong::Oversampling::
+code::
 
-// change the constraints and draw again
+// if we added an oversampling of 4 to the example above,
+// there will be 4x as many points on the grid as there are
+// in the dataset. they don't all get used, so we can still
+// see some of the original shape
 (
-~grid.axis_(0).extent_(4).fitTransform(~raw, ~gridified, action:{
-	~gridified.dump{|x|
-		~gridifiedDict = x["data"];\gridded.postln;
-		{w.refresh;}.defer;
-}})
-)
+~ds_gridded = FluidDataSet(s);
+~grid = FluidGrid(s,4).fitTransform(~ds,~ds_gridded);
 
-// here we constrain in the other dimension
-(
-~grid.axis_(1).extent_(3).fitTransform(~raw, ~gridified, action:{
-	~gridified.dump{|x|
-		~gridifiedDict = x["data"];\gridded.postln;
-		{w.refresh;}.defer;
-}})
+// by default it is not normalized, so we'll do that before
+// sending it to plotter
+FluidNormalize(s).fitTransform(~ds_gridded,~ds_gridded);
+
+~ds.dump({
+	arg original;
+	~ds_gridded.dump({
+		arg gridded;
+		defer{
+			var win = Window(bounds:Rect(0,0,1000,500));
+			var fps = [original,gridded].collect{
+				arg dict;
+				var fp = FluidPlotter(dict:dict,standalone:false);
+				~colors.keysValuesDo{
+					arg k, v;
+					fp.pointColor_(k,v);
+				};
+				fp.pointSizeScale_(3);
+				fp;
+			};
+			win.layout_(HLayout(*fps));
+			win.front;
+		};
+	});
+});
 )
 
 ::
-
-STRONG::A more colourful example exploring oversampling::
-
+strong::Axis and Extent::
 code::
 
-// make all dependencies
+// by adding an extent of 5 to axis 0, we get 5 columns:
 (
-~raw = FluidDataSet(s);
-~standardized = FluidDataSet(s);
-~reduced = FluidDataSet(s);
-~normalized = FluidDataSet(s);
-~standardizer  = FluidStandardize(s);
-~normalizer = FluidNormalize(s, 0.05, 0.95);
-~umap = FluidUMAP(s).numDimensions_(2).numNeighbours_(5).minDist_(0.2).iterations_(50).learnRate_(0.2);
-~grid = FluidGrid(s);
-~gridified = FluidDataSet(s);
-)
+~ds_gridded = FluidDataSet(s);
+~grid = FluidGrid(s,oversample:1,extent:5,axis:0).fitTransform(~ds,~ds_gridded);
 
-// build a dataset of 400 points in 3D (colour in RGB)
-~colours = Dictionary.newFrom(400.collect{|i|[("entry"++i).asSymbol, 3.collect{1.0.rand}]}.flatten(1));
-~raw.load(Dictionary.newFrom([\cols, 3, \data, ~colours]));
+// by default it is not normalized, so we'll do that before
+// sending it to plotter
+FluidNormalize(s).fitTransform(~ds_gridded,~ds_gridded);
 
-//First standardize our DataSet, then apply the UMAP to get 2 dimensions, then normalise these 2 for drawing in the full window size
-(
-~standardizer.fitTransform(~raw,~standardized,action:{"Standardized".postln});
-~umap.fitTransform(~standardized,~reduced,action:{"Finished UMAP".postln});
-~normalizer.fitTransform(~reduced,~normalized,action:{"Normalized Output".postln});
-)
-//we recover the reduced dataset
-~normalized.dump{|x| ~normalizedDict = x["data"]};
-
-//Visualise the 2D projection of our original 4D data
-(
-w = Window("a perspective", Rect(128, 64, 200, 200));
-w.drawFunc = {
-	Pen.use {
-		~normalizedDict.keysValuesDo{|key, val|
-			Pen.fillColor = Color.new(~colours[key.asSymbol][0], ~colours[key.asSymbol][1],~colours[key.asSymbol][2]);
-			Pen.fillOval(Rect((val[0] * 200), (val[1] * 200), 5, 5));
-			~colours[key.asSymbol].flat;
-		}
-	}
-};
-w.refresh;
-w.front;
-)
-
-//Force the UMAP-reduced dataset into a grid, normalise for viewing then print in another window
-(
-~grid.fitTransform(~reduced,~gridified,action:{"Gridded Output".postln;
-	~normalizer.fitTransform(~gridified,~normalized,action:{"Normalized Output".postln;
-		~normalized.dump{|x|
-			~normalizedDict = x["data"];
-			{
-				y = Window("a grid", Rect(328, 64, 200, 200));
-				y.drawFunc = {
-					Pen.use {
-						~normalizedDict.keysValuesDo{|key, val|
-							Pen.fillColor = Color.new(~colours[key.asSymbol][0], ~colours[key.asSymbol][1],~colours[key.asSymbol][2]);
-							Pen.fillOval(Rect((val[0] * 200), (val[1] * 200), 5, 5));
-							~colours[key.asSymbol].flat;
-						}
-					}
+~ds.dump({
+	arg original;
+	~ds_gridded.dump({
+		arg gridded;
+		defer{
+			var win = Window(bounds:Rect(0,0,1000,500));
+			var fps = [original,gridded].collect{
+				arg dict;
+				var fp = FluidPlotter(dict:dict,standalone:false);
+				~colors.keysValuesDo{
+					arg k, v;
+					fp.pointColor_(k,v);
 				};
-				y.refresh;
-				y.front;
-			}.defer;
+				fp.pointSizeScale_(3);
+				fp;
+			};
+			win.layout_(HLayout(*fps));
+			win.front;
 		};
 	});
 });
 )
 
-// We can check the dimensions of the yielded grid by dumping the normalisation.The grid coordinates are zero-counting
-~normalizer.dump{|x|x["data_max"].postln}
 
-// This looks ok, but let's improve it with oversampling
+// different settings
 (
-~grid.oversample_(3).fitTransform(~reduced,~gridified,action:{"Gridded Output".postln;
-	~normalizer.fitTransform(~gridified,~normalized,action:{"Normalized Output".postln;
-		~normalized.dump{|x|
-			~normalizedDict = x["data"];
-			{
-				y.refresh;
-			}.defer;
+~ds_gridded = FluidDataSet(s);
+~grid = FluidGrid(s,oversample:1,extent:7,axis:1).fitTransform(~ds,~ds_gridded);
+
+// by default it is not normalized, so we'll do that before
+// sending it to plotter
+FluidNormalize(s).fitTransform(~ds_gridded,~ds_gridded);
+
+~ds.dump({
+	arg original;
+	~ds_gridded.dump({
+		arg gridded;
+		defer{
+			var win = Window(bounds:Rect(0,0,1000,500));
+			var fps = [original,gridded].collect{
+				arg dict;
+				var fp = FluidPlotter(dict:dict,standalone:false);
+				~colors.keysValuesDo{
+					arg k, v;
+					fp.pointColor_(k,v);
+				};
+				fp.pointSizeScale_(3);
+				fp;
+			};
+			win.layout_(HLayout(*fps));
+			win.front;
 		};
 	});
 });
 )
 
-// Again, checking the normalisation dump to check the maxima of each dimension
-~normalizer.dump{|x|x["data_max"].postln}
+// this can also be over sampled:
+(
+~ds_gridded = FluidDataSet(s);
+~grid = FluidGrid(s,oversample:12,extent:6,axis:0).fitTransform(~ds,~ds_gridded);
+
+// by default it is not normalized, so we'll do that before
+// sending it to plotter
+FluidNormalize(s).fitTransform(~ds_gridded,~ds_gridded);
+
+~ds.dump({
+	arg original;
+	~ds_gridded.dump({
+		arg gridded;
+		defer{
+			var win = Window(bounds:Rect(0,0,1000,500));
+			var fps = [original,gridded].collect{
+				arg dict;
+				var fp = FluidPlotter(dict:dict,standalone:false);
+				~colors.keysValuesDo{
+					arg k, v;
+					fp.pointColor_(k,v);
+				};
+				fp.pointSizeScale_(3);
+				fp;
+			};
+			win.layout_(HLayout(*fps));
+			win.front;
+		};
+	});
+});
+)
+::
+strong::With Sound::
+Using link::Classes/FluidUMAP:: to dimensionally reduce 13 dimensions of link::Classes/FluidBufMFCC:: analyses down to two dimensions, play with each of the plots and see which is more musically expressive. Each has it's strenghts and weaknesses!
+code::
+
+~src = Buffer.readChannel(s,FluidFilesPath("Green-Box641.wav"),channels:[0]);
+
+// make a dataset of MFCC analyses all 100 ms long, the id is the sample it starts at
+(
+var mfccs = Buffer(s);
+var stats = Buffer(s);
+var flat = Buffer(s);
+var currentSample = 0;
+var hopSamples = ~src.sampleRate * 0.1;
+~ds = FluidDataSet(s);
+while({
+	(currentSample + hopSamples) < ~src.numFrames;
+},{
+	FluidBufMFCC.processBlocking(s,~src,currentSample,hopSamples,startCoeff:1,features:mfccs);
+	FluidBufStats.processBlocking(s,mfccs,stats:stats,select:[\mid]);
+	FluidBufFlatten.processBlocking(s,stats,destination:flat);
+	~ds.addPoint(currentSample.asInteger,flat);
+	currentSample = currentSample + hopSamples;
+});
+~ds.print;
+)
+
+// do the data stuff
+(
+~ds_umap = FluidDataSet(s);
+FluidUMAP(s,2,15,0.5).fitTransform(~ds,~ds_umap); // reduce 13 dimensions to 2 dimensions
+FluidNormalize(s).fitTransform(~ds_umap,~ds_umap); // normalize it so it plots nicely
+~ds_grid = FluidDataSet(s);
+FluidGrid(s).fitTransform(~ds_umap,~ds_grid); // gridify it into another dataset
+FluidNormalize(s).fitTransform(~ds_grid,~ds_grid); // normalize that too so it plots nicely
+~win = Window(bounds:Rect(0,0,1000,500));
+[~ds_umap,~ds_grid].do{
+	arg ds, i;
+	ds.dump({
+		arg dict;
+		var buf = Buffer.alloc(s,2);
+		var tree = FluidKDTree(s).fit(ds);
+		var last = nil;
+		defer{
+			FluidPlotter(~win,Rect((i*500) + 10,10,480,480),dict,{
+				arg view, x, y;
+				buf.setn(0,[x,y]);
+				tree.kNearest(buf,1,{
+					arg id;
+					if(id != last){
+						last = id;
+						view.highlight_(id);
+						{
+							var sig = PlayBuf.ar(1,~src,BufRateScale.ir(~src),1,id.asInteger);
+							var env = EnvGen.kr(Env([0,1,1,0],[0.02,0.06,0.02]),doneAction:2);
+							sig.dup * env;
+						}.play;
+					};
+				});
+			},standalone:false);
+		}
+	});
+};
+~win.front;
+)
+
 
 ::

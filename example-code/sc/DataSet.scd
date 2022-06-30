@@ -1,124 +1,254 @@
-
 CODE::
-// Create a simple a one-dimensional data set, three ways
-// Using routine
-s.reboot;
+
+(
+~ds = FluidDataSet(s);
+~databuf = Buffer.loadCollection(s,[0]);
+)
+
+// add a point
+(
+~ds.addPoint("my-point",~databuf);
+~ds.print;
+)
+
+// setPoint adds a point or, if the identifier exists, updates the point
 (
 fork{
-	~ds = FluidDataSet.new(s);
-	~point = Buffer.alloc(s,1,1);
+	~databuf.set(0,99);
+	~ds.setPoint("my-point",~databuf);
 	s.sync;
-	10.do{|i|
-		~point.set(0,i);
-		~ds.addPoint(i.asString,~point,{("addPoint"+i).postln});
-		s.sync;
+	~databuf.set(0,87);
+	~ds.setPoint("another-point",~databuf);
+	~ds.print;
+}
+)
+
+// update an existing point
+(
+~databuf.set(0,236);
+~ds.updatePoint("another-point",~databuf);
+~ds.print;
+)
+
+// get a point
+(
+~ds.getPoint("my-point",~databuf);
+~databuf.loadToFloatArray(action:{
+	arg fa;
+	fa.postln;
+});
+)
+
+// delete a point
+(
+~ds.deletePoint("my-point");
+~ds.print;
+)
+
+::
+strong::Adding an audio analysis to a DataSet::
+code::
+
+~src = Buffer.read(s,FluidFilesPath("Tremblay-ASWINE-ScratchySynth-M.wav"));
+
+// add just the mean mfcc values to the dataset
+(
+~mfccs = Buffer(s);
+~stats = Buffer(s);
+~flat = Buffer(s);
+FluidBufMFCC.processBlocking(s,~src,features:~mfccs);
+FluidBufStats.processBlocking(s,~mfccs,stats:~stats,select:[\mean]);
+FluidBufFlatten.processBlocking(s,~stats,destination:~flat);
+FluidDataSet(s).addPoint("ASWINE",~flat).print;
+)
+
+// use .fromBuffer to add *every* mfcc analysis to the dataset
+(
+FluidBufMFCC.processBlocking(s,~src,features:~mfccs);
+FluidDataSet(s).fromBuffer(~mfccs).print;
+)
+
+::
+strong::Four ways to get a bunch of data into a dataset::
+code::
+// Using routine
+(
+fork{
+	var point = Buffer.alloc(s,1);
+	var ds = FluidDataSet(s);
+	s.sync;
+	10.do{
+		arg i;
+		point.set(0,i);
+		ds.addPoint("point-%".format(i),point);
+		// s.sync;
 	};
-	~ds.dump;
-	s.sync;
-	~ds.free;
+	ds.print;
 };
 )
 
 //Using Dictionary
 (
-d = Dictionary.new;
-d.add(\cols -> 1);
-d.add(\data -> Dictionary.newFrom(10.collect{|i|[i.asString, [i.asFloat]]}.flatten));
-fork{
-	~ds = FluidDataSet.new(s);
-	~ds.load(d); s.sync;
-	~ds.dump; s.sync; ~ds.free;
-}
+var dict = Dictionary.new;
+dict.put(\cols,1);
+dict.put(\data,
+	Dictionary.newFrom(
+		[ // one could, of course, make this array more programmatically
+			"point-0",0,
+			"point-1",1,
+			"point-2",2,
+			"point-3",3,
+			"point-4",4,
+			"point-5",5,
+			"point-6",6,
+			"point-7",7,
+			"point-8",8,
+			"point-9",9
+		]
+	)
+);
+FluidDataSet(s).load(dict).print;
 )
 
 // Using a synth
 (
-~ds = FluidDataSet.new(s);
+var ds = FluidDataSet.new(s);
 {
 	var trig = Impulse.kr(20);
 	var count = PulseCount.kr(trig) - 1;
 	var buf = LocalBuf(1);
 	BufWr.kr(count, buf);
-	FluidDataSetWr.kr(~ds.asUGenInput, idNumber: count, buf: buf, trig: trig);
+	FluidDataSetWr.kr(ds, idNumber: count, buf: buf, trig: trig);
 	FreeSelf.kr(count - 8);
-}.play.onFree{~ds.dump{|o| o.postln;~ds.free}}
+}.play.onFree{ds.print}
+)
+
+// from a buffer
+(
+fork{
+	var buf = Buffer.loadCollection(s,(0..9));
+	s.sync;
+	FluidDataSet(s).fromBuffer(buf).print;
+}
 )
 ::
-
-STRONG:: Buffer Interface::
-
-As the content of the dataset has a similar structure to buffers, namely arrays of floats in parallel, it is possible to transfer the content between the two. Careful consideration of the rotation of the buffer, as well as the relation of points to channel numbers, are needed.
-
+strong::More Messages::
 code::
+
+~src = Buffer.read(s,FluidFilesPath("Tremblay-ASWINE-ScratchySynth-M.wav"));
+
+// use .fromBuffer to add *every* mfcc analysis to the dataset
 (
-//Make a dummy data set
-d = FluidDataSet(s);
-~data = Dictionary.with(*Array.iota(20).reshape(4,5).collect{|a,i| ("row"++i)->a});
-~dsdata = Dictionary.newFrom([\cols,5,\data,~data]);
-d.load(~dsdata);
-d.print;
+~mfccs = Buffer(s);
+FluidBufMFCC.processBlocking(s,~src,features:~mfccs);
+~ds = FluidDataSet(s).fromBuffer(~mfccs).print;
 )
 
-//convert to separate buffer and labelset
-b = Buffer(s);
-l = FluidLabelSet(s);
-d.toBuffer(b,0,l);
+// write to disk
+~ds.write(Platform.defaultTempDir+/+"temp_dataset.json");
 
-//check the result: by default, dataset points become frames, with their associated data columns as channels
-b.query
-b.getn(0,20,{|x|x.postln})
-l.print
+// read from disk
+(
+~loaded_ds = FluidDataSet(s).read(Platform.defaultTempDir+/+"temp_dataset.json");
+~loaded_ds.print;
+)
 
-//you can also transpose your query, where dataset points are each a buffer channel, and each data column becomes a buffer frame
-d.toBuffer(b,1,l);
-b.query
-b.getn(0,20,{|x|x.postln})
-//note that the IDs are still one per item, as columns are unamed in datasets
-l.print
+// how many data points are there
+~ds.size
 
-//Convert back to DS again
-e = FluidDataSet(s);
+// how many dimensions
+~ds.cols
 
-//Let's use the transposed data we just got
-e.print;
-e.fromBuffer(b,1,l);
-e.print;
-//if we didn't transpose, we would get an error as the labelset is mismatched with the number of items
-e.clear
-e.print
-e.fromBuffer(b,0,l)
+// dump the contents to a language side dict
+(
+~ds.dump({
+	arg dict;
+	dict["data"].keysValuesDo{
+		arg k, v;
+		"%:\t%".format(k,v).postln;
+	};
+	"this data set has % dimensions".format(dict["cols"]).postln;
+});
+)
+
+// clear it
+(
+~ds.clear;
+~ds.print;
+)
 ::
-
-STRONG:: Merging Datasets::
+strong::Merge two data sets that have the same number of dimensions::
 code::
-//this is how to add items between 2 datasets.
-//create 2 datasets
+
 (
-~dsA = FluidDataSet.new(s);
-~dsB = FluidDataSet.new(s);
+~srcA = Buffer.read(s,FluidFilesPath("Tremblay-ASWINE-ScratchySynth-M.wav"));
+~srcB = Buffer.read(s,FluidFilesPath("Harker-DS-TenOboeMultiphonics-M.wav"));
 )
 
-//feed them items with same dimensions but different identifiers
-~dsA.load(Dictionary.newFrom([\cols, 1, \data, Dictionary.newFrom([\one,1,\two,2])]));
-~dsB.load(Dictionary.newFrom([\cols, 1, \data, Dictionary.newFrom([\three,3,\four,4])]));
+// use .fromBuffer to add *every* mfcc analysis to the dataset
+(
+fork{
+	var mfccs = Buffer(s);
+	var flat = Buffer(s);
+
+	FluidBufMFCC.processBlocking(s,~srcA,features:mfccs);
+	s.sync;
+
+	~dsA = FluidDataSet(s);
+	mfccs.numFrames.do{
+		arg i;
+		FluidBufFlatten.processBlocking(s,mfccs,i,1,destination:flat);
+		~dsA.addPoint("sourceA-%".format(i),flat);
+	};
+
+
+	FluidBufMFCC.processBlocking(s,~srcB,features:mfccs);
+	s.sync;
+
+	~dsB = FluidDataSet(s);
+	mfccs.numFrames.do{
+		arg i;
+		FluidBufFlatten.processBlocking(s,mfccs,i,1,destination:flat);
+		~dsB.addPoint("sourceB-%".format(i),flat);
+	};
+
+	~dsA.print;
+	~dsB.print;
+}
+)
+
+// merge dataset B into dataset A
+// because there are no overlapping identifiers,
+// nothign will be overwritten
+(
+~dsA.merge(~dsB);
 ~dsA.print;
-~dsB.print;
+)
+::
+strong::Using:: code::.fromBuffer::
+code::
 
-// merge and check. it works.
-~dsB.merge(~dsA)
-~dsB.print;
+~src = Buffer.read(s,FluidFilesPath("Tremblay-ASWINE-ScratchySynth-M.wav"));
 
-//change the content of the dataset to shared identifiers
-~dsA.load(Dictionary.newFrom([\cols, 1, \data, Dictionary.newFrom([\three,333,\four,444])]));
-~dsB.load(Dictionary.newFrom([\cols, 1, \data, Dictionary.newFrom([\three,3,\four,4])]));
-~dsA.print;
-~dsB.print;
+// use .fromBuffer to add *every* mfcc analysis to the dataset
+// pass a labelset so the identifiers aren't just numbers
+(
+fork{
+	var mfccs = Buffer(s);
+	FluidBufMFCC.processBlocking(s,~src,features:mfccs);
+	s.sync;
+	~ls = FluidLabelSet(s);
+	mfccs.numFrames.do{
+		arg i;
+		// in the label set that gets used to create
+		// the identifiers, the identifier is the
+		// frame number in the buffer (an integer)
+		// and the "label" is what will be come the
+		// identifier in the dataset
+		~ls.addLabel(i,"ASWINE-mfcc-%".format(i));
+	};
+	~ds = FluidDataSet(s).fromBuffer(mfccs,0,~ls).print;
+}
+)
 
-//try to merge, it does not update
-~dsB.merge(~dsA)
-~dsB.print;
-
-// add the overwrite flag, and it works
-~dsB.merge(~dsA,1)
-~dsB.print;
 ::

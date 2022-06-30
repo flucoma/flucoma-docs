@@ -1,50 +1,77 @@
-
 code::
-// create some buffers
-(
-b = Buffer.read(s,FluidFilesPath("Nicol-LoopE-M.wav"));
-c = Buffer.new(s);
-)
+~src = Buffer.read(s,FluidFilesPath("Nicol-LoopE-M.wav"));
 
-// run the process with basic parameters
-(
-Routine{
-	t = Main.elapsedTime;
-	FluidBufSpectralShape.process(s, b, features: c).wait;
-	(Main.elapsedTime - t).postln;
-}.play
-)
+// listen if you want
+~src.play;
 
-// listen to the source and look at the buffer
-b.play;
-c.plot(separately:true)
+(
+var specbuf = Buffer(s);
+FluidBufSpectralShape.processBlocking(s,~src,features:specbuf);
+specbuf.loadToFloatArray(action:{
+	arg fa;
+	var spec = fa.clump(specbuf.numChannels);
+	var win;
+
+	defer{
+		win = Window("FluidBufSpectralShape: click me to hear sines of the spec analysis",Rect(0,0,1600,400));
+
+		FluidWaveform(~src,featuresBuffer:specbuf,parent:win,bounds:win.bounds,stackFeatures:true,standalone:false);
+
+		UserView(win,win.bounds).mouseDownAction_{
+			arg view, x, y;
+			var index = x.linlin(0,view.bounds.width,0,spec.size-1).asInteger;
+			"analysis frame: %".format(index).postln;
+			FluidSpectralShape.features.do{
+				arg feat, i;
+				"\t%: %".format(feat.asString.padRight(10),spec[index][i]).postln;
+			};
+			"".postln;
+		};
+
+		win.front;
+	}
+});
+)
 ::
+strong::Using "select"::
+By passing an array of symbols to the select argument you can choose to output only a subset of the analyses. The options are \centroid, \spread, \skewness, \kurtosis, \rolloff, \flatness, \and crest. If nothing is specified, the object will return all the analyses. The analyses will always appear in their normal order, this argument just allows for a selection of them to be returned. Reordering the options in this argument will not reorder how the analyses are returned.
+code::
 
-STRONG::A stereo buffer example.::
-CODE::
+~src = Buffer.read(s,FluidFilesPath("Nicol-LoopE-M.wav"));
 
-// load two very different files
+// listen if you want
+~src.play;
+
+// change this if you want to see other selected analyses
+~selections = [\centroid,\spread,\flatness];
+
 (
-b = Buffer.read(s,FluidFilesPath("Tremblay-SA-UprightPianoPedalWide.wav"));
-c = Buffer.read(s,FluidFilesPath("Tremblay-AaS-AcousticStrums-M.wav"));
+var specbuf = Buffer(s);
+FluidBufSpectralShape.processBlocking(s,~src,features:specbuf,select:~selections);
+specbuf.loadToFloatArray(action:{
+	arg fa;
+	var spec = fa.clump(specbuf.numChannels);
+	var win;
+
+	defer{
+		win = Window("FluidBufSpectralShape: click me to hear sines of the spec analysis",Rect(0,0,1600,400));
+
+		FluidWaveform(~src,featuresBuffer:specbuf,parent:win,bounds:win.bounds,stackFeatures:true,standalone:false);
+
+		UserView(win,win.bounds).mouseDownAction_{
+			arg view, x, y;
+			var index = x.linlin(0,view.bounds.width,0,spec.size-1).asInteger;
+			"analysis frame: %".format(index).postln;
+			~selections.do{
+				arg feat, i;
+				"\t%: %".format(feat.asString.padRight(10),spec[index][i]).postln;
+			};
+			"".postln;
+		};
+
+		win.front;
+	}
+});
 )
 
-// composite one on left one on right as test signals
-FluidBufCompose.process(s, c, numFrames:b.numFrames, startFrame:555000,destStartChan:1, destination:b)
-b.play
-
-// create a buffer as destinations
-c = Buffer.new(s);
-
-//run the process on them
-(
-Routine{
-    t = Main.elapsedTime;
-    FluidBufSpectralShape.process(s, b, features: c).wait;
-    (Main.elapsedTime - t).postln;
-}.play
-)
-
-// look at the buffer: 7shapes for left, then 7 shapes for right
-c.plot(separately:true)
 ::
