@@ -29,7 +29,7 @@
 
 :control numFrames:
 
-   How many frames of ``source`` should be process. The default of -1 indicates to process through the end of the buffer.
+   How many frames of ``source`` should be processed. The default of -1 indicates to process through the end of the buffer.
 
 :control startChan:
 
@@ -49,7 +49,7 @@
 
 :control order:
 
-   The number of previous samples used by the algorithm to create the model of the signal within the ``blockSize`` window of analysis ``order`` must be less than ``blockSize``.
+   The number of previous samples used by the algorithm to create the model of the signal within the ``blockSize`` window of analysis. ``order`` must be less than ``blockSize``.
 
 :control blockSize:
 
@@ -57,7 +57,7 @@
 
 :control padSize:
 
-   The size (in samples) of analysis on each side of ``blockSize`` used to provide some historical context for analysis so that each ``blockSize`` isn't modelled completely independently of its predecessor.
+   The size (in samples) of analysis on each side of ``blockSize`` used to provide some historical context for analysis, so that each ``blockSize`` isn't modelled completely independently of its predecessor.
 
 :control skew:
 

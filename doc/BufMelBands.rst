@@ -20,7 +20,7 @@
 
 :control source:
 
-   The index of the buffer to use as the source material to be analysed. The different channels of multichannel buffers will be processed sequentially.
+   The buffer to use as the source material to be analysed. The different channels of multichannel buffers will be processed sequentially.
 
 :control startFrame:
 
@@ -68,7 +68,7 @@
 
 :control hopSize:
 
-  The window hop size. As this analysis relies on spectral frames, we need to move the window forward. It can be any size but low overlap will create audible artefacts. The -1 default value will default to half of windowSize (overlap of 2).
+  The window hop size. As this analysis relies on spectral frames, we need to move the window forward. It can be any size, but low overlap will create audible artefacts. The -1 default value will default to half of windowSize (overlap of 2).
 
 :control fftSize:
 

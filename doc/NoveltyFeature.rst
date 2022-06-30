@@ -9,6 +9,10 @@
    
    Novelty derived by running a kernel across the diagonal of the similarity matrix. It implements the seminal results published in  'Automatic Audio Segmentation Using a Measure of Audio Novelty' by J Foote.
 
+   .. only_in:: sc
+
+      The argument for ``algorithm`` can be passed as an integer (see table below) which is modulatable, or as one of the following symbols: ``\spectrum``, ``\mfcc``, ``\chroma``, ``\pitch``, or ``\loudness``. 
+
 :process: The audio rate version of the object.
 :output: A KR signal of the feature.
 
@@ -47,7 +51,7 @@
 
 :control hopSize:
 
-   The window hop size. As novelty estimation relies on spectral frames, we need to move the window forward. It can be any size but low overlap will create audible artefacts.
+   The window hop size. As novelty estimation relies on spectral frames, we need to move the window forward. It can be any size, but low overlap will create audible artefacts.
 
 :control fftSize:
 

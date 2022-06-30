@@ -9,16 +9,20 @@
    
    The metric for calculating difference can be chosen from a curated selection, lending the algorithm toward slicing a broad range of musical materials.
 
+   .. only_in:: sc
+
+      The argument for ``metric`` can be passed as an integer (see table below), or as one of the following symbols: ``\power``, ``\hfc``, ``\flux``,	``\mkl``, ``\is``, ``\cosine``, ``\phase``, ``\wphase``, ``\complex``, or ``\rcomplex``. 
+
 :process: This is the method that calls for the slicing to be calculated on a given source buffer.
 :output: Nothing, as the various destination buffers are declared in the function call.
 
 :control source:
 
-   The index of the buffer to use as the source material to be sliced through novelty identification. The different channels of multichannel buffers will be summed.
+   The buffer to use as the source material to be sliced through novelty identification. The different channels of multichannel buffers will be summed.
 
 :control startFrame:
 
-   Where in the srcBuf should the slicing process start, in sample.
+   Where in the srcBuf should the slicing process start, in samples.
 
 :control numFrames:
 
@@ -34,7 +38,7 @@
 
 :control features:
 
-   The index of the buffer where the onset features will be written to.
+   The buffer where the onset features will be written to.
 
 :control metric:
 
@@ -86,7 +90,7 @@
 
 :control hopSize:
 
-   The window hop size. As spectral differencing relies on spectral frames, we need to move the window forward. It can be any size but low overlap will create audible artefacts. The -1 default value will default to half of windowSize (overlap of 2).
+   The window hop size. As spectral differencing relies on spectral frames, we need to move the window forward. It can be any size, but low overlap will create audible artefacts. The -1 default value will default to half of windowSize (overlap of 2).
 
 :control fftSize:
 

@@ -1,27 +1,64 @@
 
 code::
-//didactic - the mouse X axis interpolates between the two sinewaves
-{FluidAudioTransport.ar(SinOsc.ar(220,mul: 0.1),SinOsc.ar(440,mul: 0.02),MouseX.kr())}.play;
 
-//notice how the interpolation quantizes to the FFT bins. Like most spectral processes, it benefits from oversampling the fft... at the cost of  CPU power, obviously.
-{FluidAudioTransport.ar(SinOsc.ar(220,mul: 0.1),SinOsc.ar(440,mul: 0.02),MouseX.kr(),fftSize: 8192)}.play;
-
-// when the signal is steady, larger hopSize can be accommodated to save back on the CPU
-{FluidAudioTransport.ar(SinOsc.ar(220,mul: 0.1),SinOsc.ar(440,mul: 0.02),MouseX.kr(),windowSize: 8192)}.play; // here we get a default hop of half the window so 8 times less than above.
-
-//if you CPU can cope, try this setting, almost smooth, but attacks would smear (the Y axis mixes some in to hear the effect)
-{var attacks = Impulse.ar(1,mul: MouseY.kr(-40,10).dbamp); FluidAudioTransport.ar(SinOsc.ar(220,mul: 0.1,add: attacks),SinOsc.ar(440,mul: 0.02,add: attacks),MouseX.kr(),windowSize: 16000)}.play;
-
-//richer with complex spectra
-//load 2 files
 (
-b = Buffer.read(s,FluidFilesPath("Tremblay-CEL-GlitchyMusicBoxMelo.wav"));
-c = Buffer.read(s,FluidFilesPath("Tremblay-CF-ChurchBells.wav"));
+~srcA = Buffer.readChannel(s,FluidFilesPath("Tremblay-CEL-GlitchyMusicBoxMelo.wav"),channels:[0]);
+~srcB = Buffer.readChannel(s,FluidFilesPath("Nicol-LoopE-M.wav"),channels:[0]);
 )
-//listen to them
-b.play
-c.play
-//stereo cross!
-{FluidAudioTransport.ar(PlayBuf.ar(2,b,loop: 1),PlayBuf.ar(2,c,loop: 1),MouseX.kr())}.play;
 
+(
+{
+	var srcA = PlayBuf.ar(1,~srcA,BufRateScale.ir(~srcA),loop:1);
+	var srcB = PlayBuf.ar(1,~srcB,BufRateScale.ir(~srcB),loop:1);
+	FluidAudioTransport.ar(srcA,srcB,MouseX.kr,1024,64,2048).dup;
+}.play
+)
+
+::
+strong::The impact of FFT Settings::
+The larger the FFT size the better it blends the spectral qualities at the expense of smearing attacks. This will have a drastic impact on the characteristic of the interpolation.
+code::
+
+(
+~srcA = Buffer.readChannel(s,FluidFilesPath("Tremblay-CEL-GlitchyMusicBoxMelo.wav"),channels:[0]);
+~srcB = Buffer.readChannel(s,FluidFilesPath("Nicol-LoopE-M.wav"),channels:[0]);
+)
+
+(
+~synth = {
+	arg windowSize = 1024, hopSize = 64, fftSize = 2048;
+	var srcA = PlayBuf.ar(1,~srcA,BufRateScale.ir(~srcA),loop:1);
+	var srcB = PlayBuf.ar(1,~srcB,BufRateScale.ir(~srcB),loop:1);
+	FluidAudioTransport.ar(srcA,srcB,MouseX.kr,windowSize,hopSize,fftSize,16384).dup;
+}.play
+)
+
+// Try these different FFT settings to see how they affect the results of the audio transport algorithm
+
+~synth.set(\windowSize,256,\hopSize,16,\fftSize,256);
+~synth.set(\windowSize,1024,\hopSize,16,\fftSize,1024);
+~synth.set(\windowSize,1024,\hopSize,-1,\fftSize,-1);
+~synth.set(\windowSize,2048,\hopSize,-1,\fftSize,-1);
+~synth.set(\windowSize,4096,\hopSize,-1,\fftSize,-1);
+~synth.set(\windowSize,16384,\hopSize,-1,\fftSize,-1);
+
+::
+Creative Modulation
+code::
+
+(
+~srcA = Buffer.readChannel(s,FluidFilesPath("Tremblay-CEL-GlitchyMusicBoxMelo.wav"),channels:[0]);
+~srcB = Buffer.readChannel(s,FluidFilesPath("Nicol-LoopE-M.wav"),channels:[0]);
+)
+
+(
+{
+	var srcA = PlayBuf.ar(1,~srcA,BufRateScale.ir(~srcA),loop:1);
+	var srcB = PlayBuf.ar(1,~srcB,BufRateScale.ir(~srcB),loop:1);
+	var amp = Amplitude.kr(srcB);
+	var interp = LFDNoise3.kr(100 * amp).range(0,1).poll;
+	var sig = FluidAudioTransport.ar(srcA,srcB,interp,2048).dup;
+	sig + (srcB * -20.dbamp);
+}.play
+)
 ::

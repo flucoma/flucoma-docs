@@ -20,11 +20,11 @@
 
 :control source:
 
-   The index of the buffer to use as the source material to be decomposed through the sinusoidal modelling process. The different channels of multichannel buffers will be processed sequentially.
+   The buffer to use as the source material to be decomposed through the sinusoidal modelling process. The different channels of multichannel buffers will be processed sequentially.
 
 :control startFrame:
 
-   Where in the srcBuf should the process start, in sample.
+   Where in the srcBuf should the process start, in samples.
 
 :control numFrames:
 
@@ -40,11 +40,11 @@
 
 :control sines:
 
-   The index of the buffer where the extracted sinusoidal component will be reconstructed.
+   The buffer where the extracted sinusoidal component will be reconstructed.
 
 :control residual:
 
-   The index of the buffer where the residual of the sinusoidal component will be reconstructed.
+   The buffer where the residual of the sinusoidal component will be reconstructed.
 
 :control bandwidth:
 
@@ -88,7 +88,7 @@
 
 :control hopSize:
 
-   The window hop size. As sinusoidal estimation relies on spectral frames, we need to move the window forward. It can be any size but low overlap will create audible artefacts.
+   The window hop size. As sinusoidal estimation relies on spectral frames, we need to move the window forward. It can be any size, but low overlap will create audible artefacts.
 
 :control fftSize:
 

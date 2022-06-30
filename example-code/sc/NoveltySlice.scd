@@ -1,23 +1,35 @@
-
 code::
-//load some sounds
-b = Buffer.read(s,FluidFilesPath("Nicol-LoopE-M.wav"));
 
-// basic param (the process add a latency of windowSize samples
-{var sig = PlayBuf.ar(1,b,loop:1); [FluidNoveltySlice.ar(sig,0,11,0.33) * 0.5, DelayN.ar(sig, 1, (512 * (((11 + 1) / 2).asInteger + ((1 + 1) / 2).asInteger + 1)) / s.sampleRate, 0.2)]}.play
+~src = Buffer.read(s,FluidFilesPath("Tremblay-FMTriDist-M.wav"));
 
-// other parameters
-{var sig = PlayBuf.ar(1,b,loop:1); [FluidNoveltySlice.ar(sig, 1, 31, 0.009, 4, 100, 128, 32) * 0.5, DelayN.ar(sig, 1, (32 * (((31 + 1)/2).asInteger + ((4 + 1) / 2).asInteger + 1))/ s.sampleRate,0.2)]}.play
-
-// More musical, novelty-trigged autopan
 (
 {
-    var sig, trig, syncd, pan;
-    sig = PlayBuf.ar(1,b,loop:1);
-    trig = FluidNoveltySlice.ar(sig, 0, 11, 0.25, 5, 1, 128, 32);
-    syncd = DelayN.ar(sig, 1, (32 * (((11 + 1)/2).asInteger + ((5 + 1) / 2).asInteger + 1))/ s.sampleRate);
-    pan = TRand.ar(-1,1,trig);
-    Pan2.ar(syncd,pan);
-}.play
+	var sig = PlayBuf.ar(1,~src,BufRateScale.ir(~src),loop:1);
+	var slicer = FluidNoveltySlice.ar(sig,threshold:0.61);
+	sig = DelayN.ar(sig,0.1,1024*SampleDur.ir); // compensate for latency
+	[sig,slicer];
+}.play;
 )
+
+::
+strong::Tweaking Parameters::
+code::
+
+~src = Buffer.read(s,FluidFilesPath("Constanzo-PreparedSnare-M.wav"));
+
+(
+~synth = {
+	arg kernelSize = 3, threshold = 0.8, minSliceLength = 2, windowSize = 1024;
+	var sig = PlayBuf.ar(1,~src,BufRateScale.ir(~src),loop:1);
+	var slicer = FluidNoveltySlice.ar(sig,0,kernelSize,threshold,1,minSliceLength,windowSize,maxKernelSize:41);
+	sig = DelayN.ar(sig,0.1,windowSize*SampleDur.ir); // compensate for latency
+	[sig,slicer];
+}.play;
+)
+
+// try some different params
+~synth.set(\kernelSize,5,\threshold,0.61,\minSliceLength,3);
+~synth.set(\kernelSize,41,\threshold,0.35,\minSliceLength,1);
+~synth.set(\kernelSize,3,\threshold,0.5,\minSliceLength,1);
+
 ::

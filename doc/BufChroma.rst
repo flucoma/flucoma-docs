@@ -15,11 +15,11 @@
 
 :control source:
 
-   The index of the buffer to use as the source material to be analysed. The different channels of multichannel buffers will be processed sequentially.
+   The buffer to use as the source material to be analysed. The different channels of multichannel buffers will be processed sequentially.
 
 :control startFrame:
 
-   Where in the srcBuf should the process start, in sample.
+   Where in the srcBuf should the process start, in samples.
 
 :control numFrames:
 
@@ -63,7 +63,7 @@
 
 :control hopSize:
 
-   The window hop size. As chroma description relies on spectral frames, we need to move the window forward. It can be any size but low overlap will create audible artefacts.
+   The window hop size. As chroma description relies on spectral frames, we need to move the window forward. It can be any size, but low overlap will create audible artefacts.
 
 :control fftSize:
 

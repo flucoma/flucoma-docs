@@ -8,7 +8,7 @@
    A utility for manipulating the contents of buffers.
 
 :discussion: 
-   This object is the swiss army knife for manipulating buffers and their contents. By specifying ranges of samples and channels to copy, as well as destination and source gains it can provide a powerful interface for performing actions such as a Left/Right to Mid/Side conversion and mixing down multichannel audio
+   This object is a low-level tool for manipulating buffers and their contents. By specifying ranges of samples and channels to copy, as well as destination and source gains it can provide a powerful interface for performing actions such as a Left/Right to Mid/Side conversion and mixing down multichannel audio
 
 :process: This method triggers the compositing.
 

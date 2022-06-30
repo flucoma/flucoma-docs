@@ -18,11 +18,11 @@
 
 :control source:
 
-   The index of the buffer to use as the source material to be described. The different channels of multichannel buffers will be processed sequentially.
+   The buffer to use as the source material to be described. The different channels of multichannel buffers will be processed sequentially.
 
 :control startFrame:
 
-   Where in the srcBuf should the process start, in sample.
+   Where in the srcBuf should the process start, in samples.
 
 :control numFrames:
 
@@ -54,11 +54,11 @@
 
 :control windowSize:
 
-   The size of the window on which the computation is done. By default 1024 to be similar with all other FluCoMa objects, the EBU specifies 400ms, which is 17640 samples at 44100.
+   The size of the window on which the computation is done. By default, 1024 to be similar with all other FluCoMa objects, the EBU specifies 400ms, which is 17640 samples at 44100.
 
 :control hopSize:
 
-   How much the buffered window moves forward, in samples. By default 512 to be similar with all other FluCoMa objects, the EBU specifies 100ms, which is 4410 samples at 44100.
+   How much the buffered window moves forward, in samples. By default, 512 to be similar with all other FluCoMa objects, the EBU specifies 100ms, which is 4410 samples at 44100.
 
 :control padding:
 
