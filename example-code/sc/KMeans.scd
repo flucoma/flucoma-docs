@@ -1,154 +1,202 @@
 code::
 
 (
-//Make some clumped 2D points and place into a DataSet
-~points = (4.collect{
-		       64.collect{(1.sum3rand) + [1,-1].choose}.clump(2)
-	       }).flatten(1) * 0.5;
-fork{
-    ~dataSet =  FluidDataSet(s);
-    d = Dictionary.with(
-        *[\cols -> 2,\data -> Dictionary.newFrom(
-			~points.collect{|x, i| [i, x]}.flatten)]);
-    s.sync;
-    ~dataSet.load(d, {~dataSet.print});
-}
+// peek at a didactic dataset
+~ds = FluidDataSet(s).read(FluidFilesPath("../Data/moon.json"));
+~ds.dump({
+	arg dict;
+	defer{
+		~fp = FluidPlotter(dict:dict).pointSizeScale_(3);
+	};
+});
 )
 
-
-// Create a KMeans instance and a LabelSet for the cluster labels in the server
-~clusters = FluidLabelSet(s);
+// now keeping that window open, try some different numbers for k
+(
 ~kmeans = FluidKMeans(s);
-
-// Fit into 4 clusters
-(
-~kmeans.fitPredict(~dataSet,~clusters,action: {|c|
-		"Fitted.\n # Points in each cluster:".postln;
-		c.do{|x,i|
-			("Cluster" + i + "->" + x.asInteger + "points").postln;
-		}
-	});
+~ls = FluidLabelSet(s);
 )
 
-// Cols of kmeans should match DataSet, size is the number of clusters
-
-~kmeans.cols;
-~kmeans.size;
-~kmeans.dump;
-
-// Retrieve labels of clustered points
+// k = the default of 4
 (
-~assignments = Array.new(128);
+~kmeans.fitPredict(~ds,~ls,{
+	~ls.dump({
+		arg dict;
+		~fp.categories_(dict);
+	});
+});
+)
+
+// k = 2
+(
+~kmeans.numClusters_(2).fitPredict(~ds,~ls,{
+	~ls.dump({
+		arg dict;
+		~fp.categories_(dict);
+	});
+});
+)
+
+// k = 9
+(
+~kmeans.numClusters_(9).fitPredict(~ds,~ls,{
+	~ls.dump({
+		arg dict;
+		~fp.categories_(dict);
+	});
+});
+)
+
+::
+strong::Incremental Training::
+code::
+
+// Keep the window open and run this to see where it's at after each iteration
+
+(
 fork{
-    128.do{ |i|
-        ~clusters.getLabel(i,{|clusterID|
-            (i.asString+clusterID).postln;
-            ~assignments.add(clusterID)
-        });
-        s.sync;
-    }
+	~kmeans.clear;
+	~kmeans.numClusters_(9);
+	~kmeans.maxIter_(1);
+	10.do{
+		arg i;
+		~kmeans.fitPredict(~ds,~ls,{
+			~ls.dump({
+				arg dict;
+				~fp.categories_(dict);
+			});
+		});
+		"Iteration: %".format(i+1).postln;
+		1.wait;
+	}
 }
 )
 
-//or faster by sorting the IDs
-~clusters.dump{|x|~assignments = x.at("data").atAll(x.at("data").keys.asArray.sort{|a,b|a.asInteger < b.asInteger}).flatten.postln;}
+::
+strong::Seeding the Means::
+code::
 
-//Visualise: we're hoping to see colours neatly mapped to quandrants...
 (
-d = ((~points + 1) * 0.5).flatten(1).unlace;
-w = Window("scatter", Rect(128, 64, 200, 200));
-~colours = [Color.blue,Color.red,Color.green,Color.magenta];
-w.drawFunc = {
-	Pen.use {
-		d[0].size.do{|i|
-			var x = (d[0][i]*200);
-			var y = (d[1][i]*200);
-			var r = Rect(x,y,5,5);
-			Pen.fillColor = ~colours[~assignments[i].asInteger];
-			Pen.fillOval(r);
-		}
+// peek at a didactic dataset
+~ds = FluidDataSet(s).read(FluidFilesPath("../Data/gaussian4.json"));
+~ds.dump({
+	arg dict;
+	defer{
+		~fp = FluidPlotter(dict:dict);
+	};
+});
+)
+
+// keep that window open and let's display where we will
+// seeds the means
+(
+~seeds = [[0.1,0.1],[0.2,0.2],[0.3,0.3],[0.4,0.4]];
+~seeds.do{
+	arg arr, i;
+	~fp.addPoint_("seed-%".format(i),arr[0],arr[1],Color.gray,3);
+}
+)
+
+// do 10 iterations and see where the seeds move to from their starting locations
+(
+fork{
+	// put the seed means that we're going to use in a data set
+	// so that we can set them with FluidKMeans' method "setMeans"
+	~ds_means = FluidDataSet(s).load(
+		Dictionary.newFrom([
+			"cols",2,
+			"data",Dictionary.newFrom([
+				"seed-0",~seeds[0],
+				"seed-1",~seeds[1],
+				"seed-2",~seeds[2],
+				"seed-3",~seeds[3],
+			])
+		])
+	);
+	~kmeans = FluidKMeans(s);
+	~kmeans.setMeans(~ds_means); // set the staring means
+	// set max iter to 1 so we can seen the progress unfold one step at a time
+	~kmeans.maxIter_(1);
+	// labelset for FluidKMeans to write the categories into
+	~ls = FluidLabelSet(s);
+
+	// just do 10 iterations (probably will be enough)
+	10.do{
+		arg i;
+		// do one iteration of fit and write the current category lables
+		~kmeans.fitPredict(~ds,~ls,{
+			~ls.dump({
+				arg dict;
+
+				// set those categories to fluid plotter so we can see the colors
+				~fp.categories_(dict);
+			});
+
+			// also get the means' current positions and...
+			~kmeans.getMeans(~ds_means,{
+				~ds_means.dump({
+					arg dict;
+
+					// update their position on the screen
+					dict["data"].keysValuesDo{
+						arg k, v;
+						~fp.setPoint_("seed-%".format(k),v[0],v[1],Color.gray,3);
+					};
+				});
+			});
+		});
+		"Iteration: %".format(i+1).postln;
+		1.wait;
 	}
-};
-w.refresh;
-w.front;
+}
+)
+::
+strong::Distances::
+Accessing the distances to each point's mean
+code::
+
+(
+// peek at a didactic dataset
+~ds = FluidDataSet(s).read(FluidFilesPath("../Data/gaussian4.json"));
+~ds.dump({
+	arg dict;
+	defer{
+		~fp = FluidPlotter(dict:dict).pointSizeScale_(2);
+	};
+});
 )
 
-// single point transform on arbitrary value
-~inbuf = Buffer.loadCollection(s,0.5.dup);
-~kmeans.predictPoint(~inbuf,{|x|x.postln;});
-::
-
-subsection:: Accessing the means
-
-We can get and set the means for each cluster, their centroid.
-
-code::
-// with the dataset and kmeans generated and trained in the code above
-~centroids = FluidDataSet(s);
-~kmeans.getMeans(~centroids, {~centroids.print});
-
-// We can also set them to arbitrary values to seed the process
-~centroids.load(Dictionary.newFrom([\cols, 2, \data, Dictionary.newFrom([\0, [0.5,0.5], \1, [-0.5,0.5], \2, [0.5,-0.5], \3, [-0.5,-0.5]])]));
-~centroids.print
-~kmeans.setMeans(~centroids, {~kmeans.predict(~dataSet,~clusters,{~clusters.dump{|x|var count = 0.dup(4); x["data"].keysValuesDo{|k,v|count[v[0].asInteger] = count[v[0].asInteger] + 1;};count.postln}})});
-
-// We can further fit from the seeded means
-~kmeans.fit(~dataSet)
-// then retreive the improved means
-~kmeans.getMeans(~centroids, {~centroids.print});
-//subtle in this case but still.. each quadrant is where we seeded it.
-::
-
-subsection:: Cluster-distance Space
-
-We can get the euclidian distance of a given point to each cluster. This is often referred to as the cluster-distance space as it creates new dimensions for each given point, one distance per cluster.
-
-code::
-// with the dataset and kmeans generated and trained in the code above
-b = Buffer.sendCollection(s,[0.5,0.5])
-c = Buffer(s)
-
-// get the distance of our given point (b) to each cluster, thus giving us 4 dimensions in our cluster-distance space
-~kmeans.transformPoint(b,c,{|x|x.query;x.getn(0,x.numFrames,{|y|y.postln})})
-
-// we can also transform a full dataset
-~srcDS = FluidDataSet(s)
-~cdspace = FluidDataSet(s)
-// make a new dataset with 4 points
-~srcDS.load(Dictionary.newFrom([\cols, 2, \data, Dictionary.newFrom([\pp, [0.5,0.5], \np, [-0.5,0.5], \pn, [0.5,-0.5], \nn, [-0.5,-0.5]])]));
-~kmeans.transform(~srcDS, ~cdspace, {~cdspace.print})
-::
-
-subsection:: Queries in a Synth
-
-This is the equivalent of predictPoint, but wholly on the server
-
-code::
+// keep that window open and run KMeans analysis, then color the points according to their distance from their mean
 (
-{
-    var trig = Impulse.kr(5);
-    var point = WhiteNoise.kr(1.dup);
-    var inputPoint = LocalBuf(2);
-    var outputPoint = LocalBuf(1);
-    Poll.kr(trig, point, [\pointX,\pointY]);
-    point.collect{ |p,i| BufWr.kr([p],inputPoint,i)};
-    ~kmeans.kr(trig,inputPoint,outputPoint);
-    Poll.kr(trig,BufRd.kr(1,outputPoint,0,interpolation:0),\cluster);
-}.play;
-)
+var ds_dist = FluidDataSet(s);
+var ds_means = FluidDataSet(s);
+var kmeans = FluidKMeans(s).maxIter_(300).fitTransform(~ds,ds_dist);
+kmeans.getMeans(ds_means);
+~ds.dump({
+	arg dict;
+	ds_dist.dump({
+		arg dist_dict;
+		ds_means.dump({
+			arg means_dict;
 
-// to sonify the output, here are random values alternating quadrant, generated more quickly as the cursor moves rightwards
-(
-{
-	var trig = Impulse.kr(MouseX.kr(0,1).exprange(0.5,ControlRate.ir / 2));
-	var step = Stepper.kr(trig,max:3);
-	var point = TRand.kr(-0.1, [0.1, 0.1], trig) + [step.mod(2).linlin(0,1,-0.6,0.6),step.div(2).linlin(0,1,-0.6,0.6)] ;
-    var inputPoint = LocalBuf(2);
-    var outputPoint = LocalBuf(1);
-	point.collect{|p,i| BufWr.kr([p],inputPoint,i)};
-    ~kmeans.kr(trig,inputPoint,outputPoint);
-    SinOsc.ar((BufRd.kr(1,outputPoint,0,interpolation:0) + 69).midicps,mul: 0.1);
-}.play;
+			dist_dict["data"].keysValuesDo{
+				arg id, dist;
+
+				// it provides a distance to every mean, so we'll use the
+				// smallest value
+				dist = dist.minItem;
+				id.postln;
+				dist.postln;
+				~fp.pointColor_(id,Color.hsv(dist * 10,1,1));
+			};
+
+			means_dict["data"].keysValuesDo{
+				arg k, v;
+				~fp.addPoint_("mean-%".format(k),v[0],v[1],Color.gray,3);
+			};
+		});
+	});
+});
 )
 
 ::

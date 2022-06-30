@@ -11,6 +11,10 @@
     
     The process will return a buffer containing a time series that describes the novelty feature changing over time in the source buffer.
 
+    .. only_in:: sc
+
+      The argument for ``algorithm`` can be passed as an integer (see table below), or as one of the following symbols: ``\spectrum``, ``\mfcc``, ``\chroma``, ``\pitch``, or ``\loudness``. 
+
 :process: This is the method that calls for the slicing to be calculated on a given source buffer.
 :output: Nothing, as the various destination buffers are declared in the function call.
 
@@ -51,7 +55,7 @@
          MFCC – 13 Mel-Frequency Cepstrum Coefficients.
 
       :2:
-         Chroma - The contour of a 12-band chromagram.
+         Chroma – The contour of a 12-band chromagram.
 
       :3:
          Pitch – The pitch and its confidence.

@@ -1,55 +1,79 @@
-
 code::
-// create some buffers
+
 (
-b = Buffer.read(s,FluidFilesPath("Tremblay-AaS-SynthTwoVoices-M.wav"));
-c = Buffer.new(s);
-d = Buffer.new(s);
+~src = Buffer.readChannel(s,FluidFilesPath("Tremblay-BeatRemember.wav"),channels:[0]);
+~sines = Buffer(s);
+~residual = Buffer(s);
 )
 
-// run the process with basic parameters
+// listen to the original if you want
+~src.play;
+
+FluidBufSines.processBlocking(s,~src,sines:~sines,residual:~residual,action:{"done".postln;});
+
+~sines.play;
+~residual.play;
+
+// change some parameters
+
+// tracks can be short but the detection threshold is higher than the default
 (
-Routine{
-	t = Main.elapsedTime;
-	FluidBufSines.process(s, b, sines: c, residual:d).wait;
-	(Main.elapsedTime - t).postln;
-}.play
+FluidBufSines.processBlocking(s,
+	~src,
+	sines:~sines,
+	residual:~residual,
+	detectionThreshold:-40,
+	minTrackLen:1,
+	action:{"done".postln;}
+);
 )
 
-// listen to each component
-c.play;
-d.play;
+~sines.play;
+~residual.play;
 
-//nullsumming tests
-{(PlayBuf.ar(1, c)) + (PlayBuf.ar(1,d)) - (PlayBuf.ar(1,b,doneAction:2))}.play
-::
-
-STRONG::A stereo buffer example.::
-CODE::
-
-// load two very different files
+// increase the minimum track length
 (
-b = Buffer.read(s,FluidFilesPath("Tremblay-SA-UprightPianoPedalWide.wav"));
-c = Buffer.read(s,FluidFilesPath("Tremblay-AaS-AcousticStrums-M.wav"));
+FluidBufSines.processBlocking(s,
+	~src,
+	sines:~sines,
+	residual:~residual,
+	detectionThreshold:-40,
+	minTrackLen:15,
+	action:{"done".postln;}
+);
 )
 
-// composite one on left one on right as test signals
-FluidBufCompose.process(s, c, numFrames:b.numFrames, startFrame:555000,destStartChan:1, destination:b)
-b.play
+~sines.play;
+~residual.play;
 
-// create 2 new buffers as destinations
-d = Buffer.new(s); e = Buffer.new(s);
-
-//run the process on them
+// lower the threshold but increase the track length drastically
 (
-Routine{
-    t = Main.elapsedTime;
-    FluidBufSines.process(s, b, sines: d, residual:e, windowSize: 2048, hopSize: 256, fftSize: 16384).wait;
-    (Main.elapsedTime - t).postln;
-}.play
+FluidBufSines.processBlocking(s,
+	~src,
+	sines:~sines,
+	residual:~residual,
+	detectionThreshold:-80,
+	minTrackLen:50,
+	action:{"done".postln;}
+);
 )
 
-//listen: stereo preserved!
-d.play
-e.play
+~sines.play;
+~residual.play;
+
+// increase the threshold drastically but lower the minimum track length
+(
+FluidBufSines.processBlocking(s,
+	~src,
+	sines:~sines,
+	residual:~residual,
+	detectionThreshold:-24,
+	minTrackLen:1,
+	action:{"done".postln;}
+);
+)
+
+~sines.play;
+~residual.play;
+
 ::

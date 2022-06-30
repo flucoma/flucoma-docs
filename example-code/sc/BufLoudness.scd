@@ -1,59 +1,42 @@
 
 code::
-// create a buffer with a short clicking sinusoidal burst (220Hz) starting at frame 8192 for 1024 frames
+
+~src = Buffer.read(s,FluidFilesPath("Tremblay-AaS-AcousticStrums-M.wav"));
+
+// blue is loudness dBFS, orange is true peak dBFS
 (
-b = Buffer.sendCollection(s, (Array.fill(8192,{0}) ++ (Signal.sineFill(1203,[0,0,0,0,0,1],[0,0,0,0,0,0.5pi]).takeThese({|x,i|i>1023})) ++ Array.fill(8192,{0})));
-c = Buffer.new(s);
+~loudness = Buffer(s);
+FluidBufLoudness.processBlocking(s,~src,features:~loudness);
+FluidWaveform(~src,featuresBuffer:~loudness,bounds:Rect(0,0,1600,400),stackFeatures:true);
+~src.play;
 )
 
-// listen to the source and look at the buffer
-b.play; b.plot;
-
-// run the process with basic parameters
-(
-Routine{
-	t = Main.elapsedTime;
-	FluidBufLoudness.process(s, source:b, features: c).wait;
-	(Main.elapsedTime - t).postln;
-}.play
-)
-
-// look at the analysis
-c.plot(minval:-130, maxval:6)
-
-// The values are interleaved [loudness,truepeak] in the buffer as they are on 2 channels: to get to the right frame, divide the SR of the input by the hopSize, then multiply by 2 because of the channel interleaving
-// here we are querying from one frame before (the signal starts at 8192, which is frame 16 (8192/512), therefore starting the query at frame 15, which is index 30.
-
-c.getn(30,10,{|x|x.postln})
-
-// observe that the first frame is silent, as expected. We can appreciate the overshoot of TruePeak of a full range sinewave starting on the second sample (fourth item in the list).
 ::
+strong::Getting some useful loudness stats on an audio file (that is in a Buffer)::
+As a result of the loudness wars, a statistical understanding of the loudness of an audio file (such as a rendered track) may be useful. Here are some ways you might use FluidBufLoudness this way.
 
-STRONG::A stereo buffer example.::
-CODE::
+The EBU standard specifies that the window should be 400ms long, and update every 100ms, for instantaneous loudness. Here we set the windowSize and hopSize appropriately using the sample rate of the source buffer.
+code::
 
-// load two very different files
+// stereo song
+~src = Buffer.read(s,FluidFilesPath("Tremblay-beatRemember.wav"));
+
 (
-b = Buffer.read(s,FluidFilesPath("Tremblay-SA-UprightPianoPedalWide.wav"));
-c = Buffer.read(s,FluidFilesPath("Tremblay-AaS-AcousticStrums-M.wav"));
+~loudness = Buffer(s);
+FluidBufLoudness.processBlocking(s,~src,features:~loudness,windowSize:~src.sampleRate*0.4,hopSize:~src.sampleRate*0.1);
+~stats = Buffer(s);
+FluidBufStats.processBlocking(s,~loudness,stats:~stats);
+~stats.loadToFloatArray(action:{
+	arg fa;
+	fa = fa.clump(~stats.numChannels).flop;
+	"L channel mean   loudness:  % dB".format(fa[0][0]).postln;
+	"L channel median loudness:  % dB".format(fa[0][5]).postln;
+	"L channel max    true peak: % dB".format(fa[1][6]).postln;
+
+	"R channel mean   loudness:  % dB".format(fa[2][0]).postln;
+	"R channel median loudness:  % dB".format(fa[2][5]).postln;
+	"R channel max    true peak: % dB".format(fa[3][6]).postln;
+});
 )
 
-// composite one on left one on right as test signals
-FluidBufCompose.process(s, c, numFrames:b.numFrames, startFrame:555000,destStartChan:1, destination:b)
-b.play
-
-// create a buffer as destinations
-c = Buffer.new(s);
-
-//run the process on them with EBU standard Instant Loudness of
-(
-Routine{
-    t = Main.elapsedTime;
-    FluidBufLoudness.process(s, b, features: c, windowSize: 17640, hopSize:4410).wait;
-    (Main.elapsedTime - t).postln;
-}.play
-)
-
-// look at the buffer: [loudness,truepeak] for left then [loudness,truepeak] for right
-c.plot(minval:-40, maxval:0)
 ::

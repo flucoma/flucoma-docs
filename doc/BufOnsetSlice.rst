@@ -9,6 +9,10 @@
    
    The metric for calculating difference can be chosen from a curated selection, lending the algorithm toward slicing a broad range of musical materials.
 
+   .. only_in:: sc
+
+      The argument for ``metric`` can be passed as an integer (see table below), or as one of the following symbols: ``\power``, ``\hfc``, ``\flux``,	``\mkl``, ``\is``, ``\cosine``, ``\phase``, ``\wphase``, ``\complex``, or ``\rcomplex``. 
+
 :process: This is the method that calls for the slicing to be calculated on a given source buffer.
 :output: Nothing, as the various destination buffers are declared in the function call.
 

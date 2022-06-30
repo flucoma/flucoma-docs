@@ -1,26 +1,55 @@
 
 CODE::
-// load some audio to play
-b = Buffer.read(s,FluidFilesPath("Tremblay-AaS-SynthTwoVoices-M.wav"));
 
-// run with large parameters - left is sinusoidal model, right is residual
-{FluidSines.ar(PlayBuf.ar(1,b,loop:1),detectionThreshold: -40, minTrackLen: 2, windowSize: 2048, fftSize: 8192)}.play
+~src = Buffer.readChannel(s,FluidFilesPath("Tremblay-BeatRemember.wav"),channels:[0]);
 
-// interactive parameters with a narrower bandwidth
-{FluidSines.ar(PlayBuf.ar(1,b,loop:1), 30, MouseX.kr(-140,-10),MouseY.kr(-110,-10),MouseY.kr(-140,-40), 10 , windowSize: 1000, hopSize: 200, fftSize: 4096)}.play
+(
+~synth = {
+	arg which = 0, detectionThreshold = -96, minTrackLen = 15;
+	var src = PlayBuf.ar(1,~src,BufRateScale.ir(~src),loop:1);
+	var sines, residual;
+	# sines, residual = FluidSines.ar(src,detectionThreshold:detectionThreshold,minTrackLen:minTrackLen);
+	Select.ar(which,[sines,residual]).dup;
+}.play;
+)
 
-// null test (the process add a latency of (( hopSize * minTrackLen) + windowSize) samples
-{var sig = PlayBuf.ar(1,b,loop:1); [FluidSines.ar(sig).sum - DelayN.ar(sig, 1, ((( 512 * 15) + 1024)/ s.sampleRate))]}.play
+~synth.set(\which,1) // residual
+~synth.set(\which,0) // back to sinusoids
 
-// as the algorithm resynthesize the sinusoidal peaks, we would expect to get it to work almost perfectly on a sine wave, with these settings that tell the process to tolerate everything as a sinusoid, even short and quiet peaks
-{FluidSines.ar(SinOsc.ar(mul: 0.1),detectionThreshold: -144,birthLowThreshold: -144,birthHighThreshold: -144,minTrackLen: 1,trackMagRange: 200,trackFreqRange: 1000,trackProb: 0)}.play;
+// try some different parameters
 
-// we can listen to the artefact in solo, amplifying it by 30dB, to hear the 'lobes' - not bad at all!
-{FluidSines.ar(SinOsc.ar(mul: 0.1),detectionThreshold: -144,birthLowThreshold: -144,birthHighThreshold: -144,minTrackLen: 1,trackMagRange: 200,trackFreqRange: 1000,trackProb: 0)[1].dup * Line.ar(0,30,1).dbamp}.play;
+// tracks can be short but the detection threshold is higher than the default
+~synth.set(\detectionThreshold,-40,\minTrackLen,1)
 
-// as this is a windowed process, the frequency of the peak is good for that full window, and therefore interesting artefacts appear when the pitch is changing.
-{FluidSines.ar(SinOsc.ar(LFTri.kr(0.1).exprange(220,880),mul: 0.1),detectionThreshold: -144,birthLowThreshold: -144,birthHighThreshold: -144,minTrackLen: 1,trackMagRange: 300,trackFreqRange: 1000,trackProb: 0)}.play;
+// increase the minimum track length
+~synth.set(\detectionThreshold,-40,\minTrackLen,15)
 
-// if we solo and amplify the artefacts, they are much more apparent (and interesting)
-{FluidSines.ar(SinOsc.ar(LFTri.kr(0.1).exprange(220,880),mul: 0.1),detectionThreshold: -144,birthLowThreshold: -144,birthHighThreshold: -144,minTrackLen: 1,trackMagRange: 300,trackFreqRange: 1000,trackProb: 0)[1].dup * Line.ar(0,30,1).dbamp}.play;
+// lower the threshold but increase the track length drastically
+~synth.set(\detectionThreshold,-80,\minTrackLen,50)
+
+// increase the threshold drastically but lower the minimum track length
+~synth.set(\detectionThreshold,-24,\minTrackLen,1)
+::
+strong::a little more explanation::
+With these settings everything in the sound is considered a sinusoid, even short and quiet peaks.
+
+Because the decomposition is a windowed process, the detected sinusoidal peaks are located in time based on the window of analysis. When the oscillator changes (even slowly) over time we hear the artefact in the residual output.
+code::
+
+(
+~synth = {
+	arg which = 0;
+	var stable = SinOsc.ar(69.midicps,0,0.1);
+	var oscillating = SinOsc.ar(SinOsc.kr(0.1,0,12,57).midicps,0,0.1);
+	var sig = SelectX.ar(which.lag(0.1),[stable,oscillating]);
+	var sines, residual;
+	# sines, residual = FluidSines.ar(sig,76,-144,-144,-144,1,0,200,1000,0);
+	[sines, residual * ((which*40) + 1).lag(0.1)]
+}.play
+)
+
+~synth.set(\which,1);
+
+~synth.set(\which,0);
+
 ::

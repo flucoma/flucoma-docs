@@ -1,77 +1,65 @@
-
-
 code::
-//create a monitoring bus for the descriptors
-b = Bus.new(\control,0,2);
 
-//create a monitoring window for the values
+~src = Buffer.read(s,FluidFilesPath("Nicol-LoopE-M.wav"));
+
 (
-w = Window("Loudness Monitor", Rect(10, 10, 220, 65)).front;
+~synth = {
+	var src = PlayBuf.ar(1,~src,BufRateScale.ir(~src),loop:1);
+	var loudness = FluidLoudness.kr(src);
+	var noise = PinkNoise.ar(loudness[0].dbamp);
 
-c = Array.fill(2, {arg i; StaticText(w, Rect(10, i * 25 + 10, 135, 20)).background_(Color.grey(0.7)).align_(\right)});
-c[0].string = ("Loudness: ");
-c[1].string = ("Peak: ");
+	loudness[0].poll(label:"Loudness:");
+	loudness[1].poll(label:"TruePeak:");
+	0.poll(label:"---------------------");
 
-a = Array.fill(2, {arg i;
-	StaticText(w, Rect(150, i * 25 + 10, 60, 20)).background_(Color.grey(0.7)).align_(\center);
-});
-)
-
-//routine to update the parameters
-(
-r = Routine {
-	{
-		b.get({ arg val;
-			{
-				if(w.isClosed.not) {
-					val.do({arg item,index;
-						a[index].string = item.round(0.01)})
-				}
-			}.defer
-		});
-		0.1.wait;
-	}.loop
-}.play
-)
-
-//basic test, with default values
-(
-x = {var source = PinkNoise.ar(0.25);
-	Out.kr(b, FluidLoudness.kr(source));
-	source.dup;
+	src = DelayN.ar(src,0.1,1024*SampleDur.ir); // delay to compensate for latency
+	[src * -6.dbamp,noise];
 }.play;
 )
 
-//free this
-x.free
+::
+strong::EBU Standards::
+The EBU standard specifies that the window should be 400ms long, and update every 100ms, for instantaneous loudness. Here we set the windowSize and hopSize appropriately using SampleRate.ir. Various test signals are loaded.
+code::
 
-//the EBU standard specifies that the window should be 400ms long, and update every 100ms, for instantaneous loudness. At SR=44100, this means the following settings. Various test signals are loaded.
 (
-x = {
+~synth = {
 	arg freq=220, type = 1, noise = 0;
-	var source = PinkNoise.ar(noise) + Select.ar(type,[DC.ar(),SinOsc.ar(freq,mul:0.1), VarSaw.ar(freq,mul:0.1), Saw.ar(freq,0.1), Pulse.ar(freq,mul:0.1)]);
-	Out.kr(b, FluidLoudness.kr(source,windowSize:17640,hopSize:4410,maxWindowSize:17640));
+	var source = PinkNoise.ar(noise) + Select.ar(type,[
+		DC.ar(),
+		SinOsc.ar(freq,mul:0.1),
+		VarSaw.ar(freq,mul:0.1),
+		Saw.ar(freq,0.1),
+		Pulse.ar(freq,mul:0.1)
+	]);
+	var loudness = FluidLoudness.kr(source,windowSize:SampleRate.ir*0.4,hopSize:SampleRate.ir*0.1);
+
+	loudness[0].poll(label:"Loudness:");
+	loudness[1].poll(label:"TruePeak:");
+	0.poll(label:"---------------------");
+
 	source.dup;
 }.play;
 )
+
 // change the various frequencies to see the impact of the filter for the loudness. The TruePeak is steady.
-x.set(\freq, 440)
-x.set(\freq, 110)
-x.set(\freq, 55)
-x.set(\freq, 3000)
-x.set(\freq, 9000)
+~synth.set(\freq, 440)
+~synth.set(\freq, 110)
+~synth.set(\freq, 55)
+~synth.set(\freq, 3000)
+~synth.set(\freq, 9000)
 
 // adding harmonics, by changing to triangle (2), saw (3) or square (4) shows that spectral algo are more resilient when signal are richer
-x.set(\type, 2)
-x.set(\type, 3)
-x.set(\type, 4)
+~synth.set(\type, 2)
+~synth.set(\type, 3)
+~synth.set(\type, 4)
 
 // adding noise shows its impact on loudness
-x.set(\noise, 0.25)
+~synth.set(\noise, 0.25)
 
 // and removing the oscilator
-x.set(\type, 0)
+~synth.set(\type, 0)
 
 // and measuring silence
-x.set(\noise, 0)
+~synth.set(\noise, 0)
 ::

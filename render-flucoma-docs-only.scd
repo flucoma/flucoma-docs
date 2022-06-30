@@ -16,6 +16,8 @@ fork({
 },AppClock);
 )
 
+// also check me!
+FluidCorpusManipulation
 
 // also check me!
 FluidManipulationClient
