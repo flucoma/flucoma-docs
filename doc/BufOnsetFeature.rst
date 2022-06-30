@@ -18,11 +18,11 @@
 
 :control source:
 
-   The index of the buffer to use as the source material to be sliced through novelty identification. The different channels of multichannel buffers will be summed.
+   The buffer to use as the source material to be sliced through novelty identification. The different channels of multichannel buffers will be summed.
 
 :control startFrame:
 
-   Where in the srcBuf should the slicing process start, in sample.
+   Where in the srcBuf should the slicing process start, in samples.
 
 :control numFrames:
 
@@ -38,7 +38,7 @@
 
 :control features:
 
-   The index of the buffer where the onset features will be written to.
+   The buffer where the onset features will be written to.
 
 :control metric:
 
@@ -90,7 +90,7 @@
 
 :control hopSize:
 
-   The window hop size. As spectral differencing relies on spectral frames, we need to move the window forward. It can be any size but low overlap will create audible artefacts. The -1 default value will default to half of windowSize (overlap of 2).
+   The window hop size. As spectral differencing relies on spectral frames, we need to move the window forward. It can be any size, but low overlap will create audible artefacts. The -1 default value will default to half of windowSize (overlap of 2).
 
 :control fftSize:
 

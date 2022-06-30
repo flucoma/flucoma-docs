@@ -9,10 +9,6 @@
 
    The process will return an audio stream with single sample impulses at estimated starting points of the different slices.
 
-   .. only_in:: sc
-
-      The argument for ``algorithm`` can be passed as an integer (see table below) which is modulatable, or as one of the following symbols: ``\spectrum``, ``\mfcc``, ``\chroma``, ``\pitch``, or ``\loudness``. 
-
 :output: An audio stream with impulses at detected transients. The latency between the input and the output is hopSize * (((kernelSize+1)/2).asInteger + ((filterSize + 1) / 2).asInteger + 1) samples at maximum.
 
 
@@ -63,7 +59,7 @@
 
 :control hopSize:
 
-   The window hop size. As sinusoidal estimation relies on spectral frames, we need to move the window forward. It can be any size but low overlap will create audible artefacts. The -1 default value will default to half of windowSize (overlap of 2).
+   The window hop size. As sinusoidal estimation relies on spectral frames, we need to move the window forward. It can be any size, but low overlap will create audible artefacts. The -1 default value will default to half of windowSize (overlap of 2).
 
 :control fftSize:
 

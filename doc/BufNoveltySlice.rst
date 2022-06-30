@@ -7,7 +7,7 @@
 :discussion: 
    A novelty curve is derived from running a kernel across the diagonal of the similarity matrix, and looking for peaks of changes. It implements the seminal results published in  'Automatic Audio Segmentation Using a Measure of Audio Novelty' by J Foote.
 
-   The process will return a buffer which contains indices (in sample) of estimated starting points of different slices.
+   The process will return a buffer which contains indices (in samples) of estimated starting points of different slices.
 
    .. only_in:: sc
 
@@ -19,11 +19,11 @@
 
 :control source:
 
-   The index of the buffer to use as the source material to be sliced through novelty identification. The different channels of multichannel buffers will be summed.
+   The buffer to use as the source material to be sliced through novelty identification. The different channels of multichannel buffers will be summed.
 
 :control startFrame:
 
-   Where in the srcBuf should the slicing process start, in sample.
+   Where in the srcBuf should the slicing process start, in samples.
 
 :control numFrames:
 
@@ -39,7 +39,7 @@
 
 :control indices:
 
-   The index of the buffer where the indices (in sample) of the estimated starting points of slices will be written. The first and last points are always the boundary points of the analysis.
+   The buffer where the indices (in samples) of the estimated starting points of slices will be written. The first and last points are always the boundary points of the analysis.
 
 :control algorithm:
 
@@ -84,7 +84,7 @@
 
 :control hopSize:
 
-   The window hop size. As novelty estimation relies on spectral frames, we need to move the window forward. It can be any size but low overlap will create audible artefacts.
+   The window hop size. As novelty estimation relies on spectral frames, we need to move the window forward. It can be any size, but low overlap will create audible artefacts.
 
 :control fftSize:
 

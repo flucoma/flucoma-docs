@@ -29,7 +29,7 @@
 
 :control numFrames:
 
-   How many frames of ``source`` should be process. The default of -1 indicates to process through the end of the buffer.
+   How many frames of ``source`` should be processed. The default of -1 indicates to process through the end of the buffer.
 
 :control startChan:
 

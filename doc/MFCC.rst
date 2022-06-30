@@ -60,7 +60,7 @@
 
 :control hopSize:
 
-   The window hop size. As MFCC computation relies on spectral frames, we need to move the window forward. It can be any size but low overlap will create audible artefacts. The -1 default value will default to half of windowSize (overlap of 2).
+   The window hop size. As MFCC computation relies on spectral frames, we need to move the window forward. It can be any size, but low overlap will create audible artefacts. The -1 default value will default to half of windowSize (overlap of 2).
 
 :control fftSize:
 

@@ -21,7 +21,7 @@
 
 :control numNeighbours:
 
-   The number of neighbours considered by the algorithm to balance local vs global structures to conserve. Low values will prioritise preserving local structure, high values will help preserve the global structure.
+   The number of neighbours considered by the algorithm to balance local vs global structures to conserve. Low values will prioritise preservation of the local structure while high values will prioritise preservation of the global structure.
 
 :control minDist:
 

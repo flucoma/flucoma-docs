@@ -26,7 +26,7 @@
 
 :control hopSize:
 
-   The window hop size in samples. As HPSS relies on spectral frames, we need to move the window forward. It can be any size but low overlap may create audible artefacts. The -1 default value will default to half of windowSize (overlap of 2).
+   The window hop size in samples. As HPSS relies on spectral frames, we need to move the window forward. It can be any size, but low overlap may create audible artefacts. The -1 default value will default to half of windowSize (overlap of 2).
 
 :control fftSize:
 

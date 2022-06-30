@@ -13,11 +13,11 @@
 
 :control source:
 
-   The index of the buffer to use as the source material to be sliced through novelty identification. The different channels of multichannel buffers will be summed.
+   The buffer to use as the source material to be sliced through novelty identification. The different channels of multichannel buffers will be summed.
 
 :control startFrame:
 
-   Where in the srcBuf should the slicing process start, in sample.
+   Where in the srcBuf should the slicing process start, in samples.
 
 :control numFrames:
 
@@ -33,7 +33,7 @@
 
 :control features:
 
-   The index of the buffer where the amplitude differential feature will be copied to.
+   The buffer where the amplitude differential feature will be copied to.
 
 :control fastRampUp:
 
