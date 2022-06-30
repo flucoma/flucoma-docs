@@ -16,7 +16,7 @@
 
 :control source:
 
-   The index of the buffer to use as the source material to be sliced through novelty identification. The different channels of multichannel buffers will be summed.
+   The buffer to use as the source material to be sliced through novelty identification. The different channels of multichannel buffers will be summed.
 
 :control startFrame:
 
@@ -36,7 +36,7 @@
 
 :control features:
 
-   The index of the buffer where the novelty feature will be written.
+   The buffer where the novelty feature will be written.
 
 :control algorithm:
 

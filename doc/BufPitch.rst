@@ -23,7 +23,7 @@
 
 :control source:
 
-   The index of the buffer to use as the source material to be pitch-tracked. The different channels of multichannel buffers will be processed sequentially.
+   The buffer to use as the source material to be pitch-tracked. The different channels of multichannel buffers will be processed sequentially.
 
 :control select:
 

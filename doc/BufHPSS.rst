@@ -29,7 +29,7 @@
 
 :control source:
 
-   The index of the buffer to use as the source material. The channels of multichannel buffers will be processed sequentially.
+   The buffer to use as the source material. The channels of multichannel buffers will be processed sequentially.
 
 :control startFrame:
 
@@ -49,15 +49,15 @@
 
 :control harmonic:
 
-   The index of the buffer where the extracted harmonic component will be reconstructed.
+   The buffer where the extracted harmonic component will be reconstructed.
 
 :control percussive:
 
-   The index of the buffer where the extracted percussive component will be reconstructed.
+   The buffer where the extracted percussive component will be reconstructed.
 
 :control residual:
 
-   The index of the buffer where the residual component will be reconstructed in mode 2.
+   The buffer where the residual component will be reconstructed in mode 2.
 
 :control harmFilterSize:
 

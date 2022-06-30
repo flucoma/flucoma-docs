@@ -20,7 +20,7 @@
 
 :control source:
 
-   The index of the buffer to use as the source material to be decomposed through the sinusoidal modelling process. The different channels of multichannel buffers will be processed sequentially.
+   The buffer to use as the source material to be decomposed through the sinusoidal modelling process. The different channels of multichannel buffers will be processed sequentially.
 
 :control startFrame:
 
@@ -40,11 +40,11 @@
 
 :control sines:
 
-   The index of the buffer where the extracted sinusoidal component will be reconstructed.
+   The buffer where the extracted sinusoidal component will be reconstructed.
 
 :control residual:
 
-   The index of the buffer where the residual of the sinusoidal component will be reconstructed.
+   The buffer where the residual of the sinusoidal component will be reconstructed.
 
 :control bandwidth:
 

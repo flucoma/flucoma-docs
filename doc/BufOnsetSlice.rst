@@ -14,7 +14,7 @@
 
 :control source:
 
-   The index of the buffer to use as the source material to be sliced through novelty identification. The different channels of multichannel buffers will be summed.
+   The buffer to use as the source material to be sliced through novelty identification. The different channels of multichannel buffers will be summed.
 
 :control startFrame:
 
@@ -34,7 +34,7 @@
 
 :control indices:
 
-   The index of the buffer where the indices (in samples) of the estimated starting points of slices will be written. The first and last points are always the boundary points of the analysis.
+   The buffer where the indices (in samples) of the estimated starting points of slices will be written. The first and last points are always the boundary points of the analysis.
 
 :control metric:
 

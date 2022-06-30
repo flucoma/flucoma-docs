@@ -32,7 +32,7 @@
 
 :control source:
 
-   The index of the buffer to use as the source material to be decomposed through the NMF process. The different channels of multichannel buffers will be processed sequentially.
+   The buffer to use as the source material to be decomposed through the NMF process. The different channels of multichannel buffers will be processed sequentially.
 
 :control startFrame:
 
@@ -52,7 +52,7 @@
 
 :control resynth:
 
-   The index of the buffer where the different reconstructed components will be reconstructed. The buffer will be resized to ``components * numChannelsProcessed`` channels and ``sourceDuration`` length. If ``nil`` is provided, the reconstruction will not happen.
+   The buffer where the different reconstructed components will be reconstructed. The buffer will be resized to ``components * numChannelsProcessed`` channels and ``sourceDuration`` length. If ``nil`` is provided, the reconstruction will not happen.
 
 :control resynthMode:
 
@@ -60,7 +60,7 @@
 
 :control bases:
 
-   The index of the buffer where the different bases will be written to and/or read from: the behaviour is set in the following argument. If ``nil`` is provided, no bases will be returned.
+   The buffer where the different bases will be written to and/or read from: the behaviour is set in the following argument. If ``nil`` is provided, no bases will be returned.
 
 :control basesMode:
 
@@ -79,7 +79,7 @@
 
 :control activations:
 
-   The index of the buffer where the different activations will be written to and/or read from: the behaviour is set in the following argument. If ``nil`` is provided, no activation will be returned.
+   The buffer where the different activations will be written to and/or read from: the behaviour is set in the following argument. If ``nil`` is provided, no activation will be returned.
 
 :control actMode:
 
