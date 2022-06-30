@@ -8,7 +8,7 @@
 :discussion: 
    FluidBufAmpSlice is based on two envelope followers on a high-passed version of the signal: one slow that gives the trend, and one fast. Each has features that will interact. The example code below is unfolding the various possibilities in order of complexity.
 
-   The process will return a buffer which contains indices (in sample) of estimated starting points of different slices.
+   The process will return a buffer which contains indices (in samples) of estimated starting points of different slices.
 
 :output: Nothing, as the destination buffer is declared in the function call.
 
@@ -19,7 +19,7 @@
 
 :control startFrame:
 
-   Where in the srcBuf should the slicing process start, in sample.
+   Where in the srcBuf should the slicing process start, in samples.
 
 :control numFrames:
 
@@ -35,7 +35,7 @@
 
 :control indices:
 
-   The index of the buffer where the indices (in sample) of the estimated starting points of slices will be written. The first and last points are always the boundary points of the analysis.
+   The index of the buffer where the indices (in samples) of the estimated starting points of slices will be written. The first and last points are always the boundary points of the analysis.
 
 :control fastRampUp:
 

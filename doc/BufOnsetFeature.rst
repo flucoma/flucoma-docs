@@ -18,7 +18,7 @@
 
 :control startFrame:
 
-   Where in the srcBuf should the slicing process start, in sample.
+   Where in the srcBuf should the slicing process start, in samples.
 
 :control numFrames:
 

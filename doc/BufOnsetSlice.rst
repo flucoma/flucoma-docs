@@ -18,7 +18,7 @@
 
 :control startFrame:
 
-   Where in the srcBuf should the slicing process start, in sample.
+   Where in the srcBuf should the slicing process start, in samples.
 
 :control numFrames:
 
@@ -34,7 +34,7 @@
 
 :control indices:
 
-   The index of the buffer where the indices (in sample) of the estimated starting points of slices will be written. The first and last points are always the boundary points of the analysis.
+   The index of the buffer where the indices (in samples) of the estimated starting points of slices will be written. The first and last points are always the boundary points of the analysis.
 
 :control metric:
 

@@ -22,7 +22,7 @@
 
 :control startFrame:
 
-   Where in the srcBuf should the process start, in sample.
+   Where in the srcBuf should the process start, in samples.
 
 :control numFrames:
 

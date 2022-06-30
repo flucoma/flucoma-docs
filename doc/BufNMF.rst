@@ -36,7 +36,7 @@
 
 :control startFrame:
 
-   Where in the srcBuf should the NMF process start, in sample.
+   Where in the srcBuf should the NMF process start, in samples.
 
 :control numFrames:
 
