@@ -36,7 +36,7 @@
 
 :control indices:
 
-   The buffer to write the gate information into. Buffer will be resized appropriately so each frame contains an onset (opening) position on channel 0 and the corresponding offset (closing) position on channel 1 (both in samples). The buffer will have as many frames as gate events detected.
+   The buffer to write the gate information into. Buffer will be resized appropriately so that each frame contains an onset (opening) position on channel 0 and the corresponding offset (closing) position on channel 1 (both in samples). The buffer will have as many frames as gate events detected.
 
 :control rampUp:
 

@@ -82,7 +82,7 @@
 
 :control hopSize:
 
-   The window hop size. As sinusoidal estimation relies on spectral frames, we need to move the window forward. It can be any size but low overlap will create audible artefacts.
+   The window hop size. As sinusoidal estimation relies on spectral frames, we need to move the window forward. It can be any size, but low overlap will create audible artefacts.
 
 :control fftSize:
 

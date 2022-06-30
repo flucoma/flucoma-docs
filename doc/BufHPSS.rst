@@ -96,7 +96,7 @@
 
 :control hopSize:
 
-   The hop size in samples. As HPSS relies on spectral frames, we need to move the window forward. It can be any size but low overlap may create audible artefacts.
+   The hop size in samples. As HPSS relies on spectral frames, we need to move the window forward. It can be any size, but low overlap may create audible artefacts.
 
 :control fftSize:
 
