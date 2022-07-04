@@ -81,7 +81,7 @@ fork{
 		arg i;
 		point.set(0,i);
 		ds.addPoint("point-%".format(i),point);
-		// s.sync;
+		s.sync;
 	};
 	ds.print;
 };
