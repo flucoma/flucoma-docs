@@ -334,7 +334,6 @@ var wave = Buffer.alloc(s,~winSize);
 
 // normalize it for plotting
 norm2D.fitTransform(ds_predict,ds_predict_norm);
-norm2D.invert_(1); // this will need to invert points in the code below
 
 ~ae.tapIn_((~nn_shape.size+1)/2); // now set the "input" of the neural network to be the latent space in the middle
 ~ae.tapOut_(-1); // set the output of the neural network to be the end
@@ -368,7 +367,7 @@ ds_predict_norm.dump({
 		FluidPlotter(win,bounds:Rect((win.bounds.width-600) / 2,0,600,600),dict:dict,mouseMoveAction:{
 			arg view, x, y;
 			buf2D_norm.setn(0,[x,y]); // put current position into this buffer
-			norm2D.transformPoint(buf2D_norm,buf2D); // transform the point back to the unnormalized dimensions (this has inverse set to 1)
+			norm2D.inverseTransformPoint(buf2D_norm,buf2D); // transform the point back to the unnormalized dimensions
 			~ae.predictPoint(buf2D,buf_pca_point); // use that to make a prediction from the 2D latent space back to the PCA space
 			~pca.inverseTransformPoint(buf_pca_point,wave); // transform the value in PCA space back to the length of the wavetable
 			wave.loadToFloatArray(action:{ // the wavetable is already on the server and playing, here we load it back just to display;
