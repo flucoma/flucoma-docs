@@ -181,9 +181,9 @@ fork{
 // once it levels out:
 ~continuously_train = false;
 
-// see how it fares, use the mouse to hear the balance
 ~musicbox = Buffer.readChannel(s,FluidFilesPath("Tremblay-CEL-GlitchyMusicBoxMelo.wav"),channels:[0]);
 
+// see how it fares, use the mouse to hear the balance
 (
 ~synth = {
 	arg test_buf;
