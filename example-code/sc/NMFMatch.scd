@@ -148,7 +148,7 @@ fork{
 {
 	var source, todelay, delay1, delay2, delay3, feedback, mod1, mod2, mod3, mod4;
 
-	source = PlayBuf.ar(1, b);
+	source = PlayBuf.ar(1, ~guitar);
 
 	// generate modulators that are coprime in frequency
 	mod1 = SinOsc.ar(1, 0, 0.001);
