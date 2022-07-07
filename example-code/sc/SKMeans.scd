@@ -155,10 +155,11 @@ code::
 
 // get the distance of our given point (b) to each cluster, thus giving us 4 dimensions in our cluster-distance space
 (
-~skmeans.encodePoint(~inbuf,~encoded);
-~encoded.getn(0,4,action:{
-	arg dists;
-	dists.postln;
+~skmeans.encodePoint(~inbuf,~encoded,action:{
+  ~encoded.getn(0,4,action:{
+      arg dists;
+      dists.postln;
+  });
 });
 )
 

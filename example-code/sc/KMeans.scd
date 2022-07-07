@@ -152,6 +152,7 @@ fork{
 )
 ::
 strong::Distances::
+
 Accessing the distances to each point's mean
 code::
 
