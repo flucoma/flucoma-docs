@@ -50,14 +50,16 @@ def pd_depart_flucoma_reference(self, node, data):
     self.body.append('</a>')
 
 
-def pd_object_namer(data):    
+def pd_object_namer(data):
     tilde = (
-        '~' 
-        if not data['client_name'].startswith('Buf') and not data['species'] == 'data' 
-        else ''
+        "~"
+        if not data["client_name"].startswith("Buf")
+        and not data["species"] == "data"
+        and not data["input_type"] == "control"
+        else ""
     )
-    return f"fluid.{data['client_name'].lower()}{tilde}"    
-
+    return f"fluid.{data['client_name'].lower()}{tilde}"
+   
 
 def pd_jinja_parameter_link(name,bits): 
     return f"<code>{name.lower()}</code>"
