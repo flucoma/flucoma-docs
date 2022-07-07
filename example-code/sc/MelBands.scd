@@ -121,8 +121,8 @@ OSCdef(\melBands,{
 x = {
 	arg numBands = 40, minFreq = 20, maxFreq = 20000;
 	var source = PlayBuf.ar(1,c,loop:1);
-	var melBands = FluidMelBands.kr(source,numBands,minFreq,maxFreq);
-	SendReply.kr(Impulse.kr(30),"/melBands",[numBands] ++ melBands);
+	var melBands = FluidMelBands.kr(source,numBands,minFreq,maxFreq,maxNumBands:40);
+	// SendReply.kr(Impulse.kr(30),"/melBands",[numBands] ++ melBands);
 	source.dup;
 }.play;
 )
