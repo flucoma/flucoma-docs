@@ -41,7 +41,9 @@ fork{
 	~norm.fitTransform(~ds,~ds);
 	~dict = ~ds.dump({
 		arg dict;
-		~plotter = FluidPlotter(bounds:Rect(0,0,800,800),dict:dict);
+		defer{
+			FluidPlotter(bounds:Rect(0,0,800,800),dict:dict);
+		};
 	});
 };
 )

@@ -55,7 +55,7 @@ code::
 
 o = OSCFunc({
 	arg msg;
-	"freq: %\tnote: %\tconf: %".format(msg[3].round(0.01).asString.padLeft(8),msg[3].cpsname,msg[4].round(0.01).asString.padRight(4)).postln;
+	"freq: %\t\tmidi note: %\t\tconf: %".format(msg[3].round(0.01).asString.padLeft(8),msg[3].cpsmidi.round(0.1),msg[4].round(0.01).asString.padRight(4)).postln;
 },"/fluidpitch_help");
 )
 

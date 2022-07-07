@@ -35,7 +35,7 @@ defaults = {
             ]
         },
         'write':{
-            'description':'Save the internal state of the object to a JSON file on disk. This object must first be ``fit``ted before ``write`` can be called.',
+            'description':'Save the internal state of the object to a JSON file on disk. This object must first be ``fit`` before ``write`` can be called.',
             'args': [
                 {
                     'name':'filename',

@@ -81,7 +81,7 @@ fork{
 		arg i;
 		point.set(0,i);
 		ds.addPoint("point-%".format(i),point);
-		// s.sync;
+		s.sync;
 	};
 	ds.print;
 };
@@ -185,7 +185,6 @@ code::
 ~srcB = Buffer.read(s,FluidFilesPath("Harker-DS-TenOboeMultiphonics-M.wav"));
 )
 
-// use .fromBuffer to add *every* mfcc analysis to the dataset
 (
 fork{
 	var mfccs = Buffer(s);
@@ -219,7 +218,7 @@ fork{
 
 // merge dataset B into dataset A
 // because there are no overlapping identifiers,
-// nothign will be overwritten
+// nothing will be overwritten
 (
 ~dsA.merge(~dsB);
 ~dsA.print;

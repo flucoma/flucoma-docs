@@ -195,6 +195,7 @@ FluidNormalize(s).fitTransform(~ds_gridded,~ds_gridded);
 )
 ::
 strong::With Sound::
+
 Using link::Classes/FluidUMAP:: to dimensionally reduce 13 dimensions of link::Classes/FluidBufMFCC:: analyses down to two dimensions, play with each of the plots and see which is more musically expressive. Each has it's strenghts and weaknesses!
 code::
 

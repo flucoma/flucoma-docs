@@ -10,30 +10,29 @@ ds.dump({
 	var xybuf = Buffer.alloc(s,2);
 	var slicePoints = Buffer.read(s,FluidFilesPath("../Data/flucoma_corpus_slices.wav"));
 	var loader = FluidLoadFolder(FluidFilesPath());
-	loader.play(s,{
-		defer{
-			FluidPlotter(dict:dict,mouseMoveAction:{
-				arg view, x, y;
-				xybuf.setn(0,[x,y]);
-				tree.kNearest(xybuf,1,{
-					arg id;
-					var index = id.asInteger;
-					defer{
-						view.highlight_(id);
-					};
-
-					{
-						var start = Index.kr(slicePoints,index);
-						var end = Index.kr(slicePoints,index+1);
-						var sig = PlayBuf.ar(2,loader.buffer,BufRateScale.ir(loader.buffer),1,start)[0];
-						var dur_sec = min((end-start) / SampleRate.ir,1);
-						var env = EnvGen.kr(Env([0,1,1,0],[0.03,dur_sec-0.06,0.03]),doneAction:2);
-						sig.dup * env;
-					}.play;
-				});
+	loader.play(s);
+	defer{
+		FluidPlotter(dict:dict,mouseMoveAction:{
+			arg view, x, y;
+			xybuf.setn(0,[x,y]);
+			tree.kNearest(xybuf,1,action:{
+				arg id;
+				var index = id.asInteger;
+				defer{
+					view.highlight_(id);
+				};
+				
+				{
+					var start = Index.kr(slicePoints,index);
+					var end = Index.kr(slicePoints,index+1);
+					var sig = PlayBuf.ar(2,loader.buffer,BufRateScale.ir(loader.buffer),1,start)[0];
+					var dur_sec = min((end-start) / SampleRate.ir,1);
+					var env = EnvGen.kr(Env([0,1,1,0],[0.03,dur_sec-0.06,0.03]),doneAction:2);
+					sig.dup * env;
+				}.play;
 			});
-		};
-	});
+		});
+	};
 });
 )
 
