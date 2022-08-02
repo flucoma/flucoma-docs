@@ -30,7 +30,7 @@
 
 :control polyphony:
 
-   Control the spectral density of the output sound by restricting the number of simultaneous templates that can be used. Units are spectral bins. The default is 10.
+   Control the spectral density of the output sound by specifying the maximum number of simultaneous spectral templates from ``source`` that can be used. The default is 10.
 
 :control continuity:
 
