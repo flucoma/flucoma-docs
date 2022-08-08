@@ -62,7 +62,7 @@
 
 :control windowSize:
 
-   The window size. As MFCC computation relies on spectral frames, we need to decide what precision we give it spectrally and temporally, in line with Gabor Uncertainty principles. http://www.subsurfwiki.org/wiki/Gabor_uncertainty. The default is 1024.
+   The window size. As MFCC computation relies on spectral frames, we need to decide what precision we give it spectrally and temporally. For more information visit https://learn.flucoma.org/learn/fourier-transform/. The default is 1024.
 
 :control hopSize:
 
