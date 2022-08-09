@@ -1,7 +1,7 @@
 :digest: Spectral Difference-Based Realtime Audio Slicer
 :species: slicer
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulation
+:sc-related: Guides/FluidCorpusManipulation, Classes/Onsets
 :see-also: BufOnsetSlice, AmpSlice, NoveltySlice, TransientSlice
 :description: Implements a selection of spectrum-based onset slicers
 :discussion:

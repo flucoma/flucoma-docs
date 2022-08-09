@@ -1,7 +1,7 @@
 :digest: Buffer-Based Spectral Difference Feature
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulation
+:sc-related: Guides/FluidCorpusManipulation, Classes/Onsets
 :see-also: BufOnsetSlice, BufNoveltyFeature, BufAmpFeature, BufOnsetFeature
 :description: Calculate the spectral difference feature used by :fluid-obj:`BufOnsetSlice`.
 :discussion:

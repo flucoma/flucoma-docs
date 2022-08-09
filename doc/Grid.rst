@@ -1,7 +1,7 @@
 :digest: Constrain a 2D DataSet into a Grid.
 :species: data
 :sc-categories: Dimensionality Reduction, Data Processing
-:sc-related: Classes/FluidMDS, Classes/FluidPCA, Classes/FluidUMAP, Classes/FluidDataSet
+:sc-related: 
 :see-also: UMAP, MDS, PCA, DataSet
 :description: Maps a set of 2D points in a :fluid-obj:`DataSet` to a rectangular grid.
 :discussion: 

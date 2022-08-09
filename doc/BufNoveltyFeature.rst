@@ -2,7 +2,7 @@
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition, UGens>Buffer
 :sc-related: Guides/FluidCorpusManipulation
-:see-also: BufNoveltySlice, BufNoveltyFeature, BufAmpFeature, BufOnsetFeature
+:see-also: BufNoveltySlice, NoveltyFeature, BufAmpFeature, BufOnsetFeature
 :description: Calculates the novelty feature of audio stored in a buffer.
 :discussion:
     Calculate novelty of audio stored in a buffer, the feature used by :fluid-obj:`BufNoveltySlice` to perform segmentation. 

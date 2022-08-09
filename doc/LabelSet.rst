@@ -1,8 +1,8 @@
 :digest: A set of labels associated with identifiers.
 :species: data
 :sc-categories: FluidManipulation
-:sc-related: Classes/FluidDataSet, Classes/FluidKMeans
-:see-also: DataSet, DataSetQuery
+:sc-related: Classes/Dictionary
+:see-also: DataSet, DataSetQuery, KMeans
 :description: FluidLabelSet is a container associating identifiers with labels.
 
 

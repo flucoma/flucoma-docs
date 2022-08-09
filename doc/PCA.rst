@@ -1,7 +1,7 @@
 :digest: Principal Component Analysis
 :species: data
 :sc-categories: Dimensionality Reduction, Data Processing
-:sc-related: Classes/FluidMDS, Classes/FluidDataSet
+:sc-related:
 :see-also: UMAP, MDS, DataSet
 :description: 
    Principal Components Analysis (PCA) of a :fluid-obj:`DataSet`. 

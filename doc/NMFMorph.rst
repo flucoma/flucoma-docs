@@ -1,7 +1,7 @@
 :digest: Morph between sounds
 :species: transformer[0]
 :sc-categories: FluidCorpusManipulation
-:sc-related: Classes/FluidAudioTransport, Classes/FluidBufNMFCross
+:sc-related: 
 :see-also: BufNMF, BufNMFCross, AudioTransport, BufAudioTransport 
 :description: 
    Perform cross-synthesis using Nonnegative Matrix Factorization (NMF) and Optimal Transport (OT). 

@@ -2,7 +2,7 @@
 :species: buffer-proc
 :sc-categories: FluidCorpusManipulation
 :sc-related: Classes/Buffer
-:see-also: BufCompose, BufStats
+:see-also: BufCompose, BufStats, BufSelect, BufSelectEvery
 :max-seealso: poke~, peek~, index~, buffer~
 :description: 
    Flatten a multichannel |buffer| to a single channel. This can be useful to structure a buffer such that it can be added to a :fluid-obj:`DataSet`

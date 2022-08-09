@@ -1,7 +1,7 @@
 :digest: Classification with a multi-layer perceptron
 :species: data
 :sc-categories: Machine learning
-:sc-related: Classes/FluidMLPRegressor, Classes/FluidDataSet, Classes/FluidLabelSet
+:sc-related: 
 :see-also: MLPRegressor, KNNClassifier, DataSet, LabelSet
 :description: 
 

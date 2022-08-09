@@ -1,7 +1,7 @@
 :digest: Regression with K-Nearest Neighbours
 :species: data
 :sc-categories: Regression
-:sc-related: Classes/FluidKNNClassifier, Classes/FluidDataSet
+:sc-related: 
 :see-also: KNNClassifier, DataSet, MLPRegressor
 :description: Regression between DataSets using weighted average of neighbours
 :discussion:

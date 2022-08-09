@@ -2,7 +2,7 @@
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulation
-:see-also: AmpGate, BufAmpSlice, BufOnsetSlice, BufNoveltySlice, BufTransientSlice
+:see-also: AmpGate, BufAmpSlice, AmpSlice, BufOnsetSlice, BufNoveltySlice, BufTransientSlice
 :max-seealso: peakamp~, meter~, snapshot~, slide~
 :description: Absolute amplitude threshold gate detector on audio in a buffer
 

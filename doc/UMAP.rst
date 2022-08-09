@@ -1,7 +1,7 @@
 :digest: Dimensionality Reduction with Uniform Manifold Approximation and Projection
 :species: data
 :sc-categories: Dimensionality Reduction, Data Processing
-:sc-related: Classes/FluidMDS, Classes/FluidDataSet
+:sc-related: 
 :see-also: MDS, PCA, DataSet 
 :description: Reduce the dimensions of a :fluid-obj:`DataSet` using the Uniform Manifold Approximation and Projection (UMAP) algorithm.
 :discussion: 

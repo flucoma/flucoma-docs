@@ -1,8 +1,8 @@
 :digest: Mel-Frequency Cepstral Coefficients as Spectral Descriptors on a Buffer
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulation, Guides/FluidBufMultiThreading, Classes/FluidBufMelBands
-:see-also: 
+:sc-related: Guides/FluidCorpusManipulation, Guides/FluidBufMultiThreading
+:see-also:  BufMelBands
 :description: A classic timbral spectral descriptor, the Mel-Frequency Cepstral Coefficients (MFCCs).
 :discussion:
     

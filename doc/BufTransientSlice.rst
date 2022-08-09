@@ -1,7 +1,7 @@
 :digest: Buffer-Based Transient-Based Slicer
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition, UGens>Buffer
-:sc-related: Guides/FluidCorpusManipulation,
+:sc-related: Guides/FluidCorpusManipulation
 :see-also: TransientSlice, BufOnsetSlice, BufNoveltySlice
 :description: Transient-based slice extractor on buffers
 :discussion: 
