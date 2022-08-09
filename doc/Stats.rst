@@ -10,7 +10,7 @@
 
   .. only_in:: sc
 
-     The parameter ``size`` is the number of previous control rate frames FluidStats will store and use to compute the statistics
+     The parameter ``history`` is the number of previous control rate frames FluidStats will store and use to compute the statistics
 
 :output: The [means] and [standard deviations] for each element of the original.
 
