@@ -1,8 +1,8 @@
 :digest: Sinusoidal Modelling and Resynthesis
 :species: transformer
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulation
-:see-also: BufSines, Transients,HPSS
+:sc-related: Guides/FluidCorpusManipulation, Classes/SinOsc
+:see-also: BufSines, Transients, HPSS
 :description: Sinusoidal Modelling process on its audio input.
 :discussion: 
    It implements a mix of algorithms taken from classic papers.

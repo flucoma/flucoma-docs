@@ -1,8 +1,8 @@
 :digest: Non-Negative Double Singular Value Decomposition on a Buffer
 :species: buffer-proc
 :sc-categories: FluidManipulation
-:sc-related: Classes/FluidBufNMF
-:see-also: 
+:sc-related: 
+:see-also: BufNMF, NMFMatch, NMFFilter
 :description: Find Initial Bases and Activations for BufNMF
 :discussion:
 

@@ -1,7 +1,7 @@
 :digest: Buffer-Based Non-Negative Matrix Factorisation on Spectral Frames
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition, UGens>Buffer
-:sc-related: Guides/FluidCorpusManipulation, Classes/FluidNMFMatch, Classes/FluidNMFFilter
+:sc-related: Guides/FluidCorpusManipulation
 :see-also: NMFMatch, NMFFilter
 :description: Decomposes the spectrum of a sound into a number of components using Non-Negative Matrix Factorisation (NMF)
 :discussion: 

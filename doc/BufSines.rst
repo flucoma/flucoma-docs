@@ -1,7 +1,7 @@
 :digest: Buffer-Based Sinusoidal Modelling and Resynthesis
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition, UGens>Buffer
-:sc-related: Guides/FluidCorpusManipulation
+:sc-related: Guides/, Classes/SinOsc
 :see-also: Sines, BufHPSS, BufTransients
 :description: Sinusoidal modelling on buffers
 :discussion: 

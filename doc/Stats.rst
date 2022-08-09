@@ -1,7 +1,7 @@
 :digest: Rolling mean and standard deviation on control inputs
 :species: descriptor
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulation
+:sc-related: Guides/FluidCorpusManipulation, Classes/Median
 :see-also: BufStats, Standardize, Normalize, RobustScale
 :description: Computes the rolling mean and sample standard deviation over a given window for multichannel control inputs.
 :discussion: 

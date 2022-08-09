@@ -1,7 +1,7 @@
 :digest: A Loudness and True-Peak Descriptor in Realtime
 :species: descriptor
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulation
+:sc-related: Guides/FluidCorpusManipulation, Classes/Amplitude
 :see-also: BufLoudness, Pitch, MelBands, MFCC, SpectralShape
 :max-seealso: peakamp~, meter~
 :description: Two loudness descriptors, with a ITU BS 1770 mode

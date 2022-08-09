@@ -1,8 +1,8 @@
 :digest: Standardize a FluidDataSet
 :species: data
 :sc-categories: FluidManipulation
-:sc-related: Classes/FluidDataSet, Classes/FluidStandardize
-:see-also: Normalize, RobustScale
+:sc-related: 
+:see-also: Normalize, RobustScale, DataSet
 :description: 
    Standardize a :fluid-obj:`DataSet`. Rescale using its mean(s) and standard deviation(s) in each dimension, such that each dimension has a mean of 0 and a standard deviation of 1.
    

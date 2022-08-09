@@ -1,7 +1,7 @@
 :digest: Cluster data points with K-Means
 :species: data
 :sc-categories: FluidManipulation
-:sc-related: Classes/FluidDataSet, Classes/FluidLabelSet, Classes/FluidKNNClassifier, Classes/FluidKNNRegressor, Classes/FluidSKMeans
+:sc-related:
 :see-also: SKMeans, KNNClassifier, MLPClassifier, DataSet, LabelSet
 :description: 
 

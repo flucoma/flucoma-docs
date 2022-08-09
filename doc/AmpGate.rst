@@ -2,7 +2,7 @@
 :species: slicer
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulation
-:see-also: BufAmpGate, AmpSlice, OnsetSlice, NoveltySlice, TransientSlice
+:see-also: BufAmpGate, AmpSlice, BufAmpSlice, OnsetSlice, NoveltySlice, TransientSlice
 :max-seealso: peakamp~, meter~, snapshot~, slide~
 :description: Absolute amplitude threshold gate detector on a realtime signal
 

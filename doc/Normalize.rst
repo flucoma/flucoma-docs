@@ -1,8 +1,8 @@
 :digest: Normalize a FluidDataSet
 :species: data
 :sc-categories: FluidManipulation
-:sc-related: Classes/FluidStandardize, Classes/FluidDataSet
-:see-also: Standardize, RobustScale
+:sc-related: 
+:see-also: Standardize, RobustScale, DataSet
 :description: Normalize a :fluid-obj:`DataSet` or single point of data according to learnt minimum and maximum values.
 
 :control min:

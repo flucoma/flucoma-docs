@@ -2,7 +2,7 @@
 :species: slicer
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulation
-:see-also: BufAmpSlice, AmpGate, OnsetSlice, NoveltySlice, TransientSlice
+:see-also: BufAmpSlice, AmpGate, BufAmpGate, OnsetSlice, NoveltySlice, TransientSlice
 :max-seealso: peakamp~, meter~, snapshot~, slide~
 :description: Implements an amplitude-based slicer, with various customisable options and conditions to detect relative amplitude changes as onsets.
 :discussion: 

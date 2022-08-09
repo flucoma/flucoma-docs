@@ -1,7 +1,7 @@
 :digest: Multidimensional Scaling
 :species: data
 :sc-categories: Dimensionality Reduction, Data Processing
-:sc-related: Classes/FluidMDS, Classes/FluidDataSet
+:sc-related:
 :see-also: UMAP, PCA, DataSet
 :description: 
 

@@ -1,17 +1,13 @@
 :digest: Efficient lookup of data using a k-d tree.
 :species: data
 :sc-categories: FluidManipulation
-:sc-related: Classes/FluidDataSet
+:sc-related: 
 :see-also: DataSet
 :description: A k-dimensional tree for efficient neighbourhood searches of multi-dimensional data.
 :discussion: 
    :fluid-obj:`KDTree` facilitates efficient nearest neighbour searches of multi-dimensional data stored in a :fluid-obj:`DataSet`. 
 
    Whilst k-d trees can offer very good performance relative to naïve search algorithms, they suffer from something called “the curse of dimensionality” (like many algorithms for multi-dimensional data). In practice, this means that as the number of dimensions of your data goes up, the relative performance gains of a k-d tree go down.
-
-   For more information see https://learn.flucoma.org/reference/kdtree.
-
-
 
 :control numNeighbours:
 

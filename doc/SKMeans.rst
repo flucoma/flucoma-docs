@@ -1,8 +1,8 @@
 :digest: K-Means with Spherical Distances
 :species: data
 :sc-categories: FluidManipulation
-:sc-related: Classes/FluidDataSet, Classes/FluidLabelSet, Classes/FluidKNNClassifier, Classes/FluidKNNRegressor, Classes/FluidKMeans
-:see-also: KMeans, KNNClassifier, MLPClassifier, DataSet
+:sc-related:
+:see-also: KMeans, KNNClassifier, MLPClassifier, DataSet, LabelSet
 :description: 
 
    Uses K-means algorithm with cosine similarity to learn clusters and features from a :fluid-obj:`DataSet`.

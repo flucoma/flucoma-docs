@@ -1,7 +1,7 @@
 :digest: A Loudness and True-Peak Descriptor on a Buffer
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulation
+:sc-related: Guides/FluidCorpusManipulation, Classes/Amplitude
 :see-also: Loudness, BufPitch, BufMelBands, BufMFCC, BufSpectralShape, BufStats
 :max-seealso: peakamp~, meter~
 :description: Two loudness descriptors, computing the true peak of the signal as well as applying the filters proposed by broadcasting standards to emulate the perception of amplitude.

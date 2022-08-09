@@ -1,7 +1,7 @@
 :digest: Pitch Descriptor
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulation, Classes/SpecCentroid, Classes/SpecFlatness, Classes/SpecCentroid, Classes/SpecPcile
+:sc-related: Guides/FluidCorpusManipulation, Classes/Pitch
 :see-also: Pitch, BufLoudness, BufMelBands, BufMFCC, BufSpectralShape, BufStats
 :max-seealso: fzero~, retune~
 :description: Three popular pitch descriptors, all of which compute frequency and the confidence that a pitch is present.

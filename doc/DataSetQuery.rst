@@ -1,7 +1,7 @@
 :digest: Query a FluidDataSet
 :species: data
 :sc-categories: UGens>FluidManipulation
-:sc-related: Classes/FluidDataSet
+:sc-related: 
 :see-also: DataSet, LabelSet
 :max-seealso: coll, dict
 :description: A selection of columns and a set of conditions that match rows of a FluidDataSet. Used to filter and search in a database of descriptors.
