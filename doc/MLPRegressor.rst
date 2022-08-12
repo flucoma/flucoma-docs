@@ -1,7 +1,7 @@
 :digest: Regression with a multi-layer perceptron
 :species: data
 :sc-categories: Machine learning
-:sc-related: Classes/FluidMLPClassifier, Classes/FluidDataSet
+:sc-related: 
 :see-also: KNNRegressor, DataSet, MLPClassifier
 :description: 
 

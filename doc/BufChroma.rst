@@ -1,7 +1,7 @@
 :digest: A histogram of pitch classes on a Buffer
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulation, Classes/FluidBufMFCC
+:sc-related: Guides/FluidCorpusManipulation
 :see-also: Chroma, BufPitch, BufLoudness, BufMFCC, BufSpectralShape, BufStats
 :description: This class computes a histogram of the energy contained for each pitch class across the analysis frequency range.
 :discussion: 
@@ -59,7 +59,7 @@
 
 :control windowSize:
 
-   The window size. As chroma description relies on spectral frames, we need to decide what precision we give it spectrally and temporally, in line with Gabor Uncertainty principles. http://www.subsurfwiki.org/wiki/Gabor_uncertainty
+   The window size. As chroma description relies on spectral frames, we need to decide what precision we give it spectrally and temporally. For more information visit https://learn.flucoma.org/learn/fourier-transform/
 
 :control hopSize:
 

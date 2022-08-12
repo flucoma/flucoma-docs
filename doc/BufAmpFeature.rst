@@ -2,7 +2,7 @@
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition
 :sc-related: Guides/FluidCorpusManipulation
-:see-also: BufAmpSlice, BufNoveltyFeature, BufAmpFeature, BufOnsetFeature
+:see-also: BufAmpSlice, AmpSlice, BufAmpGate, AmpGate, BufNoveltyFeature, BufOnsetFeature
 :max-seealso: peakamp~, meter~, snapshot~, slide~
 :description: Calculate the amplitude differential feature used by :fluid-obj:`BufAmpSlice`.
 :discussion: 

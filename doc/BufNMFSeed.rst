@@ -1,8 +1,8 @@
 :digest: Non-Negative Double Singular Value Decomposition on a Buffer
 :species: buffer-proc
 :sc-categories: FluidManipulation
-:sc-related: Classes/FluidBufNMF
-:see-also: 
+:sc-related: 
+:see-also: BufNMF, NMFMatch, NMFFilter
 :description: Find Initial Bases and Activations for BufNMF
 :discussion:
 
@@ -54,7 +54,7 @@
 
 :control windowSize:
 
-   The window size. We need to decide what precision we give it spectrally and temporally, in line with Gabor Uncertainty principles. http://www.subsurfwiki.org/wiki/Gabor_uncertainty
+   The window size. We need to decide what precision we give it spectrally and temporally. For more information visit https://learn.flucoma.org/learn/fourier-transform/
 
 :control hopSize:
 

@@ -1,8 +1,8 @@
 :digest: Resynthesise a target sound based on a source sound
 :species: buffer-proc
 :sc-categories: FluidManipulation
-:sc-related: Classes/FluidBufNMF, Classes/FluidNMFMatch, Classes/FluidNMFFilter
-:see-also: 
+:sc-related: 
+:see-also: BufNMF, NMFMatch, NMFFilter
 :description: Uses NMF decomposition to reconstruct a target sound using components learned from a source sound 
 :discussion: 
 
@@ -30,7 +30,7 @@
 
 :control polyphony:
 
-   Control the spectral density of the output sound by restricting the number of simultaneous templates that can be used. Units are spectral bins. The default is 10.
+   Control the spectral density of the output sound by specifying the maximum number of simultaneous spectral templates from ``source`` that can be used. The default is 10.
 
 :control continuity:
 

@@ -1,7 +1,7 @@
 :digest: A Perceptually Spread Spectral Contour Descriptor
 :species: descriptor
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulation, Classes/FluidMFCC
+:sc-related: Guides/FluidCorpusManipulation
 :see-also: BufMelBands, Pitch, Loudness, MFCC, SpectralShape
 :description: Magnitudes for a number of perceptually-evenly spaced bands.
 :discussion: 
@@ -45,7 +45,7 @@
 
 :control windowSize:
 
-   The window size. As spectral description relies on spectral frames, we need to decide what precision we give it spectrally and temporally, in line with Gabor Uncertainty principles. http://www.subsurfwiki.org/wiki/Gabor_uncertainty
+   The window size. As spectral description relies on spectral frames, we need to decide what precision we give it spectrally and temporally. For more information visit https://learn.flucoma.org/learn/fourier-transform/
 
 :control hopSize:
 

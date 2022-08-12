@@ -1,7 +1,7 @@
 :digest: Buffer-Based Spectral Difference Feature
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulation
+:sc-related: Guides/FluidCorpusManipulation, Classes/Onsets
 :see-also: BufOnsetSlice, BufNoveltyFeature, BufAmpFeature, BufOnsetFeature
 :description: Calculate the spectral difference feature used by :fluid-obj:`BufOnsetSlice`.
 :discussion:
@@ -86,7 +86,7 @@
 
 :control windowSize:
 
-   The window size. As spectral differencing relies on spectral frames, we need to decide what precision we give it spectrally and temporally, in line with Gabor Uncertainty principles. http://www.subsurfwiki.org/wiki/Gabor_uncertainty
+   The window size. As spectral differencing relies on spectral frames, we need to decide what precision we give it spectrally and temporally. For more information visit https://learn.flucoma.org/learn/fourier-transform/
 
 :control hopSize:
 

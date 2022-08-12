@@ -1,8 +1,8 @@
 :digest: A set of data associated with identifiers.
 :species: data
 :sc-categories: UGens>FluidManipulation
-:sc-related: Classes/FluidLabelSet, Classes/FluidKDTree, Classes/FluidKNNClassifier, Classes/FluidKNNRegressor, Classes/FluidKMeans
-:see-also: LabelSet, DataSetQuery
+:sc-related: Classes/Dictionary
+:see-also: LabelSet, DataSetQuery, KDTree, KNNClassifier, KMeans
 :max-seealso: coll, dict
 :description: FluidDataSet is a container associating data points with identifiers.
 

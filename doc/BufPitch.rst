@@ -1,7 +1,7 @@
 :digest: Pitch Descriptor
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulation, Classes/SpecCentroid, Classes/SpecFlatness, Classes/SpecCentroid, Classes/SpecPcile
+:sc-related: Guides/FluidCorpusManipulation, Classes/Pitch
 :see-also: Pitch, BufLoudness, BufMelBands, BufMFCC, BufSpectralShape, BufStats
 :max-seealso: fzero~, retune~
 :description: Three popular pitch descriptors, all of which compute frequency and the confidence that a pitch is present.
@@ -78,7 +78,7 @@
 
 :control windowSize:
 
-   The window size. As sinusoidal estimation relies on spectral frames, we need to decide what precision we give it spectrally and temporally, in line with Gabor Uncertainty principles. http://www.subsurfwiki.org/wiki/Gabor_uncertainty
+   The window size. As sinusoidal estimation relies on spectral frames, we need to decide what precision we give it spectrally and temporally. For more information visit https://learn.flucoma.org/learn/fourier-transform/
 
 :control hopSize:
 

@@ -1,7 +1,7 @@
 :digest: Spectral Difference-Based Realtime Audio Slicer
 :species: slicer
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulation
+:sc-related: Guides/FluidCorpusManipulation, Classes/Onsets
 :see-also: BufOnsetSlice, AmpSlice, NoveltySlice, TransientSlice
 :description: Implements a selection of spectrum-based onset slicers
 :discussion:
@@ -75,7 +75,7 @@
 
 :control windowSize:
 
-   The window size. As sinusoidal estimation relies on spectral frames, we need to decide what precision we give it spectrally and temporally, in line with Gabor Uncertainty principles. http://www.subsurfwiki.org/wiki/Gabor_uncertainty
+   The window size. As sinusoidal estimation relies on spectral frames, we need to decide what precision we give it spectrally and temporally. For more information visit https://learn.flucoma.org/learn/fourier-transform/
 
 :control hopSize:
 

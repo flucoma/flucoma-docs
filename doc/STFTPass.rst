@@ -1,7 +1,7 @@
 :digest: Realtime FFT/IFFT return trip.
 :species: transformer
 :sc-categories: UGens>Algebraic, Libraries>FluidDecomposition, UGens>Buffer
-:sc-related: Guides/FluidCorpusManipulation,Classes/UnaryOpFunction
+:sc-related: Guides/FluidCorpusManipulation
 :see-also: 
 :description: This class implements a sanity test for the FluCoMa Realtime Client FFT/IFFT Wrapper.
 :discussion: 

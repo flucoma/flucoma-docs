@@ -1,7 +1,7 @@
 :digest: Buffer-Based Non-Negative Matrix Factorisation on Spectral Frames
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition, UGens>Buffer
-:sc-related: Guides/FluidCorpusManipulation, Classes/FluidNMFMatch, Classes/FluidNMFFilter
+:sc-related: Guides/FluidCorpusManipulation
 :see-also: NMFMatch, NMFFilter
 :description: Decomposes the spectrum of a sound into a number of components using Non-Negative Matrix Factorisation (NMF)
 :discussion: 
@@ -106,7 +106,7 @@
 
 :control windowSize:
 
-   The window size. As NMF relies on spectral frames, we need to decide what precision we give it spectrally and temporally, in line with Gabor Uncertainty principles. http://www.subsurfwiki.org/wiki/Gabor_uncertainty
+   The window size. As NMF relies on spectral frames, we need to decide what precision we give it spectrally and temporally. For more information visit https://learn.flucoma.org/learn/fourier-transform/
 
 :control hopSize:
 

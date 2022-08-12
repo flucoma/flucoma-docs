@@ -1,7 +1,7 @@
 :digest: Rolling mean and standard deviation on control inputs
 :species: descriptor
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulation
+:sc-related: Guides/FluidCorpusManipulation, Classes/Median
 :see-also: BufStats, Standardize, Normalize, RobustScale
 :description: Computes the rolling mean and sample standard deviation over a given window for multichannel control inputs.
 :discussion: 
@@ -10,7 +10,7 @@
 
   .. only_in:: sc
 
-     The parameter ``size`` is the number of previous control rate frames FluidStats will store and use to compute the statistics
+     The parameter ``history`` is the number of previous control rate frames FluidStats will store and use to compute the statistics
 
 :output: The [means] and [standard deviations] for each element of the original.
 

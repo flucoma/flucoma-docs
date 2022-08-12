@@ -1,7 +1,7 @@
 :digest: Buffer-Based Sinusoidal Modelling and Resynthesis
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition, UGens>Buffer
-:sc-related: Guides/FluidCorpusManipulation
+:sc-related: Guides/, Classes/SinOsc
 :see-also: Sines, BufHPSS, BufTransients
 :description: Sinusoidal modelling on buffers
 :discussion: 
@@ -84,7 +84,7 @@
 
 :control windowSize:
 
-   The window size. As sinusoidal estimation relies on spectral frames, we need to decide what precision we give it spectrally and temporally, in line with Gabor Uncertainty principles. http://www.subsurfwiki.org/wiki/Gabor_uncertainty
+   The window size. As sinusoidal estimation relies on spectral frames, we need to decide what precision we give it spectrally and temporally. For more information visit https://learn.flucoma.org/learn/fourier-transform/
 
 :control hopSize:
 

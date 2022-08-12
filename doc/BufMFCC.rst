@@ -1,8 +1,8 @@
 :digest: Mel-Frequency Cepstral Coefficients as Spectral Descriptors on a Buffer
 :species: buffer-proc
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulation, Guides/FluidBufMultiThreading, Classes/FluidBufMelBands
-:see-also: 
+:sc-related: Guides/FluidCorpusManipulation, Guides/FluidBufMultiThreading
+:see-also:  BufMelBands
 :description: A classic timbral spectral descriptor, the Mel-Frequency Cepstral Coefficients (MFCCs).
 :discussion:
     
@@ -62,7 +62,7 @@
 
 :control windowSize:
 
-   The window size. As MFCC computation relies on spectral frames, we need to decide what precision we give it spectrally and temporally, in line with Gabor Uncertainty principles. http://www.subsurfwiki.org/wiki/Gabor_uncertainty. The default is 1024.
+   The window size. As MFCC computation relies on spectral frames, we need to decide what precision we give it spectrally and temporally. For more information visit https://learn.flucoma.org/learn/fourier-transform/. The default is 1024.
 
 :control hopSize:
 

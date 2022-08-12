@@ -1,7 +1,7 @@
 :digest: Seven Spectral Shape Descriptors in Realtime
 :species: descriptor
 :sc-categories: Libraries>FluidDecomposition
-:sc-related: Guides/FluidCorpusManipulation, Classes/SpecCentroid, Classes/SpecFlatness, Classes/SpecCentroid, Classes/SpecPcile
+:sc-related: Guides/FluidCorpusManipulation, Classes/SpecCentroid, Classes/SpecFlatness, Classes/SpecPcile
 :see-also: BufSpectralShape, Pitch, MelBands, Loudness, MFCC
 :description: Seven of the  spectral shape descriptors, computed on a linear scale for both amplitude and frequency.
 :discussion: 
@@ -53,7 +53,7 @@
 
 :control windowSize:
 
-   The window size. As sinusoidal estimation relies on spectral frames, we need to decide what precision we give it spectrally and temporally, in line with Gabor Uncertainty principles. http://www.subsurfwiki.org/wiki/Gabor_uncertainty
+   The window size. As sinusoidal estimation relies on spectral frames, we need to decide what precision we give it spectrally and temporally. For more information visit https://learn.flucoma.org/learn/fourier-transform/
 
 :control hopSize:
 
