@@ -15,8 +15,6 @@
    .. only_in:: sc
 
       When ``numCoeffs`` is less than ``maxNumCoeffs`` the result will be zero-padded on the right so the control stream returned by this object is always ``maxNumCoeffs`` channels.
-
-    For more information visit https://learn.flucoma.org/reference/mfcc/.
     
     For an interactive explanation of this relationship, visit https://learn.flucoma.org/reference/mfcc/explain.
 
