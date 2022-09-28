@@ -4,7 +4,7 @@ code::
 (
 {
 	var sig = PlayBuf.ar(~src.numChannels,~src,BufRateScale.ir(~src),loop:1);
-	var feature = FluidNoveltyFeature.kr(sig,3,5,1); // feature is pitch and pitch confidence
+	var feature = FluidNoveltyFeature.kr(sig,kernelSize:31,windowSize:4096,hopSize:512); // feature is pitch and pitch confidence
 	SendReply.kr(Impulse.kr(30),"/feature",feature);
 	sig.dup;
 }.play;
@@ -12,7 +12,7 @@ code::
 OSCdef(\feature,{
 	arg msg;
 	{"*".post} ! (msg[3] * 20);
-	" %".format(msg[3].round(0.1)).postln;
+	" %".format(msg[3].round(0.001)).postln;
 },"/feature");
 )
 
