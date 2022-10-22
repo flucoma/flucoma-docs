@@ -1,55 +1,31 @@
 
 CODE::
 
-~src = Buffer.readChannel(s,FluidFilesPath("Tremblay-BeatRemember.wav"),channels:[0]);
+// a didactic example: a cluster of sinusoids, sorted by magnitudes
+{var source = SinOsc.ar([440,789],mul: [0.05,0.1]).sum; FluidSineFeature.kr(source,numPeaks: 3, sortBy: 1).poll; source.dup}.play
 
+// a more exciting example: resynthesizing audio input
 (
-~synth = {
-	arg which = 0, detectionThreshold = -96, minTrackLen = 15;
-	var src = PlayBuf.ar(1,~src,BufRateScale.ir(~src),loop:1);
-	var sines, residual;
-	# sines, residual = FluidSines.ar(src,detectionThreshold:detectionThreshold,minTrackLen:minTrackLen);
-	Select.ar(which,[sines,residual]).dup;
-}.play;
-)
+var buf = Buffer.read(s,FluidFilesPath("Harker-DS-TenOboeMultiphonics-M.wav"));
 
-~synth.set(\which,1) // residual
-~synth.set(\which,0) // back to sinusoids
-
-// try some different parameters
-
-// tracks can be short but the detection threshold is higher than the default
-~synth.set(\detectionThreshold,-40,\minTrackLen,1)
-
-// increase the minimum track length
-~synth.set(\detectionThreshold,-40,\minTrackLen,15)
-
-// lower the threshold but increase the track length drastically
-~synth.set(\detectionThreshold,-80,\minTrackLen,50)
-
-// increase the threshold drastically but lower the minimum track length
-~synth.set(\detectionThreshold,-24,\minTrackLen,1)
-::
-strong::a little more explanation::
-With these settings everything in the sound is considered a sinusoid, even short and quiet peaks.
-
-Because the decomposition is a windowed process, the detected sinusoidal peaks are located in time based on the window of analysis. When the oscillator changes (even slowly) over time we hear the artefact in the residual output.
-code::
-
-(
-~synth = {
-	arg which = 0;
-	var stable = SinOsc.ar(69.midicps,0,0.1);
-	var oscillating = SinOsc.ar(SinOsc.kr(0.1,0,12,57).midicps,0,0.1);
-	var sig = SelectX.ar(which.lag(0.1),[stable,oscillating]);
-	var sines, residual;
-	# sines, residual = FluidSines.ar(sig,76,-144,-144,-144,1,0,200,1000,0);
-	[sines, residual * ((which*40) + 1).lag(0.1)]
+x = {
+	arg nbPeaks = 10, t_hold = 1;
+	var source = PlayBuf.ar(1, buf, loop: 1);
+	var analysis = Latch.kr(FluidSineFeature.kr(source,numPeaks: nbPeaks, maxNumPeaks: 50),t_hold);
+	var resynth = SinOsc.ar(analysis[Array.iota(50)], mul: analysis[Array.iota(50) + 50].dbamp).sum;
+	[source, resynth];
 }.play
 )
 
-~synth.set(\which,1);
+// play with the number of peaks to track
+x.set(\nbPeaks, 5)
+x.set(\nbPeaks, 1)
+x.set(\nbPeaks, 50)
 
-~synth.set(\which,0);
+// trigger the holder to hear the reconstruction on the right hand side
+x.set(\t_hold, 1)
 
+// or make it automatic
+r = Routine{x.set(\t_hold, 1);0.01.wait;}.loop.play
+r.stop
 ::

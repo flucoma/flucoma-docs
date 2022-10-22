@@ -1,79 +1,55 @@
+strong::Plot the BufSineFeature curves one over the other::
+code::
+~oboe = Buffer.read(s,FluidFilesPath("Harker-DS-TenOboeMultiphonics-M.wav"),numFrames: 311000);
+
+(
+~freq = Buffer(s);
+~mags = Buffer(s);
+FluidBufSineFeature.processBlocking(s,~oboe, frequency: ~freq, magnitude: ~mags, numPeaks: 5);
+w = Window("FluidWaveform Test",Rect(0,0,1000,500));
+w.view.layout = VLayout(
+	FluidWaveform(~oboe,featuresBuffer: ~freq,standalone: false),
+	FluidWaveform(~oboe,featuresBuffer: ~mags,standalone: false));
+w.front;
+)
+
+strong::A few didactic examples::
 code::
 
-(
-~src = Buffer.readChannel(s,FluidFilesPath("Tremblay-BeatRemember.wav"),channels:[0]);
-~sines = Buffer(s);
-~residual = Buffer(s);
-)
+//mono source of 3 sines
+b = {SinOsc.ar([440,789,535],mul: [0.01,0.03,0.02]).sum}.asBuffer(1)
 
-// listen to the original if you want
-~src.play;
+//listen
+b.play
 
-FluidBufSines.processBlocking(s,~src,sines:~sines,residual:~residual,action:{"done".postln;});
+//make destination buffers
+~freq = Buffer(s); ~mags = Buffer(s);
 
-~sines.play;
-~residual.play;
+//process
+FluidBufSineFeature.process(s,b,frequency: ~freq, magnitude: ~mags,numPeaks: 4, action: {\done.postln})
 
-// change some parameters
+// retrieve the first 2 frames of 4 peaks
+~freq.getn(0, 8, {|x|x.postln})
+~mags.getn(0, 8, {|x|x.postln})
 
-// tracks can be short but the detection threshold is higher than the default
-(
-FluidBufSines.processBlocking(s,
-	~src,
-	sines:~sines,
-	residual:~residual,
-	detectionThreshold:-40,
-	minTrackLen:1,
-	action:{"done".postln;}
-);
-)
+// there are only 2 peaks... this is because the distance between 2 peaks has to be clearly segregated in the FFT world. At the default 1024 and the usual SC SR of 44100, this is 43Hz per bin, so 440 and 535 are too near each other... if we reprocess with a higher frame size, we get the right values
 
-~sines.play;
-~residual.play;
+FluidBufSineFeature.process(s,b,frequency: ~freq, magnitude: ~mags,numPeaks: 4, windowSize: 2048, action: {\done.postln})
 
-// increase the minimum track length
-(
-FluidBufSines.processBlocking(s,
-	~src,
-	sines:~sines,
-	residual:~residual,
-	detectionThreshold:-40,
-	minTrackLen:15,
-	action:{"done".postln;}
-);
-)
+// first 2 frames of 4 peaks
+~freq.getn(0, 8, {|x|x.postln})
+~mags.getn(0, 8, {|x|x.postln})
 
-~sines.play;
-~residual.play;
+//here is another source for fun, stereo this time, and triangle waves
+b = {LFTri.ar([300, 500],mul: [-40, -45].dbamp)}.asBuffer(1)
 
-// lower the threshold but increase the track length drastically
-(
-FluidBufSines.processBlocking(s,
-	~src,
-	sines:~sines,
-	residual:~residual,
-	detectionThreshold:-80,
-	minTrackLen:50,
-	action:{"done".postln;}
-);
-)
+b.play
+b.query
 
-~sines.play;
-~residual.play;
+// asking for 2 peaks - first and third harmonic of each should pop out
+FluidBufSineFeature.process(s, b, frequency: ~freq, magnitude: ~mags, numPeaks: 2, action: {\done.postln})
 
-// increase the threshold drastically but lower the minimum track length
-(
-FluidBufSines.processBlocking(s,
-	~src,
-	sines:~sines,
-	residual:~residual,
-	detectionThreshold:-24,
-	minTrackLen:1,
-	action:{"done".postln;}
-);
-)
+// retrieving - the stereo values are interleaved, 2 for left 2 for right.
+~freq.getn(0, 8, {|x|x.postln})
+~mags.getn(0, 8, {|x|x.postln})
 
-~sines.play;
-~residual.play;
-
-::

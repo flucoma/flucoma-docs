@@ -1,82 +1,73 @@
-:digest: Sinusoidal Modelling and Resynthesis
-:species: transformer
-:sc-categories: Libraries>FluidDecomposition
+:digest: Buffer-Based Sinusoidal Peak Tracking
+:species: buffer-proc
+:sc-categories: Libraries>FluidDecomposition, UGens>Buffer
 :sc-related: Guides/FluidCorpusManipulation, Classes/SinOsc
-:see-also: Sines
-:description: Sinusoidal Modelling process on its audio input.
+:see-also: SineFeature, BufSines
+:description: Interpolated Sinusoidal Peak Tracking on the Spectrum of audio stored in a buffer.
 :discussion: 
-   It implements a mix of algorithms taken from classic papers.
+  This process is tracking peaks in the spectrum of audio stored in a buffer, then estimating an interpolated frequency and amplitude of that peak in relation to its spectral context. It is the first part of the process used by :fluid-obj:`BufSines`. 
+  
+  The process will return two buffers containing time series that describes the interpolated frequencies and magnitudes changing over time in the source buffer.
 
-   	The algorithm will take an audio in, and will divide it in two parts:
-   	   * a reconstruction of what it detects as sinusoidal;
-   	   * a residual derived from the previous signal to allow null-summing
+:process: This is the method that calls for the slicing to be calculated on a given source buffer.
+:output: Nothing, as the various destination buffers are declared in the function call.
 
-   	The whole process is based on the assumption that signal is made of pitched steady components that have a long-enough duration and are periodic enough to be perceived as such, that can be tracked, resynthesised and removed from the original, leaving behind what is considered as non-pitched, noisy, and/or transient. It first tracks the peaks, then checks if they are the continuation of a peak in previous spectral frames, by assigning them a track.
+:control source:
 
-:process: The audio rate version of the object.
-:output: An array of two audio streams: [0] is the harmonic part extracted, [1] is the rest. The latency between the input and the output is (( hopSize * minTrackLen) + windowSize) samples.
+  The |buffer| to use as the source material. The channels of multichannel buffers will be processed sequentially.
 
+:control startFrame:
 
-:control in:
+  The starting point for analysis in the source (in samples).
 
-   The input to be processed
+:control numFrames:
 
-:control bandwidth:
+  The duration (in samples) to analyse.
 
-   The number of bins used to resynthesise a peak. It has an effect on CPU cost: the widest is more accurate but more computationally expensive. It is capped at (fftSize / 2) + 1.
+:control startChan:
 
+  For multichannel sources, the starting channel to analyse.
+
+:control numChans:
+
+  For multichannel sources, the number of channels to analyse.
+
+:control frequency:
+
+  The buffer where the interpolated frequency of the peaks will be written.
+
+:control magnitude:
+
+  The buffer where the interpolated magnitude of the peaks will be written.
+      
 :control numPeaks:
 
-      The number of bins used to resynthesise a peak. It has an effect on CPU cost: the widest is more accurate but more computationally expensive. It is capped at (fftSize / 2) + 1.
+  The number of peaks to search report back. It is capped at (fftSize / 2) + 1.
 
 :control detectionThreshold:
 
-   The threshold in dB above which a magnitude peak is considered to be a sinusoidal component.
+  The threshold in dB above which a magnitude peak is considered to be a sinusoidal component.
 
-:control birthLowThreshold:
+:control sortBy:
 
-   The threshold in dB above which to consider a peak to start a sinusoidal component tracking, for the low end of the spectrum. It is interpolated across the spectrum until birthHighThreshold at half-Nyquist.
-
-:control birthHighThreshold:
-
-   The threshold in dB above which to consider a peak to start a sinusoidal component tracking, for the high end of the spectrum. It is interpolated across the spectrum until birthLowThreshold at DC.
-
-:control minTrackLen:
-
-   The minimum duration, in spectral frames, for a sinusoidal track to be accepted as a partial. It allows to remove bubbly pitchy artefacts, but is more CPU intensive and might reject quick pitch material.
-
-:control trackingMethod:
-
-   The algorithm used to track the sinusoidal continuity between spectral frames. 0 is the default, "Greedy", and 1 is a more expensive [^"Hungarian"]( Neri, J., and Depalle, P., "Fast Partial Tracking of Audio with Real-Time Capability through Linear Programming". Proceedings of DAFx-2018. ) one.
-
-:control trackMagRange:
-
-   The amplitude difference allowed for a track to diverge between frames, in dB.
-
-:control trackFreqRange:
-
-   The frequency difference allowed for a track to diverge between frames, in Hertz.
-
-:control trackProb:
-
-   The probability of the tracking algorithm to find a track.
+  How the reported peaks are to be ordered. By default (0), it is by frequencies (lowest first), and the alternative (1) is by magnitude (loudest first).
 
 :control windowSize:
 
-   The window size. As sinusoidal estimation relies on spectral frames, we need to decide what precision we give it spectrally and temporally. For more information visit https://learn.flucoma.org/learn/fourier-transform/
+  The window size. As sinusoidal estimation relies on spectral frames, we need to decide what precision we give it spectrally and temporally. For more information visit https://learn.flucoma.org/learn/fourier-transform/
 
 :control hopSize:
 
-   The window hop size. As sinusoidal estimation relies on spectral frames, we need to move the window forward. It can be any size, but low overlap will create audible artefacts. The -1 default value will default to half of windowSize (overlap of 2).
+  The window hop size. As sinusoidal estimation relies on spectral frames, we need to move the window forward. It can be any size, but low overlap will create audible artefacts. The -1 default value will default to half of windowSize (overlap of 2).
 
 :control fftSize:
 
-   The inner FFT/IFFT size. It should be at least 4 samples long, at least the size of the window, and a power of 2. Making it larger allows an oversampling of the spectral precision. The -1 default value will default to windowSize. The -1 default value will default to the highest of windowSize and (bandwidth - 1) * 2.
+  The inner FFT/IFFT size. It should be at least 4 samples long, at least the size of the window, and a power of 2. Making it larger allows an oversampling of the spectral precision. The -1 default value will default to windowSize. The -1 default value will default to the highest of windowSize and (bandwidth - 1) * 2.
 
 :control maxFFTSize:
 
-   How large can the FFT be, by allocating memory at instantiation time. This cannot be modulated.
+  How large can the FFT be, by allocating memory at instantiation time. This cannot be modulated.
 
 :control maxNumPeaks:
 
-  How large can the FFT be, by allocating memory at instantiation time. This cannot be modulated.
+  Up to how many peaks can be reported, by allocating memory at instantiation time. This cannot be modulated.
