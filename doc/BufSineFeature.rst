@@ -72,6 +72,21 @@
 
   The inner FFT/IFFT size. It should be at least 4 samples long, at least the size of the window, and a power of 2. Making it larger allows an oversampling of the spectral precision. The -1 default value will default to windowSize. The -1 default value will default to the highest of windowSize and (bandwidth - 1) * 2.
 
+:control padding:
+
+   Controls the zero-padding added to either end of the source buffer or segment. Padding ensures all values are analysed. Possible values are:
+   
+   :enum:
+
+      :0:
+         No padding - The first analysis window starts at time 0, and the samples at either end will be tapered by the STFT windowing function.
+   
+      :1: 
+         Half the window size - The first sample is centred in the analysis window ensuring that the start and end of the segment are accounted for in the analysis.
+   
+      :2: 
+         Window size minus the hop size - Mode 2 can be useful when the overlap factor (window size / hop size) is greater than 2, to ensure that the input samples at either end of the segment are covered by the same number of analysis frames as the rest of the analysed material.
+
 :control maxFFTSize:
 
   How large can the FFT be, by allocating memory at instantiation time. This cannot be modulated.
