@@ -52,6 +52,14 @@
 
   How the reported peaks are to be ordered. By default (0), it is by frequencies (lowest first), and the alternative (1) is by magnitude (loudest first).
 
+:control freqUnit:
+
+  The units and scale used to report the frequency of the peaks. By default (0), it is in Hz (linear), and the alternative (1) is in MIDI (logarithmic).
+
+:control magUnit:
+
+  The units and scale used to report the magnitude of the peaks. By default (0), it is in amp (linear), and the alternative (1) is in dB (logarithmic).
+
 :control windowSize:
 
   The window size. As sinusoidal estimation relies on spectral frames, we need to decide what precision we give it spectrally and temporally. For more information visit https://learn.flucoma.org/learn/fourier-transform/

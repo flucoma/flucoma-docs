@@ -8,7 +8,7 @@
    This process is tracking peaks in the spectrum, then estimating an interpolated frequency and amplitude of that peak in relation to its spectral context. It is the first part of the process used by :fluid-obj:`Sines`.
 
 :process: The audio rate version of the object.
-:output: An array of two control streams: [0] is the interpolated frequency of the peaks extracted in Hz, [1] is their respective magnitudes in dB. The latency between the input and the output is windowSize samples.
+:output: An array of two control streams: [0] is the interpolated frequency of the peaks extracted in Hz or MIDI, [1] is their respective magnitudes in amp or dB. The latency between the input and the output is windowSize samples.
 
 
 :control in:
@@ -25,7 +25,15 @@
 
 :control sortBy:
 
-   How the reported peaks are to be ordered. By default (0), it is by frequencies (lowest first), and the alternative (1) is by magnitude (loudest first).
+  How the reported peaks are to be ordered. By default (0), it is by frequencies (lowest first), and the alternative (1) is by magnitude (loudest first).
+
+:control freqUnit:
+
+  The units and scale used to report the frequency of the peaks. By default (0), it is in Hz (linear), and the alternative (1) is in MIDI (logarithmic).
+
+:control magUnit:
+
+  The units and scale used to report the magnitude of the peaks. By default (0), it is in amp (linear), and the alternative (1) is in dB (logarithmic).
 
 :control windowSize:
 
