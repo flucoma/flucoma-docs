@@ -2,10 +2,10 @@
 CODE::
 
 // a didactic example: a cluster of sinusoids, sorted by magnitudes
-{var source = SinOsc.ar([440,789],mul: [0.05,0.1]).sum; FluidSineFeature.kr(source,numPeaks: 3, sortBy: 1).poll; source.dup}.play
+{var source = SinOsc.ar([440,789],mul: [0.05,0.1]).sum; FluidSineFeature.kr(source,numPeaks: 3, order: 1).poll; source.dup}.play
 
 // or in MIDI and dB
-{var source = SinOsc.ar([69,79].midicps,mul: [-40,-35].dbamp).sum; FluidSineFeature.kr(source,numPeaks: 3, sortBy: 1, freqUnit: 1, magUnit: 1).poll; source.dup}.play
+{var source = SinOsc.ar([69,79].midicps,mul: [-40,-35].dbamp).sum; FluidSineFeature.kr(source,numPeaks: 3, order: 1, freqUnit: 1, magUnit: 1).poll; source.dup}.play
 
 // a more exciting example: resynthesizing audio input
 (

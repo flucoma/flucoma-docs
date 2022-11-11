@@ -23,7 +23,7 @@
 
    The threshold in dB above which a magnitude peak is considered to be a sinusoidal component.
 
-:control sortBy:
+:control order:
 
   How the reported peaks are to be ordered. By default (0), it is by frequencies (lowest first), and the alternative (1) is by magnitude (loudest first).
 
