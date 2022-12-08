@@ -3,7 +3,7 @@
 :sc-categories: Libraries>FluidDecomposition, UGens>Buffer
 :sc-related: Guides/FluidCorpusManipulation, Classes/SinOsc
 :see-also: SineFeature, BufSines
-:description: Interpolated Sinusoidal Peak Tracking on the Spectrum of audio stored in a buffer.
+:description: Interpolated Sinusoidal Peak Tracking on the Spectrum of Audio Stored in a Buffer.
 :discussion: 
   This process is tracking peaks in the spectrum of audio stored in a buffer, then estimating an interpolated frequency and amplitude of that peak in relation to its spectral context. It is the first part of the process used by :fluid-obj:`BufSines`. 
   
