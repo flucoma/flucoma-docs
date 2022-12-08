@@ -12,6 +12,7 @@ w.view.layout = VLayout(
 	FluidWaveform(~oboe,featuresBuffer: ~mags,standalone: false));
 w.front;
 )
+::
 
 strong::A few didactic examples::
 code::
