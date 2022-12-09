@@ -11,12 +11,13 @@ FluidBufSpectralShape.processBlocking(s,~src,features:~features,select:~select);
 ~ds = FluidDataSet(s).fromBuffer(~features);
 "First the Raw Data, then the Standardized Data:".postln;
 ~ds.print;
-~stand = FluidStandardize(s).fitTransform(~ds,~ds);
+~norm = FluidNormalize(s).fitTransform(~ds,~ds); // normalize (in place) first to match the ranges
 ~ds.print;
-~norm = FluidNormalize(s).fitTransform(~ds,~ds); // normalize just for plotting
+~stand = FluidStandardize(s).fitTransform(~ds,~ds); // standardize then in place again
+~ds.print;
 ~ds.dump({
 	arg dict;
-	defer{FluidPlotter(dict:dict)}
+	defer{FluidPlotter(dict:dict,xmin: -1, xmax: 1, ymin: -1, ymax: 1)} //plotter range is +/- one standard deviation
 });
 )
 
