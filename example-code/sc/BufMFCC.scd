@@ -29,6 +29,8 @@ FluidBufMFCC.processBlocking(s,~buf,features:~mfccs,action:{"done".postln;})
 (
 ~ds = FluidDataSet(s).fromBuffer(~mfccs);
 ~ds.print;
+~ds2d = FluidDataSet(s);
+~ds2dN = FluidDataSet(s);
 )
 
 // dimensionally reduce the 13 MFCCs into 2D space
@@ -37,9 +39,9 @@ fork{
 	~umap = FluidUMAP(s);
 	~norm = FluidNormalize(s);
 	s.sync;
-	~umap.fitTransform(~ds,~ds);
-	~norm.fitTransform(~ds,~ds);
-	~dict = ~ds.dump({
+	~umap.fitTransform(~ds,~ds2d);
+	~norm.fitTransform(~ds2d,~ds2dN);
+	~dict = ~ds2dN.dump({
 		arg dict;
 		defer{
 			FluidPlotter(bounds:Rect(0,0,800,800),dict:dict);

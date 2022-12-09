@@ -66,7 +66,7 @@
 
 :control outliersCutoff:
 
-   A ratio of the inter quantile range (IQR) that defines a range from the median, outside of which data will be considered an outlier and not used to compute the statistical summary. For each frame, if a single value in any channel of that frame is considered an outlier (when compared to the rest of the values in it's channel), the whole frame (on all channels) will not be used for statistical calculations. The default of -1 bypasses this function, keeping all frames in the statistical measurements.
+   A ratio of the inter quantile range (IQR) that defines a range from the median, outside of which data will be considered an outlier and not used to compute the statistical summary. For each frame, if a single value in any channel of that frame is considered an outlier (when compared to the rest of the values in its channel), the whole frame (on all channels) will not be used for statistical calculations. The default of -1 bypasses this function, keeping all frames in the statistical measurements.
 
 :control weights:
 

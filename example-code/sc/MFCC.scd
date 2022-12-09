@@ -108,6 +108,9 @@ CODE::
 
 (
 ~ds = FluidDataSet(s);
+~ds2d = FluidDataSet(s);
+~ds2dN = FluidDataSet(s);
+
 ~bass = Buffer.read(s,FluidFilesPath("Tremblay-AaS-AcBassGuit-Melo-M.wav"),numFrames:44100 * 9); // only load the first 9 seconds so they're about the same length
 ~box = Buffer.read(s,FluidFilesPath("Green-Box639.wav"));
 ~umap = FluidUMAP(s); // algorithm for dimensionality reduction
@@ -138,9 +141,9 @@ CODE::
 ~ds.print;
 
 (
-~umap.fitTransform(~ds,~ds); // dimensionally reduce the 13 MFCCs into 2D space
-~norm.fitTransform(~ds,~ds);
-~ds.dump({
+~umap.fitTransform(~ds,~ds2d); // dimensionally reduce the 13 MFCCs into 2D space
+~norm.fitTransform(~ds2d,~ds2dN);
+~ds2dN.dump({
 	arg dict;
 	var labels = Dictionary.newFrom(["data",Dictionary.new]);
 	dict["data"].keys.do{

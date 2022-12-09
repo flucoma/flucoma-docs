@@ -11,6 +11,9 @@ s.boot;
 FluidBufMFCC.processBlocking(s,~src,startCoeff:1,features:~mfcc_feature);
 ~ds = FluidDataSet(s).fromBuffer(~mfcc_feature);
 ~ds.print;
+~ds2stan = FluidDataSet(s);
+~ds2st2d = FluidDataSet(s);
+~ds2st_2d_n = FluidDataSet(s);
 )
 
 // first standardize our DataSet, so that the MFCC dimensions are in similar ranges
@@ -18,10 +21,10 @@ FluidBufMFCC.processBlocking(s,~src,startCoeff:1,features:~mfcc_feature);
 // reducing the number of dimensions to the default of 2
 // lastly normalize it so it can be plotted in a normalized space
 (
-~stand = FluidStandardize(s).fitTransform(~ds,~ds);
-~pca = FluidPCA(s).fitTransform(~ds,~ds);
-~norm = FluidNormalize(s).fitTransform(~ds,~ds);
-~ds.dump({
+~stand = FluidStandardize(s).fitTransform(~ds,~ds2stan);
+~pca = FluidPCA(s).fitTransform(~ds2stan,~ds2st2d);
+~norm = FluidNormalize(s).fitTransform(~ds2st2d,~ds2st_2d_n);
+~ds2st_2d_n.dump({
 	arg dict;
 	defer{FluidPlotter(dict:dict)};
 });
@@ -72,7 +75,7 @@ FluidBufSpectralShape.processBlocking(s,~src,features:~analysis);
 ~ds = FluidDataSet(s).fromBuffer(~analysis);
 ~ds.print;
 
-~stand = FluidStandardize(s).fitTransform(~ds,~ds);
+~stand = FluidStandardize(s).fitTransform(~ds,~ds); // note: standardize in place
 
 ~ds_pca = FluidDataSet(s);
 ~pca = FluidPCA(s).fitTransform(~ds,~ds_pca);

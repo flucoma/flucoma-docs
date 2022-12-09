@@ -11,6 +11,7 @@ under the European Union’s Horizon 2020 research and innovation programme
 #pragma once
 #include <clients/common/FluidBaseClient.hpp>
 #include <clients/common/SharedClientUtils.hpp>
+#include <data/FluidMemory.hpp> 
 #include <nlohmann/json.hpp>
 #include <array>
 #include <fstream>
@@ -274,7 +275,8 @@ std::string getArgType(SharedClientRef<const labelset::LabelSetClient>&)
   return "Input LabelSet";
 }
 
-std::string getArgType(std::string&) { return "string"; }
+std::string getArgType(std::string const&) { return "string"; }
+std::string getArgType(rt::string const&) { return "string"; }
 
 template <typename T, size_t N>
 std::string getArgType(FluidTensor<T, N>)

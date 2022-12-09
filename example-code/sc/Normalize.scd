@@ -20,7 +20,7 @@ fork({
 ~ds.print;
 )
 
-// normalize it
+// normalize it in place, overwriting the dataset
 (
 ~normalizer = FluidNormalize(s).fitTransform(~ds,~ds);
 ~ds.print;

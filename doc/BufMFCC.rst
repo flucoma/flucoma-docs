@@ -12,8 +12,6 @@
 
    Other than the 0th coefficient, MFCCs are unchanged by differences in the overall energy of the spectrum (which relates to how we perceive loudness). This means that timbres with similar spectral contours, but different volumes, will still have similar MFCC values, other than MFCC 0. To remove any indication of loudness but keep the information about timbre, we can ignore MFCC 0 by setting the parameter ``startCoeff`` to 1.
 
-   For more information visit https://learn.flucoma.org/reference/mfcc/.
-
    For an interactive explanation of this relationship, visit https://learn.flucoma.org/reference/mfcc/explain.
    
 :control source:
