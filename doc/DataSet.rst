@@ -95,7 +95,7 @@
 
    :arg k: The number of nearest neighbours to return. The identifiers will be sorted, beginning with the nearest.
 
-   Returns the identifiers of the ``k`` points nearest to the one passed. Note that this is a brute force distance measure, very inefficient on large DataSet. For these, :fluid-obj:`KDTree` will be much more efficient.
+   Returns the identifiers of the ``k`` points nearest to the one passed. Note that this is a brute force distance measure, and comparatively inefficient for repeated queries against large datasets. For such cases, :fluid-obj:`KDTree` will be more efficient.
 
 :message print:
 

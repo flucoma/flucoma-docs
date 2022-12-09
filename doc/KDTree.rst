@@ -7,6 +7,8 @@
 :discussion: 
    :fluid-obj:`KDTree` facilitates efficient nearest neighbour searches of multi-dimensional data stored in a :fluid-obj:`DataSet`. 
 
+   k-d trees are most useful for *repeated* querying of a dataset, because there is a cost associated with building them. If you just need to do a single lookup then using the kNearest message of :fluid-obj:`DataSet` will probably be quicker
+   
    Whilst k-d trees can offer very good performance relative to naïve search algorithms, they suffer from something called “the curse of dimensionality” (like many algorithms for multi-dimensional data). In practice, this means that as the number of dimensions of your data goes up, the relative performance gains of a k-d tree go down.
 
 :control numNeighbours:

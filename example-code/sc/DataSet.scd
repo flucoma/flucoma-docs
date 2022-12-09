@@ -251,9 +251,9 @@ fork{
 )
 
 ::
-strong::Brute Force Search on a DataSet::
+strong::Nearest Neighbour Search in a DataSet::
 
-Note: This feature is computationally expensive on a large DataSet, as it needs to compute the distance of the queried point to each point in the DataSet. It is recommended to use it after triming down the data with DataSetQuery. For large DataSets, it is recommended to use FluidKDTree
+Note: A FluidDataSet can be queried with an input point to return the nearest match to that point. Note: This feature is can be computationally expensive on a large dataset, as it needs to compute the distance of the queried point to each point in the dataset. If you need to perform multiple nearest neighbour queries on a fluid.dataset~ it is recommended to use FluidKDTree. This facility is most useful with smaller, ephemeral datasets such as those returned by FluidDataSetQuery.
 
 code::
 
