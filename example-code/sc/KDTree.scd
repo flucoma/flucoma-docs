@@ -21,7 +21,7 @@ ds.dump({
 				defer{
 					view.highlight_(id);
 				};
-				
+
 				{
 					var start = Index.kr(slicePoints,index);
 					var end = Index.kr(slicePoints,index+1);
@@ -40,15 +40,8 @@ ds.dump({
 strong::radius and num neighbours::
 code::
 
-// set some initial values
-(
-~numNeighbours = 3;
-~tree.radius_(0.04);
-)
-
-
-// then make the plot, once it's up and you're clicking around,
-// change the numbers and re-run the code above to see the differences
+// Make a plot; once it's up and you're clicking around, change the numbers of
+// queried neighbours and the permitted radius to see the different behaviours
 (
 var ds = FluidDataSet(s).load(
 	Dictionary.newFrom([
@@ -61,18 +54,40 @@ var ds = FluidDataSet(s).load(
 		)
 	])
 );
-~tree = FluidKDTree(s).fit(ds);
+
+~tree = FluidKDTree(s);
+~tree.numNeighbours = 3;
+~tree.radius_(0.04);
+~tree.fit(ds);
+
 ds.dump({
 	arg dict;
+	var nn, nnd;
 	var xybuf = Buffer.alloc(s,2);
 	defer{
-		FluidPlotter(dict:dict,mouseMoveAction:{
+		w = Window(\KDTree,Rect(0,0,705,500)).front;
+		StaticText(w,Rect(500,5,200,20)).string_("numNeighbours:");
+		TextField(w,Rect(500,25,200,20)).string_(~tree.numNeighbours.asString).action_{|x|~tree.numNeighbours = x.value.asInteger};
+		StaticText(w,Rect(500,45,200,20)).string_("radius:");
+		TextField(w,Rect(500,65,200,20)).string_(~tree.radius.asString).action_{|x|~tree.radius = x.value.asFloat};
+		StaticText(w,Rect(500,85,200,20)).string_("neighbours:");
+		nn = TextView(w, Rect(500,105,200,40)).string_("").editable_(false);
+		StaticText(w,Rect(500,145,200,20)).string_("distances:");
+		nnd = TextView(w, Rect(500,165,200,200)).string_("").editable_(false);
+		FluidPlotter(w, Rect(5,5,490,490), dict:dict,mouseMoveAction:{
 			arg view, x, y;
 			xybuf.setn(0,[x,y]);
-			~tree.kNearest(xybuf,~numNeighbours,{
+			~tree.kNearest(xybuf,action:{
 				arg id;
 				defer{
 					view.highlight_(id);
+					nn.string = id.asString;
+				};
+			});
+			~tree.kNearestDist(xybuf,action:{
+				arg id;
+				defer{
+					nnd.string = id.asString;
 				};
 			});
 		});
