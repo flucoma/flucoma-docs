@@ -251,3 +251,28 @@ fork{
 )
 
 ::
+strong::Nearest Neighbour Search in a DataSet::
+
+Note: A FluidDataSet can be queried with an input point to return the nearest match to that point. Note: This feature is can be computationally expensive on a large dataset, as it needs to compute the distance of the queried point to each point in the dataset. If you need to perform multiple nearest neighbour queries on a fluid.dataset~ it is recommended to use FluidKDTree. This facility is most useful with smaller, ephemeral datasets such as those returned by FluidDataSetQuery.
+
+code::
+
+// create a small DataSet...
+f = FluidDataSet(s)
+// and fill it with a grid of data
+f.load(Dictionary.newFrom(["cols", 2, "data", Dictionary.newFrom(9.collect{|i|["item-%".format(i), [i.div(3), i.mod(3)] / 2]}.flatten(1))]))
+
+// the data looks like this
+// (item-0 -> [ 0.0, 0.0 ]) (item-1 -> [ 0.0, 0.5 ]) (item-2 -> [ 0.0, 1.0 ])
+// (item-3 -> [ 0.5, 0.0 ]) (item-4 -> [ 0.5, 0.5 ]) (item-5 -> [ 0.5, 1.0 ])
+// (item-6 -> [ 1.0, 0.0 ]) (item-7 -> [ 1.0, 0.5 ]) (item-8 -> [ 1.0, 1.0 ])
+
+// create a query buffer...
+b = Buffer.alloc(s,2)
+
+// and fill it with a point
+b.sendCollection([1,0]);
+
+// and request 9 nearest neighbours
+f.kNearest(b,9,{|x|x.postln;})
+::
