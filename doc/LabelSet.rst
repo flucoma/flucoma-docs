@@ -65,6 +65,14 @@
 
    Export the dataset identifier to a FluidLabelSet.
 
+:message merge:
+
+   :arg sourceLabelSet: The source LabelSet to be merged.
+
+   :arg overwrite: A flag to allow overwrite labels with the same identifier.
+
+   Merge sourceLabelSet in the current LabelSet. It will replace the label with the same identifier if overwrite is set to 1.
+
 :message write:
 
    Save the contents of the object to a JSON file on disk.

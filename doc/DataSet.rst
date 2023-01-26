@@ -87,7 +87,7 @@
 
    :arg overwrite: A flag to allow overwrite points with the same identifier.
 
-   Merge sourceDataSet in the current DataSet. It will update the value of points with the same identifier if overwrite is set to 1. ​To add columns instead, see the 'transformJoin' method of FluidDataSetQuery.
+   Merge sourceDataSet in the current DataSet. It will replace the value of points with the same identifier if overwrite is set to 1. ​To add columns instead, see the 'transformJoin' method of FluidDataSetQuery.
 
 :message kNearest:
 
