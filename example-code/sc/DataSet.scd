@@ -180,49 +180,25 @@ FluidBufMFCC.processBlocking(s,~src,features:~mfccs);
 strong::Merge two data sets that have the same number of dimensions::
 code::
 
-(
-~srcA = Buffer.read(s,FluidFilesPath("Tremblay-ASWINE-ScratchySynth-M.wav"));
-~srcB = Buffer.read(s,FluidFilesPath("Harker-DS-TenOboeMultiphonics-M.wav"));
-)
+// Make two simple dataset
+a = Dictionary.newFrom([\cols, 2, \data, Dictionary.newFrom([\one, [1, 1.1] ,\two, [2, 2.2]])]);
+b = FluidDataSet(s)
+b.load(a)
+b.print
 
-(
-fork{
-	var mfccs = Buffer(s);
-	var flat = Buffer(s);
+a = Dictionary.newFrom([\cols, 2, \data, Dictionary.newFrom([\three, [3, 3.3] , \two, [0.2, -2]])]);
+c = FluidDataSet(s)
+c.load(a)
+c.print
 
-	FluidBufMFCC.processBlocking(s,~srcA,features:mfccs);
-	s.sync;
+b.merge(c)
+b.print //common items not replaced
 
-	~dsA = FluidDataSet(s);
-	mfccs.numFrames.do{
-		arg i;
-		FluidBufFlatten.processBlocking(s,mfccs,i,1,destination:flat);
-		~dsA.addPoint("sourceA-%".format(i),flat);
-	};
+b.merge(c,1)
+b.print //now they are
 
+::
 
-	FluidBufMFCC.processBlocking(s,~srcB,features:mfccs);
-	s.sync;
-
-	~dsB = FluidDataSet(s);
-	mfccs.numFrames.do{
-		arg i;
-		FluidBufFlatten.processBlocking(s,mfccs,i,1,destination:flat);
-		~dsB.addPoint("sourceB-%".format(i),flat);
-	};
-
-	~dsA.print;
-	~dsB.print;
-}
-)
-
-// merge dataset B into dataset A
-// because there are no overlapping identifiers,
-// nothing will be overwritten
-(
-~dsA.merge(~dsB);
-~dsA.print;
-)
 ::
 strong::Using:: code::.fromBuffer::
 code::
