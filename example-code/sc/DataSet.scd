@@ -177,6 +177,7 @@ FluidBufMFCC.processBlocking(s,~src,features:~mfccs);
 ~ds.print;
 )
 ::
+
 strong::Merge two data sets that have the same number of dimensions::
 code::
 
@@ -199,7 +200,6 @@ b.print //now they are
 
 ::
 
-::
 strong::Using:: code::.fromBuffer::
 code::
 
