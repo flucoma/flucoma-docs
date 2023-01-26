@@ -139,7 +139,7 @@ FluidLabelSet(s).load(
 
 ::
 
-link::Merging::
+strong::Merging::
 code::
 
 a = Dictionary.newFrom([\cols, 1, \data, Dictionary.newFrom([\one, \un,\two,\deux])]);
