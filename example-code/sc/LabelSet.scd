@@ -138,3 +138,24 @@ FluidLabelSet(s).load(
 )
 
 ::
+
+link::Merging::
+code::
+
+a = Dictionary.newFrom([\cols, 1, \data, Dictionary.newFrom([\one, \un,\two,\deux])]);
+b = FluidLabelSet(s)
+b.load(a)
+b.print
+
+a = Dictionary.newFrom([\cols, 1, \data, Dictionary.newFrom([\three, \trois, \two,\zwei])]);
+c = FluidLabelSet(s)
+c.load(a)
+c.print
+
+b.merge(c)
+b.print //common items not replaced
+
+b.merge(c,1)
+b.print //now they are
+
+::
