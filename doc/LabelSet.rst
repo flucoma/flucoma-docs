@@ -63,7 +63,7 @@
 
    :arg action: A function to run when the export is done.
 
-   Export the dataset identifier to a FluidLabelSet.
+   Export the LabelSet identifier to a FluidLabelSet.
 
 :message merge:
 
