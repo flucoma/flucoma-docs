@@ -101,7 +101,7 @@ subsection:: Queries in a Synth
 Input and output is done via buffers, which will need to be preallocated to the correct sizes:
 LIST::
 ##Your input buffer should be sized to the input data dimension (2, in this example)
-##Your output buffer should be the number of neighbours * output dimensionality
+##Your output buffer should be the maximum number of neighbours you are interested in * output dimensionality
 ::
 
 We can't simply return labels (i.e. strings) from a UGen, so the query returns the actual data points from a DataSet instead. By default, this is the FluidDataSet against which the tree was fitted. However, by passing a different dataset to code::kr::'s code::lookupDataSet:: argument instead, you can return different points, so long as the labels in the two datasets match. In this way, the FluidKDTree can be used to perform nearest neighbour mappings in a synth.
@@ -173,7 +173,7 @@ indices.loadToFloatArray(action:{
 	FluidKrToBuf.kr(mfccs,mfccbuf);
 
 	// kdtree finding the nearest neighbour in 13 dimensions
-	~tree.kr(trig,mfccbuf,playbackinfo,1,~ds_playback);
+	~tree.kr(trig,mfccbuf,playbackinfo,1,lookupDataSet: ~ds_playback);
 	# start, num = FluidBufToKr.kr(playbackinfo);
 
 	start.poll(label:"start frame");
@@ -184,4 +184,27 @@ indices.loadToFloatArray(action:{
 	[src,sig_looked_up * -7.dbamp];
 }.play;
 )
+
+// note that the UGEN kr out outputs the number of valid items found. It is a useful
+// information when querying with radius size and large k (or k=0)
+
+(
+{
+	var src = PlayBuf.ar(1,~src,BufRateScale.ir(~src),loop:1);
+	var mfccs = FluidMFCC.kr(src,startCoeff:1);
+	var mfccbuf = LocalBuf(mfccs.numChannels);
+	var playbackinfo = LocalBuf(4); //up to 2 points of 2 dimensions
+	var trig = Impulse.kr(5);
+	var num;
+
+	FluidKrToBuf.kr(mfccs,mfccbuf);
+
+	// kdtree finding all nearest neighbour in 13 dimensions within a radius of 20
+	num = ~tree.kr(trig, inputBuffer: mfccbuf, outputBuffer: playbackinfo, numNeighbours: 0, radius: 20, lookupDataSet: ~ds_playback).poll(trig,"number of valid k: ");
+
+	FluidBufToKr.kr(playbackinfo).poll(trig * num, "content of buffer: ");
+	src.dup
+}.play;
+)
+
 ::
