@@ -10,8 +10,6 @@
 
    It uses an internal ``KDTree`` to find an input point's ``numNeighbours`` nearest neighbours in an input dataset. The output returned is a weighted average of those neighbours' values from the output DataSet.
    
-   The output DataSet must have only 1 dimension.
-
 :control numNeighbours:
 
    Number of neighbours to consider when interpolating the regressed value. The default is 3.
@@ -24,11 +22,11 @@
 
    :arg sourceDataSet: input :fluid-obj:`DataSet`
 
-   :arg targetDataSet: output :fluid-obj:`DataSet` containing only one dimension.
+   :arg targetDataSet: output :fluid-obj:`DataSet`
 
    :arg action: Run when done
 
-   Map an input :fluid-obj:`DataSet` to a one-dimensional output DataSet.
+   Map an input :fluid-obj:`DataSet` to an output DataSet.
 
 :message predict:
 
@@ -42,8 +40,10 @@
 
 :message predictPoint:
 
-   :arg buffer: data point
+   :arg sourceBuffer: Input point
 
-   :arg action: Run when done
+   :arg targetBuffer: Output point
 
-   Apply learned mapping to a data point in a |buffer| the predicted value is returned.
+   :arg action: A function to run when complete
+
+   Apply the learned mapping to a single data point in a |buffer|

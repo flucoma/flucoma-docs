@@ -32,9 +32,7 @@ code::
 )
 
 // fit to make the KNNRegressor learn the relationship between inputs and outputs
-(
 ~regressor = FluidKNNRegressor(s).fit(~ds_ramp,~ds_sine);
-)
 
 // predicting with input dataset should give us what we expect: something that
 // looks like a sine wave.
@@ -107,8 +105,9 @@ code::
 strong::single point transform on arbitrary value::
 code::
 ~inbuf = Buffer.loadCollection(s,[0.3]);
+~outbuf = Buffer(s);
 
-~regressor.predictPoint(~inbuf,{|x|x.postln;});
+~regressor.predictPoint(~inbuf, ~outbuf, {~outbuf.getn(0,1,{|x|x.postln;})});
 ::
 
 subsection:: Server Side Queries
