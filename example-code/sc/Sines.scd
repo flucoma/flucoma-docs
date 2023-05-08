@@ -44,7 +44,7 @@ code::
 	var sig = SelectX.ar(which.lag(0.1),[stable,oscillating]);
 	var sines, residual;
 	# sines, residual = FluidSines.ar(sig,76,-144,-144,-144,1,0,200,1000,0);
-	[sines, residual * ((which*40) + 1).lag(0.1)]
+	[sines, residual * (which*20).dbamp.lag]
 }.play
 )
 
