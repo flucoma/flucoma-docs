@@ -15,7 +15,7 @@ x = {
 	arg nbPeaks = 10, t_hold = 1;
 	var source = PlayBuf.ar(1, buf, loop: 1);
 	var analysis = Latch.kr(FluidSineFeature.kr(source,numPeaks: nbPeaks, maxNumPeaks: 50),t_hold);
-	var resynth = SinOsc.ar(analysis[Array.iota(50)], mul: analysis[Array.iota(50) + 50]).sum;
+	var resynth = SinOsc.ar(analysis[0], mul: analysis[1]).sum;
 	[source, resynth];
 }.play
 )
