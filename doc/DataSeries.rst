@@ -45,7 +45,7 @@
 
    :arg identifier: The identifier for the series to get.
 
-   :arg buffer: A |buffer| containing the data for the series (each channel is a distinct time frame, will be resized).
+   :arg buffer: A |buffer| to write the series to (each channel is a distinct time frame, will be resized).
 
    Get a series. If the identifier doesn't exist an error will be reported.
 
@@ -96,7 +96,7 @@
 
    :arg time: which time frame to remove.
  
-   Delete a frame from a series, deletes the series if it is the last frame. If the identifier doesn't exist or if that series doesnt have a frame for that time point an error will be reported.
+   Delete a frame from a series, deletes the series if it is the only frame. If the identifier doesn't exist or if that series doesnt have a frame for that time point an error will be reported.
 
 
 :message deleteSeries:
@@ -112,7 +112,7 @@
 
    :arg time: which time frame to extract.
 
-   Get a dataset with the `time`th frame of every series, for examples create a :fluid-obj:`DataSet` with every first frame of every point. If an identifier doesn't have enough points it is merely not added to the output dataset.
+   Get a dataset with the `time`th frame of every series, i.e. can create a :fluid-obj:`DataSet` with every Nth frame of every series. If an identifier doesn't have enough frames it is merely not added to the output dataset.
 
 
 :message clear:
@@ -124,12 +124,12 @@
 
    :arg labelSet: The FluidLabelSet to export to. Its content will be replaced.
 
-   Export the dataset identifiers to a :fluid-obj:`LabelSet`.
+   Export the dataseries identifiers to a :fluid-obj:`LabelSet`.
 
 
 :message merge:
 
-   :arg sourceDataSet: The source DataSet to be merged.
+   :arg sourceDataSeries: The source DataSeries to be merged.
 
    :arg overwrite: A flag to allow overwrite points with the same identifier.
 
