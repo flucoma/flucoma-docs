@@ -57,7 +57,7 @@
     Return the cost, i.e. distance, between the series ``id1`` and ``id2`` in the ``dataSeries``
 
 
-:message bufcost:
+:message bufCost:
 
    :arg buf1: |Buffer| with data for first series
 
