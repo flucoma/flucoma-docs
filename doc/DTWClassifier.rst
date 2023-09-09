@@ -48,7 +48,7 @@
 
    :arg dataSeries: Source :fluid-obj:`DataSeries`
 
-   :arg labelSet: A :fluid-obj:`LabelSet` of labels for the source :fluid-obj:`DataSet`
+   :arg labelSet: A :fluid-obj:`LabelSet` of labels for the source :fluid-obj:`DataSeries`
 
    Fit the model to a source :fluid-obj:`DataSeries` and a target :fluid-obj:`LabelSet`. The labels in the :fluid-obj:`LabelSet` correspond to the data points in the :fluid-obj:`DataSeries` by means of a shared identifier.
 

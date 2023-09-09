@@ -49,26 +49,28 @@
 
    :arg dataSeries: Source :fluid-obj:`DataSeries`
 
-   :arg labelSet: A :fluid-obj:`LabelSet` of labels for the source :fluid-obj:`DataSet`
+   :arg dataSet: A :fluid-obj:`DataSet` of outputs for the source :fluid-obj:`DataSeries`
 
-   Fit the model to a source :fluid-obj:`DataSeries` and a target :fluid-obj:`LabelSet`. The labels in the :fluid-obj:`LabelSet` correspond to the data points in the :fluid-obj:`DataSeries` by means of a shared identifier.
+   Fit the model to a source :fluid-obj:`DataSeries` and a target :fluid-obj:`DataSet`. The outputs in the :fluid-obj:`DataSet` correspond to the data points in the :fluid-obj:`DataSeries` by means of a shared identifier.
 
 :message predict:
 
-   :arg dataSeries: A :fluid-obj:`DataSeries` of data series to predict labels for
+   :arg dataSeries: A :fluid-obj:`DataSeries` to predict regressions for
 
-   :arg labelSet: A :fluid-obj:`LabelSet` to write the predicted labels into
+   :arg dataSet: A :fluid-obj:`DataSet` to write the predicted outputs
 
    Given the fitted model, predict the output for a :fluid-obj:`DataSeries` and write these to a :fluid-obj:`DataSet`
 
 :message predictPoint:
 
-   :arg buffer: A data series stored in a |buffer|
+   :arg inBuffer: The input series stored in a |buffer|
 
-   Given a fitted model, predict the output for a data point in |buffer| and return to the caller
+   :arg outBuffer: A buffer to write the prediction to
+
+   Given a fitted model, predict the output for a single series in and write it to another buffer
 
 :message clear:
 
-   Clears the :fluid-obj:`DataSeries` and :fluid-obj:`LabelSet`
+   Clears the :fluid-obj:`DataSeries` and :fluid-obj:`DataSet`
 
 
