@@ -3,11 +3,10 @@
 :sc-categories: Classification, DTW
 :sc-related: 
 :see-also: DTW, DataSeries, LabelSet
-:description: A nearest neighbour classifier using a :fluid-obj:`DTW`.
-
+:description: A nearest neighbour classifier using a :fluid-obj:`DTW`
 :discussion:
   
-   To keep with the interface of the :fluid-obj:`DTWClassifier`, the DTWClassifier must first be ``fit`` with a :fluid-obj:`DataSeries` of data points and a target :fluid-obj:`LabelSet` with a label for each point in the DataSeries (by means of a shared identifier).
+   To keep with the interface of the :fluid-obj:`KNNClassifier`, the DTWClassifier must first be ``fit`` with a :fluid-obj:`DataSeries` of data points and a target :fluid-obj:`LabelSet` with a label for each point in the DataSeries (by means of a shared identifier).
   
    To classify a point, ``numNeighbours`` neighbours are determined for the incoming point, and each of those neighbours' label is given a score based on the distance to the target, neighbours with the same label only increase the likelyhood of that label being considered the nearest. The label with the highest score is considered to be the closest and returned.
 

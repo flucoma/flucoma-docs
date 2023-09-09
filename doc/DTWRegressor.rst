@@ -3,11 +3,10 @@
 :sc-categories: Regression, DTW
 :sc-related: 
 :see-also: DTW, DataSeries, DataSet
-:description: A nearest neighbour classifier using a :fluid-obj:`DTW`.
-
+:description: A nearest neighbour interpolator/regressor using a :fluid-obj:`DTW`
 :discussion:
   
-   To keep with the interface of the :fluid-obj:`DTWRegressor`, the DTWRegressor must first be ``fit`` with a :fluid-obj:`DataSeries` of data points and a target :fluid-obj:`DataSet` with a mapping for each point in the DataSeries (by means of a shared identifier).
+   To keep with the interface of the :fluid-obj:`KNNRegressor`, the DTWRegressor must first be ``fit`` with a :fluid-obj:`DataSeries` of data points and a target :fluid-obj:`DataSet` with a mapping for each point in the DataSeries (by means of a shared identifier).
   
    To calculate a point, ``numNeighbours`` neighbours are determined for the incoming point, and a distance-weighted sum of those neighbours' corresponding outputs is returned.
 
@@ -42,11 +41,9 @@
 
    The maximum radius a frame can warp away from its initial location when using a ``sakoe-chiba`` constraint. A higher value results in being able to warp more
 
-
 :control gradient:
  
    Parameter for the ``ikatura`` constraint. A higher value results in being able to warp more.
-
 
 :message fit:
 
@@ -56,7 +53,6 @@
 
    Fit the model to a source :fluid-obj:`DataSeries` and a target :fluid-obj:`LabelSet`. The labels in the :fluid-obj:`LabelSet` correspond to the data points in the :fluid-obj:`DataSeries` by means of a shared identifier.
 
-
 :message predict:
 
    :arg dataSeries: A :fluid-obj:`DataSeries` of data series to predict labels for
@@ -65,13 +61,11 @@
 
    Given the fitted model, predict the output for a :fluid-obj:`DataSeries` and write these to a :fluid-obj:`DataSet`
 
-
 :message predictPoint:
 
    :arg buffer: A data series stored in a |buffer|
 
    Given a fitted model, predict the output for a data point in |buffer| and return to the caller
-
 
 :message clear:
 

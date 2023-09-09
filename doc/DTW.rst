@@ -1,9 +1,9 @@
-:digest: Series Classification with K-Nearest Neighbours using Dynamic Time Warping
+:digest: Series Distance Calculation using Dynamic Time Warping
 :species: data
 :sc-categories: Classification, DTW
 :sc-related: 
-:see-also: DTW, DataSeries, LabelSet
-:description: A nearest neighbour classifier using a :fluid-obj:`DTW`.
+:see-also: DataSeries
+:description: Calculate the distance between two series using the dynamic time warping algorithm
 
 :discussion:
   

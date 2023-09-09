@@ -41,6 +41,10 @@ namespace dataset {
 class DataSetClient;
 }
 
+namespace dataseries {
+class DataSeriesClient;
+}
+
 namespace labelset {
 class LabelSetClient;
 }
@@ -420,6 +424,13 @@ public:
   {
     return "dataset";
   }
+
+  static std::string
+  getParamType(const SharedClientRef<dataseries::DataSeriesClient>::ParamType&)
+  {
+    return "dataseries";
+  }
+
   static std::string
   getParamType(const SharedClientRef<labelset::LabelSetClient>::ParamType&)
   {
