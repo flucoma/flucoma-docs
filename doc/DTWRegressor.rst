@@ -29,13 +29,13 @@
    :enum:
      
       :0: 
-      **unconstrained** (any point can warp to any other)
+         **unconstrained** (any point can warp to any other)
    
       :1: 
-      **ikatura** (the start and end can only warp a little, whereas the middle can warp more)
+         **ikatura** (the start and end can only warp a little, whereas the middle can warp more)
    
       :2: 
-      **sakoe-chiba** (each point can only warp within a certain radius)
+         **sakoe-chiba** (each point can only warp within a certain radius)
 
 
 :control radius:
