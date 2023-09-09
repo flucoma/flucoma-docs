@@ -54,7 +54,7 @@
 
    :arg id2: Identifier of the second series in the :fluid-obj:`DataSeries`
 
-    Return the cost, i.e. distance, between the series ``id1`` and ``id2`` in the ``dataSeries``
+   Return the cost, i.e. distance, between the series ``id1`` and ``id2`` in the ``dataSeries``
 
 
 :message bufCost:
@@ -63,4 +63,4 @@
 
    :arg buf2: |Buffer| with data for first series
 
-    Return the cost, i.e. distance, between the buffers ``buf1`` and ``buf2``
+   Return the cost, i.e. distance, between the buffers ``buf1`` and ``buf2``
