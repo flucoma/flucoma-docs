@@ -260,6 +260,11 @@ std::string getArgType(SharedClientRef<dataset::DataSetClient>)
   return "DataSet";
 }
 
+std::string getArgType(SharedClientRef<dataseries::DataSeriesClient>)
+{
+  return "DataSeries";
+}
+
 std::string getArgType(SharedClientRef<labelset::LabelSetClient>)
 {
   return "LabelSet";
@@ -268,6 +273,11 @@ std::string getArgType(SharedClientRef<labelset::LabelSetClient>)
 std::string getArgType(SharedClientRef<const dataset::DataSetClient>&)
 {
   return "Input DataSet";
+}
+
+std::string getArgType(SharedClientRef<const dataseries::DataSeriesClient>)
+{
+  return "Input DataSeries";
 }
 
 std::string getArgType(SharedClientRef<const labelset::LabelSetClient>&)
