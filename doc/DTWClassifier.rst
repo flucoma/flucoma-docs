@@ -35,14 +35,10 @@
          **sakoe-chiba** (each point can only warp within a certain radius)
 
 
-:control radius:
+:control constraintParam:
 
-   The maximum radius a frame can warp away from its initial location when using a ``sakoe-chiba`` constraint. A higher value results in being able to warp more
+   The maximum radius a frame can warp away from its initial location when using a ``sakoe-chiba`` constraint, and parameter for the ``ikatura`` constraint when using that. A higher value results in being able to warp more. See https://rtavenar.github.io/blog/dtw.html#setting-additional-constraints for an explanation of the significance.
 
-
-:control gradient:
- 
-   Parameter for the ``ikatura`` constraint. A higher value results in being able to warp more.
 
 :message fit:
 
