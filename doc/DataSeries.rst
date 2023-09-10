@@ -108,9 +108,9 @@
 
 :message getDataSet:
 
-   :arg dataSet: The Dataset to write the slice to. Will overwrite and resize.
-
    :arg time: which time frame to extract.
+
+   :arg dataSet: The Dataset to write the slice to. Will overwrite and resize.
 
    Get a dataset with the `time`th frame of every series, i.e. can create a :fluid-obj:`DataSet` with every Nth frame of every series. If an identifier doesn't have enough frames it is merely not added to the output dataset.
 
