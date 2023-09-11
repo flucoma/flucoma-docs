@@ -29,7 +29,7 @@
 
 :control batchSize:
 
-   The number of data points to use in between adjustments of the LSTM's internal parameters during training.
+   The number of data series to use in between adjustments of the LSTM's internal parameters during training.
 
 :message fit:
 

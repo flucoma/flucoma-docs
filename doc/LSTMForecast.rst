@@ -1,19 +1,17 @@
-:digest: Series Classification with an LSTM
+:digest: Series Forecasting with an LSTM
 :species: data
-:sc-categories: Machine learning, Classification, LSTM
+:sc-categories: Machine Learning, LSTM, Prediction
 :sc-related: 
-:see-also: LSTMRegressor, LSTMForecast, DataSeries, LabelSet
+:see-also: LSTMClassifier, LSTMRegressor, DataSeries
 :description: 
 
-  Perform classification between a :fluid-obj:`DataSeries` and a :fluid-obj:`LabelSet` using a long-short term memory recurrent neural network (LSTM)
+   Predict/forecast a continuation to an input :fluid-obj:`DataSeries` using a long-short term memory recurrent neural network (LSTM)
 
-:discussion:  
+:discussion:
 
    For a thorough explanation of how this object works and more information on the parameters, visit the page on **Recurrent Neural Networks** (https://learn.flucoma.org/learn/recurrent-networks).
 
-   Also visit the classification tutorial, this is for the :fluid-obj:`MLPRegressor`, but it is good to understand regression conceptually: (https://learn.flucoma.org/learn/classification-neural-network/)
-
-   Conceptually equivalent to the :fluid-obj:`MLPClassifier`, but where that maps a :fluid-obj:`DataSet` to a :fluid-obj:`LabelSet`, recurrent networks can encode time-based patterns and learn those much more efficiently, so map a :fluid-obj:`DataSeries` to a :fluid-obj:`LabelSet`
+   This object is not like anything that has been seen yet - it takes a single :fluid-obj:`DataSeries` and learns to predict continuations to the series with the same 'style'. It is currently rather limited in its ability, but will recieve improvements in predicting ability in the future!
 
 :control hiddenSize:
 
@@ -34,24 +32,28 @@
 :message fit:
 
    :arg sourceDataSeries: Source data
-
-   :arg targetLabelSet: Target labels
    
-   Train the network to map between a source :fluid-obj:`DataSeries` and target :fluid-obj:`LabelSet`
+   Train the network to learn to continue a :fluid-obj:`DataSeries`
 
 :message predict:
 
    :arg sourceDataSeries: Input data
 
-   :arg targetLabelSet: :fluid-obj:`LabelSet` to write the predicted labels into
+   :arg targetDataSeries: Where to output the forecasted data
 
-   Predict labels for a :fluid-obj:`DataSeries` (given a trained network)
+   :arg forecastLength: how many frames to predict into the future, if left blank it will return the same number of frames provided for each series
+
+   Predict continuations for a :fluid-obj:`DataSeries` (given a trained network)
 
 :message predictPoint:
 
-   :arg sourceBuffer: Input point
+   :arg sourceBuffer: Input series
 
-   Predict a label for a single data point in a |buffer|
+   :arg targetBuffer: Where to output the forecasted data
+
+   :arg forecastLength: how many frames to predict into the future, if left blank it will return the same number of frames provided
+
+   Predict a continuation to the data in a |buffer| (given a trained network)
 
 :message clear:
 
