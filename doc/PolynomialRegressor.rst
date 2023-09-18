@@ -1,22 +1,22 @@
 :digest: Polynomial regression on data sets.
 :species: data
-:sc-categories: Statistical regression
+:sc-categories: Machine Learning
 :sc-related: 
-:see-also: DataSet
+:see-also: KNNRegressor, DataSet, MLPClassifier
 :description: 
 
-    Perform regression between <o>fluid.dataset</o>\s using N parallel 1-to-1 polynomial regressors in one object.
+    Perform regression between :fluid-obj:`DataSet`\s using N parallel 1-to-1 polynomial regressors in one object.
 
 :discussion:
 
-    A polynomial regressor is a very simple algorithm that, given a set of input-output pairs - :math:`x` to :math:`y`, for example - will find the line of best fit for that data. Linear regression is a special case when the ``degree`` of the polynomial is ``1``, meaning the line of best fit will be straight.
+    A polynomial regressor is a very simple algorithm that, given a set of input-output pairs - ``x`` to ``y``, for example - will find the line of best fit for that data. Linear regression is a special case when the ``degree`` of the polynomial is ``1``, meaning the line of best fit will be straight.
+
     Essentially, each element of each input is mapped to the corresponding element of the same output, hence it needing to be an N-to-N corpus, which is one limitation of this algorithm.
     Tikhonov regularisation is an improvement of this algorithm, which compensates for noisy data and reduces overfitting in certain situations, a good explanation of how this works can be found on wikipedia (https://en.wikipedia.org/wiki/Ridge_regression#Tikhonov_regularization)
 
 :control degree:
 
-    An integer that specifies the degree \(highest power of x\) that the fit polynomial will have; e.g. a degree of 2 means that the polynomial will have a form :math:`y = \alpha + \beta x + \gamma x^2`.
-    Therefore the higher the degree, the closer the output will get to the original data (until it begins overfitting).
+    An integer that specifies the degree \(highest power of x\) that the fit polynomial will have; e.g. a degree of 2 means that the polynomial will have a form ``y = \alpha + \beta x + \gamma x^2``. Therefore the higher the degree, the closer the output will get to the original data (until it begins overfitting).
 
 :control tikhonov:
 
