@@ -119,6 +119,21 @@
 
    Merge sourceDataSeries in the current DataSeries. It will replace the value of points with the same identifier if overwrite is set to 1.
 
+:message kNearest:
+
+   :arg buffer: A |buffer| containing a data point to match against.
+
+   :arg k: The number of nearest neighbours to return.
+
+   Returns the identifiers of the ``k`` points nearest to the one passed in distance order (closest first). Note that this is a brute force distance measure, and inefficient for repeated queries against large dataseries.
+
+:message kNearestDist:
+
+   :arg buffer: A |buffer| containing a data point to match against. The number of frames in the buffer must match the dimensionality of the DataSet.
+
+   :arg k: The number of nearest neighbours to return. The identifiers will be sorted, beginning with the nearest.
+
+   Returns the distances to the ``k`` points nearest to the one passed in descending order. Note that this is a brute force distance measure, and inefficient for repeated queries against large dataseries.
 
 :message print:
 
