@@ -6,11 +6,11 @@
 :description: A nearest neighbour classifier using a :fluid-obj:`DTW`
 :discussion:
   
-   To keep with the interface of the :fluid-obj:`KNNClassifier`, the DTWClassifier must first be ``fit`` with a :fluid-obj:`DataSeries` of data points and a target :fluid-obj:`LabelSet` with a label for each point in the DataSeries (by means of a shared identifier).
+   To keep with the interface of the :fluid-obj:`KNNClassifier`, the DTWClassifier must first be ``fit`` with a :fluid-obj:`DataSeries` of data points and a target :fluid-obj:`LabelSet` with a label for each entry in the DataSeries (by means of a shared identifier).
   
-   To classify a point, ``numNeighbours`` neighbours are determined for the incoming point, and each of those neighbours' label is given a score based on the distance to the target, neighbours with the same label only increase the likelyhood of that label being considered the nearest. The label with the highest score is considered to be the closest and returned.
+   To classify a series, ``numNeighbours`` neighbours are determined for the incoming series, and each of those neighbours' label is given a score based on the distance to the target, neighbours with the same label only increase the likelyhood of that label being considered the nearest. The label with the highest score is considered to be the closest and returned.
 
-   Keep in mind that this is a brute-force measure, so evaluation will become very slow for large numbers of points or long series.
+   Keep in mind that this is a brute-force measure, so evaluation will become very slow for large numbers of series, or long series.
 
 :control numNeighbours:
 
@@ -58,11 +58,11 @@
    Given the fitted model, predict labels for a :fluid-obj:`DataSeries` and write these to a :fluid-obj:`LabelSet`
 
 
-:message predictPoint:
+:message predictSeries:
 
    :arg buffer: A data series stored in a |buffer|
 
-   Given a fitted model, predict a label for a data point in |buffer| and return to the caller
+   Given a fitted model, predict a label for a data series in |buffer| and return to the caller
 
 
 :message clear:

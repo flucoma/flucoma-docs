@@ -6,11 +6,11 @@
 :description: A nearest neighbour interpolator/regressor using a :fluid-obj:`DTW`
 :discussion:
   
-   To keep with the interface of the :fluid-obj:`KNNRegressor`, the DTWRegressor must first be ``fit`` with a :fluid-obj:`DataSeries` of data points and a target :fluid-obj:`DataSet` with a mapping for each point in the DataSeries (by means of a shared identifier).
+   To keep with the interface of the :fluid-obj:`KNNRegressor`, the DTWRegressor must first be ``fit`` with a :fluid-obj:`DataSeries` of data points and a target :fluid-obj:`DataSet` with a mapping for each series in the DataSeries (by means of a shared identifier).
   
-   To calculate a point, ``numNeighbours`` neighbours are determined for the incoming point, and a distance-weighted sum of those neighbours' corresponding outputs is returned.
+   To calculate a point, ``numNeighbours`` neighbours are determined for the incoming series, and a distance-weighted sum of those neighbours' corresponding outputs is returned.
 
-   Keep in mind that this is a brute-force measure, so evaluation will become very slow for large numbers of points or long series.
+   Keep in mind that this is a brute-force measure, so evaluation will become very slow for large numbers of series or long series.
 
    See https://rtavenar.github.io/blog/dtw.html for an explanation of the DTW algorithm, though it can roughly be summed up as a metric measuring the similarity between two sime series, while accounting for the fact that features arent necessarily the same length.
 
@@ -47,7 +47,7 @@
 
    :arg dataSet: A :fluid-obj:`DataSet` of outputs for the source :fluid-obj:`DataSeries`
 
-   Fit the model to a source :fluid-obj:`DataSeries` and a target :fluid-obj:`DataSet`. The outputs in the :fluid-obj:`DataSet` correspond to the data points in the :fluid-obj:`DataSeries` by means of a shared identifier.
+   Fit the model to a source :fluid-obj:`DataSeries` and a target :fluid-obj:`DataSet`. The outputs in the :fluid-obj:`DataSet` correspond to the data series in the :fluid-obj:`DataSeries` by means of a shared identifier.
 
 :message predict:
 
@@ -57,7 +57,7 @@
 
    Given the fitted model, predict the output for a :fluid-obj:`DataSeries` and write these to a :fluid-obj:`DataSet`
 
-:message predictPoint:
+:message predictSeries:
 
    :arg inBuffer: The input series stored in a |buffer|
 
