@@ -47,13 +47,13 @@
 
    Apply the learned mapping to a :fluid-obj:`DataSet` (given a trained network)
 
-:message predictPoint:
+:message predictSeries:
 
    :arg sourceBuffer: Input series
 
    :arg targetBuffer: Output point
 
-   Predict a label for a single data point in a |buffer|
+   Predict a point for a single data series in a |buffer|
 
 :message clear:
 

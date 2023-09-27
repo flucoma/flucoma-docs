@@ -47,11 +47,11 @@
 
    Predict labels for a :fluid-obj:`DataSeries` (given a trained network)
 
-:message predictPoint:
+:message predictSeries:
 
-   :arg sourceBuffer: Input point
+   :arg sourceBuffer: Input series
 
-   Predict a label for a single data point in a |buffer|
+   Predict a label for a single data series in a |buffer|
 
 :message clear:
 

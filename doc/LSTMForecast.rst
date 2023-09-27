@@ -45,7 +45,7 @@
 
    Predict continuations for a :fluid-obj:`DataSeries` (given a trained network)
 
-:message predictPoint:
+:message predictSeries:
 
    :arg sourceBuffer: Input series
 
