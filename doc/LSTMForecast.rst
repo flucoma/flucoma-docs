@@ -13,9 +13,9 @@
 
    This object is not like anything that has been seen yet - it takes a single :fluid-obj:`DataSeries` and learns to predict continuations to the series with the same 'style'. It is currently rather limited in its ability, but will recieve improvements in predicting ability in the future!
 
-:control hiddenSize:
+:control hiddenLayers:
 
-   Single number that specifies the size of the intermediate recurrent layer network. This roughly equates to how well it can learn complex series, in exchange for model size and training time. Changing this will reset the neural network, clearing any learning that has happened.
+   An array of numbers that specifies the internal structure of the neural network. Each number in the list represents one hidden layer of the neural network, the value of which is the number of neurons in that layer. Changing this will reset the neural network, clearing any learning that has happened.
 
 :control maxIter:
 
@@ -25,9 +25,17 @@
 
    A scalar for indicating how much the neural network should adjust its internal parameters during training. This is the most important parameter to adjust while training a neural network. 
 
+:control momentum:
+
+   A scalar that applies a portion of previous adjustments to a current adjustment being made by the neural network during training.
+
 :control batchSize:
 
    The number of data series to use in between adjustments of the LSTM's internal parameters during training.
+
+:control validation:
+
+   A percentage (represented as a decimal) of the data points to randomly select, set aside, and not use for training (this "validation set" is reselected on each ``fit``). These points will be used after each epoch to check how the neural network is performing. If it is found to be no longer improving, training will stop, even if a ``fit`` has not reached its ``maxIter`` number of epochs.
 
 :message fit:
 
