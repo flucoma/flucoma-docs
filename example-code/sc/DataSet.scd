@@ -251,4 +251,7 @@ b.sendCollection([1,0]);
 
 // and request 9 nearest neighbours
 f.kNearest(b,9,{|x|x.postln;})
+
+// and request the distances
+f.kNearestDist(b,9,{|x|x.postln;})
 ::

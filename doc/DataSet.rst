@@ -107,7 +107,7 @@
 
    :arg action: A function that will run when the query returns, whose argument is an array of distances.
 
-   Get the distances of the ``k`` nearest neighbours to a point.
+   Get the distances of the ``k`` nearest neighbours to a point. Note that this is a brute force distance measure, and comparatively inefficient for repeated queries against large datasets. For such cases, :fluid-obj:`KDTree` will be more efficient.
 
 :message print:
 
