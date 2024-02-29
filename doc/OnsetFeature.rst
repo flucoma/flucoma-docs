@@ -35,7 +35,7 @@
          **MKL** thresholds on (sum of log of magnitude ratio per bin) (or equivalently, sum of difference of the log magnitude per bin) (like Onsets mkl)
 
       :4:
-         **IS** (WILL PROBABLY BE REMOVED) Itakura - Saito divergence (see literature)
+         **IS** Itakura-Saito divergence (see literature)
 
       :5:
          **Cosine** thresholds on (cosine distance between comparison frames)
