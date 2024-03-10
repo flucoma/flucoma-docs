@@ -54,8 +54,8 @@
 
 :message bufCost:
 
-   :arg buf1: |Buffer| with data for first series
+   :arg buffer1: |Buffer| with data for first series
 
-   :arg buf2: |Buffer| with data for first series
+   :arg buffer2: |Buffer| with data for first series
 
-   Return the cost, i.e. distance, between the buffers ``buf1`` and ``buf2``
+   Return the cost, i.e. distance, between the buffers ``buffer1`` and ``buffer2``

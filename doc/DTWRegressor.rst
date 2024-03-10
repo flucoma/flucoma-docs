@@ -59,9 +59,9 @@
 
 :message predictSeries:
 
-   :arg inBuffer: The input series stored in a |buffer|
+   :arg sourceBuffer: The input series stored in a |buffer|
 
-   :arg outBuffer: A buffer to write the prediction to
+   :arg targetBuffer: A buffer to write the prediction to
 
    Given a fitted model, predict the output for a single series in and write it to another buffer
 
