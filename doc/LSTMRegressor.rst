@@ -2,7 +2,7 @@
 :species: data
 :sc-categories: Machine learning, Regression, LSTM
 :sc-related: 
-:see-also: LSTMClassifier, LSTMForecast, DataSeries, DataSet
+:see-also: LSTMClassifier, LSTMForecaster, DataSeries, DataSet
 :description: 
 
    Perform regression between a :fluid-obj:`DataSeries` and a :fluid-obj:`DataSet` using a long-short term memory recurrent neural network (LSTM)
