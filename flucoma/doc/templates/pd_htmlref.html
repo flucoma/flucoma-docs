@@ -162,6 +162,12 @@ under the European Union’s Horizon 2020 research and innovation programme
       <h3 class="method_name" name="reset">reset</h3>
       <div class="description"> Calling <span class="messagename" data-message="reset"> reset </span> will change parameter values back to those the object was <em> created </em> with, i.e. any attribute values set in the box will be retained </div>
     </div>
+    {%- if  species == 'data' -%}
+    <div class="method_group">
+      <h3 class="method_name" name="refer">refer</h3>
+      <div class="description">Changes the reference to the data in another named {{ client_name | as_host_object_name }} object. Changes to the data stored in any referenced will be shared by all other similarly named {{ client_name | as_host_object_name }} objects.</div>
+    </div>
+   {%- endif -%}
   </section> 
   <section class="seealso"> 
     <h2>See Also</h2> 
