@@ -39,7 +39,7 @@
 
 :control kernelSize:
 
-   The granularity of the window in which the algorithm looks for change, in samples. A small number will be sensitive to short term changes, and a large number should look for long term changes.
+   The granularity of the window in which the algorithm looks for change, in hops. A small number will be sensitive to short term changes, and a large number should look for long term changes.
 
 :control threshold:
 
@@ -47,11 +47,11 @@
 
 :control filterSize:
 
-   The size of a smoothing filter that is applied on the novelty curve. A larger filter size allows for cleaner cuts on very sharp changes.
+   The size (in hops) of a smoothing filter that is applied on the novelty curve. A larger filter size allows for cleaner cuts on very sharp changes.
 
 :control minSliceLength:
 
-   The minimum duration of a slice in number of hopSize.
+   The minimum duration of a slice in number of hops.
 
 :control windowSize:
 

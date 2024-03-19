@@ -86,7 +86,7 @@
 
 :control filterSize:
 
-   The size of a smoothing filter that is applied on the novelty curve. A larger filter size allows for cleaner cuts on very sharp changes.
+   The size (in hops) of a smoothing filter that is applied on the novelty curve. A larger filter size allows for cleaner cuts on very sharp changes.
 
 :control frameDelta:
 
