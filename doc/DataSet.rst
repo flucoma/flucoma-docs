@@ -81,6 +81,12 @@
 
    Export the dataset identifier to a FluidLabelSet.
 
+:message refer:
+
+   :arg name: The name of the FluidDataSet.
+
+   The object will point to the FluidDataSet named ``name``.
+
 :message merge:
 
    :arg sourceDataSet: The source DataSet to be merged.
