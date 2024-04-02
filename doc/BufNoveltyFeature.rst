@@ -65,7 +65,7 @@
 
 :control kernelSize:
 
-   The granularity of the window in which the algorithm looks for change, in samples. A small number will be sensitive to short term changes, and a large number should look for long term changes.
+   The granularity of the window in which the algorithm looks for change, in hops. A small number will be sensitive to short term changes, and a large number should look for long term changes.
 
 :control filterSize:
 

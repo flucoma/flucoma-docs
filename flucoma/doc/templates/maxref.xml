@@ -2,7 +2,7 @@
 <?xml-stylesheet href="./_c74_ref.xsl" type="text/xsl"?>
 <!--
 Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
-Copyright 2017-2019 University of Huddersfield.
+Copyright University of Huddersfield.
 Licensed under the BSD-3 License.
 See license.md file in the project root for full license information.
 This project has received funding from the European Research Council (ERC)
@@ -75,6 +75,15 @@ under the European Union’s Horizon 2020 research and innovation programme
         Calling <m>reset</m> will change parameter values back to those the object was <i>created</i> with, i.e. any attribute values set in the box will be retained
       </description>
     </method>
+
+  {%- if  species == 'data' -%}
+   <method name='refer'>
+     <arglist>
+     <arg name="name" optional="0" type='symbol'/>
+     </arglist>
+     <description>Changes the reference to the data in another named {{ client_name | as_host_object_name }} object. Changes to the data stored in any referenced will be shared by all other similarly named {{ client_name | as_host_object_name }} objects.</description>
+   </method>
+  {%- endif -%}
 
 	{%- for name, bits in messages.items() -%}
 		 {% if name == 'dump'  %}

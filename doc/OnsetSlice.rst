@@ -40,7 +40,7 @@
          **MKL** thresholds on (sum of log of magnitude ratio per bin) (or equivalently, sum of difference of the log magnitude per bin) (like Onsets mkl)
 
       :4:
-         **IS** (WILL PROBABLY BE REMOVED) Itakura - Saito divergence (see literature)
+         **IS** Itakura-Saito divergence (see literature)
 
       :5:
          **Cosine** thresholds on (cosine distance between comparison frames)
@@ -67,7 +67,7 @@
 
 :control filterSize:
 
-   The size of a smoothing filter that is applied on the novelty curve. A larger filter size allows for cleaner cuts on very sharp changes.
+   The size (in hops) of a smoothing filter that is applied on the novelty curve. A larger filter size allows for cleaner cuts on very sharp changes.
 
 :control frameDelta:
 

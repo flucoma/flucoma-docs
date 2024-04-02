@@ -95,7 +95,19 @@
 
    :arg k: The number of nearest neighbours to return. The identifiers will be sorted, beginning with the nearest.
 
+   :arg action: A function that will run when the query returns, whose argument is an array of distances.
+
    Returns the identifiers of the ``k`` points nearest to the one passed. Note that this is a brute force distance measure, and comparatively inefficient for repeated queries against large datasets. For such cases, :fluid-obj:`KDTree` will be more efficient.
+
+:message kNearestDist:
+
+   :arg buffer: A |buffer| containing a data point to match against. The number of frames in the buffer must match the dimensionality of the DataSet.
+   
+   :arg k: The number of nearest neighbours to return. The identifiers will be sorted, beginning with the nearest.
+
+   :arg action: A function that will run when the query returns, whose argument is an array of distances.
+
+   Get the distances of the ``k`` nearest neighbours to a point. Note that this is a brute force distance measure, and comparatively inefficient for repeated queries against large datasets. For such cases, :fluid-obj:`KDTree` will be more efficient.
 
 :message print:
 
