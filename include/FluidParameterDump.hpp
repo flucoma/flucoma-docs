@@ -41,6 +41,10 @@ namespace dataset {
 class DataSetClient;
 }
 
+namespace dataseries {
+class DataSeriesClient;
+}
+
 namespace labelset {
 class LabelSetClient;
 }
@@ -260,6 +264,11 @@ std::string getArgType(SharedClientRef<dataset::DataSetClient>)
   return "DataSet";
 }
 
+std::string getArgType(SharedClientRef<dataseries::DataSeriesClient>)
+{
+  return "DataSeries";
+}
+
 std::string getArgType(SharedClientRef<labelset::LabelSetClient>)
 {
   return "LabelSet";
@@ -268,6 +277,11 @@ std::string getArgType(SharedClientRef<labelset::LabelSetClient>)
 std::string getArgType(SharedClientRef<const dataset::DataSetClient>&)
 {
   return "Input DataSet";
+}
+
+std::string getArgType(SharedClientRef<const dataseries::DataSeriesClient>)
+{
+  return "Input DataSeries";
 }
 
 std::string getArgType(SharedClientRef<const labelset::LabelSetClient>&)
@@ -410,6 +424,13 @@ public:
   {
     return "dataset";
   }
+
+  static std::string
+  getParamType(const SharedClientRef<dataseries::DataSeriesClient>::ParamType&)
+  {
+    return "dataseries";
+  }
+
   static std::string
   getParamType(const SharedClientRef<labelset::LabelSetClient>::ParamType&)
   {
