@@ -4,7 +4,7 @@
 :sc-related: 
 :see-also: DataSet, LabelSet
 :max-seealso: coll, dict
-:description: A selection of columns and a set of conditions that match rows of a FluidDataSet. Used to filter and search in a database of descriptors.
+:description: A selection of columns and a set of conditions that match points in a FluidDataSet. Used to filter and search in a database of descriptors.
 
 :message addColumn:
 
@@ -34,7 +34,7 @@
 
    :arg action: Run when done
 
-   Filter rows according to some condition.
+   Filter points according to some condition.
 
 :message and:
 
@@ -62,11 +62,11 @@
 
 :message limit:
 
-   :arg rows: Maximum number of rows
+   :arg points: Maximum number of points
 
    :arg action: Run when done
 
-   Limit the number of resulting rows.
+   Limit the number of resulting points.
 
 :message reset:
 
