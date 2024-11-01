@@ -24,6 +24,10 @@
 
    The maximum number of iterations the algorithm will use whilst fitting.
 
+:control initialize:
+
+   The method used to initialize the clustering process. 0 is the default random assignment. 1 is using a small sample from the dataset as seed cluster centres.
+
 :message fit:
 
    :arg dataSet: A :fluid-obj:`DataSet` of data points.
