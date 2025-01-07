@@ -7,7 +7,7 @@ def derive_learn_link(object_name):
     """
 
     # If you need to add an edge case add another item to this regex
-    m = re.search('(?:Buf)(?!NMF|Compose|Flatten|Scale)(.+)', object_name)
+    m = re.search('(?:Buf)(?!NMF|Compose|Flatten|Scale|STFT|Thresh|Select|Thread)(.+)', object_name)
     if m:
         return m.group(1).lower()
     else:
