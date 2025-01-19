@@ -103,7 +103,7 @@ under the European Union’s Horizon 2020 research and innovation programme
        <arglist>
          <arg name="path" optional="1" type='symbol, optional'/>
        </arglist>
-       <description>Replace the internal state of the object from a JSON file on disk. With no argument, a file dialog will appear to choose the file.
+       <description>Replace the internal state of the object from a JSON file on disk. With no argument, a file dialog will appear to choose the file. It is always executed at the lowest priority on the main thread, using <code>deferlow</code> internally.
       </description>
      </method>
      {% elif name == 'write' %}
@@ -111,7 +111,7 @@ under the European Union’s Horizon 2020 research and innovation programme
        <arglist>
          <arg name="path" optional="1" type='symbol, optional'/>
        </arglist>
-       <description>Save the internal state of the object to a JSON file on disk. With no argument, a file dialog will appear to choose the file.
+       <description>Save the internal state of the object to a JSON file on disk. With no argument, a file dialog will appear to choose the file. It is always executed at the lowest priority on the main thread, using <code>deferlow</code> internally.
       </description>
      </method>
     {% else %}
