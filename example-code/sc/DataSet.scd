@@ -254,4 +254,19 @@ f.kNearest(b,9,{|x|x.postln;})
 
 // and request the distances
 f.kNearestDist(b,9,{|x|x.postln;})
-::
+
+// even more daring/crazy/dangerous: bruteforce search on the server
+
+// make a lookup table where each label is itselt as a number
+g = FluidDataSet(s).load(Dictionary.newFrom(["cols", 1, "data", Dictionary.newFrom(9.collect{|i|["item-%".format(i), i]}.flatten(1))]))
+// and a lookup buffer
+c = Buffer.alloc(s,6)
+
+(
+{
+	var trig = Impulse.kr(1);
+	FluidKrToBuf.kr(SinOsc.kr(0.25,[0,pi/2]).poll(trig,\in), b); //going in the 4 quadrants
+	f.kr(trig, b, c, 7, g).poll(trig,\numvalid);
+	FluidBufToKr.kr(c).poll(trig,\out);
+}.play;
+)
