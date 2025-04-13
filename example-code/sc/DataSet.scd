@@ -267,17 +267,17 @@ c = Buffer.alloc(s,6)
 {
 	var trig = Impulse.kr(1);
 	FluidKrToBuf.kr(SinOsc.kr(0.25,[0,pi/2]).poll(trig,\in), b); //going in the 4 quadrants
-	f.kr(trig, b, c, 7, g).poll(trig,\numvalid);
+	f.kr(trig, inputBuffer: b, outputBuffer: c, numNeighbours: 6, lookupDataSet: g).poll(trig,\numvalid);
 	FluidBufToKr.kr(c).poll(trig,\out);
 }.play;
 )
 
-// if not, outputs the distances to the nearest neighbour
+// if not provided with a lookup dataset, it outputs the distances to the nearest neighbour. Also, notice how the numNeighbours is tapered down to match the destination buffer (c) size.
 (
 {
 	var trig = Impulse.kr(1);
 	FluidKrToBuf.kr(SinOsc.kr(0.25,[0,pi/2]).poll(trig,\in), b); //going in the 4 quadrants
-	f.kr(trig, b, c, 7).poll(trig,\numvalid);
+	f.kr(trig, inputBuffer: b, outputBuffer: c, numNeighbours: 8).poll(trig,\numvalid);
 	FluidBufToKr.kr(c).poll(trig,\out);
 }.play;
 )
