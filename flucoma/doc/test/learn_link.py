@@ -26,6 +26,7 @@ url_map = {
     'BufNMF' : 'bufnmf',
     'BufSTFT' : 'bufstft',
     'BufScale' : 'bufscale',
+    'BufThresh' : 'bufthresh',
     'BufFlatten' : 'bufflatten'
 }
 
