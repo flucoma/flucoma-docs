@@ -63,6 +63,8 @@
 
    :arg labelSet: The FluidLabelSet in which to dump the point's IDs associated with their reference frame number (or channel number if transposed).
 
+   :arg flip: The reference order for the labelSet. By default, the frame number (or channel number if transposed) is the ID and the DataSet's IDs are the labels. When flipped, the original IDs are the IDs and the frame numbers (or channel numbers if transposed) are the labels.
+
    Dump the content of the dataset to a |buffer|, with optional transposition, and a map of frames/channels to the original IDs as a FluidLabelSet.
 
 :message fromBuffer:
