@@ -96,7 +96,7 @@ code::
 ~dsB.print;
 )
 
-// no query/filter defined, copies all items with identifiers common to both, and all of the defined column of the first input
+// no query/filter defined, copies all with identifiers common to both sources, as well as appending any added column from the first source.
 (
 ~ds_joined = FluidDataSet(s);
 ~joiner = FluidDataSetQuery(s);
