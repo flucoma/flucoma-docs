@@ -209,11 +209,11 @@ code::
 // pass a labelset so the identifiers aren't just numbers
 (
 fork{
-	var mfccs = Buffer(s);
-	FluidBufMFCC.processBlocking(s,~src,features:mfccs);
+	~mfccs = Buffer(s);
+	FluidBufMFCC.processBlocking(s,~src,features:~mfccs);
 	s.sync;
 	~ls = FluidLabelSet(s);
-	mfccs.numFrames.do{
+	~mfccs.numFrames.do{
 		arg i;
 		// in the label set that gets used to create
 		// the identifiers, the identifier is the
@@ -222,11 +222,41 @@ fork{
 		// identifier in the dataset
 		~ls.addLabel(i,"ASWINE-mfcc-%".format(i));
 	};
-	~ds = FluidDataSet(s).fromBuffer(mfccs,0,~ls).print;
+	~ds = FluidDataSet(s).fromBuffer(~mfccs,0,~ls).print;
 }
 )
 
+// You can provide an optional number (0 or 1) to change the transposition of the copying.
+~ds.fromBuffer(~mfccs,1).print;
+
+// By default, each row is layed out framewise, so all of channel 1 is ordered in time as the columns of identifier 0.
+// When frombuffer <buffer> 1 is passed, the copying is transposed. This means each identifier will contain the same index across all channels as the columns of a given identifier.
 ::
+
+strong::Using:: code::.toBuffer::
+code::
+
+// use .toBuffer to convert the dataset into a buffer.
+
+// make a simple 2D dataset
+(
+~buffer = Buffer(s);
+~ds = FluidDataSet(s).load(Dictionary.newFrom([\cols, 2, \data, Dictionary.newFrom([\bottom_left,\top_left,\bottom_right,\top_right].collect{|n,i|[n, [i.div(2), i.mod(2)]]}.flatten)])).print;
+~ls = FluidLabelSet(s);
+)
+
+// toBuffer messages copies the contents of the dataset to the buffer provided as an argument.
+~ds.toBuffer(~buffer, action: {~buffer.loadToFloatArray(action: {|x|x.postln})})
+
+//By default, each point/item is layed out framewise, so the 0th frame is the first item, where each dimension is a channel. When tobuffer <multiarray> 1 is passed, the copying is transposed. This means each channel will hold a point, and each frame will represent a dimension.
+
+// You can provide an optional number (0 or 1) to change the transposition of the copying, and an optional labelset to get.
+~ds.toBuffer(~buffer, transpose: 1, labelSet: ~ls, action: {~buffer.loadToFloatArray(action: {|x|x.postln; ~ls.print})})
+
+// Finally, you can swap the order of the entries in the labelset. This is convenient to retrieve from an original identifier on what frame/channel a point/item will be found
+~ds.toBuffer(~buffer, transpose: 1, labelSet: ~ls, labelwise: 1, action: {~buffer.loadToFloatArray(action: {|x|x.postln; ~ls.print})})
+::
+
 strong::Nearest Neighbour Search in a DataSet::
 
 Note: A FluidDataSet can be queried with an input point to return the nearest match to that point. Note: This feature is can be computationally expensive on a large dataset, as it needs to compute the distance of the queried point to each point in the dataset. If you need to perform multiple nearest neighbour queries on a fluid.dataset~ it is recommended to use FluidKDTree. This facility is most useful with smaller, ephemeral datasets such as those returned by FluidDataSetQuery.
