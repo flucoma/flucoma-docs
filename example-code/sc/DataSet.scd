@@ -311,4 +311,4 @@ c = Buffer.alloc(s,6)
 	FluidBufToKr.kr(c).poll(trig,\out);
 }.play;
 )
-
+::
