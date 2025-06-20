@@ -34,7 +34,7 @@
 
    :arg action: Run when done
 
-   Given a trained model, transform a source :fluid-obj:`DataSet` into the PCA-space and write to a destination DataSet. The DataSets can be the same for both input and output (performs the operation in-place). This process returns the fraction (between 0 and 1) of explained variance.
+   Given a trained model, transform a source :fluid-obj:`DataSet` into the PCA-space and write to a destination DataSet. The DataSets can be the same for both input and output (performs the operation in-place). This process returns the fraction (between 0 and 1) of explained variance. The minimum number of points in the ``source`` DataSet should be equal or greater than ``numDimensions``.
    
 :message inverseTransform:
 
@@ -54,7 +54,7 @@
 
    :arg action: Run when done
 
-   ``fit`` and ``transform`` in a single pass. Returns the fraction (between 0 and 1) of explained variance.
+   ``fit`` and ``transform`` in a single pass. Returns the fraction (between 0 and 1) of explained variance. The minimum number of points in the ``source`` DataSet should be equal or greater than ``numDimensions``.
 
 :message transformPoint:
 
