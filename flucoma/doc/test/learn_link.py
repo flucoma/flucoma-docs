@@ -24,7 +24,9 @@ url_map = {
     'BufAudioTransport' : 'audiotransport',
     'BufCompose' : 'bufcompose',
     'BufNMF' : 'bufnmf',
+    'BufSTFT' : 'bufstft',
     'BufScale' : 'bufscale',
+    'BufThresh' : 'bufthresh',
     'BufFlatten' : 'bufflatten'
 }
 
