@@ -20,7 +20,7 @@
 
 :control source:
 
-   The |buffer| to use as the source material for the novelty curve to be computed. Contrary to |BufNoveltySlice| the different channels of multichannel buffers will not be summed but will be processed sequentially.
+   The |buffer| to be used as the source material for computing the novelty curve. Contrary to |BufNoveltySlice| the different channels of multichannel buffers will not be summed but will be processed sequentially.
 
 :control startFrame:
 
