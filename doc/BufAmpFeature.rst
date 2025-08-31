@@ -13,11 +13,11 @@
 
 :control source:
 
-   The buffer to use as the source material to be sliced through novelty identification. The different channels of multichannel buffers will be summed.
+   The buffer to be used as the source material for computing the amplitude differential curve. Contrary to :fluid-obj:`BufAmpSlice` the different channels of multichannel buffers will not be summed but will be processed sequentially.
 
 :control startFrame:
 
-   Where in the srcBuf should the slicing process start, in samples.
+  The starting point for analysis in the source (in frames).
 
 :control numFrames:
 
@@ -25,7 +25,11 @@
 
 :control startChan:
 
-   For multichannel sources, which channel should be processed.
+   For multichannel srcBuf, the starting channel to analyse.
+
+:control numChans:
+
+   For multichannel srcBuf, the number of channels to analyse.
 
 :control numChans:
 
