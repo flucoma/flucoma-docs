@@ -29,6 +29,10 @@
 
    Set the relative contributions of ``source`` and ``target`` between 0 and 1.
 
+:control seed:
+
+   The seed provided to the pseudo-random number generator used within the algorithm. This allows for repeatable results from these generators; the same seed will consistently produce the same result. The default is -1, which requests a 'real' random, unpredictable seed.
+
 :control windowSize:
 
    The analysis window size in samples. Needs to match that of the seeding NMF analyses

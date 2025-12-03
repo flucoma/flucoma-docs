@@ -33,6 +33,10 @@
 
    The NMF process is iterative, trying to converge to the smallest error in its factorisation. The number of iterations will decide how many times it tries to adjust its estimates. Higher numbers here will be more CPU intensive, lower numbers will be more unpredictable in quality.
 
+:control seed:
+
+   The seed provided to the pseudo-random number generator used within the algorithm. This allows for repeatable results from these generators; the same seed will consistently produce the same result. The default is -1, which requests a 'real' random, unpredictable seed.
+
 :control windowSize:
 
    The number of samples that are analysed at a time. A lower number yields greater temporal resolution, at the expense of spectral resolution, and vice-versa.
