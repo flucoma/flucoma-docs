@@ -104,7 +104,7 @@ LIST::
 ##Your output buffer should be the maximum number of neighbours you are interested in * output dimensionality
 ::
 
-We can't simply return labels (i.e. strings) from a UGen, so the query returns the actual data points from a DataSet instead. By default, this is the FluidDataSet against which the tree was fitted. However, by passing a different dataset to code::kr::'s code::lookupDataSet:: argument instead, you can return different points, so long as the labels in the two datasets match. In this way, the FluidKDTree can be used to perform nearest neighbour mappings in a synth.
+We can't simply return labels (i.e. strings) from a UGen, so the query returns the distances to the point itself. It is also possible to retrieve actual data points from a DataSet instead: by passing a different dataset to code::kr::'s code::lookupDataSet:: argument, you can return different points, so long as the labels in the two datasets match. In this way, the FluidKDTree can be used to perform nearest neighbour mappings in a synth.
 
 For instance, whilst fitting the tree against some n-dimensional descriptor data, our lookup dataset could use the same labels to map descriptor entries back to buffers, or locations in buffers, so that queries can be used to trigger audio.
 
@@ -193,16 +193,17 @@ indices.loadToFloatArray(action:{
 	var src = PlayBuf.ar(1,~src,BufRateScale.ir(~src),loop:1);
 	var mfccs = FluidMFCC.kr(src,startCoeff:1);
 	var mfccbuf = LocalBuf(mfccs.numChannels);
-	var playbackinfo = LocalBuf(4); //up to 2 points of 2 dimensions
+	var distances = LocalBuf(10); //up to 10 points with 1 distance each as there is no lookup dataset
 	var trig = Impulse.kr(5);
 	var num;
 
 	FluidKrToBuf.kr(mfccs,mfccbuf);
 
-	// kdtree finding all nearest neighbour in 13 dimensions within a radius of 20
-	num = ~tree.kr(trig, inputBuffer: mfccbuf, outputBuffer: playbackinfo, numNeighbours: 0, radius: 20, lookupDataSet: ~ds_playback).poll(trig,"number of valid k: ");
+	// // kdtree finding all nearest neighbour in 13 dimensions within a radius of 20
+	num = ~tree.kr(trig, inputBuffer: mfccbuf, outputBuffer: distances, numNeighbours: 0, radius: 20).poll(trig,"number of valid k: ");
 
-	FluidBufToKr.kr(playbackinfo).poll(trig * num, "content of buffer: ");
+	// publishes the output of the buffer, only if there is a valid distance
+	Index.kr(distances).poll(trig * num,"first distance: ");
 	src.dup
 }.play;
 )
