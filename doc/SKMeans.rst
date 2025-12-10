@@ -24,6 +24,21 @@
 
    The maximum number of iterations the algorithm will use whilst fitting.
 
+:control initMethod:
+
+   The method used to initialize the clustering process. 
+   
+   :enum:
+
+     :0:
+        random partition: each input point is randomly assigned to a cluster.
+
+     :1:
+        random means: the initial means are sampled at random from the input points, which are then assigned to their nearest mean.
+
+     :2:
+        sampling: the initial means are sampled from the input points, weighted by an approximation of the input data distribution. 
+   
 :message fit:
 
    :arg dataSet: A :fluid-obj:`DataSet` of data points.
