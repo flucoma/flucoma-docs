@@ -38,7 +38,11 @@
 
      :2:
         sampling: the initial means are sampled from the input points, weighted by an approximation of the input data distribution. 
-   
+
+:control seed:
+
+   The seed provided to the pseudo-random number generator used within the algorithm. This allows for repeatable results from these generators; the same seed will consistently produce the same result. The default is -1, which requests a 'real' random, unpredictable seed.
+
 :message fit:
 
    :arg dataSet: A :fluid-obj:`DataSet` of data points.
