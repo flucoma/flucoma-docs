@@ -171,6 +171,10 @@ FluidBufMFCC.processBlocking(s,~src,features:~mfccs);
 });
 )
 
+// containsId gives a 1 if the identifier exists in the FluidDataSet
+~ds.containsId("2581", {|i|i.postln});
+~ds.containsId("doesnotexit", {|i|i.postln});
+
 // clear it
 (
 ~ds.clear;
