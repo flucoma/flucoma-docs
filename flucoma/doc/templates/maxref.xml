@@ -83,10 +83,6 @@ under the European Union’s Horizon 2020 research and innovation programme
      </arglist>
      <description>Changes the reference to the data in another named {{ client_name | as_host_object_name }} object. Changes to the data stored in any referenced will be shared by all other similarly named {{ client_name | as_host_object_name }} objects.</description>
    </method>
-   <method name='getname'>
-     <arglist />
-     <description>Gets the name of the currently referenced named {{ client_name | as_host_object_name }} object.</description>
-   </method>
   {%- endif -%}
 
 	{%- for name, bits in messages.items() -%}
