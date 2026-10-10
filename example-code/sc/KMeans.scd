@@ -90,7 +90,7 @@ code::
 // keep that window open and let's display where we will
 // seeds the means
 (
-~seeds = [[0.1,0.1],[0.2,0.2],[0.3,0.3],[0.4,0.4]];
+~seeds = [[0.1,0.1],[0.9,0.1],[0.1,0.9],[0.9,0.9]];
 ~seeds.do{
 	arg arr, i;
 	~fp.addPoint_("seed-%".format(i),arr[0],arr[1],Color.gray,3);

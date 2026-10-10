@@ -35,6 +35,10 @@
 
    The learning rate of the algorithm, aka how much of the error it uses to estimate the next iteration.
 
+:control seed:
+
+   The seed provided to the pseudo-random number generator used within the algorithm. This allows for repeatable results from these generators; the same seed will consistently produce the same result. The default is -1, which requests a 'real' random, unpredictable seed.
+
 
 :message fit:
 

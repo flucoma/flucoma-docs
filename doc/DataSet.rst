@@ -77,6 +77,12 @@
 
    Import to the dataset the content of a |buffer|, with optional transposition, and a map of frames/channels to the original IDs as a FluidLabelSet.
 
+:message containsId:
+
+   :arg identifier: The identifier to look for.
+
+   Returns (1) if the identifier exists in the FluidDataSet, otherwise (0).
+
 :message getIds:
 
    :arg labelSet: The FluidLabelSet to export to. Its content will be replaced.

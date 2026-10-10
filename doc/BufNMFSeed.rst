@@ -52,6 +52,10 @@
     :3: 
       **NNDSVD** Nonnegative Double Singular Value Decomposition where values are not changed according to any criteria. This promotes sparse results from the subsequent NMF (because, with multiplicative updates, zeros remain zeros). This may or may not be desirable (not least because sparsity implies the need for more components, but also the specific domain might imply that reasonable decomposition just isn't going to be sparse). 
 
+:control seed:
+
+   The seed provided to the pseudo-random number generator used within the algorithm. This allows for repeatable results from these generators; the same seed will consistently produce the same result. The default is -1, which requests a 'real' random, unpredictable seed.
+
 :control windowSize:
 
    The window size. We need to decide what precision we give it spectrally and temporally. For more information visit https://learn.flucoma.org/learn/fourier-transform/
