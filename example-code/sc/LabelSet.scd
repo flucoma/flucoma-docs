@@ -113,6 +113,10 @@ FluidLabelSet(s).read(Platform.defaultTempDir+/+"mfcc-analysis-labels.json").pri
 // how many lables are there
 ~ls.size
 
+// containsId gives a 1 if the identifier exists in the FluidLabelSet
+~ls.containsId("mfcc-analysis-0", {|i|i.postln});
+~ls.containsId("doesnotexit", {|i|i.postln});
+
 // clear
 (
 ~ls.clear;

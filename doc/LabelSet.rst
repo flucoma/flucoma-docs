@@ -65,6 +65,12 @@
 
    Export the LabelSet identifier to a FluidLabelSet.
 
+:message containsId:
+
+   :arg identifier: The identifier to look for.
+
+   Returns (1) if the identifier exists in the FluidLabelSet, otherwise (0).
+
 :message merge:
 
    :arg sourceLabelSet: The source LabelSet to be merged.
