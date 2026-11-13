@@ -54,6 +54,8 @@
 
    :arg destDataSet: Destination data, or the DataSet name
 
+   :arg updateEmbedding: update the destination's embeddings (the default is not to do it (0) and is consistent with transformPoint's results)
+
    :arg action: Run when done
 
    Given a trained model, apply the reduction to a source :fluid-obj:`DataSet` and write to a destination. Can be the same for both input and output (in-place).
@@ -66,7 +68,7 @@
 
    :arg action: Run when done
 
-   Fit the model to a :fluid-obj:`DataSet` and write the new projected data to a destination FluidDataSet.
+   Fit the model to a :fluid-obj:`DataSet` and write the new projected data to a destination FluidDataSet. This is slighly different to running fit then transform, as it returns the fitting embeddings.
 
 :message transformPoint:
 
