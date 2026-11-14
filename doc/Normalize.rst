@@ -13,10 +13,13 @@
 
    Maximum output value, default 1
 
+:control axis:
+
+   The dimensions used to fit the normalization model. The default (0) is finding the normalizing coefficients for each dimension separately. Setting it to (-1) is looking across all values, across dimensions and points, thus keeping the relative values across dimensions and points.
+
 :control invert:
 
-   The direction in which the normalization will occur for transform and transformpoint. The default 0 is taking in the range of the input used to fit and transforms it towards the normalised range. A value of 1 will expect an input of the normalized range to transform back to the original range.
-
+   The direction in which the normalization will occur for transform and transformpoint. The default 0 is taking in the range of the input used to fit and transforms it towards the normalized range. A value of 1 will expect an input of the normalized range to transform back to the original range.
 
 :message fit:
 

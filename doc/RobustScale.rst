@@ -21,6 +21,10 @@
 
    The high percentile boundary. The default is 75.
 
+:control axis:
+
+   The dimensions used to fit the scaling model. The default (0) is finding the scaling coefficients for each dimension separately, across all points. Setting it to (-1) is looking across all values, across dimensions and points, thus keeping the relative values across dimensions and points.
+
 :message fit:
 
    :arg dataSet: The :fluid-obj:`DataSet` to determine the statistics of.
