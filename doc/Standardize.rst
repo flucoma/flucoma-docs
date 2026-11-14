@@ -6,7 +6,9 @@
 :description: 
    Standardize a :fluid-obj:`DataSet`. Rescale using its mean(s) and standard deviation(s) in each dimension, such that each dimension has a mean of 0 and a standard deviation of 1.
    
-:discussion:
+:control axis:
+
+   The dimensions used to fit the standardization model. The default (0) is finding the standardizing coefficients for each dimension separately, across all points. Setting it to (-1) is looking across all values, across dimensions and points, thus keeping the relative values across dimensions and points.
 
 :message fit:
 
