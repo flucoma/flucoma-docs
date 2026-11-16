@@ -72,7 +72,7 @@ class FluidHTMLWriter(html4css1.Writer):
                 
             def visit_literal(self, node)    :
                 f = driver.get('code_block',lambda x: x) 
-                self.body.append(f(node.astext()))
+                self.body.append(f(self.encode(node.astext())))
                 raise nodes.SkipNode 
                                 
         

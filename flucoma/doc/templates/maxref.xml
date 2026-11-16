@@ -85,40 +85,11 @@ under the European Union’s Horizon 2020 research and innovation programme
    </method>
   {%- endif -%}
 
-	{%- for name, bits in messages.items() -%}
-		 {% if name == 'dump'  %}
-     <method name='dump'>
-       <digest>Dump the state of this object from the dump outlet as a <o>dict</o>.</digest>
-     </method>
-     {% elif name == 'load' %}
-     <method name='load'>
-       <arglist>
-         <arg name="dictionary" optional='0' type='dictionary'/>
-       </arglist>
-       <description>Replace the internal state of the object from a <o>dict</o>. The message should take the form <code>load dictionary &lt;dictid&gt;</code>
-      </description>
-     </method>
-     {% elif name == 'read' %}
-     <method name='read'>
-       <arglist>
-         <arg name="path" optional="1" type='symbol, optional'/>
-       </arglist>
-       <description>Replace the internal state of the object from a JSON file on disk. With no argument, a file dialog will appear to choose the file. It is always executed at the lowest priority on the main thread, using <code>deferlow</code> internally.
-      </description>
-     </method>
-     {% elif name == 'write' %}
-     <method name='write'>
-       <arglist>
-         <arg name="path" optional="1" type='symbol, optional'/>
-       </arglist>
-       <description>Save the internal state of the object to a JSON file on disk. With no argument, a file dialog will appear to choose the file. It is always executed at the lowest priority on the main thread, using <code>deferlow</code> internally.
-      </description>
-     </method>
-    {% else %}
+	{%- for name, bits in messages.items() %}
     <method name='{{ name| lower | e }}'>
 			<arglist>
 				{%- for argname,argdata in bits['args'].items() -%}
-				<arg name= "{{ argname | e }}" optional='0' type="{{ argdata['type'] | lower | typename}}" />
+				<arg name= "{{ argname | e }}" optional='{{ argdata['optional'] | default(0) }}' type="{{ argdata['type'] | lower | typename}}" />
 				{%- endfor -%}
 			</arglist>
 			<description>
@@ -132,8 +103,7 @@ under the European Union’s Horizon 2020 research and innovation programme
       </ul>
 			</description>
 		</method>
-    {% endif %}
-	{%- endfor -%}
+	{% endfor -%}
 	</methodlist>
 	<!--ATTRIBUTES-->
 	<attributelist>

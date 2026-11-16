@@ -36,7 +36,7 @@ defaults = {
                     'name':'path',
                     'optional': 0,
                     'type':'symbol',
-                    'description':'Path of the file to load from'            
+                    'description':'Path of the file to save to'            
                 }
             ]         
         }

@@ -10,22 +10,22 @@
 defaults = {
     'messages': {
         'dump':{
-            'description':'Dump the state of this object from the dump outlet as a <o>dict</o>. This object must first be fitted before dump can be called.',
+            'description':'Dump the state of this object from the dump outlet as a :object-link:`dict`. This object must first be fitted before dump can be called.',
             'args':[]
         }, 
         'load':{
-            'description':'Replace the internal state of the object from a <o>dict</o>. The message should take the form <code>load dictionary &lt;dictid&gt;</code>' ,       
+            'description':'Replace the internal state of the object from a :object-link:`dict`. The message should take the form ``load dictionary <dictid>``',       
             'args':[
                 {
-                    'name':'data',
+                    'name':'dictid',
                     'optional': 0,
                     'type':'dictionary',
-                    'description':''
+                    'description':'Name of the :object-link:`dict` to load from'
                 }
             ]
         }, 
         'read':{
-            'description': 'Replace the internal state of the object from a JSON file on disk. With no argument, a file dialog will appear to choose the file.',
+            'description': 'Replace the internal state of the object from a JSON file on disk. With no argument, a file dialog will appear to choose the file. It is always executed at the lowest priority on the main thread, using ``deferlow`` internally.',
             'args': [
                 {
                     'name':'path',
@@ -36,13 +36,13 @@ defaults = {
             ] 
         },
         'write':{
-            'description':'Save the internal state of the object to a JSON file on disk. With no argument, a file dialog will appear to choose the file. This object must first be fitted before write can be called.',
+            'description':'Save the internal state of the object to a JSON file on disk. With no argument, a file dialog will appear to choose the file. It is always executed at the lowest priority on the main thread, using ``deferlow`` internally. This object must first be fitted before write can be called.',
             'args': [
                 {
                     'name':'path',
                     'optional': 1,
                     'type':'symbol',
-                    'description':'Path of the file to load from'            
+                    'description':'Path of the file to save to'            
                 }
             ]         
         }
