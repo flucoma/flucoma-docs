@@ -78,11 +78,3 @@
    :arg overwrite: A flag to allow overwrite labels with the same identifier.
 
    Merge sourceLabelSet in the current LabelSet. It will replace the label with the same identifier if overwrite is set to 1.
-
-:message write:
-
-   Save the contents of the object to a JSON file on disk.
-
-:message dump:
-
-   Dump the state of this object as a Dictionary.

@@ -117,33 +117,11 @@ under the European Union’s Horizon 2020 research and innovation programme
     </div>    
     {%- endif -%}
     {%- for name, bits in messages.items() -%}
-    {% if name == 'dump'  %}
-    <!-- nothing for dump and load --> 
-
-    {% elif name == 'load' %}
-    {% elif name == 'read' %}
-    <div class='method_group'><h3 class='method_name' name='read'>read</h3>
-      <span class='arglist'>Arguments</span>
-      <span class='arg'>path (symbol, optional)</span>
-      
-      <div class='description'>Replace the internal state of the object from a JSON file on disk. With no argument, a file dialog will appear to choose the file.
-     </div>
-     
-    </div>
-    {% elif name == 'write' %}
-    <div class='method_group'><h3 class='method_name' name='write'>write</h3>
-      <span class='arglist'>Arguments</span>
-        <span class='arg'>path (symbol, optional)</span>
-      
-      <div class='description'>Save the internal state of the object to a JSON file on disk. With no argument, a file dialog will appear to choose the file.
-     </div>
-    </div>
-   {% else %}
    <div class='method_group'>
      <h3 class='method_name' name='{{ name | lower |e }}'>{{ name | lower |e }}</h3>
      <span class='arglist'>Arguments: </span>
        {%- for argname,argdata in bits['args'].items() -%}
-       <span class='arg'>{{ argname | e }} ({{ argdata['type'] | lower | typename}}){{ ", " if not loop.last else "" }} </span>
++      <span class='arg'>{{ argname | e }} ({{ argdata['type'] | lower | typename}}{{ ", optional" if argdata['optional'] }}){{ ", " if not loop.last else "" }} </span>
        {%- endfor -%}
      
      <div class='description'>
@@ -156,7 +134,6 @@ under the European Union’s Horizon 2020 research and innovation programme
      </ul>
      </div>
    </div>
-   {% endif %}
     {%- endfor -%}
     <div class="method_group">
       <h3 class="method_name" name="reset">reset</h3>
