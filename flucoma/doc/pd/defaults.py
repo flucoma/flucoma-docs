@@ -19,7 +19,7 @@ defaults = {
             'args':[]
         }, 
         'read':{
-            'description': 'Replace the internal state of the object from a JSON file on disk. With no argument, a file dialog will appear to choose the file.',
+            'description': 'Replace the internal state of the object from a JSON file on disk.',
             'args': [
                 {
                     'name':'path',
@@ -30,13 +30,13 @@ defaults = {
             ] 
         },
         'write':{
-            'description':'Save the internal state of the object to a JSON file on disk. With no argument, a file dialog will appear to choose the file. This object must be fitted before write can be called.',
+            'description':'Save the internal state of the object to a JSON file on disk. This object must be fitted before write can be called.',
             'args': [
                 {
                     'name':'path',
                     'optional': 0,
                     'type':'symbol',
-                    'description':'description':'Path of the file to save to'            
+                    'description':'Path of the file to save to'            
                 }
             ]         
         }

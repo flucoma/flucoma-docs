@@ -103,7 +103,7 @@ under the European Union’s Horizon 2020 research and innovation programme
       </ul>
 			</description>
 		</method>
-	{%- endfor -%}
+	{% endfor -%}
 	</methodlist>
 	<!--ATTRIBUTES-->
 	<attributelist>

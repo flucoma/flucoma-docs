@@ -7,7 +7,7 @@
 # (grant agreement No 725899).
 
 import logging
-from functools import partial
+from functools import partial, reduce
 
 from schema import Schema, Or, Optional, Use
 
@@ -39,9 +39,9 @@ def validate_messages(generated_message_data, human_message_data,**kwargs):
         usually state, so take it from the defaults if they have it, else 0
         """
         try:
-           return reduce(lambda acc, k: acc[k], keys, lookup)
+            return reduce(lambda acc, k: acc[k], keys, lookup)
         except (KeyError, IndexError, TypeError):
-           return 0
+            return 0
     
     def NullMessage(num_args):
         """
