@@ -7,7 +7,7 @@
 # (grant agreement No 725899).
 
 import logging
-from functools import partial
+from functools import partial, reduce
 
 from schema import Schema, Or, Optional, Use
 
@@ -32,6 +32,16 @@ def validate_messages(generated_message_data, human_message_data,**kwargs):
     null_arg = { 'name':None, 'description':None }
     
     human_message_data = human_message_data or {}
+
+    def lookup_optional(keys):
+        """
+        Whether a message argument is optional isn't something human docs
+        usually state, so take it from the defaults if they have it, else 0
+        """
+        try:
+            return reduce(lambda acc, k: acc[k], keys, lookup)
+        except (KeyError, IndexError, TypeError):
+            return 0
     
     def NullMessage(num_args):
         """
@@ -96,7 +106,10 @@ def validate_messages(generated_message_data, human_message_data,**kwargs):
                     'description':RecordContext(Fallbacks(
                                     [d['name'],'args',i, 'description'],
                                     lookup),
-                                'description')
+                                'description'),
+                    Optional('optional', default=partial(
+                                    lookup_optional,
+                                    [d['name'],'args',i,'optional'])): object
                 },
                 {
                     'name':Use(undocumented),

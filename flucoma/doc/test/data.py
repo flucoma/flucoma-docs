@@ -56,7 +56,7 @@ human_message_data_complete = {
             {'name': 'as', 'description': 'an int'}
         ]
     },
-    'dump':{
+    'dump':{ 
         'description': 'I dump',
         'args':[]    
     }

@@ -38,6 +38,7 @@ def merge_object(generated_data,human_data):
            'args':[{
                 'name':human_data['messages'][p['name']]['args'][i]['name'],
                 'description':human_data['messages'][p['name']]['args'][i]['description'],
+                'optional':human_data['messages'][p['name']]['args'][i].get('optional', 0),
                 'type': a
            } for i, a in enumerate(p['args'])]
         }
