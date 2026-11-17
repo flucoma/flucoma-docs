@@ -117,6 +117,12 @@ set(JSON_FILES ${FLUID_CLIENTS})
 list(TRANSFORM FLUID_CLIENTS APPEND .json)
 list(TRANSFORM JSON_FILES PREPEND "${CMAKE_BINARY_DIR}/json/")
 
+if(APPLE)
+  add_custom_command(TARGET DumpParams POST_BUILD
+    COMMAND codesign --force --sign - $<TARGET_FILE:DumpParams>
+    VERBATIM)
+endif()
+
 add_custom_command(TARGET DumpParams POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/json/"
   COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/json/"
