@@ -13,7 +13,7 @@
 
 :control numClusters:
 
-   The number of clusters to classify data into.
+   The number of clusters to classify data into when fitting the model. Note that changing this value has no effect on the model until it is fitted again with ``fit``, ``fitTransform`` or ``fitPredict``. 
 
 :control maxIter:
 
