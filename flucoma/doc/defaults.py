@@ -90,8 +90,40 @@ DefaultControlDocs = {
     'name':nameDoc()
 }
 
+def referDoc():
+    return {
+        'description': 'Share the data of the object called ``name`` from now on, instead of this object\'s current data. Changes made through any object sharing the data are seen by all of them. Replies ``refer`` when done.',
+        'args': [{
+            'name': 'name',
+            'optional': 0,
+            'description': 'The name of the object to share data with'
+        }]
+    }
+
+def setnameDoc():
+    return {
+        'description': 'Rename the data this object shares, for every object sharing it. Fails if the name is already in use. Replies ``setname`` when done.',
+        'args': [{
+            'name': 'name',
+            'optional': 0,
+            'description': 'The new name'
+        }]
+    }
+
+def getnameDoc():
+    return {
+        'description': 'Reply with the name of the data this object shares, as ``getname <name>``.',
+        'args': []
+    }
+
+# Messages that flucoma-core gives every shared object are documented here once
+# for all hosts. A host that doesn't expose some of them lists them under
+# 'hidden_messages' in its driver settings.
 DefaultMessageDocs = {
     'cols' : colsDoc(),
     'size' : sizeDoc(), 
-    'clear': clearDoc()
+    'clear': clearDoc(),
+    'refer': referDoc(),
+    'setname': setnameDoc(),
+    'getname': getnameDoc()
 }

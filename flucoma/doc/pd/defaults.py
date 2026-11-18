@@ -39,32 +39,6 @@ defaults = {
                     'description':'Path of the file to save to'            
                 }
             ]         
-        },
-        'getname':{
-            'description':'Retrieve the name of the underlying model.',
-            'args':[]
-        },
-        'setname':{
-            'description':'Set the name of the underlying model.',
-            'args': [
-                {
-                    'name':'name',
-                    'optional': 0,
-                    'type':'symbol',
-                    'description':'The new name for the model'            
-                }
-            ]
-        },
-        'refer':{
-            'description':'Change which model the object is linked to.',
-            'args': [
-                {
-                    'name':'name',
-                    'optional': 0,
-                    'type':'symbol',
-                    'description':'The name of the model to refer to from now on'            
-                }
-            ]
         }
     }
 }

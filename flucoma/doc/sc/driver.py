@@ -177,5 +177,8 @@ settings = {
     'transform': sc_transform_data, 
     'post': None, 
     'defaults': defaults, 
+    # declared by flucoma-core for shared objects, but in SuperCollider a
+    # shared object is its server ID, so the SC wrapper doesn't expose them
+    'hidden_messages': ['refer', 'setname', 'getname'],
     'jinja_extra': configure_jinja
 }
