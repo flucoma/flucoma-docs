@@ -116,34 +116,12 @@ under the European Union’s Horizon 2020 research and innovation programme
       <div class="description"> When processing in non-blocking mode, this will cancel the job underway, without updating destination buffers. </div>
     </div>    
     {%- endif -%}
-    {%- for name, bits in messages.items() -%}
-    {% if name == 'dump'  %}
-    <!-- nothing for dump and load --> 
-
-    {% elif name == 'load' %}
-    {% elif name == 'read' %}
-    <div class='method_group'><h3 class='method_name' name='read'>read</h3>
-      <span class='arglist'>Arguments</span>
-      <span class='arg'>path (symbol, optional)</span>
-      
-      <div class='description'>Replace the internal state of the object from a JSON file on disk. With no argument, a file dialog will appear to choose the file.
-     </div>
-     
-    </div>
-    {% elif name == 'write' %}
-    <div class='method_group'><h3 class='method_name' name='write'>write</h3>
-      <span class='arglist'>Arguments</span>
-        <span class='arg'>path (symbol, optional)</span>
-      
-      <div class='description'>Save the internal state of the object to a JSON file on disk. With no argument, a file dialog will appear to choose the file.
-     </div>
-    </div>
-   {% else %}
+    {%- for name, bits in messages.items() %}
    <div class='method_group'>
      <h3 class='method_name' name='{{ name | lower |e }}'>{{ name | lower |e }}</h3>
      <span class='arglist'>Arguments: </span>
        {%- for argname,argdata in bits['args'].items() -%}
-       <span class='arg'>{{ argname | e }} ({{ argdata['type'] | lower | typename}}){{ ", " if not loop.last else "" }} </span>
+       <span class='arg'>{{ argname | e }} ({{ argdata['type'] | lower | typename}}{{ ", optional" if argdata['optional'] }}){{ ", " if not loop.last else "" }} </span>
        {%- endfor -%}
      
      <div class='description'>
@@ -156,22 +134,12 @@ under the European Union’s Horizon 2020 research and innovation programme
      </ul>
      </div>
    </div>
-   {% endif %}
-    {%- endfor -%}
+    {% endfor -%}
     <div class="method_group">
       <h3 class="method_name" name="reset">reset</h3>
       <div class="description"> Calling <span class="messagename" data-message="reset"> reset </span> will change parameter values back to those the object was <em> created </em> with, i.e. any attribute values set in the box will be retained </div>
     </div>
-    {%- if  species == 'data' -%}
-    <div class="method_group">
-      <h3 class="method_name" name="refer">refer</h3>
-      <div class="description">Changes the reference to the data in another named {{ client_name | as_host_object_name }} object. Changes to the data stored in any referenced will be shared by all other similarly named {{ client_name | as_host_object_name }} objects.</div>
-    </div>
-    <div class="method_group">
-      <h3 class="method_name" name="getname">getname</h3>
-      <div class="description">Gets the name of the currently referenced named {{ client_name | as_host_object_name }} object.</div>
-    </div>
-    {%- elif species == 'slicer' or  species == 'transformer'-%}
+    {%- if species == 'slicer' or  species == 'transformer'-%}
     <div class="method_group">
       <h3 class="method_name" name="getlatency">getlatency</h3>
       <div class="description">Gets the latency for the current settings of the {{ client_name | as_host_object_name }} object.</div>

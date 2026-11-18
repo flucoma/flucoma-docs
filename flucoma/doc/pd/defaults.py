@@ -19,7 +19,7 @@ defaults = {
             'args':[]
         }, 
         'read':{
-            'description': 'Replace the internal state of the object from a JSON file on disk.',
+            'description':'Replace the internal state of the object from a JSON file on disk.',
             'args': [
                 {
                     'name':'path',
@@ -36,7 +36,7 @@ defaults = {
                     'name':'path',
                     'optional': 0,
                     'type':'symbol',
-                    'description':'Path of the file to load from'            
+                    'description':'Path of the file to save to'            
                 }
             ]         
         }

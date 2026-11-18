@@ -19,6 +19,17 @@ from flucoma.doc.validate.object import validate_object
 from flucoma.doc.merge import merge_object
 from flucoma.doc.logger import ContextFilter
 
+def drop_hidden_messages(generated_data, hidden):
+    """
+    Remove messages that a host doesn't expose from the generated data, which
+    is otherwise the canonical list of what gets documented
+    """
+    if hidden:
+        generated_data['messages'] = [
+            m for m in generated_data['messages'] if m['name'] not in hidden
+        ]
+    return generated_data
+
 def main(passed_args):
     """
     Set default locale, in case it hasn't been, otherwise we can't read text
@@ -79,7 +90,9 @@ def main(passed_args):
         c.stem : host_settings['transform'](c.stem, 
                 merge_object(
                     *validate_object(
-                        load_generated_data(c), 
+                        drop_hidden_messages(
+                            load_generated_data(c),
+                            host_settings.get('hidden_messages')), 
                         load_human_data(c, args),
                     **host_settings)
                 )
